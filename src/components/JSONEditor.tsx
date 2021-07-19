@@ -33,6 +33,12 @@ const JSONEditor = ({
         height={height}
         defaultLanguage="json"
         value={JSON.stringify(value, null, 2)}
+        options={{
+          minimap: {
+            enabled: false
+          },
+          lineNumbers: 'off'
+        }}
       />
     </div>
   )
