@@ -56,7 +56,7 @@ export default class Auth {
     return did
   }
 
-  private async createBlockchainConnection(provider: any) {
+  private async createBlockchainConnection({ provider }: JsonRpcProvider) {
     const authProvider = new EthereumAuthProvider(provider, provider.selectedAddress)
     const threeIdConnect = new ThreeIdConnect()
     await threeIdConnect.connect(authProvider)
