@@ -1,3 +1,5 @@
+import { PluginRegistration } from '@web3api/client-js'
+import { ConnectionConfig, ethereumPlugin } from '@web3api/ethereum-plugin-js'
 import {
   DAppAction,
   PublishAction,
@@ -8,16 +10,13 @@ import {
 import { State, initialState } from './initialState'
 import networks from '../utils/networks.json'
 import { networkID } from '../constants'
-import { ConnectionConfig, ethereumPlugin } from '@web3api/ethereum-plugin-js'
-import { ipfsPlugin } from '@web3api/ipfs-plugin-js'
-import { ensPlugin } from '@web3api/ens-plugin-js'
 
 export function web3apiReducer(
   state: State,
   action: Web3APIReducerAction,
 ): State['web3api'] {
   switch (action.type) {
-    case 'recreateredirects':
+    case 'recreateplugins':
       if (state.dapp.web3) {
         const currentNetwork = networks[networkID]
         const networksConfig: Record<string, ConnectionConfig> = {
@@ -26,27 +25,20 @@ export function web3apiReducer(
             signer: state.dapp.web3.getSigner(),
           },
         }
-        const redirects = [
+
+        const plugins: PluginRegistration[] = [
           {
-            from: 'w3://ens/ethereum.web3api.eth',
-            to: ethereumPlugin({
+            uri: 'ens/ethereum.web3api.eth',
+            plugin: ethereumPlugin({
               networks: networksConfig,
               defaultNetwork: currentNetwork.name,
             }),
-          },
-          {
-            from: 'w3://ens/ipfs.web3api.eth',
-            to: ipfsPlugin({ provider: 'https://ipfs.io' }),
-          },
-          {
-            from: 'w3://ens/ens.web3api.eth',
-            to: ensPlugin({}),
           },
         ]
 
         return {
           ...state.web3api,
-          redirects,
+          plugins,
         }
       }
     default:

@@ -15,7 +15,9 @@ import LoadingSpinner from './LoadingSpinner'
 import Close from '../../public/images/close.svg'
 
 import getPackageSchemaFromAPIObject from '../services/ipfs/getPackageSchemaFromAPIObject'
-import getPackageQueriesFromAPIObject from '../services/ipfs/getPackageQueriesFromAPIObject'
+import getPackageQueriesFromAPIObject, {
+  QueryAttributes,
+} from '../services/ipfs/getPackageQueriesFromAPIObject'
 
 import GQLCodeBlock from '../components/GQLCodeBlock'
 import cleanSchema, { StructuredSchema } from '../utils/cleanSchema'
@@ -25,6 +27,7 @@ import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 import { QueryApiResult } from '@web3api/client-js'
 import { OnChange } from '@monaco-editor/react'
+import JSONEditor from './JSONEditor'
 
 type PlaygroundProps = {
   api?: APIData
@@ -32,15 +35,11 @@ type PlaygroundProps = {
 
 interface APIContents {
   schema?: string
-  queries?: {
-    id: string
-    value: string
-  }[]
+  queries?: QueryAttributes[]
 }
 
 const Playground = ({ api }: PlaygroundProps) => {
   const [{ dapp }] = useStateValue()
-  const varform = useRef<HTMLFormElement>();
   const router = useRouter()
   const [apiOptions] = useState(dapp.apis)
 
@@ -52,10 +51,13 @@ const Playground = ({ api }: PlaygroundProps) => {
   const [showschema, setshowschema] = useState(false)
   const [selectedMethod, setSelectedMethod] = useState('')
   const [newSelectedMethod, setnewSelectedMethod] = useState('')
+  const [methodName, setMethodName] = useState('')
 
   const [structuredschema, setstructuredschema] = useState<StructuredSchema>()
 
-  const [clientresponded, setclientresponed] = useState<QueryApiResult<Record<string, any>>>()
+  const [clientresponded, setclientresponed] = useState<
+    QueryApiResult<Record<string, any>>
+  >()
 
   const [customquerytext, setcustomquerytext] = useState('')
 
@@ -67,12 +69,10 @@ const Playground = ({ api }: PlaygroundProps) => {
     ]) || null
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
-  const { name: networkName } = networks[networkID]
-
-  console.log({formVarsToSubmit})
+  // const { name: networkName } = networks[networkID]
 
   const { loading, execute } = useWeb3ApiQuery({
-    uri: `ens/${networkName}/${router.asPath.split('/playground/ens/')[1]}`,
+    uri: 'ens/v2.uniswap.web3api.eth',
     query: selectedMethod,
     variables: formVarsToSubmit,
   })
@@ -81,7 +81,8 @@ const Playground = ({ api }: PlaygroundProps) => {
     return setshowschema(!showschema)
   }
 
-  function handleQueryValuesChange(method: { value: string }[]) {
+  function handleQueryValuesChange(method: { value: string; id: string }[]) {
+    setMethodName(method[0].id)
     setSelectedMethod(method[0].value)
   }
 
@@ -95,15 +96,10 @@ const Playground = ({ api }: PlaygroundProps) => {
     link.click()
   }
 
-  const handleRunBtnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.FormEvent) => {
-    e.preventDefault()
-    let varsToSubmit: Record<string, string> = {}
-    Array.from(varform.current)
-      .filter((item: HTMLButtonElement) => item.type !== 'submit')
-      .map((input: HTMLInputElement) => (varsToSubmit[input.name] = input.value))
-    // TODO: call this whenever the form has been edited
-    // onFocusLost?
-    setformVarsToSubmit(varsToSubmit)
+  const handleVariableChanges = (e: string) => {
+    try {
+      setformVarsToSubmit(JSON.parse(e))
+    } catch (error) {}
   }
 
   function handleClearBtnClick() {
@@ -173,10 +169,10 @@ const Playground = ({ api }: PlaygroundProps) => {
   }, [selectedMethod])
 
   useEffect(() => {
-    if (selectedMethod !== '') {
-      exec()
-    }
-  }, [formVarsToSubmit])
+    const queryInfo = apiContents && apiContents.queries.find((q) => q.id === methodName)
+    let newVars = queryInfo && queryInfo.recipe ? queryInfo.recipe : {}
+    setformVarsToSubmit(newVars)
+  }, [newSelectedMethod])
 
   return (
     <div
@@ -221,10 +217,10 @@ const Playground = ({ api }: PlaygroundProps) => {
               setsearchboxvalues(values)
               if (values.length > 0) {
                 if (values[0]?.pointerUris.length > 0) {
-                  router.push('/playground/' + 'ens/' + values[0].pointerUris[0])
+                  router.push('/playground/ens/' + values[0].pointerUris[0])
                 } else {
                   router.push(
-                    '/playground/' + 'ipfs/' + stripIPFSPrefix(values[0].locationUri[0]),
+                    '/playground/ipfs/' + stripIPFSPrefix(values[0].locationUri[0]),
                   )
                 }
               }
@@ -308,7 +304,7 @@ const Playground = ({ api }: PlaygroundProps) => {
           <div
             className={varformstoggle ? 'vars expanded' : 'vars'}
             sx={{
-              display: varsList.length > 0 ? 'block' : 'none',
+              display: varsList.length ? 'block' : 'none',
               position: 'absolute',
               width: '100%',
               height: '40px',
@@ -332,30 +328,10 @@ const Playground = ({ api }: PlaygroundProps) => {
             >
               Vars
             </div>
-            <form
-              ref={varform}
-              onSubmit={handleRunBtnClick}
-              sx={{
-                bg: 'white',
-                p: 3,
-                pt: '0.6rem',
-                '*:nth-of-type(1)': {
-                  fontSize: '.9rem',
-                },
-              }}
-            >
-              {varsList.map((varItem) => (
-                <Field
-                  sx={{
-                    p: '0 .5rem',
-                  }}
-                  label={varItem[0]}
-                  name={varItem[1]}
-                  key={varItem[1]}
-                />
-              ))}
-              <input type="submit" value="Submit" sx={{ display: 'none' }} />
-            </form>
+            <JSONEditor
+              value={formVarsToSubmit}
+              handleEditorChange={handleVariableChanges}
+            />
           </div>
         </div>
         &nbsp;
@@ -381,7 +357,7 @@ const Playground = ({ api }: PlaygroundProps) => {
           >
             <div className="left" sx={{ '> *': { mr: '1rem !important' } }}>
               {apiContents?.queries && (
-                <Button variant="primarySmall" onClick={handleRunBtnClick}>
+                <Button variant="primarySmall" onClick={exec}>
                   Run
                 </Button>
               )}
