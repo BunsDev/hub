@@ -1,12 +1,13 @@
-import { Connection } from "../db";
+import { getDB } from "../db";
 
 export enum AddressesTypes {
   ETHEREUM = 1,
 }
 
+const { db } = getDB()
+
 export class User {
   public static async findOrCreate(did: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       await connection.oneOrNone(
