@@ -10,6 +10,8 @@ export const useAuth = (dapp: State['dapp']) => {
   const [state, dispatch] = useStateValue()
   const { github: cachedToken } = state.dapp
 
+  const isAuthenticated = Auth.ceramic.did?.authenticated
+
   useEffect(() => {
     const checkToken = async () => {
       const auth = await Auth.get('authentication')
@@ -45,7 +47,7 @@ export const useAuth = (dapp: State['dapp']) => {
   )
 
   const authenticate = useCallback(async () => {
-    await Auth.getInstance(state.dapp.web3);
+    await Auth.getInstance(state.dapp.web3)
 
     if (Auth.ceramic.did?.authenticated) {
       // do a request to backend sending the DID
@@ -61,5 +63,5 @@ export const useAuth = (dapp: State['dapp']) => {
     }
   }, [Auth, dispatch])
 
-  return { set, get, authenticate }
+  return { set, get, authenticate, isAuthenticated }
 }
