@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 
 export interface APIData {
-  id: number;
-  name: string;
-  subtext: string;
-  description: string;
-  icon: string;
-  locationUri: string;
-  pointerUris: string[];
+  id: number
+  name: string
+  subtext: string
+  description: string
+  icon: string
+  locationUri: string
+  favorites: number
+  pointerUris: string[]
 }
 
 export const useGetAPIfromENSParamInURL = () => {
@@ -17,22 +18,26 @@ export const useGetAPIfromENSParamInURL = () => {
   const [error, setError] = useState<any>()
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState<APIData>()
-  useEffect(() => {
-    async function fetchApiDetails() {
-      setIsLoading(true)
-      try {
-        if (router.query.view !== undefined) {
-          const { data: apiData } = await axios.get<{ api: APIData }>(
-            `http://localhost:3000/api/apis/ens/${router.asPath.split('ens/')[1]}`,
-          )
-          setData(apiData.api)
-        }
-      } catch (e) {
-        setError(e)
+
+  const fetchApiDetails = useCallback(async () => {
+    setIsLoading(true)
+    try {
+      if (router.query.view !== undefined) {
+        const { data: apiData } = await axios.get<{ api: APIData }>(
+          `http://localhost:3000/api/apis/ens/${router.asPath.split('ens/')[1]}`,
+        )
+        setData(apiData.api)
       }
-      setIsLoading(false)
+    } catch (e) {
+      setError(e)
     }
-    fetchApiDetails()
+    setIsLoading(false)
   }, [router.query.view])
-  return [{ error, isLoading, data }] as const
+
+  useEffect(() => {
+    if (router.isReady) {
+      fetchApiDetails()
+    }
+  }, [router.isReady])
+  return { error, isLoading, data, fetchApiDetails }
 }

@@ -8,7 +8,7 @@ import APIDetail from '../../../components/APIDetail'
 import { useGetAPIfromENSParamInURL } from '../../../hooks/ens/useGetAPIfromENS'
 
 const ApiView = () => {
-  const [{data}] = useGetAPIfromENSParamInURL()
+  const { data, fetchApiDetails } = useGetAPIfromENSParamInURL()
   return (
     <Layout>
       <Flex>
@@ -16,7 +16,7 @@ const ApiView = () => {
         <main>
           <div className="contents">
             <Header backNav={`Browse API's`} />
-            {!!data && <APIDetail api={data} />}
+            {!!data && <APIDetail api={data} update={fetchApiDetails} />}
             <BottomSpace />
           </div>
         </main>

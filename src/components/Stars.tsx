@@ -5,11 +5,16 @@ type BadgeProps = {
   count: number
   onDark?: boolean
   large?: boolean
+  onClick: () => void
 }
 
-const Stars = ({ count, onDark, large }: BadgeProps) => {
+const Stars = ({ count, onDark, large, onClick }: BadgeProps) => {
   return (
-    <Flex className="stars" sx={{ cursor: 'default', alignItems: 'center' }}>
+    <Flex
+      onClick={onClick}
+      className="stars"
+      sx={{ cursor: 'pointer', alignItems: 'center' }}
+    >
       <img
         className="star"
         src="/images/star.svg"

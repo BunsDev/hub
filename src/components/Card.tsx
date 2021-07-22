@@ -87,7 +87,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
                       mb: 4,
                     }}
                   >
-                    <Stars count={0} />
+                    <Stars count={api.favorites} />
                   </Flex>
                   <Flex sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Badge label="ipfs" />
