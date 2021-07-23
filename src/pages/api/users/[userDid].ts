@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import { User } from '../../../../../api/models/User'
+import { User } from '../../../api/models/User'
 
 const md5 = require('md5')
 
@@ -15,17 +15,12 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       }
 
       const id = md5(userDid)
-
-      const data = await User.getFavorites(id)
-      const { count } = await User.getFavoritesCount(id)
-
+      const apis = await User.getPublishedApis(id)
       return response.json({
         status: 200,
-        data,
-        count,
+        apis,
       })
     } catch (error) {
-      console.log({ error })
       return response.json({ status: 500, error: error.message })
     }
   }

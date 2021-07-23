@@ -1,7 +1,14 @@
 /** @jsxImportSource theme-ui **/
 
-const Published = () => {
-  return <div/>
+import { APIData } from '../../hooks/ens/useGetAPIfromENS'
+import ApiGrid from '../ApiGrid'
+
+interface PublishedProps {
+  apis: APIData[]
+}
+
+const Published = ({ apis }: PublishedProps) => {
+  return <ApiGrid apis={apis} />
 }
 
 export default Published

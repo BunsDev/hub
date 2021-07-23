@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui **/
 import { useEffect } from 'react'
-import { useThemeUI } from 'theme-ui'
 import { timing } from '../theme'
 import { Global } from '@emotion/react'
 import { useStateValue } from '../state/state'
@@ -11,7 +10,7 @@ type LayoutProps = {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const { theme } = useThemeUI()
+
   const [, dispatch] = useStateValue()
   const { data: apis, error } = useSWR('http://localhost:3000/api/apis/active')
   // https://github.com/system-ui/theme-ui/issues/834#issuecomment-625865772

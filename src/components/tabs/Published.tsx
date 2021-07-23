@@ -1,13 +1,19 @@
 /** @jsxImportSource theme-ui **/
 import { Flex, Button, Themed } from 'theme-ui'
 import { useRouter } from 'next/router'
-import { useStateValue } from '../../state/state'
+import { APIData } from '../../hooks/ens/useGetAPIfromENS'
+import ApiGrid from '../ApiGrid'
 
-const Published = () => {
+interface PublishedProps {
+  apis: APIData[]
+}
+
+const Published = ({ apis }: PublishedProps) => {
   const router = useRouter()
-  const [{ dapp }] = useStateValue()
-  console.log(dapp)
-  return (
+
+  return apis.length ? (
+    <ApiGrid apis={apis} />
+  ) : (
     <Flex
       className="published"
       sx={{

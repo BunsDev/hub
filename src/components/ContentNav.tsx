@@ -1,13 +1,15 @@
 /** @jsxImportSource theme-ui **/
 import { Flex, Themed } from 'theme-ui'
+import { ApiData } from '../api/models/types'
 
 type tab = {
   label: string
   count?: number
+  data: ApiData[]
 }
 
 type ContentNav = {
-  setActiveTab: (value: string) => void
+  setActiveTab: (tab: string) => void
   activeTab: string
   tabs: tab[]
 }
