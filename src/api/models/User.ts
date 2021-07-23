@@ -1,13 +1,14 @@
-import { Connection } from '../db'
 import { Api } from './Api'
+import { getDB } from '../db'
 
 export enum AddressesTypes {
   ETHEREUM = 1,
 }
 
+const { db } = getDB()
+
 export class User {
   public static async findOrCreate(did: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       await connection.oneOrNone(
@@ -21,7 +22,6 @@ export class User {
   }
 
   public static async find(did: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       return await connection.oneOrNone('SELECT * FROM users WHERE id = $1', [did])
@@ -32,7 +32,6 @@ export class User {
   }
 
   public static async getFavoritesCount(userId: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       const userFavoritesCount = await connection.oneOrNone(
@@ -49,7 +48,6 @@ export class User {
   }
 
   public static async getFavorites(userId: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       const apisData = await connection.manyOrNone(
@@ -82,7 +80,6 @@ export class User {
   }
 
   public static async getPublishedApis(userId: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       const apisData = await connection.manyOrNone(

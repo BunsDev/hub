@@ -1,4 +1,4 @@
-import { Connection } from '../db'
+import { getDB } from '../db'
 import { ApiData } from './types'
 import pgPromise from 'pg-promise'
 
@@ -7,9 +7,9 @@ export enum Authorities {
   IPFS,
 }
 
+const { db } = getDB()
 export class Api {
   public static async create(apiInfo: ApiData) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       const {
@@ -61,8 +61,7 @@ export class Api {
   }
 
   public static async getAllActive(): Promise<ApiData[]> {
-    const connection = Connection.getInstance()
-    const con = await connection.connect()
+    const con = await db.connect()
     try {
       const apis = await con.manyOrNone(
         `SELECT 
@@ -91,7 +90,6 @@ export class Api {
   }
 
   public static async deactivate(id: number) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       await connection.none('UPDATE apis SET visible = false WHERE id = $1', [id])
@@ -104,7 +102,6 @@ export class Api {
   }
 
   public static async get(name: string, visible = true) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       const apisData = await connection.manyOrNone(
@@ -135,7 +132,6 @@ export class Api {
   }
 
   public static async getByLocation(location: string, name: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       const api = await connection.oneOrNone(
@@ -180,7 +176,6 @@ export class Api {
   }
 
   public static async getByOwner(id: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       const user = await connection.oneOrNone(`SELECT * FROM users WHERE id = $1`, [id])
@@ -214,7 +209,6 @@ export class Api {
   }
 
   public static async getFavorites(apiId: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       const apisData = await connection.manyOrNone(
@@ -244,7 +238,6 @@ export class Api {
   }
 
   public static async getFavoritesCount(apiId: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       const apiFavoritesCount = await connection.oneOrNone(
@@ -261,7 +254,6 @@ export class Api {
   }
 
   public static async isFavorite(userId: string, apiId: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       const favoriteApi = await connection.oneOrNone(
@@ -279,7 +271,6 @@ export class Api {
   }
 
   public static async favorite(userId: string, apiId: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       await connection.oneOrNone(
@@ -295,7 +286,6 @@ export class Api {
   }
 
   public static async unfavorite(userId: string, apiId: string) {
-    const db = Connection.getInstance()
     const connection = await db.connect()
     try {
       await connection.oneOrNone(
