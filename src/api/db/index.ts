@@ -1,23 +1,36 @@
-import pgp from "pg-promise";
-import pg from "pg-promise/typescript/pg-subset"
+import * as pgLib from 'pg-promise'
 
-const DATABASE_URL = "postgres://qlvnktjkyihemu:5fc213811f2851cbe463540aac25d039e0121dfca47cfc72a97a3059f244332c@ec2-54-90-211-192.compute-1.amazonaws.com:5432/d7htnshjgn90i3";
+// Inspired from: https://stackoverflow.com/questions/34382796/where-should-i-initialize-pg-promise
+interface IDatabaseScope {
+  db: pgLib.IDatabase<any>
+  pgp: pgLib.IMain
+}
 
-export class Connection {
-  private static _instance: pgp.IDatabase<{}, pg.IClient>
+const pgp = pgLib.default()
 
-  private constructor () { }
-
-  static getInstance = () => {
-    if(!Connection._instance) {
-      Connection._instance = pgp()({
-        connectionString: DATABASE_URL,
+export function getDB(): IDatabaseScope {
+  return createSingleton<IDatabaseScope>('hub', () => {
+    return {
+      db: pgp({
+        connectionString:
+          process.env.DATABASE_URL ||
+          'postgresql://postgres:postgres@127.0.0.1:5432/web3hub',
         ssl: {
-          rejectUnauthorized: false
-        }
-      })
+          rejectUnauthorized: false,
+        },
+      }),
+      pgp,
     }
+  })
+}
 
-    return Connection._instance
+// generic singleton creator:
+export function createSingleton<T>(name: string, create: () => T): T {
+  const s = Symbol.for(name)
+  let scope = (global as any)[s]
+  if (!scope) {
+    scope = { ...create() }
+    ;(global as any)[s] = scope
   }
+  return scope
 }
