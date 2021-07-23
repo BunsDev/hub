@@ -9,10 +9,9 @@ import Navbar from '../components/Navbar'
 import Header from '../components/Header'
 import BGWave from '../components/BGWave'
 import BottomSpace from '../components/BottomSpace'
-import Card from '../components/Card'
 
 const Home = () => {
-  const [{ dapp, search }] = useStateValue()
+  const [{ dapp }] = useStateValue()
   return (
     <Layout>
       <Flex>
@@ -22,16 +21,7 @@ const Home = () => {
             <Header title="Browse APIs" />
             <section className="content">
               <SortNav />
-              <ApiGrid>
-                {search !== undefined && search.sortedApi !== -1 ? (
-                  <Card api={search.sortedApi[0]} boxShadowOn />
-                ) : (
-                  dapp?.apis &&
-                  dapp.apis.map((api, idx) => (
-                    <Card api={api} boxShadowOn key={idx + '-api'} />
-                  ))
-                )}
-              </ApiGrid>
+              {dapp?.apis ? <ApiGrid main apis={dapp.apis} /> : null}
             </section>
             <BottomSpace />
           </div>

@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui **/
 import { Flex, Themed } from 'theme-ui'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import Stars from './Stars'
 import Badge from './Badge'
 import { cloudFlareGateway } from '../constants'
@@ -12,9 +13,17 @@ type CardProps = {
   ipfsHash?: string
   boxShadowOn?: boolean
   noHover?: boolean
+  redirectUrl?: string
 }
 
-const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
+const Card = ({ api, ipfsHash, boxShadowOn, noHover, redirectUrl }: CardProps) => {
+  const router = useRouter()
+
+  const redirect = useMemo(
+    () => ipfsHash || redirectUrl || 'apis/ens/' + api?.pointerUris[0],
+    [ipfsHash, redirectUrl, api?.pointerUris],
+  )
+
   return (
     <div
       className="Card"
@@ -30,8 +39,12 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
       }}
     >
       {api && api.pointerUris && api.pointerUris.length > 0 ? (
-        <Link href={`${ipfsHash || 'apis/ens/' + api.pointerUris[0]}`}>
-          <a sx={{ textDecoration: 'none', p: 4, width: '100%', height: '100%' }}>
+        <div>
+          <a
+            href="#"
+            sx={{ textDecoration: 'none', p: 4, width: '100%', height: '100%' }}
+            onClick={() => router.replace(redirect)}
+          >
             <div className="wrap-contents">
               <div sx={{ display: 'block', m: 'auto' }}>
                 <img
@@ -87,7 +100,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
                       mb: 4,
                     }}
                   >
-                    <Stars count={0} />
+                    <Stars count={api.favorites} />
                   </Flex>
                   <Flex sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Badge label="ipfs" />
@@ -96,7 +109,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
               </div>
             </div>
           </a>
-        </Link>
+        </div>
       ) : null}
     </div>
   )

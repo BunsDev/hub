@@ -1,4 +1,5 @@
 /** @jsxImportSource theme-ui **/
+import { useEffect } from 'react'
 import { Flex, Themed, Button } from 'theme-ui'
 import BottomSpace from '../components/BottomSpace'
 import Stars from '../components/Stars'
@@ -6,13 +7,42 @@ import PlaygroundImg from '../../public/images/playground.svg'
 import { cloudFlareGateway } from '../constants'
 import { useRouter } from 'next/router'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
+import { useStateValue } from '../state/state'
+import { useAuth } from '../hooks/useAuth'
 
 type APIDetailProps = {
   api?: APIData
+  update: () => Promise<void>
 }
 
-const APIDetail = ({ api }: APIDetailProps) => {
+const APIDetail = ({ api, update }: APIDetailProps) => {
   const router = useRouter()
+  const [{ dapp }] = useStateValue()
+  const { isAuthenticated, authenticate } = useAuth(dapp)
+
+  const handleFavorite = async () => {
+    if (!isAuthenticated) return authenticate()
+
+    const response = await fetch('http://localhost:3000/api/apis/favorites/action', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userDid: dapp.did, apiId: api.id }),
+    })
+    const result = await response.json()
+
+    if (result.status === 200) {
+      await update()
+    }
+  }
+
+  useEffect(() => {
+    if (dapp.did) {
+      update()
+    }
+  }, [dapp.did])
+
   return (
     <div
       className="wrap"
@@ -110,7 +140,7 @@ const APIDetail = ({ api }: APIDetailProps) => {
               </Themed.h4>
             </div>
             <div className="right">
-              <Stars count={0} large />
+              <Stars onClick={handleFavorite} count={api.favorites || 0} large />
             </div>
           </Flex>
           <ul
@@ -146,21 +176,18 @@ const APIDetail = ({ api }: APIDetailProps) => {
                   </li>
                 )
               })}
-            {'locationUri' in api &&
-              
-                (
-                  <li sx={{ display: 'flex' }}>
-                    <img
-                      sx={{ maxWidth: '1.1875rem', mr: 2 }}
-                      src="/images/link.svg"
-                      alt="icon"
-                    />
-                    <a href={`${cloudFlareGateway}${api.locationUri}`} target="_BLANK">
-                      {('ipfs/'+api.locationUri).substring(0,25)+'...'}
-                    </a>
-                  </li>
-                )
-                }
+            {'locationUri' in api && (
+              <li sx={{ display: 'flex' }}>
+                <img
+                  sx={{ maxWidth: '1.1875rem', mr: 2 }}
+                  src="/images/link.svg"
+                  alt="icon"
+                />
+                <a href={`${cloudFlareGateway}${api.locationUri}`} target="_BLANK">
+                  {('ipfs/' + api.locationUri).substring(0, 25) + '...'}
+                </a>
+              </li>
+            )}
             {/* {'links' in api &&
               api.links.map((link, idx) => {
                 if (link.name === 'github') {

@@ -1,4 +1,5 @@
 /** @jsxImportSource theme-ui **/
+import useSWR from 'swr'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Flex } from 'theme-ui'
@@ -9,13 +10,47 @@ import ContentNav from '../../components/ContentNav'
 import Published from '../../components/tabs/Published'
 import Favorites from '../../components/tabs/Favorites'
 import BottomSpace from '../../components/BottomSpace'
+import { useStateValue } from '../../state/state'
+import { useAuth } from '../../hooks/useAuth'
 
 const UserApis = () => {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState(router.query.activeTab as string)
+  const [{ dapp }] = useStateValue()
+  const [activeTab, setActiveTab] = useState<string | string[]>()
+  const { authenticate } = useAuth(dapp)
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab)
+    router.push(router.pathname + '?activeTab=' + tab)
+  }
+
   useEffect(() => {
-    setActiveTab(router.query.activeTab as string)
-  }, [router.query.activeTab])
+    if (!dapp.did) authenticate()
+  }, [dapp.did])
+
+  useEffect(() => {
+    if (router.query.activeTab && !activeTab) {
+      setActiveTab(router.query.activeTab)
+    }
+  }, [router.query.activeTab, activeTab])
+
+  useEffect(() => {
+    if (router.isReady && !router.query.activeTab) {
+      router.push(router.pathname + '?activeTab=published')
+    }
+  }, [router.isReady, router.query?.activeTab, router.pathname])
+
+  const { data: favoriteData } = useSWR(
+    'http://localhost:3000/api/apis/favorites/user/' + dapp.did,
+    {
+      isPaused: () => !dapp.did,
+    },
+  )
+
+  const { data: publishedData } = useSWR('http://localhost:3000/api/users/' + dapp.did, {
+    isPaused: () => !dapp.did,
+  })
+
   return (
     <Layout>
       <Flex>
@@ -25,22 +60,26 @@ const UserApis = () => {
             <Header title="My API's" />
             <section className="content">
               <ContentNav
-                setActiveTab={setActiveTab}
-                activeTab={activeTab}
+                setActiveTab={handleTabClick}
+                activeTab={activeTab as string}
                 tabs={[
                   {
                     label: 'Published',
-                    count: 0,
+                    count: publishedData?.apis?.length || 0,
+                    data: publishedData?.apis || 0,
                   },
                   {
                     label: 'Favorites',
-                    count: 12,
+                    count: favoriteData?.count || 0,
+                    data: favoriteData?.data || [],
                   },
                 ]}
               />
               <br />
-              {activeTab === 'published' && <Published />}
-              {activeTab === 'favorites' && <Favorites />}
+              {activeTab === 'published' && (
+                <Published apis={publishedData?.apis || []} />
+              )}
+              {activeTab === 'favorites' && <Favorites apis={favoriteData?.data || []} />}
             </section>
             <BottomSpace />
           </div>

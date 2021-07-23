@@ -7,7 +7,7 @@ export enum Authorities {
   IPFS,
 }
 
-const { db, pgp } = getDB()
+const { db } = getDB()
 export class Api {
   public static async create(apiInfo: ApiData) {
     const connection = await db.connect()
@@ -71,13 +71,15 @@ export class Api {
           apis.subtext,
           apis.icon, 
           uri_types.type as type, 
-          api_uris.uri 
+          api_uris.uri,
+          COUNT(starred_apis.fk_api_id) as favorites
         FROM apis 
         INNER JOIN api_uris ON apis.id = api_uris.fk_api_id 
         INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id 
-        WHERE visible = true`,
+        FULL OUTER JOIN starred_apis ON apis.id = starred_apis.fk_api_id
+        WHERE visible = true
+        GROUP BY apis.id, uri_types.type, api_uris.uri`,
       )
-
       return apis.reduce(this.sanitizeApis, [])
     } catch (error) {
       console.log('Error on method: Api.getAllActive() -> ', error.message)
@@ -133,27 +135,31 @@ export class Api {
     const connection = await db.connect()
     try {
       const api = await connection.oneOrNone(
-        `SELECT apis.id FROM apis         
-        INNER JOIN api_uris ON apis.id = api_uris.fk_api_id 
-        INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id  
+        `SELECT apis.id FROM apis
+        INNER JOIN api_uris ON apis.id = api_uris.fk_api_id
+        INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id
         WHERE api_uris.uri = $1 AND LOWER(uri_types.name) = $2`,
         [name, location],
       )
 
-      console.log({ api })
       if (!api) return null
 
       const apisData = await connection.manyOrNone(
-        `SELECT apis.id, 
-          apis.description, 
-          apis.name, 
+        `SELECT
+          apis.id,
+          apis.description,
+          apis.name,
           apis.subtext,
-          apis.icon, 
-          uri_types.type as type, 
-          api_uris.uri FROM apis 
+          apis.icon,
+          uri_types.type as type,
+          api_uris.uri,
+          COUNT(starred_apis.fk_api_id) as favorites
+        FROM apis
         INNER JOIN api_uris ON apis.id = api_uris.fk_api_id 
         INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id 
-        WHERE api_uris.fk_api_id = $1`,
+        FULL OUTER JOIN starred_apis ON apis.id = starred_apis.fk_api_id
+        WHERE api_uris.fk_api_id = $1
+        GROUP BY apis.id, uri_types.type, api_uris.uri`,
         [api.id],
       )
 
@@ -202,7 +208,99 @@ export class Api {
     }
   }
 
-  private static sanitizeApis(acc: ApiData[], api: any): ApiData[] {
+  public static async getFavorites(apiId: string) {
+    const connection = await db.connect()
+    try {
+      const apisData = await connection.manyOrNone(
+        `SELECT apis.id, 
+        apis.description, 
+        apis.name, 
+        apis.subtext,
+        apis.icon, 
+        uri_types.type as type, 
+        api_uris.uri FROM apis 
+        INNER JOIN api_uris ON apis.id = api_uris.fk_api_id 
+        INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id 
+        INNER JOIN starred_apis ON apis.id = starred_apis.fk_api_id
+        WHERE starred_apis.fk_api_id = $1`,
+        [apiId],
+      )
+      if (!apisData.length) return null
+
+      const apisSanitized = apisData.reduce(this.sanitizeApis, [])
+      return apisSanitized
+    } catch (error) {
+      console.log('Error on method: Api.getFavorites() -> ', error.message)
+      throw new Error(error)
+    } finally {
+      connection.done()
+    }
+  }
+
+  public static async getFavoritesCount(apiId: string) {
+    const connection = await db.connect()
+    try {
+      const apiFavoritesCount = await connection.oneOrNone(
+        `SELECT COUNT(*) FROM starred_apis WHERE fk_api_id = $1`,
+        [apiId],
+      )
+      return apiFavoritesCount
+    } catch (error) {
+      console.log('Error on method: Api.getFavoritesCount() -> ', error.message)
+      throw new Error(error)
+    } finally {
+      connection.done()
+    }
+  }
+
+  public static async isFavorite(userId: string, apiId: string) {
+    const connection = await db.connect()
+    try {
+      const favoriteApi = await connection.oneOrNone(
+        `SELECT * FROM  starred_apis WHERE fk_user_id = $1 AND fk_api_id = $2`,
+        [userId, apiId],
+      )
+
+      return !!favoriteApi
+    } catch (error) {
+      console.log('Error on method: Api.isFavorite() -> ', error.message)
+      throw new Error(error)
+    } finally {
+      connection.done()
+    }
+  }
+
+  public static async favorite(userId: string, apiId: string) {
+    const connection = await db.connect()
+    try {
+      await connection.oneOrNone(
+        `INSERT INTO starred_apis (fk_user_id, fk_api_id) VALUES ($1, $2) RETURNING id`,
+        [userId, apiId],
+      )
+    } catch (error) {
+      console.log('Error on method: Api.favorite() -> ', error.message)
+      throw new Error(error)
+    } finally {
+      connection.done()
+    }
+  }
+
+  public static async unfavorite(userId: string, apiId: string) {
+    const connection = await db.connect()
+    try {
+      await connection.oneOrNone(
+        `DELETE FROM starred_apis WHERE fk_user_id = $1 AND fk_api_id = $2`,
+        [userId, apiId],
+      )
+    } catch (error) {
+      console.log('Error on method: Api.unfavorite() -> ', error.message)
+      throw new Error(error)
+    } finally {
+      connection.done()
+    }
+  }
+
+  public static sanitizeApis(acc: ApiData[], api: any): ApiData[] {
     const { authority, type, uri, name, ...metadata } = api
 
     const apiIndex = acc.findIndex(({ name }) => name === api.name)
