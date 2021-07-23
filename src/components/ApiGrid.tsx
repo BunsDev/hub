@@ -64,7 +64,12 @@ const ApiGrid = ({ apis, main }: ApiGridProps) => {
           }}
         >
           {apis.map((api, idx) => (
-            <Card api={api} boxShadowOn key={idx + '-api'} />
+            <Card
+              api={api}
+              boxShadowOn
+              redirectUrl={'ens/' + api.pointerUris[0]}
+              key={idx + '-api'}
+            />
           ))}
         </Grid>
       )}
