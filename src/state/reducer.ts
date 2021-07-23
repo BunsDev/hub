@@ -8,7 +8,7 @@ import {
   Web3APIReducerAction,
 } from './action'
 import { State, initialState } from './initialState'
-import networks from '../utils/networks.json'
+import { networks } from '../utils/networks'
 import { networkID } from '../constants'
 
 export function web3apiReducer(

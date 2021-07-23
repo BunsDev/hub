@@ -1,11 +1,5 @@
 /** @jsxImportSource theme-ui **/
-import {
-  ChangeEventHandler,
-  FormEventHandler,
-  useCallback,
-  useEffect,
-  useState
-} from 'react'
+import { ChangeEventHandler, FormEventHandler, useCallback, useEffect } from 'react'
 import { Input, Flex, Button, Themed } from 'theme-ui'
 import axios from 'axios'
 import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
@@ -17,6 +11,7 @@ import { getOwner } from '../../services/ens/getOwner'
 import Card from '../Card'
 import Modal from '../Modal'
 import ProgressSteps from '../ProgressSteps'
+import { useAuth } from '../../hooks/useAuth'
 
 type ErrorMsg = {
   children: React.ReactNode
@@ -43,6 +38,7 @@ const ErrorMsg = ({ children, bottomshift }: ErrorMsg) => (
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue()
   const [executeCreateSubdomain, { status }] = useCreateSubdomain()
+  const { authenticate } = useAuth(dapp)
 
   const checkForENSAvailability = useCallback(
     async (label: string) => {
@@ -161,6 +157,10 @@ const PublishAPI = () => {
     }
   }, [dapp.address])
 
+  useEffect(() => {
+    if (!dapp.did) authenticate()
+  }, [dapp.did])
+
   const ipfsClasses = publish.ipfsLoading
     ? 'loading'
     : publish.ipfsSuccess
@@ -178,7 +178,16 @@ const PublishAPI = () => {
     ' ',
   )
 
-  return (
+  return !dapp.did ? (
+    <Themed.h3
+      sx={{
+        textAlign: 'center',
+        paddingBottom: 200,
+      }}
+    >
+      Please authenticate with IDX
+    </Themed.h3>
+  ) : (
     <Flex className="publish">
       {publish.showConnectModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>

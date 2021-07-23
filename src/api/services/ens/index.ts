@@ -1,5 +1,7 @@
 import { providers } from 'ethers'
 import ENS, { getEnsAddress } from '@ensdomains/ensjs'
+import { networkID } from '../../../constants'
+import { networks } from '../../../utils/networks'
 
 const { helpers } = require('content-hash')
 
@@ -12,11 +14,13 @@ export const checkContentIsValid = async (
   pointers: string[],
   location: string,
 ): Promise<CheckContentResponse> => {
-  const provider = new providers.JsonRpcProvider(process.env.ETH_RPC_NODE)
+  const currentNetwork = networks[networkID]
+  const providerUrl = currentNetwork.node
+  const provider = new providers.JsonRpcProvider(providerUrl)
 
   const ens = new ENS({
     provider,
-    ensAddress: getEnsAddress('3'),
+    ensAddress: getEnsAddress(networkID),
   })
 
   const getContents = async (pointers: string[]): Promise<{ value: string }[]> => {

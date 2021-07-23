@@ -1,8 +1,7 @@
-import axios from 'axios'
+import { Dispatch } from 'react'
+
 import { createEthereumProvider } from './ethereum'
 import getOnboard from './Onboarding'
-import Auth from '../services/ceramic/auth'
-import { Dispatch } from 'react'
 import { StateAction } from '../state/action'
 
 const onboardInit = (dispatch: Dispatch<StateAction>) => {
@@ -40,21 +39,6 @@ const onboardInit = (dispatch: Dispatch<StateAction>) => {
       dispatch({
         type: 'recreateplugins',
       })
-
-      await Auth.getInstance(wallet.provider)
-
-      if (Auth.ceramic.did?.authenticated) {
-        // do a request to backend sending the DID
-        // the backend will hash this DID and store it
-        const { id } = Auth.ceramic.did
-        await axios.post(`http://localhost:3000/api/auth/sign-in`, {
-          did: id,
-        })
-        dispatch({
-          type: 'SET_DID',
-          payload: id,
-        })
-      }
     },
   })
 }

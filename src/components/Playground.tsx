@@ -22,7 +22,7 @@ import getPackageQueriesFromAPIObject, {
 import GQLCodeBlock from '../components/GQLCodeBlock'
 import cleanSchema, { StructuredSchema } from '../utils/cleanSchema'
 import { networkID } from '../constants'
-import networks from '../utils/networks.json'
+import { networks } from '../utils/networks'
 import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 import { QueryApiResult } from '@web3api/client-js'

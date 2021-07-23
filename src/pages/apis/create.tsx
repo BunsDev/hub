@@ -10,18 +10,25 @@ import BottomSpace from '../../components/BottomSpace'
 
 const CreateApi = () => {
   const router = useRouter()
+  const [activeTab, setActiveTab] = useState<string | string[]>()
 
-  const [activeTab, setActiveTab] = useState(router.query.activeTab)
   const handleTabClick = (e: React.BaseSyntheticEvent) => {
     e.stopPropagation()
     setActiveTab(e.target.classList[1])
+    router.push(router.pathname + '?activeTab=' + e.target.classList[1])
   }
+
   useEffect(() => {
-    if(router.query.activeTab === undefined) {
-      router.push(router.pathname+'?activeTab=create')
+    if (router.query.activeTab && !activeTab) {
+      setActiveTab(router.query.activeTab)
     }
-    setActiveTab(router.query.activeTab)
-  }, [router.query.activeTab])
+  }, [router.query.activeTab, activeTab])
+
+  useEffect(() => {
+    if (router.isReady && !router.query.activeTab) {
+      router.push(router.pathname + '?activeTab=create')
+    }
+  }, [router.isReady, router.query?.activeTab, router.pathname])
 
   return (
     <Layout>

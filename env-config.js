@@ -1,7 +1,8 @@
 module.exports = {
   WEB3API_THREAD_PATH: '../../thread.js',
   DATABASE_URL: process.env.DATABASE_URL,
-  ETH_RPC_NODE: 'https://mainnet.infura.io/v3/b76cba91dc954ceebff27244923224b1',
+  INFURA_API_KEY: process.env.INFURA_API_KEY,
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET
+  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+  NETWORK_ID: process.env.NETWORK_ID || 3,
 }
