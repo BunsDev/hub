@@ -12,6 +12,7 @@ import Favorites from '../../components/tabs/Favorites'
 import BottomSpace from '../../components/BottomSpace'
 import { useStateValue } from '../../state/state'
 import { useAuth } from '../../hooks/useAuth'
+import { domain } from '../../constants'
 
 const UserApis = () => {
   const router = useRouter()
@@ -40,14 +41,11 @@ const UserApis = () => {
     }
   }, [router.isReady, router.query?.activeTab, router.pathname])
 
-  const { data: favoriteData } = useSWR(
-    'http://localhost:3000/api/apis/favorites/user/' + dapp.did,
-    {
-      isPaused: () => !dapp.did,
-    },
-  )
+  const { data: favoriteData } = useSWR(domain + '/api/apis/favorites/user/' + dapp.did, {
+    isPaused: () => !dapp.did,
+  })
 
-  const { data: publishedData } = useSWR('http://localhost:3000/api/users/' + dapp.did, {
+  const { data: publishedData } = useSWR(domain + '/api/users/' + dapp.did, {
     isPaused: () => !dapp.did,
   })
 

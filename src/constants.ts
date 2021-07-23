@@ -5,6 +5,8 @@ export const MAIN_DOMAIN = "open.web3api.eth"
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 export const FIFS_REGISTRAR = "0x99BeF0ec344a354303Bc5F3BB2E7e0a104B1E9f2"
 
+export const domain = global.location?.protocol + "//" + global.location?.host
+
 export const sampleAPI = {
   name: 'SimpleStorage (ETH)',
   subtext: 'SimpleStorage Web3API Using Ethereum',

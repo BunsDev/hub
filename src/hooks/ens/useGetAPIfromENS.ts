@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import { domain } from '../../constants'
 
 export interface APIData {
   id: number
@@ -24,7 +25,7 @@ export const useGetAPIfromENSParamInURL = () => {
     try {
       if (router.query.view !== undefined) {
         const { data: apiData } = await axios.get<{ api: APIData }>(
-          `http://localhost:3000/api/apis/ens/${router.asPath.split('ens/')[1]}`,
+          domain + `/api/apis/ens/${router.asPath.split('ens/')[1]}`,
         )
         setData(apiData.api)
       }
