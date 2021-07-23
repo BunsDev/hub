@@ -4,15 +4,15 @@ import { timing } from '../theme'
 import { Global } from '@emotion/react'
 import { useStateValue } from '../state/state'
 import useSWR from 'swr'
+import { domain } from '../constants'
 
 type LayoutProps = {
   children?: React.ReactNode
 }
 
 const Layout = ({ children }: LayoutProps) => {
-
   const [, dispatch] = useStateValue()
-  const { data: apis, error } = useSWR('http://localhost:3000/api/apis/active')
+  const { data: apis, error } = useSWR(domain + '/api/apis/active')
   // https://github.com/system-ui/theme-ui/issues/834#issuecomment-625865772
   const pageLevelAnimationTiming = timing[3] + 's'
 
@@ -159,13 +159,12 @@ const Layout = ({ children }: LayoutProps) => {
             padding: '0',
             listStyle: 'none',
           },
-          'a, Button, [type="Button"], [type="reset"], [type="submit"], [type="file"], [type="file"]::-webkit-file-upload-Button':
-            {
-              textTransform: 'none',
-              appearance: 'none',
-              cursor: 'pointer',
-              textDecoration: 'none',
-            },
+          'a, Button, [type="Button"], [type="reset"], [type="submit"], [type="file"], [type="file"]::-webkit-file-upload-Button': {
+            textTransform: 'none',
+            appearance: 'none',
+            cursor: 'pointer',
+            textDecoration: 'none',
+          },
           'a:visited, a:active': {
             textDecoration: 'none',
           },

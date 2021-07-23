@@ -5,6 +5,7 @@ import Auth from '../services/ceramic/auth'
 import { githubHandler } from '../services/ceramic/handlers'
 import { State } from '../state/initialState'
 import { useStateValue } from '../state/state'
+import { domain } from '../constants'
 
 export const useAuth = (dapp: State['dapp']) => {
   const [state, dispatch] = useStateValue()
@@ -53,7 +54,7 @@ export const useAuth = (dapp: State['dapp']) => {
       // do a request to backend sending the DID
       // the backend will hash this DID and store it
       const { id } = Auth.ceramic.did
-      await axios.post(`http://localhost:3000/api/auth/sign-in`, {
+      await axios.post(domain + `/api/auth/sign-in`, {
         did: id,
       })
       dispatch({

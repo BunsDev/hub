@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
 import { useStateValue } from '../../state/state'
 import getMetaDataFromPackageHash from '../../services/ipfs/getMetaDataFromPackageHash'
-import { MAIN_DOMAIN, ZERO_ADDRESS } from '../../constants'
+import { domain, MAIN_DOMAIN, ZERO_ADDRESS } from '../../constants'
 import { getOwner } from '../../services/ens/getOwner'
 
 import Card from '../Card'
@@ -108,7 +108,7 @@ const PublishAPI = () => {
     e.preventDefault()
     if (publish.apiData && publish.subdomain.length > 0) {
       const publishReq = await axios.post(
-        'http://localhost:3000/api/apis/publish',
+        domain + 'api/apis/publish',
         {
           name: publish.apiData.name,
           description: publish.apiData.description,

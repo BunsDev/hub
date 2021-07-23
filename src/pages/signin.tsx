@@ -9,6 +9,7 @@ import Layout from '../components/Layout'
 import Navbar from '../components/Navbar'
 import BGWave from '../components/BGWave'
 import Header from '../components/Header'
+import { domain } from '../constants'
 
 const Signin = () => {
   const [, dispatch] = useStateValue()
@@ -18,7 +19,7 @@ const Signin = () => {
     ;(async () => {
       if (router.query.code) {
         const response = await axios.get(
-          `http://localhost:3000/api/auth/github/callback/${router.query.code}`,
+          domain + `/api/auth/github/callback/${router.query.code}`,
           {
             withCredentials: true,
           },

@@ -4,7 +4,7 @@ import { Flex, Themed, Button } from 'theme-ui'
 import BottomSpace from '../components/BottomSpace'
 import Stars from '../components/Stars'
 import PlaygroundImg from '../../public/images/playground.svg'
-import { cloudFlareGateway } from '../constants'
+import { cloudFlareGateway, domain } from '../constants'
 import { useRouter } from 'next/router'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 import { useStateValue } from '../state/state'
@@ -23,7 +23,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
   const handleFavorite = async () => {
     if (!isAuthenticated) return authenticate()
 
-    const response = await fetch('http://localhost:3000/api/apis/favorites/action', {
+    const response = await fetch(domain + '/api/apis/favorites/action', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
