@@ -23,7 +23,7 @@ const PlaygroundPage = () => {
     },
     dispatch,
   ] = useStateValue()
-  const [{ data }] = useGetAPIfromENSParamInURL()
+  const { data } = useGetAPIfromENSParamInURL()
 
   if (router.asPath !== '/playground' && !router.asPath.includes('/playground/ens/')) {
     router.push('/playground')

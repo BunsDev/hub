@@ -5,7 +5,7 @@ type BadgeProps = {
   count: number
   onDark?: boolean
   large?: boolean
-  onClick: () => void
+  onClick?: () => void
 }
 
 const Stars = ({ count, onDark, large, onClick }: BadgeProps) => {
