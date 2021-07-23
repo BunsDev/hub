@@ -76,7 +76,7 @@ export class Api {
         FROM apis 
         INNER JOIN api_uris ON apis.id = api_uris.fk_api_id 
         INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id 
-        INNER JOIN starred_apis ON apis.id = starred_apis.fk_api_id
+        FULL OUTER JOIN starred_apis ON apis.id = starred_apis.fk_api_id
         WHERE visible = true
         GROUP BY apis.id, uri_types.type, api_uris.uri`,
       )
