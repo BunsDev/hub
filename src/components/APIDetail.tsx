@@ -18,10 +18,10 @@ type APIDetailProps = {
 const APIDetail = ({ api, update }: APIDetailProps) => {
   const router = useRouter()
   const [{ dapp }] = useStateValue()
-  const { isAuthenticated, authenticate } = useAuth(dapp)
+  const { authenticate } = useAuth(dapp)
 
   const handleFavorite = async () => {
-    if (!isAuthenticated) return authenticate()
+    if (!dapp.did) return authenticate()
 
     const response = await fetch(domain + '/api/apis/favorites/action', {
       method: 'POST',
