@@ -6,10 +6,12 @@ import { githubHandler } from '../services/ceramic/handlers'
 import { State } from '../state/initialState'
 import { useStateValue } from '../state/state'
 import { domain } from '../constants'
+import useLocalStorage from './useLocalStorage'
 
 export const useAuth = (dapp: State['dapp']) => {
   const [state, dispatch] = useStateValue()
-  const { github: cachedToken } = state.dapp
+  const { github: cachedToken, did } = state.dapp
+  const [cachedDid, setCachedDid] = useLocalStorage('did', did)
 
   const isAuthenticated = Auth.ceramic.did?.authenticated
 
@@ -20,10 +22,19 @@ export const useAuth = (dapp: State['dapp']) => {
       await githubHandler(ghAccessToken, cachedToken, dispatch)
     }
 
-    if (state.dapp.did) {
+    if (state.dapp.did && isAuthenticated) {
       checkToken()
     }
-  }, [state.dapp.did, cachedToken])
+  }, [state.dapp.did, cachedToken, isAuthenticated])
+
+  useEffect(() => {
+    if (cachedDid) {
+      dispatch({
+        type: 'SET_DID',
+        payload: cachedDid,
+      })
+    }
+  }, [cachedDid, dispatch])
 
   const set = useCallback(
     async (key, values) => {
@@ -57,6 +68,8 @@ export const useAuth = (dapp: State['dapp']) => {
       await axios.post(domain + `/api/auth/sign-in`, {
         did: id,
       })
+
+      setCachedDid(id)
       dispatch({
         type: 'SET_DID',
         payload: id,
