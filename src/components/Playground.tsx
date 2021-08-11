@@ -69,12 +69,11 @@ const Playground = ({ api }: PlaygroundProps) => {
     ]) || null
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
-  // const { name: networkName } = networks[networkID]
+  const { name: networkName } = networks[networkID]
 
   const { loading, execute } = useWeb3ApiQuery({
-    uri: 'ens/v2.uniswap.web3api.eth',
+    uri: `ens/${networkName}/${router.asPath.split('/playground/ens/')[1]}`,
     query: selectedMethod,
-    variables: formVarsToSubmit,
   })
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
@@ -116,7 +115,7 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   async function exec() {
     try {
-      let response = await execute()
+      let response = await execute(formVarsToSubmit)
       setclientresponed(response)
     } catch (error) {
       throw error

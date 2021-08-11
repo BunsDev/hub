@@ -1,5 +1,7 @@
 import { PluginRegistration } from '@web3api/client-js'
 import { ConnectionConfig, ethereumPlugin } from '@web3api/ethereum-plugin-js'
+import { sha3Plugin } from '@web3api/sha3-plugin-js'
+import { uts46Plugin } from '@web3api/uts46-plugin-js'
 import {
   DAppAction,
   PublishAction,
@@ -33,6 +35,14 @@ export function web3apiReducer(
               networks: networksConfig,
               defaultNetwork: currentNetwork.name,
             }),
+          },
+          {
+            uri: 'w3://ens/sha3.web3api.eth',
+            plugin: sha3Plugin(),
+          },
+          {
+            uri: 'w3://ens/uts46.web3api.eth',
+            plugin: uts46Plugin(),
           },
         ]
 

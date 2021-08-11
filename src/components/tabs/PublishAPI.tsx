@@ -107,9 +107,9 @@ const PublishAPI = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     if (publish.apiData && publish.subdomain.length > 0) {
-      const publishReq = await axios.post(
-        domain + 'api/apis/publish',
-        {
+      await fetch(domain + '/api/apis/publish', {
+        method: 'POST',
+        body: JSON.stringify({
           name: publish.apiData.name,
           description: publish.apiData.description,
           subtext: publish.apiData.subtext,
@@ -117,11 +117,11 @@ const PublishAPI = () => {
           locationUri: publish.ipfs,
           pointerUris: [`${publish.subdomain}.${MAIN_DOMAIN}`],
           did: dapp.did,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          withCredentials: true,
-        },
-      )
+      })
       dispatch({ type: 'setShowSuccessModal', payload: true })
     }
   }
