@@ -237,69 +237,6 @@ export class Api {
     }
   }
 
-  public static async getFavoritesCount(apiId: string) {
-    const connection = await db.connect()
-    try {
-      const apiFavoritesCount = await connection.oneOrNone(
-        `SELECT COUNT(*) FROM starred_apis WHERE fk_api_id = $1`,
-        [apiId],
-      )
-      return apiFavoritesCount
-    } catch (error) {
-      console.log('Error on method: Api.getFavoritesCount() -> ', error.message)
-      throw new Error(error)
-    } finally {
-      connection.done()
-    }
-  }
-
-  public static async isFavorite(userId: string, apiId: string) {
-    const connection = await db.connect()
-    try {
-      const favoriteApi = await connection.oneOrNone(
-        `SELECT * FROM  starred_apis WHERE fk_user_id = $1 AND fk_api_id = $2`,
-        [userId, apiId],
-      )
-
-      return !!favoriteApi
-    } catch (error) {
-      console.log('Error on method: Api.isFavorite() -> ', error.message)
-      throw new Error(error)
-    } finally {
-      connection.done()
-    }
-  }
-
-  public static async favorite(userId: string, apiId: string) {
-    const connection = await db.connect()
-    try {
-      await connection.oneOrNone(
-        `INSERT INTO starred_apis (fk_user_id, fk_api_id) VALUES ($1, $2) RETURNING id`,
-        [userId, apiId],
-      )
-    } catch (error) {
-      console.log('Error on method: Api.favorite() -> ', error.message)
-      throw new Error(error)
-    } finally {
-      connection.done()
-    }
-  }
-
-  public static async unfavorite(userId: string, apiId: string) {
-    const connection = await db.connect()
-    try {
-      await connection.oneOrNone(
-        `DELETE FROM starred_apis WHERE fk_user_id = $1 AND fk_api_id = $2`,
-        [userId, apiId],
-      )
-    } catch (error) {
-      console.log('Error on method: Api.unfavorite() -> ', error.message)
-      throw new Error(error)
-    } finally {
-      connection.done()
-    }
-  }
-
   public static sanitizeApis(acc: ApiData[], api: any): ApiData[] {
     const { authority, type, uri, name, ...metadata } = api
 
