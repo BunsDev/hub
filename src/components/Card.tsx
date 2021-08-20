@@ -32,6 +32,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover, redirectUrl }: CardProps) =
         borderRadius: '1.25rem',
         bg: 'cardBg',
         border: '1px solid rgba(255, 255, 255, 0.2)',
+        height: '13.4375rem',
         transition: 'transform .2s ease',
         boxShadow: boxShadowOn ? '0rem 2rem 2.75rem rgba(28, 94, 93, 0.1)' : 'none',
       }}
@@ -39,7 +40,13 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover, redirectUrl }: CardProps) =
       {api && api.pointerUris && api.pointerUris.length > 0 ? (
         <a
           href="#"
-          sx={{ textDecoration: 'none', p: '24px', width: '100%', height: '100%' }}
+          sx={{
+            textDecoration: 'none',
+            p: '2rem',
+            pb: '1.5rem',
+            width: '100%',
+            height: '100%',
+          }}
           onClick={() => router.replace(redirect)}
         >
           <div className="wrap-contents">
@@ -81,11 +88,14 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover, redirectUrl }: CardProps) =
                   className="subtitle"
                   sx={{
                     my: 2,
-                    fontFamily: 'Montserrat',
+                    fontFamily: 'Nunito Sans',
                     fontSize: '0.875rem',
                     lineHeight: '1.125rem',
                     color: 'text',
                     mixBlendMode: 'normal',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   {api.subtext}

@@ -11,9 +11,7 @@ import SearchBox from './SearchBox'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 import { height } from 'styled-system'
 
-type HeaderProps = {}
-
-const Head = ({}: HeaderProps) => {
+const Head = () => {
   const router = useRouter()
   const [{ dapp }, dispatch] = useStateValue()
   const [onboard, setOnboard] = useState<any>()
@@ -54,7 +52,7 @@ const Head = ({}: HeaderProps) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         pl: '3.5rem',
-        pr:'4.5rem',
+        pr: '4.5rem',
         height: '8rem',
         background: 'rgba(30, 29, 34, 0.9)',
         '> *': { display: 'flex' },
@@ -62,7 +60,7 @@ const Head = ({}: HeaderProps) => {
       }}
     >
       <Flex sx={{ alignItems: 'center' }}>
-        <Link href="./">
+        <Link href="/">
           <a
             sx={{
               display: 'block',

@@ -29,9 +29,9 @@ const ApiGrid = ({ apis, main }: ApiGridProps) => {
             gap={'3%'}
             sx={{
               gridTemplateColumns: [
-                'minmax(300px, 340px)',
-                'minmax(300px, 340px) minmax(300px, 340px)',
-                'minmax(300px, 340px) minmax(300px, 340px) minmax(300px, 340px)',
+                'minmax(300px, 380px)',
+                'minmax(300px, 380px) minmax(300px, 380px)',
+                'minmax(300px, 380px) minmax(300px, 380px) minmax(300px, 380px)',
               ],
               rowGap: ['1%', '2%', '3%', '4%'],
               columnGap: '16px',
