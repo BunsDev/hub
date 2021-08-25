@@ -18,9 +18,9 @@ export default class ApiUris {
   public uri: string;
 
   @Column("bigint", { name: "fk_api_id" })
-  public fkApiId: string;
+  public apiId: string;
 
   @ManyToOne(() => UriTypes, (uriTypes) => uriTypes.apiUrises)
   @JoinColumn([{ name: "fk_uri_type_id", referencedColumnName: "id" }])
-  public fkUriType: UriTypes;
+  public uriType: UriTypes;
 }

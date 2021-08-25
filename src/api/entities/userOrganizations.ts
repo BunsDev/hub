@@ -19,9 +19,9 @@ export default class UserOrganizations {
     (organizations) => organizations.userOrganizations
   )
   @JoinColumn([{ name: "fk_organization_id", referencedColumnName: "id" }])
-  public fkOrganization: Organizations;
+  public organization: Organizations;
 
   @ManyToOne(() => Users, (users) => users.userOrganizations)
   @JoinColumn([{ name: "fk_user_id", referencedColumnName: "id" }])
-  public fkUser: Users;
+  public user: Users;
 }

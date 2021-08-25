@@ -20,12 +20,12 @@ export default class Organizations {
   @Column("character varying", { name: "location", nullable: true })
   public location: string | null;
 
-  @OneToMany(() => Apis, (apis) => apis.fkOrganization)
+  @OneToMany(() => Apis, (apis) => apis.organization)
   public apis: Apis[];
 
   @OneToMany(
     () => UserOrganizations,
-    (userOrganizations) => userOrganizations.fkOrganization
+    (userOrganizations) => userOrganizations.organization
   )
   public userOrganizations: UserOrganizations[];
 }

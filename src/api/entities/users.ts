@@ -9,15 +9,15 @@ export default class Users {
   @Column("character varying", { primary: true, name: "id" })
   public id: string;
 
-  @OneToMany(() => Apis, (apis) => apis.fkOwner)
+  @OneToMany(() => Apis, (apis) => apis.owner)
   public apis: Apis[];
 
-  @OneToMany(() => StarredApis, (starredApis) => starredApis.fkUser)
+  @OneToMany(() => StarredApis, (starredApis) => starredApis.user)
   public starredApis: StarredApis[];
 
   @OneToMany(
     () => UserOrganizations,
-    (userOrganizations) => userOrganizations.fkUser
+    (userOrganizations) => userOrganizations.user
   )
   public userOrganizations: UserOrganizations[];
 }

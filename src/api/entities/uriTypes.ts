@@ -20,6 +20,6 @@ export default class UriTypes {
   @Column("character varying", { name: "type" })
   public type: string;
 
-  @OneToMany(() => ApiUris, (apiUris) => apiUris.fkUriType)
+  @OneToMany(() => ApiUris, (apiUris) => apiUris.uriType)
   public apiUrises: ApiUris[];
 }

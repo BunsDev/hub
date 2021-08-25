@@ -34,7 +34,7 @@ export default class StarredApiRepository extends Repository<StarredApi> {
 		})
 	}
 
-	public async isFavorite(userId: string, apiId: string) {
+	public async isFavorite(userId: string, apiId: string): Promise<boolean> {
 		const obj = await this.findOne({
 			where: {
 				userId,
