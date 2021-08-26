@@ -21,5 +21,5 @@ export default class UriTypes {
   public type: string;
 
   @OneToMany(() => ApiUris, (apiUris) => apiUris.uriType)
-  public apiUrises: ApiUris[];
+  public apiUrises: Partial<ApiUris>[];
 }

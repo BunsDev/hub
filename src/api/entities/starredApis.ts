@@ -12,12 +12,12 @@ export default class StarredApis {
 
   @ManyToOne(() => Apis, (apis) => apis.starredApis)
   @JoinColumn([{ name: "fk_api_id", referencedColumnName: "id" }])
-  public api: Apis;
+  public api: Partial<Apis>;
 
   @Column("character varying", { name: "fk_user_id" })
   public userId: string;
 
   @ManyToOne(() => Users, (users) => users.starredApis)
   @JoinColumn([{ name: "fk_user_id", referencedColumnName: "id" }])
-  public user: Users;
+  public user: Partial<Users>;
 }

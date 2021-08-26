@@ -10,14 +10,14 @@ export default class Users {
   public id: string;
 
   @OneToMany(() => Apis, (apis) => apis.owner)
-  public apis: Apis[];
+  public apis: Partial<Apis>[];
 
   @OneToMany(() => StarredApis, (starredApis) => starredApis.user)
-  public starredApis: StarredApis[];
+  public starredApis: Partial<StarredApis>[];
 
   @OneToMany(
     () => UserOrganizations,
     (userOrganizations) => userOrganizations.user
   )
-  public userOrganizations: UserOrganizations[];
+  public userOrganizations: Partial<UserOrganizations>[];
 }

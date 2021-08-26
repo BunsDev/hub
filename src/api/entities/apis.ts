@@ -34,12 +34,12 @@ export default class Apis {
 
   @ManyToOne(() => Organizations, (organizations) => organizations.apis)
   @JoinColumn([{ name: "fk_organization_id", referencedColumnName: "id" }])
-  public organization: Organizations;
+  public organization: Partial<Organizations>;
 
   @ManyToOne(() => Users, (users) => users.apis)
   @JoinColumn([{ name: "fk_owner_id", referencedColumnName: "id" }])
-  public owner: Users;
+  public owner: Partial<Users>;
 
   @OneToMany(() => StarredApis, (starredApis) => starredApis.api)
-  public starredApis: StarredApis[];
+  public starredApis: Partial<StarredApis>[];
 }

@@ -21,11 +21,11 @@ export default class Organizations {
   public location: string | null;
 
   @OneToMany(() => Apis, (apis) => apis.organization)
-  public apis: Apis[];
+  public apis: Partial<Apis>[];
 
   @OneToMany(
     () => UserOrganizations,
     (userOrganizations) => userOrganizations.organization
   )
-  public userOrganizations: UserOrganizations[];
+  public userOrganizations: Partial<UserOrganizations>[];
 }

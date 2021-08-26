@@ -51,26 +51,6 @@ export class Api {
     // }
   }
 
-  public static async getAllActive(): Promise<ApiData[]> {
-    return await getConnection().createQueryRunner().query(
-      `SELECT 
-        apis.id, 
-        apis.description, 
-        apis.name, 
-        apis.subtext,
-        apis.icon, 
-        uri_types.type as type, 
-        api_uris.uri,
-        COUNT(starred_apis.fk_api_id) as favorites
-      FROM apis 
-      INNER JOIN api_uris ON apis.id = api_uris.fk_api_id 
-      INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id 
-      FULL OUTER JOIN starred_apis ON apis.id = starred_apis.fk_api_id
-      WHERE visible = true
-      GROUP BY apis.id, uri_types.type, api_uris.uri`,
-    )
-  }
-
   public static async deactivate(id: number) {
     return await getConnection().createQueryRunner().query('UPDATE apis SET visible = false WHERE id = $1', [id])
   }
@@ -155,5 +135,29 @@ export class Api {
         WHERE starred_apis.fk_api_id = $1`,
         [apiId],
       )
+  }
+
+  public static sanitizeApis(acc: ApiData[], api: any): ApiData[] {
+    const { authority, type, uri, name, ...metadata } = api
+
+    const apiIndex = acc.findIndex(({ name }) => name === api.name)
+
+    let apiSanitized = {
+      ...metadata,
+      name,
+      pointerUris: [],
+      ...(acc[apiIndex] || {}),
+    }
+
+    if (api.type === 'storage') {
+      apiSanitized.locationUri = api.uri
+    } else {
+      apiSanitized.pointerUris.push(api.uri)
+    }
+
+    if (apiIndex === -1) return [...acc, apiSanitized]
+    acc[apiIndex] = apiSanitized
+
+    return acc
   }
 }
