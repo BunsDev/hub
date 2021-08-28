@@ -1,7 +1,8 @@
-import { VercelRequest, VercelResponse } from "@vercel/node"
 import { Api } from "../../../../../api/models/Api";
 
-const md5 = require("md5");
+import { VercelRequest, VercelResponse } from "@vercel/node";
+
+const md5 = require("md5"); // eslint-disable-line
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
