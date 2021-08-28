@@ -16,7 +16,6 @@ const Home = () => {
     <Layout>
       <Head />
       <Flex>
-        <Navbar />
         <main>
           <div className="contents animate">
             <section className="content">

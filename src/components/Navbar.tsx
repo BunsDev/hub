@@ -34,11 +34,8 @@ const NavItem = ({
     <li
       className={className}
       sx={{
-        transition: 'background-color 0.5s ease',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         borderRadius: '4px',
+        transition: 'background-color 0.5s ease',
         svg: {
           stroke: navItems[label].color,
           mr: '14px',
@@ -47,9 +44,9 @@ const NavItem = ({
           content: '""',
           display: 'block',
           position: 'absolute',
-          left: 0,
-          height: '100%',
-          width: '0.5rem',
+          top: 0,
+          width: '100%',
+          height: '0.5rem',
           borderRadius: '4px',
           transition: 'background-color 0.5s ease',
         },
@@ -60,14 +57,14 @@ const NavItem = ({
           },
         },
         a: {
-          py: '17px',
+          p: '21.25px',
+          pt: '34.25px',
           textDecoration: 'none',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          pl: '3.75rem',
-          width: '100%',
-          height: '50px',
+          height: '100%',
+          width: 'fit-content',
           span: {
             color: 'white',
             fontSize: '1rem',
@@ -94,60 +91,40 @@ const Navbar = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        pt: '82px',
-        flexDirection: 'column',
-        height: '100vh',
+        height: '100%',
         width: '100%',
-        maxWidth: '15rem',
-        zIndex: 100,
-        '*': { display: 'flex', flexDirection: 'column' },
-        '.col': { flex: 3, '&:last-of-type': { justifyContent: 'flex-end' } },
       }}
     >
-      <Flex sx={{ flex: 1, width: '100%' }}>
-        <ul
-          sx={{
-            flex: 1,
-            justifyContent: 'flex-start',
-            gap: '30px',
-            li: {
-              width: '100%',
-            },
-          }}
-        >
-          <NavItem label="apis" className={activeRoute('/apis', '/')}>
-            <Link href="/">
-              <a sx={{ alignItems: 'center' }}>
-                <APIs />
-                <span className="text-nav">Wrappers</span>
-              </a>
-            </Link>
-          </NavItem>
-          <NavItem label="playground" className={activeRoute('/playground')}>
-            <Link href="/playground">
-              <a className="text-nav">
-                <PlaygroundImg />
-                <span className="text-nav">Playground</span>
-              </a>
-            </Link>
-          </NavItem>
-          <NavItem label="docs">
-            <a className="text-nav" href="https://web3api.dev" target="_BLANK">
-              <Doc />
-              <span className="text-nav">Web3API Docs</span>
+      <ul
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          height: '4.5625rem',
+        }}
+      >
+        <NavItem label="apis" className={activeRoute('/apis', '/')}>
+          <Link href="/">
+            <a sx={{ alignItems: 'center' }}>
+              <APIs />
+              <span className="text-nav">Wrappers</span>
             </a>
-          </NavItem>
-        </ul>
-      </Flex>
-      {/*       <div className="col" sx={{ flex: '3 !important' }}>
-        <a href="https://web3api.typeform.com/to/AkTwem3f" target="_BLANK" sx={{
-          color: 'white',
-          fontSize: 1,
-          '&:hover': {
-            textDecoration: 'underline'
-          }
-        }}>Feedback</a>
-      </div> */}
+          </Link>
+        </NavItem>
+        <NavItem label="playground" className={activeRoute('/playground')}>
+          <Link href="/playground">
+            <a className="text-nav">
+              <PlaygroundImg />
+              <span className="text-nav">Playground</span>
+            </a>
+          </Link>
+        </NavItem>
+        <NavItem label="docs">
+          <a className="text-nav" href="https://web3api.dev" target="_BLANK">
+            <Doc />
+            <span className="text-nav">Web3API Docs</span>
+          </a>
+        </NavItem>
+      </ul>
     </nav>
   )
 }

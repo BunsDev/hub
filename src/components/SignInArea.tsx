@@ -49,7 +49,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
     <Flex
       className="sign-in-wrap"
       sx={{
-        ul: { display: 'flex', color: onDark ? 'white !important' : '', gap:'11px' },
+        ul: { display: 'flex', color: onDark ? 'white !important' : '', gap:'1.5rem' },
       }}
     >
       {showGithubSignInModal && (
@@ -115,7 +115,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             onKeyUp={handleSignIn}
             sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
           >
-            <Button variant="primaryMedium" sx={{ display: 'inline-block', ml: 3 }}>
+            <Button variant="primaryMedium" sx={{ display: 'inline-block' }}>
               Sign In
             </Button>
             {/* <User /> */}

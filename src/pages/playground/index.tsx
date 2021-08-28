@@ -13,7 +13,6 @@ const PlaygroundPage = () => {
   return (
     <Layout>
       <Flex>
-        <Navbar />
         <main>
           <div className="contents animate">
             <Header onDark title="Playground" />

@@ -54,7 +54,7 @@ const Head = () => {
         justifyContent: 'space-between',
         pl: '3.5rem',
         pr: '4.5rem',
-        height: '8rem',
+        maxHeight: '4.5625rem',
         background: 'rgba(30, 29, 34, 0.9)',
         '> *': { display: 'flex' },
         '.col': { flex: 2, '&:last-of-type': { justifyContent: 'flex-end' } },
@@ -64,11 +64,9 @@ const Head = () => {
         <Link href="/">
           <a
             sx={{
-              display: 'block',
-              width: '12.5rem',
-              height: '3rem',
-              mr: '2.5rem',
-              mt: '-0.5rem',
+              display: 'flex',
+              height: '100%',
+              mr: '3.125rem',
             }}
           >
             <img src="/images/logo.svg" alt="logo" />
@@ -76,20 +74,10 @@ const Head = () => {
         </Link>
         <Navbar />
       </Flex>
-      <div className="col">
-        <SearchBox
-          detachedResults
-          dark
-          searchBy="name"
-          placeholder={'Search'}
-          labelField="name"
-          valueField="name"
-          options={searchOptions}
-          values={[]}
-          onChange={handleSearchValuesChange}
-        />
+      <Flex sx={{ justifyItems: 'flex-end', gap: '1.5rem' }}>
+        <SearchBox />
         <SignInArea onDark />
-      </div>
+      </Flex>
     </header>
   )
 }

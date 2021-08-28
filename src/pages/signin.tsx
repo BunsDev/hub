@@ -37,7 +37,6 @@ const Signin = () => {
   return (
     <Layout>
       <Flex>
-        <Navbar />
         <main>
           <div className="contents">
             <Header title="Browse APIs" />
