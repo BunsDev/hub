@@ -68,7 +68,7 @@ const Layout = ({ children }: LayoutProps) => {
             },
           },
           body: {
-            minHeight: '100vh',
+            minHeight: '50vh',
             scrollBehavior: 'smooth',
             margin: '0',
             padding: '0',
@@ -104,7 +104,6 @@ const Layout = ({ children }: LayoutProps) => {
             overflowX: 'hidden',
             flex: 1,
             display: 'flex',
-            alignItems: 'center',
           },
           fieldset: {
             padding: 0,
@@ -132,9 +131,12 @@ const Layout = ({ children }: LayoutProps) => {
             padding: '.5rem 1rem',
             borderRadius: '8px',
             backgroundColor: theme.colors.w3Grey3,
+            wordBreak: 'break-all',
+            whiteSpace: 'pre-wrap',
             fontStyle: 'normal',
             fontWeight: 'normal',
             fontSize: '16px',
+            fontFamily: 'Nunito sans',
             lineHeight: '150%',
             color: '#FFF',
             code: {
@@ -188,6 +190,13 @@ const Layout = ({ children }: LayoutProps) => {
           },
           '.bn-onboard-custom': {
             zIndex: 100000,
+          },
+          '.body-1': {
+            fontFamily: 'Nunito Sans',
+            fontWeight: 'normal',
+            fontSize: '16px',
+            lineHeight: '150%',
+            color:'rgba(255, 255, 255, .5)'
           },
         })}
       />

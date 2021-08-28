@@ -1,98 +1,66 @@
 /** @jsxImportSource theme-ui **/
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Flex, Themed } from 'theme-ui'
+import { Box, Flex, Themed } from 'theme-ui'
 import Layout from '../../components/Layout'
 import CreateAPI from '../../components/tabs/CreateAPI'
 import PublishAPI from '../../components/tabs/PublishAPI'
-import Header from '../../components/Header'
+import Head from '../../components/Head'
+import Navbar from '../../components/Navbar'
 import BottomSpace from '../../components/BottomSpace'
+import UploadApiMode from '../../components/tabs/UploadApiMode'
+import Steps from '../../components/Steps'
+
+const stepQueried: { [key: string]: string } = {
+  create: 'Intro',
+  upload: 'Upload',
+  publish: 'Publish',
+}
+
+const styles = {
+  height: 'fit-content',
+  p: '50px 73px 59px 59px',
+  background: 'black',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
+  boxShadow: '12px 20px 54px -6px #141316',
+  borderRadius: '20px',
+}
 
 const CreateApi = () => {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<string | string[]>()
-
-  const handleTabClick = (e: React.BaseSyntheticEvent) => {
-    e.stopPropagation()
-    setActiveTab(e.target.classList[1])
-    router.push(router.pathname + '?activeTab=' + e.target.classList[1])
-  }
+  const [activeStep, setActiveStep] = useState<string | string[]>()
 
   useEffect(() => {
-    if (router.query.activeTab && !activeTab) {
-      setActiveTab(router.query.activeTab)
+    if (router.query.activeTab) {
+      setActiveStep(router.query.activeTab)
     }
-  }, [router.query.activeTab, activeTab])
+  }, [router.query.activeTab, activeStep])
 
   useEffect(() => {
     if (router.isReady && !router.query.activeTab) {
       router.push(router.pathname + '?activeTab=create')
+      setActiveStep('create')
     }
   }, [router.isReady, router.query?.activeTab, router.pathname])
 
   return (
     <Layout>
+      <Head />
       <Flex>
-        <main sx={{ pb: 5 }}>
-          <div className="contents" sx={{ maxWidth: 'calc(76.5rem + 112px)' }}>
-            <Header title={'Create a Web3API'} />
-            <Flex
-              className="tabs"
-              onClick={handleTabClick}
-              sx={{
-                '*': { cursor: 'pointer', mr: 2, mb: 4 },
-                '.tab': {
-                  textAlign: 'center',
-                  fontSize: '1rem',
-                  fontWeight: 'bold',
-                  lineHeight: '1.25rem',
-                  letterSpacing: '-0.025rem',
-                  pb: ' 1.125rem',
-                  color: 'text',
-                  mb: 0,
-                  '&.active': {
-                    fontWeight: 'bold',
-                    color: 'w3darkGreen',
-                    borderBottom: '0.125rem solid',
-                    borderBottomColor: 'w3NavNeonHighlightTeal',
-                    '&:hover': {
-                      borderBottom: '0.125rem solid',
-                      borderBottomColor: 'w3NavNeonHighlightTeal',
-                    },
-                  },
-                  '&:hover': {
-                    borderBottom: '0.125rem solid',
-                    borderBottomColor: 'background',
-                  },
-                },
-              }}
-            >
-              <Themed.h3
-                className={'tab create ' + (activeTab === 'create' ? 'active' : '')}
-                sx={{ flex: 1 }}
-              >
-                Create
-              </Themed.h3>
-              <Themed.h3
-                className={'tab publish ' + (activeTab === 'publish' ? 'active' : '')}
-                sx={{ flex: 1 }}
-              >
-                Publish
-              </Themed.h3>
-            </Flex>
+        <Navbar />
+        <main sx={{ pb: 5, px: '75px' }}>
+          <div className="contents" sx={styles}>
             <div
-              className="tab-content"
-              sx={{
-                bg: 'white',
-                '> *': {
-                  px: '3.4375rem',
-                  pt: '5.625rem',
-                },
-              }}
+              className="header"
+              sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px' }}
             >
-              {activeTab === 'create' && <CreateAPI />}
-              {activeTab === 'publish' && <PublishAPI />}
+              <Themed.h2 sx={{ mb: '1.75rem' }}>Create New Wrapper</Themed.h2>
+              <Steps activeStep={stepQueried[String(activeStep)]} />
             </div>
+            <Box as="form" className="content">
+              {activeStep === 'create' && <CreateAPI />}
+              {activeStep === 'upload' && <UploadApiMode />}
+            </Box>
             <BottomSpace />
           </div>
         </main>

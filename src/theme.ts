@@ -97,6 +97,15 @@ const GlobalTheme: Theme = {
     input: {
       border: '2px solid rgba(205, 208, 227, 0.295455)',
     },
+    label: {
+      fontFamily: 'Nunito Sans',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontSize: '14px',
+      lineHeight: '120%',
+      color: 'rgba(255, 255, 255, .5)',
+      mb:'.25rem'
+    },
   },
   buttons: {
     ...buttonVariants,

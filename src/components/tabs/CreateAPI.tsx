@@ -1,137 +1,144 @@
 /** @jsxImportSource theme-ui **/
-import { Select, Themed, Flex, Button } from 'theme-ui'
+import { useRouter } from 'next/router'
+import {
+  Select,
+  Themed,
+  Flex,
+  Button,
+  Input,
+  Textarea,
+  Label,
+  ThemeUICSSObject,
+} from 'theme-ui'
 
+const styles: { [key: string]: ThemeUICSSObject } = {
+  wrap: {
+    display: 'grid',
+    gridTemplateColumns: '1fr minmax(300px, 326px)',
+    gap: '60px',
+  },
+  form: { display: 'flex', flexDirection: 'column' },
+  tutorial: {
+    flexDirection: 'column',
+    gap: '1rem',
+    div: {
+      background: '#0F0F0F',
+      borderRadius: '.5rem',
+      p: '1rem',
+      'span, a': {
+        color: 'rgba(255, 255, 255, 0.5)',
+        fontSize: '0.875rem',
+        lineHeight: '120%',
+      },
+      li: {
+        mb: '.5rem',
+        img: { maxWidth: '1rem', mr: '.5rem' },
+        a: { display: 'flex', alignItems: 'center' },
+        '&:last-child': { mb: 0 },
+      },
+      pre: {
+        m: '0',
+        p: '0',
+        bg: 'transparent',
+      },
+    },
+  },
+  buttons: { justifyContent: 'space-between', marginTop: 'auto' },
+}
 const CreateAPI = () => {
+  const router = useRouter()
   return (
-    <Flex className="create" sx={{ justifyContent: 'space-between' }}>
-      <form
-        sx={{
-          '* > div': {
-            width: '13.75rem',
-            mr: '2.75rem',
-            color: 'text',
-            fontFamily: 'Montserrat',
-            fontSize: '0.875rem',
-            lineHeight: '1.375rem',
-            letterSpacing: '-0.025rem',
-            '+ *': { width: '30.25rem', mb: '3.375rem' },
-          },
-        }}
-      >
-        <Flex>
-          <div>
-            <label>Hosting Configuration</label>
+    <div className="create" sx={styles['wrap']}>
+      <div className="form" sx={styles['form']}>
+        <Flex sx={{ gap: '59px' }}>
+          <div
+            className="cover-upload"
+            sx={{
+              height: '162px',
+              width: '162px',
+              border: '1.5px dashed #FFFFFF',
+              borderRadius: '20px',
+            }}
+          >
+            <img />
           </div>
-          <Select>
-            <option>IPFS + ENS</option>
-            <option>Another</option>
-            <option>And Another</option>
-          </Select>
+          <div
+            className="form-items"
+            sx={{
+              flexGrow: 1,
+              '>div': {
+                mb: '2rem',
+              },
+            }}
+          >
+            <div>
+              <Label htmlFor="hostConfig">Hosting Configuration</Label>
+              <Select name="hostConfig">
+                <option>IPFS + ENS</option>
+                <option>Another</option>
+                <option>And Another</option>
+              </Select>
+            </div>
+            <div>
+              <Label>Display name</Label>
+              <Input />
+            </div>
+            <div>
+              <Label>Subgraph description</Label>
+              <Textarea />
+            </div>
+          </div>
         </Flex>
-        <Flex>
-          <div>
-            <label sx={{ mb: 2 }}>
-              Clone the starter repo to your local dev environment
-            </label>
-            <a
-              href="https://github.com/Web3Api/boilerplate"
-              target="_BLANK"
-              sx={{
-                display: 'flex',
-                width: '9.375rem',
-                alignItems: 'center',
-                border: '0.125rem solid',
-                borderColor: 'w3green',
-                filter: 'drop-shadow(0rem 0.9375rem 1.875rem rgba(20, 102, 204, 0.16))',
-                borderRadius: '0.25rem',
-                fontFamily: 'Montserrat',
-                fontWeight: 'bold',
-                fontSize: '0.75rem',
-                lineHeight: '0.875rem',
-                textAlign: 'center',
-                letterSpacing: '-0.0375rem',
-                textTransform: 'uppercase',
-                color: 'w3green',
-                textDecoration: 'none',
-                p: 3,
-                '&:after': {
-                  display: 'inline-block',
-                  ml: 2,
-                  content: "''",
-                  width: '1rem',
-                  height: '1rem',
-                  background: 'url(/images/outbound.svg) no-repeat',
-                },
-              }}
-            >
-              starter repo
-            </a>
-          </div>
-          <Themed.code>
-            <Themed.pre>
+        <Flex className="buttons" sx={styles['buttons']}>
+          <Button variant="secondaryMedium">Cancel</Button>
+          <Button
+            variant="primaryMedium"
+            onClick={(e) => {
+              e.preventDefault()
+              router.push(router.pathname + '?activeTab=upload')
+            }}
+          >
+            Get Started
+          </Button>
+        </Flex>
+      </div>
+      <Flex className="tutorial" sx={styles['tutorial']}>
+        <div>
+          <ul>
+            <li>
+              <a href="https://github.com/Web3Api/boilerplate" target="_BLANK">
+                <img src="/images/link.svg" alt="icon" />
+                Starter Repo
+              </a>
+            </li>
+            <li>
+              <a href="/" target="_BLANK">
+                <img src="/images/link.svg" alt="icon" />
+                First time developing with Web3API?
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <span sx={{ mb: 2 }}>Clone the starter repo to your local dev environment</span>
+          <code>
+            <pre>
               {`git clone https://github.com/web3api-start/uniswapv2 
 cd uniswapv2
 yarn install`}
-            </Themed.pre>
-          </Themed.code>
-        </Flex>
-        <Flex>
-          <div>
-            <label>When ready deploy the package to IPFS using the following</label>
-          </div>
+            </pre>
+          </code>
+        </div>
+        <div>
+          <span>When ready deploy the package to IPFS using the following</span>
           <Themed.code>
             <Themed.pre>{`yarn codegen
 yarn build
 yarn deploy --IPFS`}</Themed.pre>
           </Themed.code>
-        </Flex>
-      </form>
-      <div>
-        <div
-          sx={{
-            px: 2,
-            backgroundColor: 'w3darkGreen',
-            p: '2.875rem',
-            boxShadow: '0rem 1.5625rem 2.5rem rgba(0, 0, 0, 0.06)',
-            borderRadius: '0.5rem',
-            overflow: 'hidden',
-            width: '300px',
-            height: '300px',
-            '&:after': {
-              display: 'block',
-              content: "''",
-              position: 'absolute',
-              left: '-5%',
-              top: '18%',
-              width: '12.5rem',
-              height: '18.75rem',
-              background: 'url(/images/doc.svg) left center no-repeat transparent',
-              backgroundSize: '100%',
-              opacity: 0.2,
-              zIndex: '0',
-            },
-          }}
-        >
-          <Flex
-            sx={{
-              flexDirection: 'column',
-              alignItems: 'center',
-              '*': { textAlign: 'center' },
-            }}
-          >
-            <Themed.h2 sx={{ color: 'white', fontWeight: 'bold', mb: 2, mt: 0 }}>
-              Need help?
-            </Themed.h2>
-            <Themed.p sx={{ mb: 4, color: 'white' }}>
-              First time developing with Web3API? View the getting started tutorial here.
-            </Themed.p>
-            <Button variant="calloutMedium" sx={{ px: '2.25rem', py: '1.25rem' }}>
-              Getting Started
-            </Button>
-          </Flex>
         </div>
-      </div>
-    </Flex>
+      </Flex>
+    </div>
   )
 }
 

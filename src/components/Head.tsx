@@ -10,6 +10,7 @@ import { useStateValue } from '../state/state'
 import SearchBox from './SearchBox'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 import { height } from 'styled-system'
+import Navbar from './Navbar'
 
 const Head = () => {
   const router = useRouter()
@@ -73,6 +74,9 @@ const Head = () => {
             <img src="/images/logo.svg" alt="logo" />
           </a>
         </Link>
+        <Navbar />
+      </Flex>
+      <div className="col">
         <SearchBox
           detachedResults
           dark
@@ -84,8 +88,6 @@ const Head = () => {
           values={[]}
           onChange={handleSearchValuesChange}
         />
-      </Flex>
-      <div className="col">
         <SignInArea onDark />
       </div>
     </header>
