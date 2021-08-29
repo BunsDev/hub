@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui **/
-import { Flex } from 'theme-ui'
+import { Flex, Themed } from 'theme-ui'
 import { Global } from '@emotion/react'
 import { Web3ApiProvider } from '@web3api/react'
 import Layout from '../../components/Layout'
@@ -15,7 +15,7 @@ const PlaygroundPage = () => {
       <Flex>
         <main>
           <div className="contents animate">
-            <Header onDark title="Playground" />
+            <Themed.h1>Playground</Themed.h1>
             {web3api.plugins && (
               <Web3ApiProvider plugins={web3api.plugins}>
                 <Playground />

@@ -5,7 +5,7 @@ import { Box, Flex, Themed } from 'theme-ui'
 import Layout from '../../components/Layout'
 import CreateAPI from '../../components/tabs/CreateAPI'
 import PublishAPI from '../../components/tabs/PublishAPI'
-import Head from '../../components/Head'
+import Header from '../../components/Header'
 import Navbar from '../../components/Navbar'
 import BottomSpace from '../../components/BottomSpace'
 import UploadApiMode from '../../components/tabs/UploadApiMode'
@@ -45,9 +45,8 @@ const CreateApi = () => {
 
   return (
     <Layout>
-      <Head />
+      <Header />
       <Flex>
-        <Navbar />
         <main sx={{ pb: 5, px: '75px' }}>
           <div className="contents" sx={styles}>
             <div

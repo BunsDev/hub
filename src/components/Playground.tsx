@@ -55,9 +55,8 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [structuredschema, setstructuredschema] = useState<StructuredSchema>()
 
-  const [clientresponded, setclientresponed] = useState<
-    QueryApiResult<Record<string, any>>
-  >()
+  const [clientresponded, setclientresponed] =
+    useState<QueryApiResult<Record<string, any>>>()
 
   const [customquerytext, setcustomquerytext] = useState('')
 
@@ -202,29 +201,7 @@ const Playground = ({ api }: PlaygroundProps) => {
         }}
       >
         {api === undefined ? (
-          <SearchBox
-            key={'search-api-box'}
-            dark
-            searchBy="name"
-            placeholder={'Search API’s'}
-            labelField="name"
-            valueField="name"
-            options={apiOptions}
-            values={searchboxvalues}
-            searchable={false}
-            onChange={(values) => {
-              setsearchboxvalues(values)
-              if (values.length > 0) {
-                if (values[0]?.pointerUris.length > 0) {
-                  router.push('/playground/ens/' + values[0].pointerUris[0])
-                } else {
-                  router.push(
-                    '/playground/ipfs/' + stripIPFSPrefix(values[0].locationUri[0]),
-                  )
-                }
-              }
-            }}
-          />
+          <SearchBox />
         ) : (
           <Themed.h1 sx={{ mb: 0 }}>{api.name}</Themed.h1>
         )}

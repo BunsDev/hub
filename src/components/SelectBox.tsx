@@ -1,5 +1,4 @@
 /** @jsxImportSource theme-ui **/
-import RDS from 'react-dropdown-select'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 
 type RDSProps = {
@@ -24,7 +23,7 @@ const SelectBox = ({
   onChange,
 }: RDSProps) => {
   return (
-    <RDS
+    <div
       sx={{
         width: '17.5rem !important',
         border: ' 0.125rem solid !important',
@@ -120,14 +119,6 @@ const SelectBox = ({
           stroke: 'none !important',
         },
       }}
-      keepSelectedInList
-      placeholder={placeholder}
-      dropdownHandle={true}
-      labelField={labelField}
-      valueField={valueField}
-      options={options}
-      values={values}
-      onChange={onChange}
     />
   )
 }

@@ -2,7 +2,7 @@
 import useSWR from 'swr'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Flex } from 'theme-ui'
+import { Flex, Themed } from 'theme-ui'
 import Layout from '../../components/Layout'
 import Header from '../../components/Header'
 import Navbar from '../../components/Navbar'
@@ -52,10 +52,9 @@ const UserApis = () => {
   return (
     <Layout>
       <Flex>
-        <Navbar />
         <main>
           <div className="contents">
-            <Header title="My API's" />
+            <Themed.h1>My API's</Themed.h1>
             <section className="content">
               <ContentNav
                 setActiveTab={handleTabClick}

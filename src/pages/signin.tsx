@@ -39,7 +39,7 @@ const Signin = () => {
       <Flex>
         <main>
           <div className="contents">
-            <Header title="Browse APIs" />
+            <Themed.h1>Browse APIs</Themed.h1>
             <section
               className="content"
               sx={{ display: 'grid', placeItems: 'center', height: '50%' }}

@@ -10,6 +10,8 @@ type ApiGridProps = {
   main?: boolean
 }
 
+const gridTemplateColumn = 'minmax(300px, 380px)'
+
 const ApiGrid = ({ apis, main }: ApiGridProps) => {
   const [{ search }] = useStateValue()
 
@@ -26,15 +28,16 @@ const ApiGrid = ({ apis, main }: ApiGridProps) => {
       {main ? (
         <>
           <Grid
-            gap={'3%'}
+            gap="1rem"
             sx={{
               gridTemplateColumns: [
-                'minmax(300px, 380px)',
-                'minmax(300px, 380px) minmax(300px, 380px)',
-                'minmax(300px, 380px) minmax(300px, 380px) minmax(300px, 380px)',
+                `${gridTemplateColumn}`,
+                `${gridTemplateColumn} ${gridTemplateColumn}`,
+                null,
+                `${gridTemplateColumn} ${gridTemplateColumn} ${gridTemplateColumn}`,
+                `${gridTemplateColumn} ${gridTemplateColumn} ${gridTemplateColumn} ${gridTemplateColumn}`,
               ],
-              rowGap: ['1%', '2%', '3%', '4%'],
-              columnGap: '16px',
+              mx: 'auto',
             }}
           >
             {search !== undefined && search.sortedApi !== -1 ? (

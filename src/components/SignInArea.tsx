@@ -116,7 +116,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
           >
             <Button variant="primaryMedium" sx={{ display: 'inline-block' }}>
-              Sign In
+              ?
             </Button>
             {/* <User /> */}
           </li>

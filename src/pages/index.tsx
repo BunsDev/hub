@@ -5,8 +5,7 @@ import { useStateValue } from '../state/state'
 import Layout from '../components/Layout'
 import SortNav from '../components/SortNav'
 import ApiGrid from '../components/ApiGrid'
-import Navbar from '../components/Navbar'
-import Head from '../components/Head'
+import Header from '../components/Header'
 import BGCircles from '../components/BGCircles'
 import BottomSpace from '../components/BottomSpace'
 
@@ -14,7 +13,7 @@ const Home = () => {
   const [{ dapp }] = useStateValue()
   return (
     <Layout>
-      <Head />
+      <Header />
       <Flex>
         <main>
           <div className="contents animate">

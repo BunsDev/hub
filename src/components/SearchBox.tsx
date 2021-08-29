@@ -1,12 +1,18 @@
 /** @jsxImportSource theme-ui **/
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Flex, Input } from 'theme-ui'
 import { cloudFlareGateway } from '../constants'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 import SearchIcon from '../../public/images/magnifying-glass.svg'
+import router from 'next/router'
 
 const SearchBox = () => {
+  const [searchValue, setSearchValue] = useState<string>('')
+  const handleSearch = useCallback((input: string) => {
+    if (input) router.push(`/?search=${input?.trim()}`)
+  }, [])
+
   return (
     <Flex
       className="search-wrap"
@@ -21,12 +27,22 @@ const SearchBox = () => {
         alt="searchIcon"
         draggable={false}
         sx={{
+          cursor: 'pointer',
           userSelect: 'none',
           mr: '.5rem',
         }}
+        onClick={() => handleSearch(searchValue)}
       />
       <Input
         className="search-input"
+        type="search"
+        value={searchValue}
+        onChange={(e) => {
+          setSearchValue(e.target.value)
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') handleSearch(searchValue)
+        }}
         sx={{
           border: 'none',
           p: 0,
