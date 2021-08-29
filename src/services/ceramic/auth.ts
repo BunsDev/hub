@@ -16,7 +16,7 @@ const aliases = {
 
 export default class Auth {
   public static ceramic: Ceramic = new Ceramic(CERAMIC_NODE);
-  public static idx: IDX = new IDX({ ceramic: Auth.ceramic as any, aliases }); // eslint-disable-line
+  public static idx: IDX = new IDX({ ceramic: Auth.ceramic, aliases });
 
   private static _instance: Auth;
 
@@ -54,7 +54,7 @@ export default class Auth {
   private createDID() {
     const resolver = {
       ...KeyDidResolver.getResolver(),
-      ...ThreeIdResolver.getResolver(Auth.ceramic as any), // eslint-disable-line
+      ...ThreeIdResolver.getResolver(Auth.ceramic),
     };
     const did = new DID({ resolver });
     return did;

@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@3id/connect": "0.1.6",
-    "@ceramicnetwork/3id-did-resolver": "1.2.7",
-    "@ceramicnetwork/common": "1.1.0",
-    "@ceramicnetwork/http-client": "1.0.7",
+    "@ceramicnetwork/3id-did-resolver": "1.4.0",
+    "@ceramicnetwork/common": "1.3.0",
+    "@ceramicnetwork/http-client": "1.2.0",
     "@ceramicstudio/idx": "0.12.1",
     "@ceramicstudio/idx-tools": "0.11.0",
     "@ensdomains/ensjs": "2.0.1",
