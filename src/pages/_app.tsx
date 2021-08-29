@@ -1,24 +1,26 @@
-import { ThemeProvider } from 'theme-ui'
-import theme from '../theme'
-import { StateProvider, useStateValue } from '../state/state'
-import Head from 'next/head'
-import 'animate.css/animate.css'
-import { SWRConfig } from 'swr'
-import { fetcherREST } from '../utils/fetcher'
-import { useAuth } from '../hooks/useAuth'
+import "animate.css/animate.css";
+import theme from "../theme";
+import { StateProvider, useStateValue } from "../state/state";
+import { fetcherREST } from "../utils/fetcher";
+import { useAuth } from "../hooks/useAuth";
+
+import Head from "next/head";
+import { ThemeProvider } from "theme-ui";
+import { SWRConfig } from "swr";
+
 const swrOptions = {
   // refreshInterval: 10000,
   fetcher: (resource: string) => fetcherREST(resource),
-}
+};
 
 interface Props<T> {
-  pageProps: React.PropsWithChildren<T>
-  Component: React.FC<T>
+  pageProps: React.PropsWithChildren<T>;
+  Component: React.FC<T>; // eslint-disable-line
 }
 
-function StatefulApp({ pageProps, Component }: Props<any>) {
-  const [{ dapp }] = useStateValue()
-  useAuth(dapp)
+function StatefulApp({ pageProps, Component }: Props<any>) { // eslint-disable-line
+  const [{ dapp }] = useStateValue();
+  useAuth(dapp);
   return (
     <ThemeProvider theme={theme}>
       <Head>
@@ -32,15 +34,15 @@ function StatefulApp({ pageProps, Component }: Props<any>) {
         <Component {...pageProps} />
       </SWRConfig>
     </ThemeProvider>
-  )
+  );
 }
 
-function MyApp({ Component, pageProps }: Props<any>) {
+function MyApp({ Component, pageProps }: Props<any>) { // eslint-disable-line
   return (
     <StateProvider>
       <StatefulApp pageProps={pageProps} Component={Component} />
     </StateProvider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
