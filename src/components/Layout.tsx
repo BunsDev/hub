@@ -5,6 +5,7 @@ import { Global } from '@emotion/react'
 import { useStateValue } from '../state/state'
 import useSWR from 'swr'
 import { domain } from '../constants'
+import BGCircles from './BGCircles'
 
 type LayoutProps = {
   children?: React.ReactNode
@@ -29,7 +30,7 @@ const Layout = ({ children }: LayoutProps) => {
     <div
       className="layout"
       sx={{
-        overflow: 'hidden',
+        zIndex: '1',
         '&::before, &::after': {
           display: 'none',
         },
@@ -37,6 +38,7 @@ const Layout = ({ children }: LayoutProps) => {
       }}
     >
       {children}
+      <BGCircles />
       <Global
         styles={(theme: any) => ({
           '@keyframes shift': {
@@ -68,11 +70,9 @@ const Layout = ({ children }: LayoutProps) => {
             },
           },
           body: {
-            minHeight: '50vh',
             scrollBehavior: 'smooth',
             margin: '0',
             padding: '0',
-            overflow: 'hidden',
             backgroundRepeat: 'no-repeat',
             backgroundSize: '100% 100%',
             backgroundAttachment: 'scroll',
@@ -102,6 +102,8 @@ const Layout = ({ children }: LayoutProps) => {
           },
           main: {
             overflowX: 'hidden',
+            paddingTop: '3.25rem',
+            paddingBottom: '4.6875rem',
             flex: 1,
             display: 'flex',
           },
@@ -196,7 +198,19 @@ const Layout = ({ children }: LayoutProps) => {
             fontWeight: 'normal',
             fontSize: '16px',
             lineHeight: '150%',
-            color:'rgba(255, 255, 255, .5)'
+            color: 'rgba(255, 255, 255, .5)',
+          },
+          '.body-2': {
+            fontFamily: 'Nunito Sans',
+            fontSize: '14px',
+            lineHeight: '120%',
+          },
+          '.subtitle-1': {
+            fontFamily: 'Nunito Sans',
+            fontWeight: 'normal',
+            fontSize: '16px',
+            lineHeight: '100%',
+            color: 'white',
           },
         })}
       />

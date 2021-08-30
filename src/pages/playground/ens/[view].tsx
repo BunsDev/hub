@@ -38,6 +38,7 @@ const PlaygroundPage = () => {
   }, [dapp.web3])
   return (
     <Layout>
+      <Header />
       <Flex>
         {showSignInModal && !dapp.web3 && (
           <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
@@ -52,7 +53,6 @@ const PlaygroundPage = () => {
         )}
         <main>
           <div className="contents animate">
-            <Themed.h1>Playground</Themed.h1>
             {data !== null && web3api.plugins && (
               <Web3ApiProvider plugins={web3api.plugins}>
                 <Playground api={data} />
@@ -61,15 +61,6 @@ const PlaygroundPage = () => {
           </div>
         </main>
       </Flex>
-      <Global
-        styles={(theme: any) => {
-          return {
-            body: {
-              background: theme.colors.w3shade0 + ' !important',
-            },
-          }
-        }}
-      />
     </Layout>
   )
 }

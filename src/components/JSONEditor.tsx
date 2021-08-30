@@ -14,7 +14,7 @@ type GQLCodeBlockProps = {
 }
 
 const JSONEditor = ({
-  height = '150px',
+  height = '100%',
   value,
   handleEditorChange,
   onClick,
@@ -25,19 +25,19 @@ const JSONEditor = ({
   }
 
   return (
-    <div className="GQLCodeBlock-wrap" onClick={onClick}>
+    <div className="GQLCodeBlock-wrap" onClick={onClick} sx={{ height }}>
       <Editor
         theme="solarizedDark"
         beforeMount={handleEditorWillMount}
         onChange={handleEditorChange}
-        height={height}
         defaultLanguage="json"
         value={JSON.stringify(value, null, 2)}
         options={{
           minimap: {
-            enabled: false
+            enabled: false,
           },
-          lineNumbers: 'off'
+          fontFamily: 'Nunito sans',
+          lineNumbers: 'off',
         }}
       />
     </div>

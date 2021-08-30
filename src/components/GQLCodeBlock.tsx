@@ -15,22 +15,44 @@ type GQLCodeBlockProps = {
   handleEditorChange?: OnChange
 }
 
-const GQLCodeBlock = ({ title, readOnly, height = '200px', value, handleEditorChange, onClick }: GQLCodeBlockProps) => {
+const GQLCodeBlock = ({
+  title,
+  readOnly,
+  height = '200px',
+  value,
+  handleEditorChange,
+  onClick,
+}: GQLCodeBlockProps) => {
   const handleEditorWillMount = (monaco: Monaco) => {
-    monaco.editor.defineTheme('solarizedDark', solarizedDark);
-    monaco.editor.setTheme('solarizedDark');
-  } 
+    monaco.editor.defineTheme('solarizedDark', solarizedDark)
+    monaco.editor.setTheme('solarizedDark')
+  }
   return (
     <div className="GQLCodeBlock-wrap" onClick={onClick}>
-      {title ? <Themed.h5 sx={{ m: 0, py: 2, px: '.75rem', bg: 'white' }}>{title}</Themed.h5> : null}
+      {title ? (
+        <Themed.h5
+          sx={{
+            m: 0,
+            py: 2,
+            px: '.75rem',
+            bg: '#1e1e1e1',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderLeft: 'none',
+            borderRight: 'none',
+          }}
+        >
+          {title}
+        </Themed.h5>
+      ) : null}
       <Editor
         theme="solarizedDark"
         options={{
           minimap: {
             enabled: false,
           },
+          fontFamily: 'Nunito sans',
           scrollBeyondLastLine: false,
-          readOnly: readOnly
+          readOnly: readOnly,
         }}
         beforeMount={handleEditorWillMount}
         onChange={handleEditorChange}

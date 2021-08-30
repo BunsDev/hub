@@ -25,7 +25,6 @@ const Home = () => {
           </div>
         </main>
       </Flex>
-      <BGCircles />
     </Layout>
   )
 }
