@@ -35,9 +35,6 @@ const SelectBox = ({
           borderColor: 'text',
           boxShadow: 'none !important',
         },
-        // '.react-dropdown-select-input': {
-        //   display: 'none',
-        // },
         '.react-dropdown-select-clear': {
           fontSize: '1.5625rem !important',
           top: '-0.125rem !important',

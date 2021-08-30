@@ -1,17 +1,15 @@
 /** @jsxImportSource theme-ui **/
-import { Flex, Button, Themed, Field, Grid, Select, Input } from 'theme-ui'
-import React, { useRef, useEffect, useState } from 'react'
+import { Flex, Button, Themed, Grid, Input } from 'theme-ui'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3ApiQuery } from '@web3api/react'
 import { useStateValue } from '../state/state'
 
 import Badge from './Badge'
 import Stars from './Stars'
-import BGWave from './BGWave'
 import SelectBox from './SelectBox'
 import SearchBox from './SearchBox'
 import LoadingSpinner from './LoadingSpinner'
-import Close from '../../public/images/close.svg'
 
 import getPackageSchemaFromAPIObject from '../services/ipfs/getPackageSchemaFromAPIObject'
 import getPackageQueriesFromAPIObject, {
@@ -37,8 +35,6 @@ interface APIContents {
   queries?: QueryAttributes[]
 }
 
-const columnsExpanded = (exp: boolean) => (exp ? [3, '1fr 1fr 1fr'] : [3, '1fr 1fr 0'])
-
 const Playground = ({ api }: PlaygroundProps) => {
   const [{ dapp }] = useStateValue()
   const router = useRouter()
@@ -51,7 +47,6 @@ const Playground = ({ api }: PlaygroundProps) => {
   const [apiContents, setapiContents] = useState<APIContents>()
   const [loadingPackageContents, setloadingPackageContents] = useState(false)
 
-  const [showschema, setshowschema] = useState(false)
   const [selectedMethod, setSelectedMethod] = useState('')
   const [newSelectedMethod, setnewSelectedMethod] = useState('')
   const [methodName, setMethodName] = useState('')
@@ -63,7 +58,6 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [customquerytext, setcustomquerytext] = useState('')
 
-  const [varformstoggle, setvarformstoggle] = useState(false)
 
   const varsList =
     [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)].concat([
@@ -77,10 +71,6 @@ const Playground = ({ api }: PlaygroundProps) => {
     uri: `ens/${networkName}/${router.asPath.split('/playground/ens/')[1]}`,
     query: selectedMethod,
   })
-
-  function handleShowSchema(e: React.BaseSyntheticEvent) {
-    return setshowschema(!showschema)
-  }
 
   function handleQueryValuesChange(method: { value: string; id: string }[]) {
     setMethodName(method[0].id)
@@ -105,10 +95,6 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   function handleClearBtnClick() {
     setclientresponed(undefined)
-  }
-
-  function handleVarsFormToggle() {
-    setvarformstoggle(!varformstoggle)
   }
 
   const handleEditorChange: OnChange = (e) => {
@@ -179,7 +165,6 @@ const Playground = ({ api }: PlaygroundProps) => {
     setformVarsToSubmit(newVars)
   }, [newSelectedMethod])
 
-  console.log(dapp)
   return (
     <div
       className="playground"
