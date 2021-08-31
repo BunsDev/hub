@@ -24,6 +24,9 @@
     "emitDecoratorMetadata": true,
   },
   "include": [
+    ".eslintrc.js",
+    "env-config.js",
+    "next.config.js",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"

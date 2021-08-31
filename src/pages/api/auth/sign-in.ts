@@ -1,15 +1,17 @@
-import { VercelRequest, VercelResponse } from '@vercel/node'
-import { getConnection } from 'typeorm'
-import UserRepository from '../../../api/repositories/userRepository';
+import UserRepository from "../../../api/repositories/userRepository";
 
-const md5 = require("md5");
+import { VercelRequest, VercelResponse } from "@vercel/node";
+import { getConnection } from "typeorm";
+
+const md5 = require("md5"); // eslint-disable-line
 
 export default async (request: VercelRequest, response: VercelResponse) => {
-  if (request.method === 'POST') {
+  if (request.method === "POST") {
     const { did } = request.body;
     const hashedDid = md5(did);
     try {
-      const userRepository = getConnection().getCustomRepository(UserRepository);
+      const userRepository =
+        getConnection().getCustomRepository(UserRepository);
       await userRepository.findOrCreate(hashedDid);
       return response.json({
         status: 200,
@@ -21,4 +23,4 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       });
     }
   }
-}
+};

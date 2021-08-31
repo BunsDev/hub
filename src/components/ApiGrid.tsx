@@ -1,80 +1,98 @@
 /** @jsxImportSource theme-ui **/
-import { Grid, Button } from 'theme-ui'
-import { useRouter } from 'next/router'
-import { APIData } from '../hooks/ens/useGetAPIfromENS'
-import Card from './Card'
-import { useStateValue } from '../state/state'
+import { APIData } from "../hooks/ens/useGetAPIfromENS";
+import Card from "./Card";
+import { useStateValue } from "../state/state";
+
+import { useRouter } from "next/router";
+import { Grid, Button } from "theme-ui";
 
 type ApiGridProps = {
-  apis: APIData[]
-  main?: boolean
-}
+  apis: APIData[];
+  main?: boolean;
+};
 
 const ApiGrid = ({ apis, main }: ApiGridProps) => {
-  const [{ search }] = useStateValue()
+  const [{ search }] = useStateValue();
 
-  const router = useRouter()
+  const router = useRouter();
   return (
-    <div>
+    <div
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        minHeight: "70vh",
+      }}
+    >
       {main ? (
         <>
           <Grid
-            gap={'3%'}
+            gap={"3%"}
             sx={{
-              gridTemplateColumns: ['1fr', '1fr 1fr', '1fr 1fr 1fr', '1fr 1fr 1fr 1fr'],
-              rowGap: ['1%', '2%', '3%', '4%'],
+              gridTemplateColumns: [
+                "minmax(300px, 380px)",
+                "minmax(300px, 380px) minmax(300px, 380px)",
+                "minmax(300px, 380px) minmax(300px, 380px) minmax(300px, 380px)",
+              ],
+              rowGap: ["1%", "2%", "3%", "4%"],
+              columnGap: "16px",
             }}
           >
             {search !== undefined && search.sortedApi !== -1 ? (
               <Card api={search.sortedApi[0]} boxShadowOn />
             ) : (
-              apis.map((api, idx) => <Card api={api} boxShadowOn key={idx + '-api'} />)
+              apis.map((api, idx) => (
+                <Card api={api} boxShadowOn key={idx + "-api"} />
+              ))
             )}
           </Grid>
-          <p
+          <div
             sx={{
-              mt: '5rem',
-              fontFamily: 'Montserrat',
-              fontSize: '1.25rem',
-              lineHeight: '3.25rem',
-              textAlign: 'center',
-              letterSpacing: '-0.0625rem',
-              color: 'text',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              alignSelf: "center",
+              textAlign: "center",
+              mb: 4,
             }}
           >
             You reached the end of the list. <b>Don’t stop here!</b>
-            <br />
             <Button
-              variant="primaryLarge"
+              sx={{ mt: "14px" }}
+              variant="primaryMedium"
               onClick={() => {
-                router.push('/apis/create?activeTab=create')
+                void router.push("/apis/create?activeTab=create");
               }}
-              sx={{ display: 'inline-block', ml: 3, mt: 4 }}
             >
               <span>Create New API</span>
             </Button>
-          </p>
+          </div>
         </>
       ) : (
         <Grid
-          gap={'3%'}
+          gap={"3%"}
           sx={{
-            gridTemplateColumns: ['1fr', '1fr 1fr', '1fr 1fr 1fr', '1fr 1fr 1fr 1fr'],
-            rowGap: ['1%', '2%', '3%', '4%'],
+            gridTemplateColumns: [
+              "1fr",
+              "1fr 1fr",
+              "1fr 1fr 1fr",
+              "1fr 1fr 1fr 1fr",
+            ],
+            rowGap: ["1%", "2%", "3%", "4%"],
           }}
         >
           {apis.map((api, idx) => (
             <Card
               api={api}
               boxShadowOn
-              redirectUrl={'ens/' + api.pointerUris[0]}
-              key={idx + '-api'}
+              redirectUrl={"ens/" + api.pointerUris[0]}
+              key={idx + "-api"}
             />
           ))}
         </Grid>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ApiGrid
+export default ApiGrid;

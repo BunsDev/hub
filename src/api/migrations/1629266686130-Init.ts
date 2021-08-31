@@ -1,9 +1,8 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class Init1629266686130 implements MigrationInterface {
-
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             create table users (id varchar not null, primary key(id));
             create table organizations (
                 id bigserial not null,
@@ -59,9 +58,7 @@ export class Init1629266686130 implements MigrationInterface {
             insert into uri_types (name, type)
             values ('ipfs', 'storage');
         `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-    }
-
+  public async down(queryRunner: QueryRunner): Promise<void> {}
 }

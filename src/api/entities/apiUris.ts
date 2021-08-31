@@ -1,3 +1,5 @@
+import UriTypes from "./uriTypes";
+
 import {
   Column,
   Entity,
@@ -6,7 +8,6 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import UriTypes from "./uriTypes";
 
 @Index("api_uris_pkey", ["id"], { unique: true })
 @Entity("api_uris", { schema: "public" })

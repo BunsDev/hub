@@ -1,3 +1,6 @@
+import Apis from "./apis";
+import UserOrganizations from "./userOrganizations";
+
 import {
   Column,
   Entity,
@@ -5,8 +8,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import Apis from "./apis";
-import UserOrganizations from "./userOrganizations";
 
 @Index("organizations_pkey", ["id"], { unique: true })
 @Entity("organizations", { schema: "public" })

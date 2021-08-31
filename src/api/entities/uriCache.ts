@@ -12,10 +12,10 @@ export default class URICache {
   @Column("character varying", { name: "ipfs" })
   public ipfs: string;
 
-  @Column('timestamp without time zone',{
-		nullable:false,
-		default: () => 'now()',
-		name:'last_updated'
-	})
-	public lastUpdated: Date;
+  @Column("timestamp without time zone", {
+    nullable: false,
+    default: () => "now()",
+    name: "last_updated",
+  })
+  public lastUpdated: Date;
 }

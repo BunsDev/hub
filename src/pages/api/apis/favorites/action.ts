@@ -1,26 +1,29 @@
-import { VercelRequest, VercelResponse } from '@vercel/node'
-import { getConnection } from 'typeorm'
-import { Api } from '../../../../api/models/Api'
-import StarredApiRepository from '../../../../api/repositories/starredApiRepository'
-import UserRepository from '../../../../api/repositories/userRepository'
+import StarredApiRepository from "../../../../api/repositories/starredApiRepository";
+import UserRepository from "../../../../api/repositories/userRepository";
 
-const md5 = require('md5')
+import { VercelRequest, VercelResponse } from "@vercel/node";
+import { getConnection } from "typeorm";
+
+const md5 = require("md5"); // eslint-disable-line
 
 export default async (request: VercelRequest, response: VercelResponse) => {
-  if (request.method === 'POST') {
+  if (request.method === "POST") {
     try {
-      const userRepository = getConnection().getCustomRepository(UserRepository);
-      const starredApiRepository = getConnection().getCustomRepository(StarredApiRepository);
+      const userRepository =
+        getConnection().getCustomRepository(UserRepository);
+      const starredApiRepository =
+        getConnection().getCustomRepository(StarredApiRepository);
 
-      const didHash = md5(request.body.userDid)
+      const didHash = md5(request.body.userDid);
       const user = await userRepository.findById(didHash);
       if (!user) {
         return response.json({ status: 406 });
       }
 
-      const isFavorite = await starredApiRepository.isFavorite(user.id, request.body.apiId)
-      const action = isFavorite ? 'unfavorite' : 'favorite'
-
+      const isFavorite = await starredApiRepository.isFavorite(
+        user.id,
+        request.body.apiId
+      );
       if (isFavorite) {
         await starredApiRepository.unfavorite(user.id, request.body.apiId);
       } else {
@@ -29,10 +32,10 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
       return response.json({
         status: 200,
-      })
+      });
     } catch (error) {
-      console.log(error)
-      return response.json({ status: 500, error: error.message })
+      console.log(error);
+      return response.json({ status: 500, error: error.message });
     }
   }
-}
+};

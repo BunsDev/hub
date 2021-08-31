@@ -1,3 +1,7 @@
+import Organizations from "./organizations";
+import Users from "./users";
+import StarredApis from "./starredApis";
+
 import {
   Column,
   Entity,
@@ -7,9 +11,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import Organizations from "./organizations";
-import Users from "./users";
-import StarredApis from "./starredApis";
 
 @Index("apis_pkey", ["id"], { unique: true })
 @Entity("apis", { schema: "public" })

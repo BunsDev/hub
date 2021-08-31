@@ -1,190 +1,192 @@
 /** @jsxImportSource theme-ui **/
-import { useEffect } from 'react'
-import { Flex, Themed, Button } from 'theme-ui'
-import BottomSpace from '../components/BottomSpace'
-import Stars from '../components/Stars'
-import PlaygroundImg from '../../public/images/playground.svg'
-import { cloudFlareGateway, domain } from '../constants'
-import { useRouter } from 'next/router'
-import { APIData } from '../hooks/ens/useGetAPIfromENS'
-import { useStateValue } from '../state/state'
-import { useAuth } from '../hooks/useAuth'
+import Stars from "../components/Stars";
+import { cloudFlareGateway, domain } from "../constants";
+import { APIData } from "../hooks/ens/useGetAPIfromENS";
+import { useStateValue } from "../state/state";
+import { useAuth } from "../hooks/useAuth";
+
+import { useRouter } from "next/router";
+import { Flex, Themed, Button } from "theme-ui";
+import { useEffect } from "react";
 
 type APIDetailProps = {
-  api?: APIData
-  update: () => Promise<void>
-}
+  api?: APIData;
+  update: () => Promise<void>;
+};
 
 const APIDetail = ({ api, update }: APIDetailProps) => {
-  const router = useRouter()
-  const [{ dapp }] = useStateValue()
-  const { authenticate } = useAuth(dapp)
+  const router = useRouter();
+  const [{ dapp }] = useStateValue();
+  const { authenticate } = useAuth(dapp);
 
   const handleFavorite = async () => {
-    if (!dapp.did) return authenticate()
+    if (!dapp.did) return authenticate();
 
-    const response = await fetch(domain + '/api/apis/favorites/action', {
-      method: 'POST',
+    const response = await fetch(domain + "/api/apis/favorites/action", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ userDid: dapp.did, apiId: api.id }),
-    })
-    const result = await response.json()
+    });
+    const result = await response.json();
 
     if (result.status === 200) {
-      await update()
+      await update();
     }
-  }
+  };
 
   useEffect(() => {
     if (dapp.did) {
-      update()
+      void update();
     }
-  }, [dapp.did])
+  }, [dapp.did]);
 
   return (
     <div
       className="wrap"
       sx={{
-        borderRadius: '0.5rem',
-        bg: 'white',
-        px: '2rem',
-        py: '2rem',
+        borderRadius: "20px",
+        bg: "black",
+        p: "3.75rem",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
+        boxShadow: "12px 20px 54px -6px #141316",
+        display: "flex",
+        justifyContent: "space-between",
       }}
     >
-      <Flex className="top">
-        <img
-          className="api-logo"
-          src={`${cloudFlareGateway}${api.locationUri}${api.icon.replace('./', '/')}`}
-          sx={{
-            width: '13.125rem',
-            height: '13.125rem',
-            mr: 4,
-          }}
-        />
-        <div className="api-info" sx={{ mr: 4, width: '28.125rem' }}>
-          <Themed.h1
-            className="title"
+      <Flex className="left" sx={{ flexDirection: "column", width: "100%" }}>
+        <Flex sx={{ alignItems: "flex-start", gap: "40px" }}>
+          <img
+            className="api-logo"
+            src={`${cloudFlareGateway}${api.locationUri}${api.icon.replace(
+              "./",
+              "/"
+            )}`}
             sx={{
-              mb: 3,
-              mt: 4,
-              fontWeight: 'bold',
-              fontSize: 66,
-              color: 'black',
-              lineHeight: '5rem',
-              letterSpacing: '-0.125rem',
+              width: "6.25rem",
+              height: "6.25rem",
+              borderRadius: "20px",
             }}
-          >
-            {api.name}
-          </Themed.h1>
-          <div
-            className="subtitle"
-            sx={{
-              mb: 4,
-              color: '#86909F',
-              fontSize: '1.125rem',
-              fontWeight: '500',
-              lineHeight: '1.3713rem',
-            }}
-          >
-            {api.subtext}
+          />
+          <div className="api-info" sx={{ width: "100%", mb: "2.5rem" }}>
+            <Themed.h2 className="title" sx={{ mb: ".75rem" }}>
+              {api.name}
+            </Themed.h2>
+            <div
+              className="subtitle"
+              sx={{
+                color: "#FFF",
+                mb: ".75rem",
+                fontSize: "1rem",
+                fontWeight: "bold",
+              }}
+            >
+              {api.subtext}
+            </div>
+            <p
+              className="description"
+              sx={{
+                fontSize: ".875rem",
+                color: "rgba(255, 255, 255, .5)",
+              }}
+            >
+              {api.description}
+            </p>
           </div>
-          <p
-            className="description"
-            sx={{
-              lineHeight: '1.25rem',
-            }}
-          >
-            {api.description}
-          </p>
-        </div>
-        <div
-          className="info-card"
-          sx={{
-            px: '1.5rem',
-            py: '2rem',
-            width: '360px',
-            boxShadow: '0rem 1.5625rem 2.5rem rgba(0, 0, 0, 0.06)',
-            borderRadius: '0.5rem',
-            top: 4,
-            position: 'absolute',
-            right: 0,
-            zIndex: 1,
-            background: 'white',
-          }}
-        >
+        </Flex>
+        <Flex className="bottom">
+          <div sx={{ width: "100%", maxWidth: "50rem" }}>
+            <Themed.h3 sx={{ textAlign: "left" }}>Get Started</Themed.h3>
+            <Themed.code>
+              <Themed.pre>{`yarn install @web3api/client`}</Themed.pre>
+            </Themed.code>
+            <Themed.code>
+              <Themed.pre>
+                {`import {
+  Web3API,
+  Ethereum,
+  IPFS,
+  Subgraph
+} from "@web3api/client-js";
+
+const api = new Web3API({
+  uri: "simplestorage.eth",
+  portals: {
+    ethereum: new Ethereum({ provider: (window as any).ethereum }),
+    ipfs: new IPFS({ provider: "http://localhost:5001" }),
+    subgraph: new Subgraph({ provider: "http://localhost:8020" })
+  }
+})`}
+              </Themed.pre>
+            </Themed.code>
+          </div>
+        </Flex>
+      </Flex>
+      <Flex className="right" sx={{ width: "100%", maxWidth: "300px" }}>
+        <div className="info-card">
           <Flex
             sx={{
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mb: 4,
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: "1rem",
             }}
           >
-            <div className="left">
-              <Themed.h4
-                className="title"
-                sx={{
-                  mb: 0,
-                  color: 'black',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: '700',
-                  lineHeight: '14px',
-                  letterSpacing: '-0.004em',
-                  textAlign: 'left',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {api.name}
-              </Themed.h4>
-            </div>
-            <div className="right">
-              <Stars onClick={handleFavorite} count={api.favorites || 0} large />
-            </div>
+            <Themed.h3 className="title">{api.name}</Themed.h3>
+            <Stars
+              onClick={handleFavorite}
+              count={api.favorites || 0}
+              large
+              onDark
+            />
           </Flex>
           <ul
             className="links"
             sx={{
-              '*': {
-                color: 'w3green',
-                textDecoration: 'none',
+              mb: "3rem",
+              "*": {
+                color: "rgba(255, 255, 255, 0.5)",
+                textDecoration: "none",
               },
               li: {
-                fontFamily: 'Istok Web',
-                fontStyle: 'normal',
-                fontWeight: 'normal',
-                fontSize: '1rem',
-                lineHeight: '23px',
-                mb: 3,
-                mixBlendMode: 'normal',
+                fontFamily: "Nunito Sans",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: ".875rem",
+                lineHeight: "120%",
+                mb: "11px",
+                color: "rgba(255, 255, 255, 0.5)",
               },
             }}
           >
-            {'pointerUris' in api &&
+            {"pointerUris" in api &&
               api.pointerUris.map((pointer, idx) => {
                 return (
-                  <li sx={{ display: 'flex' }} key={idx + 'pointerURI'}>
+                  <li sx={{ display: "flex" }} key={idx + "pointerURI"}>
                     <img
-                      sx={{ maxWidth: '1.1875rem', mr: 2 }}
+                      sx={{ maxWidth: "1rem", mr: ".5rem" }}
                       src="/images/link.svg"
                       alt="icon"
                     />
-                    <a href={pointer} target="_BLANK">
+                    <a href={pointer} target="_BLANK" rel="noreferrer">
                       {pointer}
                     </a>
                   </li>
-                )
+                );
               })}
-            {'locationUri' in api && (
-              <li sx={{ display: 'flex' }}>
+            {"locationUri" in api && (
+              <li sx={{ display: "flex" }}>
                 <img
-                  sx={{ maxWidth: '1.1875rem', mr: 2 }}
+                  sx={{ maxWidth: "1rem", mr: ".5rem" }}
                   src="/images/link.svg"
                   alt="icon"
                 />
-                <a href={`${cloudFlareGateway}${api.locationUri}`} target="_BLANK">
-                  {('ipfs/' + api.locationUri).substring(0, 25) + '...'}
+                <a
+                  href={`${cloudFlareGateway}${api.locationUri}`}
+                  target="_BLANK"
+                  rel="noreferrer"
+                >
+                  {("ipfs/" + api.locationUri).substring(0, 25) + "..."}
                 </a>
               </li>
             )}
@@ -220,79 +222,19 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
                 }
               })} */}
           </ul>
-          <br />
           <Button
-            variant="calloutLarge"
-            sx={{ pl: 4, width: '100%' }}
+            variant="secondaryMedium"
+            sx={{ backgroundColor: "white", color: "black", ml: "auto" }}
             onClick={() => {
-              router.push(`/playground/ens/${api.pointerUris[0]}`)
+              void router.push(`/playground/ens/${api.pointerUris[0]}`);
             }}
           >
-            <Flex sx={{ alignItems: 'center', justifyContent: 'left' }}>
-              <img
-                sx={{ maxWidth: '1.1875rem', mr: 2 }}
-                src="/images/playground.svg"
-                alt="icon"
-              />
-              <PlaygroundImg
-                stroke="#FFF"
-                sx={{
-                  width: '2.125rem',
-                  height: '2rem',
-                  position: 'absolute',
-                  left: '-12%',
-                }}
-              />
-              <span>Playground</span>
-            </Flex>
+            Open Playground
           </Button>
         </div>
       </Flex>
-
-      <Flex
-        className="bottom"
-        sx={{ bg: '#FCFDFD', borderTop: '0.0625rem solid #ECF4F2', mt: 4, pt: 4 }}
-      >
-        <img
-          className="api-logo"
-          src="api-logo.svg"
-          sx={{
-            opacity: 0,
-            width: '13.125rem',
-            height: '13.125rem',
-            mr: 4,
-          }}
-        />
-        <div sx={{ width: '38.375rem' }}>
-          <Themed.h2 sx={{ textAlign: 'center' }}>Get Started</Themed.h2>
-          <Themed.code>
-            <Themed.pre>{`yarn install @web3api/client`}</Themed.pre>
-          </Themed.code>
-          <Themed.code>
-            <Themed.pre>
-              {`import {
-  Web3API,
-  Ethereum,
-  IPFS,
-  Subgraph
-} from "@web3api/client-js";
-
-const api = new Web3API({
-  uri: "simplestorage.eth",
-  portals: {
-    ethereum: new Ethereum({ provider: (window as any).ethereum }),
-    ipfs: new IPFS({ provider: "http://localhost:5001" }),
-    subgraph: new Subgraph({ provider: "http://localhost:8020" })
-  }
-})`}
-            </Themed.pre>
-          </Themed.code>
-        </div>
-      </Flex>
-      <BottomSpace />
-      <div className="Playground" />
     </div>
-  )
-}
+  );
+};
 
-export default APIDetail
+export default APIDetail;

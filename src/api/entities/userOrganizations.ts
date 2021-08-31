@@ -1,3 +1,6 @@
+import Organizations from "./organizations";
+import Users from "./users";
+
 import {
   Entity,
   Index,
@@ -5,8 +8,6 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import Organizations from "./organizations";
-import Users from "./users";
 
 @Index("user_organizations_pkey", ["id"], { unique: true })
 @Entity("user_organizations", { schema: "public" })

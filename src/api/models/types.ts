@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface ApiData {
   id: number;
   name: string;
@@ -19,9 +20,9 @@ export interface UserData {
 export interface Authentication {
   github?: {
     accessToken?: string;
-    [k: string]: unknown;
+    [k: string]: unknown; // eslint-disable-line
   };
-  [k: string]: unknown;
+  [k: string]: unknown;  // eslint-disable-line
 }
 
 export interface PaginationMeta {

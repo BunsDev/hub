@@ -1,3 +1,5 @@
+import ApiUris from "./apiUris";
+
 import {
   Column,
   Entity,
@@ -5,7 +7,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import ApiUris from "./apiUris";
 
 @Index("uri_types_pkey", ["id"], { unique: true })
 @Index("uri_types_name_key", ["name"], { unique: true })

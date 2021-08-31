@@ -1,7 +1,8 @@
-import { Column, Entity, Index, OneToMany } from "typeorm";
 import Apis from "./apis";
 import StarredApis from "./starredApis";
 import UserOrganizations from "./userOrganizations";
+
+import { Column, Entity, Index, OneToMany } from "typeorm";
 
 @Index("users_pkey", ["id"], { unique: true })
 @Entity("users", { schema: "public" })

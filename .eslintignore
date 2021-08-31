@@ -1,0 +1,4 @@
+babel.config.js
+next.config.js
+**/@types/**
+**/migrations/**
