@@ -28,12 +28,12 @@ export default async function getMetaDataFromPackageHash(hash: string) {
 
   if (ipfsDataFromJSON === null && ipfsDataFromYAML === null) {
     return "NO METADATA FOUND";
-  } else {
-    try {
-      const doc = yaml.load(ipfsData);
-      return doc;
-    } catch (error) {
-      console.log(error);
-    }
+  }
+
+  try {
+    const doc = yaml.load(ipfsData);
+    return doc;
+  } catch (error) {
+    console.log(error);
   }
 }

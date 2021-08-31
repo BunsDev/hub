@@ -18,6 +18,7 @@ export default class ApiRepository extends Repository<Apis> {
     return this.createQueryBuilder("apis").where("visible = true").getCount();
   }
 
+  // TODO: will be updated in the search issue
   public async getAllActive(_ = 10, _1 = 1): Promise<ApiData[]> {
     const data = await this.query(
       `SELECT 
@@ -38,5 +39,11 @@ export default class ApiRepository extends Repository<Apis> {
     );
 
     return data.reduce(Api.sanitizeApis, []);
+  }
+
+  public async deactivate(id: number) {
+    return this.update(id, {
+      visible: false,
+    });
   }
 }

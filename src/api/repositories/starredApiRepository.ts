@@ -12,8 +12,24 @@ export default class StarredApiRepository extends Repository<StarredApi> {
     });
   }
 
+  public getFavoritesByUserId(userId: string): Promise<StarredApi[]> {
+    return this.find({
+      where: {
+        userId,
+      },
+    });
+  }
+
   public getFavoritesCountByApiId(apiId: string): Promise<number> {
     return this.count({
+      where: {
+        apiId,
+      },
+    });
+  }
+
+  public getFavoritesByApiId(apiId: string): Promise<StarredApi[]> {
+    return this.find({
       where: {
         apiId,
       },

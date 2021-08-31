@@ -1,5 +1,5 @@
 import StarredApiRepository from "../../../../../api/repositories/starredApiRepository";
-import { User } from "../../../../../api/models/User";
+import { Api } from "../../../../../api/models/Api";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getConnection } from "typeorm";
@@ -22,7 +22,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
       const id = md5(userDid);
 
-      const data = await User.getFavorites(id);
+      const data = await Api.getFavoritesByUserId(id);
       const count = await starredApiRepository.getFavoritesCountByUserId(id);
 
       return response.json({

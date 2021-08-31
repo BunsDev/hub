@@ -1,4 +1,4 @@
-import { User } from "../../../api/models/User";
+import { Api } from "../../../api/models/Api";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
@@ -16,7 +16,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       }
 
       const id = md5(userDid);
-      const apis = await User.getPublishedApis(id);
+      const apis = await Api.getPublishedApis(id);
       return response.json({
         status: 200,
         apis,

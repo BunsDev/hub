@@ -9,21 +9,6 @@ export interface ApiData {
   pointerUris: string[];
   ownerId?: string;
 }
-export interface UserData {
-  id: number;
-  username?: string;
-  address?: string;
-  accessToken?: string;
-  authType?: number;
-  githubId?: string;
-}
-export interface Authentication {
-  github?: {
-    accessToken?: string;
-    [k: string]: unknown; // eslint-disable-line
-  };
-  [k: string]: unknown;  // eslint-disable-line
-}
 
 export interface PaginationMeta {
   limit: number;

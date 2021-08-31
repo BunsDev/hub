@@ -1,5 +1,4 @@
 import Database from "../db";
-import { Api } from "../../../api/models/Api";
 import { ApiData } from "../../../api/models/types";
 import ApiRepository from "../../../api/repositories/apiRepository";
 import { checkContentIsValid } from "../../../api/services/ens";
@@ -13,7 +12,8 @@ export default async (request: VercelRequest) => {
       const database = new Database();
       await database.connect();
 
-      const apis = await getCustomRepository(ApiRepository).getAllActive();
+      const apiRepository = getCustomRepository(ApiRepository);
+      const apis = await apiRepository.getAllActive();
 
       apis.forEach(async (api: ApiData) => {
         const { valid } = await checkContentIsValid(
@@ -21,7 +21,7 @@ export default async (request: VercelRequest) => {
           api.locationUri
         );
         if (!valid) {
-          void Api.deactivate(api.id);
+          await apiRepository.deactivate(api.id);
         }
       });
     } catch (e) {
