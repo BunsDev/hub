@@ -61,7 +61,7 @@ const ApiGrid = ({ apis, main }: ApiGridProps) => {
               sx={{ mt: '14px' }}
               variant="primaryMedium"
               onClick={() => {
-                router.push('/apis/create?activeTab=create')
+                router.push('/apis/create?activeTab=start')
               }}
             >
               <span>Create New API</span>

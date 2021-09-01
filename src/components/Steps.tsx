@@ -1,15 +1,18 @@
 /** @jsxImportSource theme-ui **/
 
+import { useMemo } from 'react'
 import { Flex } from 'theme-ui'
 
-const defaultSteps = ['Intro', 'Upload', 'Publish']
-
 interface Steps {
-  steps?: string[]
+  stepsData?: { [key: string]: string }
   activeStep?: string
 }
 
-const Steps = ({ steps = defaultSteps, activeStep = '' }: Steps) => {
+const defaultSteps = { start: 'Intro', upload: 'Upload', publish: 'Publish' }
+
+const Steps = ({ stepsData = defaultSteps, activeStep = '' }: Steps) => {
+  const steps = useMemo(() => Object.values(stepsData), [stepsData])
+
   return (
     <Flex
       sx={{
@@ -29,12 +32,11 @@ const Steps = ({ steps = defaultSteps, activeStep = '' }: Steps) => {
             },
           },
         },
-
         'span.active': { color: 'white' },
       }}
     >
       {steps.map((step, index) => (
-        <span className={index <= steps.indexOf(activeStep) ? 'active' : ''}>
+        <span className={index <= steps.indexOf(stepsData[activeStep]) ? 'active' : ''}>
           {index + 1}. {step}
         </span>
       ))}

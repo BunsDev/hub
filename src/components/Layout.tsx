@@ -34,6 +34,7 @@ const Layout = ({ children }: LayoutProps) => {
         '&::before, &::after': {
           display: 'none',
         },
+        minHeight: '100vh',
         background: '#1E1D22',
       }}
     >

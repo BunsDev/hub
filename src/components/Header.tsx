@@ -7,9 +7,7 @@ import { useRouter } from 'next/router'
 const SignInArea = dynamic(() => import('./SignInArea'), { ssr: false })
 import onboardInit from '../utils/onboardInit'
 import { useStateValue } from '../state/state'
-import SearchBar from './SearchBar'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
-import { height } from 'styled-system'
 import Navbar from './Navbar'
 
 const Header = () => {
@@ -75,7 +73,6 @@ const Header = () => {
         <Navbar />
       </Flex>
       <Flex sx={{ justifyItems: 'flex-end', gap: '1.5rem' }}>
-        <SearchBar />
         <SignInArea onDark />
       </Flex>
     </header>

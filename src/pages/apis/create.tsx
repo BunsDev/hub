@@ -1,21 +1,14 @@
 /** @jsxImportSource theme-ui **/
-import { useState, useEffect } from 'react'
+import { useState, useEffect, createContext, Dispatch, SetStateAction } from 'react'
 import { useRouter } from 'next/router'
 import { Box, Flex, Themed } from 'theme-ui'
 import Layout from '../../components/Layout'
-import CreateAPI from '../../components/tabs/CreateAPI'
 import PublishAPI from '../../components/tabs/PublishAPI'
+import Publish from '../../components/tabs/Publish'
 import Header from '../../components/Header'
-import Navbar from '../../components/Navbar'
-import BottomSpace from '../../components/BottomSpace'
-import UploadApiMode from '../../components/tabs/UploadApiMode'
+import UploadApiMethod from '../../components/tabs/UploadApiMethod'
 import Steps from '../../components/Steps'
-
-const stepQueried: { [key: string]: string } = {
-  create: 'Intro',
-  upload: 'Upload',
-  publish: 'Publish',
-}
+import { DirectUpload, EnsAddress, IPFSHash } from '../../components/tabs/UploadMethods'
 
 const styles = {
   height: 'fit-content',
@@ -26,44 +19,78 @@ const styles = {
   borderRadius: '20px',
 }
 
+export const UPLOAD_METHODS: {
+  DIRECT_UPLOAD: string
+  IPFS_HASH: string
+  ENS_ADDRESS: string
+} = {
+  DIRECT_UPLOAD: 'direct',
+  IPFS_HASH: 'ipfsHash',
+  ENS_ADDRESS: 'ensAddress',
+}
+
+const uploadComponents = {
+  [UPLOAD_METHODS.DIRECT_UPLOAD]: <DirectUpload />,
+  [UPLOAD_METHODS.IPFS_HASH]: <IPFSHash />,
+  [UPLOAD_METHODS.ENS_ADDRESS]: <EnsAddress />,
+}
+
+export const createApiSteps = ['start', 'upload', 'publish']
+
+export const CreateApiContext = createContext<{
+  uploadMethod: string
+  setUploadMethod: Dispatch<SetStateAction<string>>
+}>({
+  uploadMethod: '',
+  setUploadMethod: () => {},
+})
+
 const CreateApi = () => {
   const router = useRouter()
-  const [activeStep, setActiveStep] = useState<string | string[]>()
+  const [activeStep, setActiveStep] = useState<string>()
+  const [uploadMethod, setUploadMethod] = useState<string>('')
 
   useEffect(() => {
     if (router.query.activeTab) {
-      setActiveStep(router.query.activeTab)
+      setActiveStep(router.query.activeTab as string)
     }
-  }, [router.query.activeTab, activeStep])
+  }, [router.query?.activeTab])
 
   useEffect(() => {
-    if (router.isReady && !router.query.activeTab) {
-      router.push(router.pathname + '?activeTab=create')
-      setActiveStep('create')
+    if (
+      router.isReady &&
+      !createApiSteps.some((step) => router.query.activeTab === step)
+    ) {
+      router.push(router.pathname + `?activeTab=${createApiSteps[0]}`)
     }
   }, [router.isReady, router.query?.activeTab, router.pathname])
 
   return (
     <Layout>
       <Header />
-      <Flex>
-        <main sx={{ pb: 5, px: '75px' }}>
-          <div className="contents" sx={styles}>
-            <div
-              className="header"
-              sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px' }}
-            >
-              <Themed.h2 sx={{ mb: '1.75rem' }}>Create New Wrapper</Themed.h2>
-              <Steps activeStep={stepQueried[String(activeStep)]} />
+      <CreateApiContext.Provider value={{ uploadMethod, setUploadMethod }}>
+        <Flex>
+          <main sx={{ pb: 5, px: '10.3125rem' }}>
+            <div className="contents" sx={styles}>
+              <Flex
+                className="header"
+                sx={{
+                  justifyContent: 'space-between',
+                  mb: '.75rem',
+                }}
+              >
+                <Themed.h2 sx={{ mb: 0 }}>Create New Wrapper</Themed.h2>
+                <Steps activeStep={activeStep} />
+              </Flex>
+              <Box as="form" className="content">
+                {activeStep === createApiSteps[0] && <UploadApiMethod />}
+                {activeStep === createApiSteps[1] && uploadComponents[uploadMethod]}
+                {activeStep === createApiSteps[2] && <Publish />}
+              </Box>
             </div>
-            <Box as="form" className="content">
-              {activeStep === 'create' && <CreateAPI />}
-              {activeStep === 'upload' && <UploadApiMode />}
-            </Box>
-            <BottomSpace />
-          </div>
-        </main>
-      </Flex>
+          </main>
+        </Flex>
+      </CreateApiContext.Provider>
     </Layout>
   )
 }

@@ -52,6 +52,7 @@ const SearchBar = () => {
           fontSize: '16px',
           lineHeight: '100%',
           fontFamily: 'Nunito sans',
+          background: 'transparent',
         }}
         placeholder="Search"
       />
