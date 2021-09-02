@@ -59,7 +59,9 @@ export default class Database {
       logging: (process.env.TYPEORM_LOGGING as string) === "true",
       entities: entityFileNames.map((file: any) => context(file).default),
       migrations: undefined, // [process.env.TYPEORM_MIGRATIONS as string],
-      ssl: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     };
 
     return await createConnection(connectionOptions);
