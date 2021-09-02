@@ -36,7 +36,10 @@ const Steps = ({ stepsData = defaultSteps, activeStep = '' }: Steps) => {
       }}
     >
       {steps.map((step, index) => (
-        <span className={index <= steps.indexOf(stepsData[activeStep]) ? 'active' : ''}>
+        <span
+          key={step}
+          className={index <= steps.indexOf(stepsData[activeStep]) ? 'active' : ''}
+        >
           {index + 1}. {step}
         </span>
       ))}

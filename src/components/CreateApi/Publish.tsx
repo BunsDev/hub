@@ -3,12 +3,12 @@ import { FormEventHandler, useEffect } from 'react'
 import { Input, Flex, Button, Themed } from 'theme-ui'
 import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
 import { useStateValue } from '../../state/state'
-import { domain, MAIN_DOMAIN } from '../../constants'
+import { cloudFlareGateway, domain, MAIN_DOMAIN } from '../../constants'
 
-import Card from '../Card'
 import { useAuth } from '../../hooks/useAuth'
-import { Wrapper } from './UploadMethods'
+import { Wrapper } from './Wrapper'
 import { useRouter } from 'next/router'
+import stripIPFSPrefix from '../../utils/stripIPFSPrefix'
 
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue()
@@ -87,7 +87,15 @@ const PublishAPI = () => {
             }}
           >
             {publish.apiData && (
-              <Card api={publish.apiData} ipfsHash={publish.ipfs} boxShadowOn noHover />
+              <img
+                sx={{
+                  width: '100%',
+                  height: 'auto',
+                }}
+                src={`${cloudFlareGateway}${
+                  publish.ipfs || stripIPFSPrefix(publish.apiData.locationUri)
+                }${publish.apiData.icon.replace('./', '/')}`}
+              />
             )}
           </div>
           <div className="inputs" sx={{ width: '100%', minWidth: '30.5rem' }}>
@@ -97,22 +105,13 @@ const PublishAPI = () => {
             <Input value={publish?.subdomain} disabled />
           </div>
           <div className="info" sx={{ maxWidth: '30%' }}>
-            {publish?.apiData?.name ||
-              (true && (
-                <Themed.h2>
-                  {publish?.apiData?.name || 'The Walt Disney Company'}
-                </Themed.h2>
-              ))}
-            {publish?.apiData?.description ||
-              (true && (
-                <p className="body-1">
-                  {publish?.apiData?.description ||
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'}
-                </p>
-              ))}
+            {publish?.apiData?.name && <Themed.h2>{publish?.apiData?.name}</Themed.h2>}
+            {publish?.apiData?.description && (
+              <p className="body-1">{publish?.apiData?.description}</p>
+            )}
           </div>
         </Flex>
-        <Flex className="buttons" sx={{ justifyContent: 'space-between' }}>
+        <Flex className="buttons" sx={{ justifyContent: 'space-between', mt: '2.5rem' }}>
           <Button
             variant="secondaryMedium"
             onClick={(e) => {

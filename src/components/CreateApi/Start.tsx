@@ -3,7 +3,8 @@
 import { useRouter } from 'next/router'
 import { useCallback, useContext } from 'react'
 import { Button, Flex, Themed, ThemeUICSSObject } from 'theme-ui'
-import { CreateApiContext, createApiSteps, UPLOAD_METHODS } from '../../pages/apis/create'
+import { CreateApiContext } from '../../pages/apis/create'
+import { createApiSteps, UPLOAD_METHODS } from '../../utils/createWrapper'
 
 const styles: { [key: string]: ThemeUICSSObject } = {
   tutorial: {
@@ -41,7 +42,7 @@ const styles: { [key: string]: ThemeUICSSObject } = {
   },
 }
 
-const UploadApiMethod = () => {
+const Start = () => {
   const router = useRouter()
 
   const { setUploadMethod } = useContext(CreateApiContext)
@@ -149,4 +150,4 @@ yarn deploy --IPFS`}</Themed.pre>
   )
 }
 
-export default UploadApiMethod
+export default Start

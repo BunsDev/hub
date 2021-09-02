@@ -100,7 +100,7 @@ const GlobalTheme: Theme = {
       height: '2.5rem',
       border: 'none',
       borderRadius: '.5rem',
-      background: '#1F1F20',
+      background: 'transparent',
       px: '1rem',
     },
     label: {

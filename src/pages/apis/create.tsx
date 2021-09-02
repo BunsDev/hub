@@ -3,12 +3,17 @@ import { useState, useEffect, createContext, Dispatch, SetStateAction } from 're
 import { useRouter } from 'next/router'
 import { Box, Flex, Themed } from 'theme-ui'
 import Layout from '../../components/Layout'
-import PublishAPI from '../../components/tabs/PublishAPI'
-import Publish from '../../components/tabs/Publish'
+import Publish from '../../components/CreateApi/Publish'
 import Header from '../../components/Header'
-import UploadApiMethod from '../../components/tabs/UploadApiMethod'
+import UploadApiMethod from '../../components/CreateApi/Start'
 import Steps from '../../components/Steps'
-import { DirectUpload, EnsAddress, IPFSHash } from '../../components/tabs/UploadMethods'
+import { DirectUpload, EnsAddress, IPFSHash } from '../../components/CreateApi/UploadBy'
+import {
+  createApiSteps,
+  UPLOAD_METHODS,
+  validMethod,
+  validStep,
+} from '../../utils/createWrapper'
 
 const styles = {
   height: 'fit-content',
@@ -19,23 +24,11 @@ const styles = {
   borderRadius: '20px',
 }
 
-export const UPLOAD_METHODS: {
-  DIRECT_UPLOAD: string
-  IPFS_HASH: string
-  ENS_ADDRESS: string
-} = {
-  DIRECT_UPLOAD: 'direct',
-  IPFS_HASH: 'ipfsHash',
-  ENS_ADDRESS: 'ensAddress',
-}
-
-const uploadComponents = {
+export const uploadComponents = {
   [UPLOAD_METHODS.DIRECT_UPLOAD]: <DirectUpload />,
   [UPLOAD_METHODS.IPFS_HASH]: <IPFSHash />,
   [UPLOAD_METHODS.ENS_ADDRESS]: <EnsAddress />,
 }
-
-export const createApiSteps = ['start', 'upload', 'publish']
 
 export const CreateApiContext = createContext<{
   uploadMethod: string
@@ -57,13 +50,20 @@ const CreateApi = () => {
   }, [router.query?.activeTab])
 
   useEffect(() => {
+    if (router.query.method) {
+      setUploadMethod(router.query.method as string)
+    }
+  }, [router.query?.method])
+
+  useEffect(() => {
     if (
       router.isReady &&
-      !createApiSteps.some((step) => router.query.activeTab === step)
+      (!validStep(router.query?.activeTab as string) ||
+        (router.query.method && !validMethod(router.query?.method as string)))
     ) {
       router.push(router.pathname + `?activeTab=${createApiSteps[0]}`)
     }
-  }, [router.isReady, router.query?.activeTab, router.pathname])
+  }, [router.isReady, router.query?.activeTab, router.query?.method, router.pathname])
 
   return (
     <Layout>
