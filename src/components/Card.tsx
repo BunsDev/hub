@@ -30,6 +30,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
     <div
       className="Card"
       sx={{
+        minWidth: "300px",
         borderRadius: "1.25rem",
         bg: "cardBg",
         border: "1px solid rgba(255, 255, 255, 0.2)",

@@ -45,7 +45,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
         ul: {
           display: "flex",
           color: onDark ? "white !important" : "",
-          gap: "11px",
+          gap: "1.5rem",
         },
       }}
     >
@@ -114,11 +114,8 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             onKeyUp={handleSignIn}
             sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
           >
-            <Button
-              variant="primaryMedium"
-              sx={{ display: "inline-block", ml: 3 }}
-            >
-              Sign In
+            <Button variant="primaryMedium" sx={{ display: "inline-block" }}>
+              ?
             </Button>
             {/* <User /> */}
           </li>

@@ -97,7 +97,22 @@ const GlobalTheme: Theme = {
       },
     },
     input: {
-      border: "2px solid rgba(205, 208, 227, 0.295455)",
+      fontFamily: "Nunito sans",
+      lineHeight: "150%",
+      height: "2.5rem",
+      border: "none",
+      borderRadius: ".5rem",
+      background: "transparent",
+      px: "1rem",
+    },
+    label: {
+      fontFamily: "Nunito Sans",
+      fontStyle: "normal",
+      fontWeight: "normal",
+      fontSize: "14px",
+      lineHeight: "120%",
+      color: "rgba(255, 255, 255, .5)",
+      mb: ".25rem",
     },
   },
   buttons: {

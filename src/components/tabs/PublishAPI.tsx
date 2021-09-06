@@ -98,7 +98,7 @@ const PublishAPI = () => {
     dispatch({ type: "setipfsError", payload: "" });
     if (e.target.value !== "") {
       const metaData = await getMetaDataFromPackageHash(e.target.value);
-      if (metaData === undefined) {
+      if (metaData === undefined || metaData === "NO METADATA FOUND") {
         dispatch({ type: "setipfsLoading", payload: false });
         dispatch({ type: "setApiData", payload: null });
         dispatch({ type: "setipfsError", payload: "No Package available" });
@@ -431,6 +431,7 @@ const PublishAPI = () => {
           justifyContent: "flex-start",
           alignItems: "center",
           flexDirection: "column",
+          border: "1px solid silver",
         }}
       >
         <div className="title">Package Preview</div>

@@ -2,10 +2,11 @@
 import { timing } from "../theme";
 import { useStateValue } from "../state/state";
 import { domain } from "../constants";
+import BGCircles from "./BGCircles";
 
-import { useEffect } from "react";
-import { Global } from "@emotion/react"; // eslint-disable-line
 import useSWR from "swr";
+import { Global } from "@emotion/react";
+import { useEffect } from "react";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -30,14 +31,16 @@ const Layout = ({ children }: LayoutProps) => {
     <div
       className="layout"
       sx={{
-        overflow: "hidden",
+        zIndex: "1",
         "&::before, &::after": {
           display: "none",
         },
+        minHeight: "100vh",
         background: "#1E1D22",
       }}
     >
       {children}
+      <BGCircles />
       <Global
         styles={(theme: any) => ({ // eslint-disable-line
           "@keyframes shift": {
@@ -69,11 +72,9 @@ const Layout = ({ children }: LayoutProps) => {
             },
           },
           body: {
-            minHeight: "100vh",
             scrollBehavior: "smooth",
             margin: "0",
             padding: "0",
-            overflow: "hidden",
             backgroundRepeat: "no-repeat",
             backgroundSize: "100% 100%",
             backgroundAttachment: "scroll",
@@ -103,9 +104,10 @@ const Layout = ({ children }: LayoutProps) => {
           },
           main: {
             overflowX: "hidden",
+            paddingTop: "3.25rem",
+            paddingBottom: "4.6875rem",
             flex: 1,
             display: "flex",
-            alignItems: "center",
           },
           fieldset: {
             padding: 0,
@@ -133,9 +135,12 @@ const Layout = ({ children }: LayoutProps) => {
             padding: ".5rem 1rem",
             borderRadius: "8px",
             backgroundColor: theme.colors.w3Grey3,
+            wordBreak: "break-all",
+            whiteSpace: "pre-wrap",
             fontStyle: "normal",
             fontWeight: "normal",
             fontSize: "16px",
+            fontFamily: "Nunito sans",
             lineHeight: "150%",
             color: "#FFF",
             code: {
@@ -189,6 +194,25 @@ const Layout = ({ children }: LayoutProps) => {
           },
           ".bn-onboard-custom": {
             zIndex: 100000,
+          },
+          ".body-1": {
+            fontFamily: "Nunito Sans",
+            fontWeight: "normal",
+            fontSize: "16px",
+            lineHeight: "150%",
+            color: "rgba(255, 255, 255, .5)",
+          },
+          ".body-2": {
+            fontFamily: "Nunito Sans",
+            fontSize: "14px",
+            lineHeight: "120%",
+          },
+          ".subtitle-1": {
+            fontFamily: "Nunito Sans",
+            fontWeight: "normal",
+            fontSize: "16px",
+            lineHeight: "100%",
+            color: "white",
           },
         })}
       />

@@ -1,17 +1,15 @@
 /** @jsxImportSource theme-ui **/
 import Layout from "../../../components/Layout";
-import Navbar from "../../../components/Navbar";
 import Header from "../../../components/Header";
 import Playground from "../../../components/Playground";
 import { useGetAPIfromENSParamInURL } from "../../../hooks/ens/useGetAPIfromENS";
 import { useStateValue } from "../../../state/state";
 import Modal from "../../../components/Modal";
 
-import { useEffect } from "react";
 import { Web3ApiProvider } from "@web3api/react";
-import { useRouter } from "next/router";
-import { Global } from "@emotion/react"; // eslint-disable-line
+import { useEffect } from "react";
 import { Flex } from "theme-ui";
+import { useRouter } from "next/router";
 
 const PlaygroundPage = () => {
   const router = useRouter();
@@ -41,6 +39,7 @@ const PlaygroundPage = () => {
   }, [dapp.web3]);
   return (
     <Layout>
+      <Header />
       <Flex>
         {showSignInModal && !dapp.web3 && (
           <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>
@@ -53,10 +52,8 @@ const PlaygroundPage = () => {
             />{" "}
           </div>
         )}
-        <Navbar />
         <main>
           <div className="contents animate">
-            <Header onDark title="Playground" />
             {data !== null && web3api.plugins && (
               <Web3ApiProvider plugins={web3api.plugins}>
                 <Playground api={data} />
@@ -65,15 +62,6 @@ const PlaygroundPage = () => {
           </div>
         </main>
       </Flex>
-      <Global
-        styles={(theme: any) => { // eslint-disable-line
-          return {
-            body: {
-              background: theme.colors.w3shade0 + " !important",
-            },
-          };
-        }}
-      />
     </Layout>
   );
 };
