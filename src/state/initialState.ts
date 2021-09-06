@@ -3,7 +3,6 @@ import { APIData } from "../hooks/ens/useGetAPIfromENS";
 
 import ethers from "ethers";
 import { PluginRegistration, UriRedirect } from "@web3api/client-js";
-import { ipfsPlugin } from "@web3api/ipfs-plugin-js";
 import { ethereumPlugin } from "@web3api/ethereum-plugin-js";
 
 export interface State {
@@ -40,10 +39,6 @@ export const initialState: State = {
             },
           },
         }),
-      },
-      {
-        uri: "w3://ens/ipfs.web3api.eth",
-        plugin: ipfsPlugin({ provider: "https://ipfs.io" }) as undefined,
       },
     ],
   },
