@@ -35,8 +35,11 @@ const NavItem = ({
     <li
       className={className}
       sx={{
-        borderRadius: "4px",
         transition: "background-color 0.5s ease",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: "4px",
         svg: {
           stroke: navItems[label].color,
           mr: "14px",
