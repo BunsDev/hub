@@ -12,9 +12,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       const page = request.query.page ? Number(request.query.page) : 1;
 
       const database = new Database();
-      const connection = await database.connect();
-
-      console.log(connection);
+      await database.connect();
 
       const apis = await getCustomRepository(ApiRepository).getAllActive();
       const totalCount = await getCustomRepository(
@@ -29,8 +27,6 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         total_count: totalCount,
       };
-
-      // connection.close();
 
       return response.json({
         status: 200,
