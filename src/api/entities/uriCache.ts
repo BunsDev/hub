@@ -2,7 +2,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Index("uri_cache_pkey", ["id"], { unique: true })
 @Entity("uri_cache", { schema: "public" })
-export default class URICache {
+export default class UriCache {
   @PrimaryGeneratedColumn({ type: "bigint", name: "id" })
   public id: string;
 

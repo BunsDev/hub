@@ -17,14 +17,14 @@ export default class StarredApis {
   @Column("character varying", { name: "fk_api_id" })
   public apiId: string;
 
-  @ManyToOne(() => Apis, (apis) => apis.starredApis)
+  @ManyToOne(() => Apis, (api) => api.starredApis)
   @JoinColumn([{ name: "fk_api_id", referencedColumnName: "id" }])
   public api: Partial<Apis>;
 
   @Column("character varying", { name: "fk_user_id" })
   public userId: string;
 
-  @ManyToOne(() => Users, (users) => users.starredApis)
+  @ManyToOne(() => Users, (user) => user.starredApis)
   @JoinColumn([{ name: "fk_user_id", referencedColumnName: "id" }])
   public user: Partial<Users>;
 }

@@ -33,14 +33,14 @@ export default class Apis {
   @Column("boolean", { name: "visible", nullable: true, default: () => "true" })
   public visible: boolean | null;
 
-  @ManyToOne(() => Organizations, (organizations) => organizations.apis)
+  @ManyToOne(() => Organizations, (organization) => organization.apis)
   @JoinColumn([{ name: "fk_organization_id", referencedColumnName: "id" }])
   public organization: Partial<Organizations>;
 
-  @ManyToOne(() => Users, (users) => users.apis)
+  @ManyToOne(() => Users, (user) => user.apis)
   @JoinColumn([{ name: "fk_owner_id", referencedColumnName: "id" }])
   public owner: Partial<Users>;
 
-  @OneToMany(() => StarredApis, (starredApis) => starredApis.api)
+  @OneToMany(() => StarredApis, (starredApi) => starredApi.api)
   public starredApis: Partial<StarredApis>[];
 }

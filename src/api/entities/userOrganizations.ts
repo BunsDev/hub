@@ -17,12 +17,12 @@ export default class UserOrganizations {
 
   @ManyToOne(
     () => Organizations,
-    (organizations) => organizations.userOrganizations
+    (organization) => organization.userOrganizations
   )
   @JoinColumn([{ name: "fk_organization_id", referencedColumnName: "id" }])
   public organization: Partial<Organizations>;
 
-  @ManyToOne(() => Users, (users) => users.userOrganizations)
+  @ManyToOne(() => Users, (user) => user.userOrganizations)
   @JoinColumn([{ name: "fk_user_id", referencedColumnName: "id" }])
   public user: Partial<Users>;
 }
