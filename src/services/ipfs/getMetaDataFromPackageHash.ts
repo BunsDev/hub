@@ -1,16 +1,19 @@
 import axios from 'axios'
-import { cloudFlareGateway } from '../../constants'
+import { ipfsGateway } from '../../constants'
 
 const yaml = require('js-yaml')
 
-export default async function getMetaDataFromPackageHash(hash: string) {
+export default async function getMetaDataFromPackageHash(
+  hash: string,
+  metaPath?: string,
+) {
   let ipfsDataFromJSON = null
   let ipfsDataFromYAML = null
   let ipfsData = null
 
   try {
     ipfsDataFromJSON = await axios.get(
-      cloudFlareGateway + hash + '/web3api.meta.json'
+      ipfsGateway + hash + (metaPath || '/web3api.meta.json'),
     )
     ipfsData = ipfsDataFromJSON.data
   } catch (error) {
@@ -18,7 +21,7 @@ export default async function getMetaDataFromPackageHash(hash: string) {
   }
   try {
     ipfsDataFromYAML = await axios.get(
-      cloudFlareGateway + hash + '/web3api.meta.yaml'
+      ipfsGateway + hash + (metaPath || '/web3api.meta.yaml'),
     )
     ipfsData = ipfsDataFromYAML.data
   } catch (error) {

@@ -4,7 +4,7 @@ import { Flex, Themed, Button } from 'theme-ui'
 import BottomSpace from '../components/BottomSpace'
 import Stars from '../components/Stars'
 import PlaygroundImg from '../../public/images/playground.svg'
-import { cloudFlareGateway, domain } from '../constants'
+import { ipfsGateway, domain } from '../constants'
 import { useRouter } from 'next/router'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 import { useStateValue } from '../state/state'
@@ -60,7 +60,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
         <Flex sx={{ alignItems: 'flex-start', gap: '40px' }}>
           <img
             className="api-logo"
-            src={`${cloudFlareGateway}${api.locationUri}${api.icon.replace('./', '/')}`}
+            src={`${ipfsGateway}${api.locationUri}${api.icon.replace('./', '/')}`}
             sx={{
               width: '6.25rem',
               height: '6.25rem',
@@ -174,7 +174,7 @@ const api = new Web3API({
                   src="/images/link.svg"
                   alt="icon"
                 />
-                <a href={`${cloudFlareGateway}${api.locationUri}`} target="_BLANK">
+                <a href={`${ipfsGateway}${api.locationUri}`} target="_BLANK">
                   {('ipfs/' + api.locationUri).substring(0, 25) + '...'}
                 </a>
               </li>

@@ -1,9 +1,6 @@
 /** @jsxImportSource theme-ui **/
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { Flex, Input } from 'theme-ui'
-import { cloudFlareGateway } from '../constants'
-import { APIData } from '../hooks/ens/useGetAPIfromENS'
-import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 import SearchIcon from '../../public/images/magnifying-glass.svg'
 import router from 'next/router'
 

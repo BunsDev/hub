@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Element } from 'cheerio'
 import { ApiData } from '../../api/models/types'
-import { cloudFlareGateway } from '../../constants'
+import { ipfsGateway } from '../../constants'
 import { APIData } from '../../hooks/ens/useGetAPIfromENS'
 import get_CFG_UI_DOM from '../../utils/get_CFG_UI_DOM'
 
@@ -13,7 +13,7 @@ export interface QueryAttributes {
 
 const getInfo = async (row: Element, folder: string): Promise<QueryAttributes> => {
   const queryData = await axios.get(
-    `${cloudFlareGateway.replace('/ipfs/', '')}${row.attribs.href}`,
+    `${ipfsGateway.replace('/ipfs/', '')}${row.attribs.href}`,
   )
   const key = row.attribs.href.split(`meta/${folder}/`)[1].split('.graphql')[0]
   return { id: key, value: queryData.data }

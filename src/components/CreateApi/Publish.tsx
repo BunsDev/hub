@@ -3,7 +3,7 @@ import { FormEventHandler, useEffect } from 'react'
 import { Input, Flex, Button, Themed } from 'theme-ui'
 import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
 import { useStateValue } from '../../state/state'
-import { cloudFlareGateway, domain, MAIN_DOMAIN } from '../../constants'
+import { ipfsGateway, domain, MAIN_DOMAIN } from '../../constants'
 
 import { useAuth } from '../../hooks/useAuth'
 import { Wrapper } from './Wrapper'
@@ -92,7 +92,7 @@ const PublishAPI = () => {
                   width: '100%',
                   height: 'auto',
                 }}
-                src={`${cloudFlareGateway}${
+                src={`${ipfsGateway}${
                   publish.ipfs || stripIPFSPrefix(publish.apiData.locationUri)
                 }${publish.apiData.icon.replace('./', '/')}`}
               />
