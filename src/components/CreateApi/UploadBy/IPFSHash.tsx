@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui **/
 import { ChangeEventHandler, MouseEventHandler } from 'react'
 import Input from '../../Input'
 import getMetaDataFromPackageHash from '../../../services/ipfs/getMetaDataFromPackageHash'
@@ -9,15 +10,15 @@ import { Button, Flex, Image } from '@theme-ui/components'
 import Spinner from '../../Spinner'
 
 export const IPFSHash = () => {
-  const [{ publish }, dispatch] = useStateValue()
+  const [{ publish }, dispatch] = useStateValue();
 
   const ipfsClasses = publish.ipfsLoading
-    ? 'loading'
+    ? "loading"
     : publish.ipfsSuccess
-    ? 'success'
+    ? "success"
     : publish.ipfsError
-    ? 'error'
-    : ''
+    ? "error"
+    : "";
 
   const handleIPFSHashInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     dispatch({ type: 'setipfs', payload: e.target.value })
@@ -34,15 +35,16 @@ export const IPFSHash = () => {
         dispatch({ type: 'setipfsLoading', payload: false })
         dispatch({ type: 'setApiData', payload: null })
         dispatch({ type: 'setipfsError', payload: 'No Package available' })
+
       } else {
-        dispatch({ type: 'setipfsLoading', payload: false })
-        dispatch({ type: 'setipfsSuccess', payload: true })
-        dispatch({ type: 'setApiData', payload: metaData })
+        dispatch({ type: "setipfsLoading", payload: false });
+        dispatch({ type: "setipfsSuccess", payload: true });
+        dispatch({ type: "setApiData", payload: metaData });
       }
     } else {
-      dispatch({ type: 'setipfsLoading', payload: false })
+      dispatch({ type: "setipfsLoading", payload: false });
     }
-  }
+  };
 
   const ipfsStatus = publish.ipfsLoading
     ? 'loading'
@@ -105,7 +107,7 @@ export const IPFSHash = () => {
       </div>
       <NavButtons continueEnabled={publish.ipfsSuccess} />
     </Wrapper>
-  )
-}
+  );
+};
 
-export default IPFSHash
+export default IPFSHash;

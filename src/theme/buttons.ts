@@ -1,4 +1,4 @@
-let buttons: Record<string, any> = {}
+const buttons: Record<string, any> = {}; // eslint-disable-line
 
 const buttonBase = {
   fontFamily: 'Nunito Sans',
@@ -30,19 +30,24 @@ const buttonPaddingSizes = {
     px: '4rem',
     py: '1.25rem',
   },
-}
+};
 
 const buttonColorStates = {
   primary: {
-    backgroundColor: 'w3ButtonPrimary',
-    borderColor: 'w3ButtonPrimary',
-    '&:hover': {
-      bg: 'w3ButtonPrimaryHover',
-      borderColor: 'w3ButtonPrimaryHover',
+    backgroundColor: "w3ButtonPrimary",
+    borderColor: "w3ButtonPrimary",
+    "&:hover": {
+      bg: "w3ButtonPrimaryHover",
+      borderColor: "w3ButtonPrimaryHover",
     },
-    '&:active': {
-      bg: '#255661',
-      borderColor: '#255661',
+    "&:active": {
+      bg: "#255661",
+      borderColor: "#255661",
+    },
+    "&[disabled]": {
+      bg: "w3TextNavTeal",
+      borderColor: "w3TextNavTeal",
+      cursor: "not-allowed",
     },
     '&[disabled]': {
       bg: 'w3TextNavTeal',
@@ -51,23 +56,23 @@ const buttonColorStates = {
     },
   },
   secondary: {
-    bg: '#141D32',
-    borderColor: 'transparent',
-    color: 'white',
-    '&:active': {
-      bg: 'rgba(104, 129, 132, 0.2)',
+    bg: "#141D32",
+    borderColor: "transparent",
+    color: "white",
+    "&:active": {
+      bg: "rgba(104, 129, 132, 0.2)",
     },
     '&[disabled]': {
       cursor: 'not-allowed',
     },
   },
   hollow: {
-    boxShadow: 'none',
-    color: 'white',
+    boxShadow: "none",
+    color: "white",
   },
   callout: {
-    color: 'white',
-    background: 'linear-gradient(0deg, #529DAD 1.85%, #60C092 97.11%)',
+    color: "white",
+    background: "linear-gradient(0deg, #529DAD 1.85%, #60C092 97.11%)",
   },
   suffix: {
     color: 'white',
@@ -85,4 +90,4 @@ Object.keys(buttonColorStates).map((name) => {
   })
 })
 
-export default buttons
+export default buttons;

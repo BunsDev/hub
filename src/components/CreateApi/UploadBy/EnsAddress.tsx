@@ -12,34 +12,35 @@ import { Button, Image, Flex } from '@theme-ui/components'
 
 export const EnsAddress = () => {
   const [{ dapp, publish }, dispatch] = useStateValue()
+
   useEffect(() => {
-    if (publish.subdomain !== '') {
-      checkForENSAvailability(publish.subdomain)
+    if (publish.subdomain !== "") {
+      void checkForENSAvailability(publish.subdomain);
     }
-  }, [dapp.address])
+  }, [dapp.address]);
 
   const checkForENSAvailability = useCallback(
     async (label: string) => {
-      dispatch({ type: 'setsubdomainLoading', payload: true })
+      dispatch({ type: "setsubdomainLoading", payload: true });
       try {
-        const owner = await getOwner(`${label}.${MAIN_DOMAIN}`, dapp.web3)
+        const owner = await getOwner(`${label}.${MAIN_DOMAIN}`, dapp.web3);
         if (owner === ZERO_ADDRESS) {
-          dispatch({ type: 'setsubdomainLookupSuccess', payload: true })
-          dispatch({ type: 'setsubdomainError', payload: '' })
+          dispatch({ type: "setsubdomainLookupSuccess", payload: true });
+          dispatch({ type: "setsubdomainError", payload: "" });
         } else {
-          dispatch({ type: 'setsubdomainLookupSuccess', payload: false })
+          dispatch({ type: "setsubdomainLookupSuccess", payload: false });
           dispatch({
-            type: 'setsubdomainError',
-            payload: 'Subdomain name is not available',
-          })
+            type: "setsubdomainError",
+            payload: "Subdomain name is not available",
+          });
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-      dispatch({ type: 'setsubdomainLoading', payload: false })
+      dispatch({ type: "setsubdomainLoading", payload: false });
     },
-    [dapp.web3],
-  )
+    [dapp.web3]
+  );
 
   const handleSubdomainChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     dispatch({ type: 'setsubdomain', payload: e.target.value })
@@ -48,7 +49,7 @@ export const EnsAddress = () => {
   }
   const handleApplyButton: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault()
-    publish.subdomain && (await checkForENSAvailability(publish.subdomain))
+    publish.subdomain && checkForENSAvailability(publish.subdomain)
   }
 
   const subdomainStatus = publish.subdomainLookupSuccess
@@ -117,7 +118,7 @@ export const EnsAddress = () => {
       </div>
       <NavButtons continueEnabled={publish.subdomainLookupSuccess} />
     </Wrapper>
-  )
-}
+  );
+};
 
-export default EnsAddress
+export default EnsAddress;

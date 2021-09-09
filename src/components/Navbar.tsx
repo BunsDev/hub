@@ -1,4 +1,5 @@
 /** @jsxImportSource theme-ui **/
+
 import { Flex, useThemeUI } from 'theme-ui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -8,51 +9,54 @@ import Dots from '../../public/images/dots-horizontal.svg'
 
 const navItems: { [key: string]: { [key: string]: string } } = {
   apis: {
-    color: 'w3NavPink',
-    bg: 'w3NavPinkBg',
+    color: "w3NavPink",
+    bg: "w3NavPinkBg",
   },
   playground: {
-    color: 'w3NavGreen',
-    bg: 'w3NavGreenBg',
+    color: "w3NavGreen",
+    bg: "w3NavGreenBg",
   },
   more: {
     color: 'w3NavYellow',
     bg: 'w3NavYellowBg',
   },
-}
+};
 
 const NavItem = ({
   label,
   className,
   children,
 }: {
-  label: string
-  className?: string
-  children?: any
+  label: string;
+  className?: string;
+  children?: React.ReactChild;
 }) => {
   return (
     <li
       className={className}
       sx={{
-        borderRadius: '4px',
-        transition: 'background-color 0.5s ease',
+        transition: "background-color 0.5s ease",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: "4px",
         svg: {
           stroke: navItems[label].color,
-          mr: '14px',
+          mr: "14px",
         },
-        '&:before': {
+        "&:before": {
           content: '""',
-          display: 'block',
-          position: 'absolute',
+          display: "block",
+          position: "absolute",
           top: 0,
-          width: '100%',
-          height: '0.5rem',
-          borderRadius: '4px',
-          transition: 'background-color 0.5s ease',
+          width: "100%",
+          height: "0.5rem",
+          borderRadius: "4px",
+          transition: "background-color 0.5s ease",
         },
-        '&:hover, &.active': {
+        "&:hover, &.active": {
           backgroundColor: navItems[label]?.bg,
-          '&:before': {
+          "&:before": {
             backgroundColor: navItems[label].color,
           },
         },
@@ -74,43 +78,42 @@ const NavItem = ({
     >
       {children}
     </li>
-  )
-}
+  );
+};
 const Navbar = () => {
-  const { pathname } = useRouter()
-  const { theme } = useThemeUI()
+  const { pathname } = useRouter();
 
   const activeRoute = (path: string, optionalPath?: string): string =>
     (optionalPath && pathname === optionalPath) || pathname.includes(`${path}`)
-      ? 'active'
-      : ''
+      ? "active"
+      : "";
   return (
     <nav
       role="nav"
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: '100%',
-        width: '100%',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        height: "100%",
+        width: "100%",
       }}
     >
       <ul
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          height: '4.5625rem',
+          display: "flex",
+          flexDirection: "row",
+          height: "4.5625rem",
         }}
       >
-        <NavItem label="apis" className={activeRoute('/apis', '/')}>
+        <NavItem label="apis" className={activeRoute("/apis", "/")}>
           <Link href="/">
-            <a sx={{ alignItems: 'center' }}>
+            <a sx={{ alignItems: "center" }}>
               <APIs />
               <span className="text-nav">Wrappers</span>
             </a>
           </Link>
         </NavItem>
-        <NavItem label="playground" className={activeRoute('/playground')}>
+        <NavItem label="playground" className={activeRoute("/playground")}>
           <Link href="/playground">
             <a className="text-nav">
               <PlaygroundImg />
@@ -126,7 +129,7 @@ const Navbar = () => {
         </NavItem>
       </ul>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

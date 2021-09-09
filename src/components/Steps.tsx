@@ -16,28 +16,28 @@ export const defaultSteps: Step[] = [
   { value: 'upload', label: 'Upload', onClick: () => {} },
   { value: 'publish', label: 'Publish', onClick: () => {} },
 ]
-
 const Steps = ({ stepsData = defaultSteps, activeStep = '' }: Steps) => {
+
   return (
     <Flex
       sx={{
         span: {
-          fontWeight: '800',
-          fontSize: '20px',
-          color: 'rgba(255, 255, 255, 0.5)',
-          transition: '.2s all',
-          '&:after': {
+          fontWeight: "800",
+          fontSize: "20px",
+          color: "rgba(255, 255, 255, 0.5)",
+          transition: ".2s all",
+          "&:after": {
             content: "'-'",
-            m: '0 12px',
-            color: 'rgba(255, 255, 255, 0.5)',
+            m: "0 12px",
+            color: "rgba(255, 255, 255, 0.5)",
           },
-          '&:last-child': {
-            '&:after': {
-              display: 'none',
+          "&:last-child": {
+            "&:after": {
+              display: "none",
             },
           },
         },
-        'span.active': { color: 'white' },
+        "span.active": { color: "white" },
       }}
     >
       {stepsData.map((step, index) => {
@@ -57,7 +57,7 @@ const Steps = ({ stepsData = defaultSteps, activeStep = '' }: Steps) => {
         )
       })}
     </Flex>
-  )
-}
+  );
+};
 
-export default Steps
+export default Steps;

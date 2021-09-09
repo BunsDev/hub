@@ -1,14 +1,14 @@
 /** @jsxImportSource theme-ui **/
-import { Flex } from 'theme-ui'
-import Layout from '../../../components/Layout'
-import Navbar from '../../../components/Navbar'
-import BottomSpace from '../../../components/BottomSpace'
-import APIDetail from '../../../components/APIDetail'
-import { useGetAPIfromENSParamInURL } from '../../../hooks/ens/useGetAPIfromENS'
-import Header from '../../../components/Header'
+import Layout from "../../../components/Layout";
+import BottomSpace from "../../../components/BottomSpace";
+import APIDetail from "../../../components/APIDetail";
+import { useGetAPIfromENSParamInURL } from "../../../hooks/ens/useGetAPIfromENS";
+import Header from "../../../components/Header";
+
+import { Flex } from "theme-ui";
 
 const ApiView = () => {
-  const { data, fetchApiDetails } = useGetAPIfromENSParamInURL()
+  const { data, fetchApiDetails } = useGetAPIfromENSParamInURL();
   return (
     <Layout>
       <Header />
@@ -21,7 +21,7 @@ const ApiView = () => {
         </main>
       </Flex>
     </Layout>
-  )
-}
+  );
+};
 
-export default ApiView
+export default ApiView;

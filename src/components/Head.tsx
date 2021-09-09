@@ -1,20 +1,21 @@
 /** @jsxImportSource theme-ui **/
-
 import onboardInit from "../utils/onboardInit";
 import { useStateValue } from "../state/state";
-import Navbar from "./Navbar";
+import SearchBox from "./SearchBox";
+import { APIData } from "../hooks/ens/useGetAPIfromENS";
 const SignInArea = dynamic(() => import("./SignInArea"), { ssr: false });
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Flex } from "theme-ui";
 import dynamic from "next/dynamic";
-import { API } from "bnc-onboard/dist/src/interfaces";
+import { API as OnboardAPI } from "bnc-onboard/dist/src/interfaces";
 
-const Header = () => {
-  const [_, dispatch] = useStateValue();
-  const [onboard, setOnboard] = useState<API>();
+const Head = () => {
+  const [{ dapp }, dispatch] = useStateValue();
+  const [onboard, setOnboard] = useState<OnboardAPI>();
 
+  const [searchOptions] = useState(dapp.apis);
   useEffect(() => {
     const onboard = onboardInit(dispatch);
     setOnboard(onboard);
@@ -28,6 +29,20 @@ const Header = () => {
     }
   }, [onboard]);
 
+  const handleSearchValuesChange = (value: APIData[]) => {
+    if (value.length === 0) {
+      dispatch({
+        type: "sortSelectApi",
+        payload: -1,
+      });
+    } else {
+      dispatch({
+        type: "sortSelectApi",
+        payload: value,
+      });
+    }
+  };
+
   return (
     <header
       role="header"
@@ -35,10 +50,10 @@ const Header = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        pl: "2.365rem",
-        pr: "2.5rem",
-        maxHeight: "4.5625rem",
-        background: "transparent",
+        pl: "3.5rem",
+        pr: "4.5rem",
+        height: "8rem",
+        background: "rgba(30, 29, 34, 0.9)",
         "> *": { display: "flex" },
         ".col": { flex: 2, "&:last-of-type": { justifyContent: "flex-end" } },
       }}
@@ -47,21 +62,33 @@ const Header = () => {
         <Link href="/">
           <a
             sx={{
-              display: "flex",
-              height: "100%",
-              mr: "3.125rem",
+              display: "block",
+              width: "12.5rem",
+              height: "3rem",
+              mr: "2.5rem",
+              mt: "-0.5rem",
             }}
           >
             <img src="/images/logo.svg" alt="logo" />
           </a>
         </Link>
-        <Navbar />
+        <SearchBox
+          detachedResults
+          dark
+          searchBy="name"
+          placeholder={"Search"}
+          labelField="name"
+          valueField="name"
+          options={searchOptions}
+          values={[]}
+          onChange={handleSearchValuesChange}
+        />
       </Flex>
-      <Flex sx={{ justifyItems: "flex-end", gap: "1.5rem" }}>
+      <div className="col">
         <SignInArea onDark />
-      </Flex>
+      </div>
     </header>
   );
 };
 
-export default Header;
+export default Head;

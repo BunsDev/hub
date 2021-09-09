@@ -11,4 +11,4 @@ export const Wrapper = ({ children }: { children: React.ReactNode }) => (
   >
     {children}
   </div>
-)
+);

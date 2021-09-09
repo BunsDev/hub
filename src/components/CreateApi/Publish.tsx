@@ -1,26 +1,26 @@
 /** @jsxImportSource theme-ui **/
-import { FormEventHandler, useEffect } from 'react'
-import { Input, Flex, Button, Themed } from 'theme-ui'
-import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
-import { useStateValue } from '../../state/state'
-import { cloudFlareGateway, domain, MAIN_DOMAIN } from '../../constants'
+import { useCreateSubdomain } from "../../hooks/ens/useCreateSubdomain";
+import { useStateValue } from "../../state/state";
+import { cloudFlareGateway, domain, MAIN_DOMAIN } from "../../constants";
+import { useAuth } from "../../hooks/useAuth";
+import { Wrapper } from "./Wrapper";
+import stripIPFSPrefix from "../../utils/stripIPFSPrefix";
 
-import { useAuth } from '../../hooks/useAuth'
-import { Wrapper } from './Wrapper'
-import { useRouter } from 'next/router'
-import stripIPFSPrefix from '../../utils/stripIPFSPrefix'
+import { useRouter } from "next/router";
+import { Input, Flex, Button, Themed } from "theme-ui";
+import { FormEventHandler, useEffect } from "react";
 
 const PublishAPI = () => {
-  const [{ dapp, publish }, dispatch] = useStateValue()
-  const [executeCreateSubdomain, { status }] = useCreateSubdomain()
-  const { authenticate } = useAuth(dapp)
-  const router = useRouter()
+  const [{ dapp, publish }, dispatch] = useStateValue();
+  const [executeCreateSubdomain, { status }] = useCreateSubdomain();
+  const { authenticate } = useAuth(dapp);
+  const router = useRouter();
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (publish.apiData && publish.subdomain.length > 0) {
-      await fetch(domain + '/api/apis/publish', {
-        method: 'POST',
+      await fetch(domain + "/api/apis/publish", {
+        method: "POST",
         body: JSON.stringify({
           name: publish.apiData.name,
           description: publish.apiData.description,
@@ -31,92 +31,100 @@ const PublishAPI = () => {
           did: dapp.did,
         }),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      })
-      dispatch({ type: 'setShowSuccessModal', payload: true })
+      });
+      dispatch({ type: "setShowSuccessModal", payload: true });
     }
-  }
+  };
 
   const handleInvalid: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault()
-    if ((e.target as HTMLFormElement).name === 'ipfs') {
-      dispatch({ type: 'setipfsError', payload: 'Please enter a valid IPFS hash' })
-    }
-    if ((e.target as HTMLFormElement).name === 'ens') {
+    e.preventDefault();
+    if ((e.target as HTMLFormElement).name === "ipfs") {
       dispatch({
-        type: 'setsubdomainError',
-        payload: 'Please enter a valid ENS sub-domain',
-      })
+        type: "setipfsError",
+        payload: "Please enter a valid IPFS hash",
+      });
     }
-  }
+    if ((e.target as HTMLFormElement).name === "ens") {
+      dispatch({
+        type: "setsubdomainError",
+        payload: "Please enter a valid ENS sub-domain",
+      });
+    }
+  };
 
   useEffect(() => {
     if (status === 3) {
-      dispatch({ type: 'setsubdomainRegisterSuccess', payload: true })
+      dispatch({ type: "setsubdomainRegisterSuccess", payload: true });
     }
-  }, [status])
+  }, [status]);
 
   useEffect(() => {
-    if (publish.subdomain !== '' && publish.ipfs !== '') {
-      executeCreateSubdomain(publish.subdomain, publish.ipfs)
+    if (publish.subdomain !== "" && publish.ipfs !== "") {
+      void executeCreateSubdomain(publish.subdomain, publish.ipfs);
     }
-  }, [dapp.address])
+  }, [dapp.address]);
 
   useEffect(() => {
-    if (!dapp.did) authenticate()
-  }, [dapp.did])
+    if (!dapp.did) void authenticate();
+  }, [dapp.did]);
 
   return (
     <Wrapper>
       <form onSubmit={handleSubmit} onInvalid={handleInvalid}>
         <Flex
           className="publish"
-          sx={{ gap: '3.75rem', justifyContent: 'space-between' }}
+          sx={{ gap: "3.75rem", justifyContent: "space-between" }}
         >
           <div
             className="image_wrap"
             sx={{
-              height: '10.125rem',
-              width: '10.125rem',
-              minHeight: '10.125rem',
-              minWidth: '10.125rem',
-              background: 'white',
-              borderRadius: '1.25rem',
-              overflow: 'hidden',
+              height: "10.125rem",
+              width: "10.125rem",
+              minHeight: "10.125rem",
+              minWidth: "10.125rem",
+              background: "white",
+              borderRadius: "1.25rem",
+              overflow: "hidden",
             }}
           >
             {publish.apiData && (
               <img
                 sx={{
-                  width: '100%',
-                  height: 'auto',
+                  width: "100%",
+                  height: "auto",
                 }}
                 src={`${cloudFlareGateway}${
                   publish.ipfs || stripIPFSPrefix(publish.apiData.locationUri)
-                }${publish.apiData.icon.replace('./', '/')}`}
+                }${publish.apiData.icon.replace("./", "/")}`}
               />
             )}
           </div>
-          <div className="inputs" sx={{ width: '100%', minWidth: '30.5rem' }}>
+          <div className="inputs" sx={{ width: "100%", minWidth: "30.5rem" }}>
             <label>IPFS</label>
             <Input value={publish?.ipfs} disabled />
             <label>ENS Name</label>
             <Input value={publish?.subdomain} disabled />
           </div>
-          <div className="info" sx={{ maxWidth: '30%' }}>
-            {publish?.apiData?.name && <Themed.h2>{publish?.apiData?.name}</Themed.h2>}
+          <div className="info" sx={{ maxWidth: "30%" }}>
+            {publish?.apiData?.name && (
+              <Themed.h2>{publish?.apiData?.name}</Themed.h2>
+            )}
             {publish?.apiData?.description && (
               <p className="body-1">{publish?.apiData?.description}</p>
             )}
           </div>
         </Flex>
-        <Flex className="buttons" sx={{ justifyContent: 'space-between', mt: '2.5rem' }}>
+        <Flex
+          className="buttons"
+          sx={{ justifyContent: "space-between", mt: "2.5rem" }}
+        >
           <Button
             variant="secondaryMedium"
             onClick={(e) => {
-              e.preventDefault()
-              router.back()
+              e.preventDefault();
+              router.back();
             }}
           >
             Back
@@ -124,14 +132,16 @@ const PublishAPI = () => {
           <Button
             variant="primaryMedium"
             type="submit"
-            disabled={publish.subdomain.length === 0 || publish.ipfs.length === 0}
+            disabled={
+              publish.subdomain.length === 0 || publish.ipfs.length === 0
+            }
           >
             Publish
           </Button>
         </Flex>
       </form>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default PublishAPI
+export default PublishAPI;
