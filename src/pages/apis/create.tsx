@@ -81,7 +81,7 @@ const CreateApi = () => {
                   mb: '.75rem',
                 }}
               >
-                <Themed.h2 sx={{ mb: 0 }}>Create New Wrapper</Themed.h2>
+                <Themed.h2 sx={{ mb: 0 }}>Publish Wrapper</Themed.h2>
                 <Steps
                   activeStep={activeStep}
                   stepsData={[
