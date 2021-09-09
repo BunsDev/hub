@@ -1,15 +1,17 @@
-import { ChangeEventHandler, useCallback, useEffect } from 'react'
-import { Input } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { ChangeEventHandler, MouseEventHandler, useCallback, useEffect } from 'react'
+import Input from '../../Input'
 import { MAIN_DOMAIN, ZERO_ADDRESS } from '../../../constants'
 import { getOwner } from '../../../services/ens/getOwner'
 import { useStateValue } from '../../../state/state'
 import ErrorMsg from '../ErrorMsg'
 import NavButtons from '../NavButtons'
 import { Wrapper } from '../Wrapper'
+import Spinner from '../../Spinner'
+import { Button, Image, Flex } from '@theme-ui/components'
 
 export const EnsAddress = () => {
   const [{ dapp, publish }, dispatch] = useStateValue()
-
   useEffect(() => {
     if (publish.subdomain !== '') {
       checkForENSAvailability(publish.subdomain)
@@ -39,36 +41,75 @@ export const EnsAddress = () => {
     [dapp.web3],
   )
 
-  const handleSubdomainChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
+  const handleSubdomainChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     dispatch({ type: 'setsubdomain', payload: e.target.value })
     dispatch({ type: 'setsubdomainError', payload: '' })
     dispatch({ type: 'setsubdomainLookupSuccess', payload: false })
-    if (e.target.value !== '') {
-      checkForENSAvailability(e.target.value)
-    }
   }
-  const available = publish.subdomainLookupSuccess ? 'available' : ''
-  const registered = publish.subdomainRegisterSuccess ? 'registered' : ''
-  const registering = publish.subdomainLoading ? 'loading' : ''
-  const registrationError = publish.subdomainError ? 'error' : ''
+  const handleApplyButton: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault()
+    publish.subdomain && (await checkForENSAvailability(publish.subdomain))
+  }
 
-  const subdomainClasses = [available, registered, registering, registrationError].join(
-    ' ',
-  )
+  const subdomainStatus = publish.subdomainLookupSuccess
+    ? 'available'
+    : publish.subdomainRegisterSuccess
+    ? 'registered'
+    : publish.subdomainLoading
+    ? 'loading'
+    : publish.subdomainError
+    ? 'error'
+    : 'none'
+
+  console.log(publish)
+  //subdomainRegisterSuccess
+
+  const inputSuffix: { [key: string]: JSX.Element } = {
+    none: (
+      <Button
+        variant="suffixSmall"
+        sx={{
+          width: '65px',
+          alignSelf: 'stretch',
+          borderRadius: '6px',
+          border: 'none',
+          margin: '2px',
+          justifyContent: 'center',
+          fontSize: '14px',
+          lineHeight: '120%',
+          fontWeight: 'normal',
+        }}
+        onClick={handleApplyButton}
+      >
+        Apply
+      </Button>
+    ),
+    available: (
+      <Flex sx={{ width: '65px', justifyContent: 'center' }}>
+        <Image src="/images/success.svg" alt="success" sx={{}} />
+      </Flex>
+    ),
+    loading: (
+      <Flex sx={{ width: '65px', height: '100%', justifyContent: 'center' }}>
+        <Spinner />
+      </Flex>
+    ),
+    error: <div style={{ width: '65px' }} />,
+  }
+
   return (
     <Wrapper>
       <div className="fieldset">
         <label>Input ENS Name</label>
-        <div className={'inputwrap ' + subdomainClasses}>
+        <div className={'inputwrap'}>
           <Input
             type="text"
             name="ens"
             placeholder="{SUBDOMAIN}"
             required
             onChange={handleSubdomainChange}
-            value={publish.subdomain}
+            suffix={inputSuffix[subdomainStatus]}
           />
-          {/* <span sx={{ ml: 3 }}>.open.web3.eth</span> */}
         </div>
         {publish.subdomainError && (
           <ErrorMsg bottomshift>{publish.subdomainError}</ErrorMsg>

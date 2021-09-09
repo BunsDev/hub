@@ -31,6 +31,7 @@ const GlobalTheme: Theme = {
     w3beige: '#688184',
     w3darkGray: '#141A1E',
     w3Grey1: '#141417',
+    w3Grey2: '#141D32',
     w3Grey3: '#1F1F20',
 
     w3shade0: '#12191E',
@@ -93,15 +94,6 @@ const GlobalTheme: Theme = {
         color: 'white',
         borderColor: 'rgba(202,217,243, .3)',
       },
-    },
-    input: {
-      fontFamily: 'Nunito sans',
-      lineHeight: '150%',
-      height: '2.5rem',
-      border: 'none',
-      borderRadius: '.5rem',
-      background: 'transparent',
-      px: '1rem',
     },
     label: {
       fontFamily: 'Nunito Sans',

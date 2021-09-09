@@ -14,21 +14,21 @@ const buttonBase = {
   bg: 'transparent',
   border: '2px solid transparent',
   color: 'white',
-  transition: 'all .2s'
+  transition: 'all .2s',
 }
 
 const buttonPaddingSizes = {
   small: {
-    px: '2rem',
-    py: '0.75rem'
+    px: '.75rem',
+    py: '0.625rem',
   },
   medium: {
     px: '1.125rem',
-    py: '0.625rem'
+    py: '0.625rem',
   },
   large: {
     px: '4rem',
-    py: '1.25rem'
+    py: '1.25rem',
   },
 }
 
@@ -47,8 +47,8 @@ const buttonColorStates = {
     '&[disabled]': {
       bg: 'w3TextNavTeal',
       borderColor: 'w3TextNavTeal',
-      cursor: 'not-allowed'
-    }
+      cursor: 'not-allowed',
+    },
   },
   secondary: {
     bg: '#141D32',
@@ -58,8 +58,8 @@ const buttonColorStates = {
       bg: 'rgba(104, 129, 132, 0.2)',
     },
     '&[disabled]': {
-      cursor: 'not-allowed'
-    }
+      cursor: 'not-allowed',
+    },
   },
   hollow: {
     boxShadow: 'none',
@@ -69,14 +69,18 @@ const buttonColorStates = {
     color: 'white',
     background: 'linear-gradient(0deg, #529DAD 1.85%, #60C092 97.11%)',
   },
+  suffix: {
+    color: 'white',
+    bg: 'w3Grey2',
+  },
 }
 
 Object.keys(buttonColorStates).map((name) => {
   Object.keys(buttonPaddingSizes).map((size) => {
-    buttons[name+(size.charAt(0).toUpperCase() + size.slice(1))] = {
+    buttons[name + (size.charAt(0).toUpperCase() + size.slice(1))] = {
       ...buttonBase,
       ...buttonColorStates[name as keyof typeof buttonColorStates],
-      ...buttonPaddingSizes[size as keyof typeof buttonPaddingSizes]
+      ...buttonPaddingSizes[size as keyof typeof buttonPaddingSizes],
     }
   })
 })

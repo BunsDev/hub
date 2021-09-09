@@ -213,6 +213,9 @@ const Layout = ({ children }: LayoutProps) => {
             lineHeight: '100%',
             color: 'white',
           },
+          ':-webkit-autofill, :-webkit-autofill:hover, :-webkit-autofill:focus': {
+            //TODO styles for input autocomplete
+          },
         })}
       />
     </div>
