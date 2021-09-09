@@ -17,16 +17,6 @@ import {
   validStep,
 } from "../../utils/createWrapper";
 
-import { Box, Flex, Themed } from "theme-ui";
-import { useRouter } from "next/router";
-import {
-  useState,
-  useEffect,
-  createContext,
-  Dispatch,
-  SetStateAction,
-} from "react";
-
 const styles = {
   height: "fit-content",
   p: "50px 73px 59px 59px",
