@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import APIs from '../../public/images/apis.svg'
 import PlaygroundImg from '../../public/images/playground.svg'
-import Doc from '../../public/images/doc.svg'
+import Dots from '../../public/images/dots-horizontal.svg'
 
 const navItems: { [key: string]: { [key: string]: string } } = {
   apis: {
@@ -15,7 +15,7 @@ const navItems: { [key: string]: { [key: string]: string } } = {
     color: 'w3NavGreen',
     bg: 'w3NavGreenBg',
   },
-  docs: {
+  more: {
     color: 'w3NavYellow',
     bg: 'w3NavYellowBg',
   },
@@ -65,10 +65,10 @@ const NavItem = ({
           alignItems: 'center',
           height: '100%',
           width: 'fit-content',
-          span: {
-            color: 'white',
-            fontSize: '1rem',
-          },
+        },
+        span: {
+          color: 'white',
+          fontSize: '1rem',
         },
       }}
     >
@@ -118,10 +118,10 @@ const Navbar = () => {
             </a>
           </Link>
         </NavItem>
-        <NavItem label="docs">
-          <a className="text-nav" href="https://web3api.dev" target="_BLANK">
-            <Doc />
-            <span className="text-nav">Web3API Docs</span>
+        <NavItem label="more">
+          <a className="text-nav">
+            <Dots />
+            <span className="text-nav">More</span>
           </a>
         </NavItem>
       </ul>
