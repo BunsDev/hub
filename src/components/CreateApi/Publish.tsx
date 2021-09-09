@@ -4,10 +4,11 @@ import { Input, Flex, Button, Themed } from 'theme-ui'
 import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
 import { useStateValue } from '../../state/state'
 import { ipfsGateway, domain, MAIN_DOMAIN } from '../../constants'
-
 import { useRouter } from "next/router";
-import { Input, Flex, Button, Themed } from "theme-ui";
-import { FormEventHandler, useEffect } from "react";
+import { useAuth } from '../../hooks/useAuth'
+import { Wrapper } from './Wrapper'
+import stripIPFSPrefix from '../../utils/stripIPFSPrefix'
+
 
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();

@@ -1,8 +1,6 @@
 import axios from 'axios'
 import { ipfsGateway } from '../../constants'
 
-import axios from "axios";
-
 const yaml = require("js-yaml"); // eslint-disable-line
 
 export default async function getMetaDataFromPackageHash(
