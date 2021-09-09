@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 module.exports = {
   DATABASE_URL: process.env.DATABASE_URL,
   INFURA_API_KEY: process.env.INFURA_API_KEY,

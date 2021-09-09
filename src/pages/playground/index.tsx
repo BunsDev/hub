@@ -1,16 +1,14 @@
 /** @jsxImportSource theme-ui **/
-import { Button, Flex, Grid, Input, Select, Themed } from 'theme-ui'
-import { Global } from '@emotion/react'
-import { Web3ApiProvider } from '@web3api/react'
-import Layout from '../../components/Layout'
-import Navbar from '../../components/Navbar'
-import Header from '../../components/Header'
-import Playground from '../../components/Playground'
-import { useStateValue } from '../../state/state'
-import { useState } from 'react'
+import Layout from "../../components/Layout";
+import Header from "../../components/Header";
+import Playground from "../../components/Playground";
+import { useStateValue } from "../../state/state";
+
+import { Web3ApiProvider } from "@web3api/react";
+import { Flex } from "theme-ui";
 
 const PlaygroundPage = () => {
-  const [{ web3api }] = useStateValue()
+  const [{ web3api }] = useStateValue();
   return (
     <Layout>
       <Header />
@@ -26,7 +24,7 @@ const PlaygroundPage = () => {
         </main>
       </Flex>
     </Layout>
-  )
-}
+  );
+};
 
-export default PlaygroundPage
+export default PlaygroundPage;

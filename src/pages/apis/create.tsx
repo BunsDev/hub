@@ -1,13 +1,14 @@
 /** @jsxImportSource theme-ui **/
-import { useState, useEffect, createContext, Dispatch, SetStateAction } from 'react'
-import { useRouter } from 'next/router'
-import { Box, Flex, Themed } from 'theme-ui'
-import Layout from '../../components/Layout'
-import Publish from '../../components/CreateApi/Publish'
-import Header from '../../components/Header'
-import UploadApiMethod from '../../components/CreateApi/Start'
-import Steps from '../../components/Steps'
-import { DirectUpload, EnsAddress, IPFSHash } from '../../components/CreateApi/UploadBy'
+import Layout from "../../components/Layout";
+import Publish from "../../components/CreateApi/Publish";
+import Header from "../../components/Header";
+import UploadApiMethod from "../../components/CreateApi/Start";
+import Steps from "../../components/Steps";
+import {
+  DirectUpload,
+  EnsAddress,
+  IPFSHash,
+} from "../../components/CreateApi/UploadBy";
 import {
   apiDataInState,
   createApiSteps,
@@ -19,27 +20,27 @@ import publish from '../api/apis/publish'
 import { useStateValue } from '../../state/state'
 
 const styles = {
-  height: 'fit-content',
-  p: '50px 73px 59px 59px',
-  background: 'black',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
-  boxShadow: '12px 20px 54px -6px #141316',
-  borderRadius: '20px',
-}
+  height: "fit-content",
+  p: "50px 73px 59px 59px",
+  background: "black",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
+  boxShadow: "12px 20px 54px -6px #141316",
+  borderRadius: "20px",
+};
 
 export const uploadComponents = {
   [UPLOAD_METHODS.DIRECT_UPLOAD]: <DirectUpload />,
   [UPLOAD_METHODS.IPFS_HASH]: <IPFSHash />,
   [UPLOAD_METHODS.ENS_ADDRESS]: <EnsAddress />,
-}
+};
 
 export const CreateApiContext = createContext<{
-  uploadMethod: string
-  setUploadMethod: Dispatch<SetStateAction<string>>
+  uploadMethod: string;
+  setUploadMethod: Dispatch<SetStateAction<string>>;
 }>({
-  uploadMethod: '',
-  setUploadMethod: () => {},
-})
+  uploadMethod: "",
+  setUploadMethod: () => undefined,
+});
 
 const CreateApi = () => {
   const router = useRouter()
@@ -49,15 +50,15 @@ const CreateApi = () => {
 
   useEffect(() => {
     if (router.query.activeTab) {
-      setActiveStep(router.query.activeTab as string)
+      setActiveStep(router.query.activeTab as string);
     }
-  }, [router.query?.activeTab])
+  }, [router.query?.activeTab]);
 
   useEffect(() => {
     if (router.query.method) {
-      setUploadMethod(router.query.method as string)
+      setUploadMethod(router.query.method as string);
     }
-  }, [router.query?.method])
+  }, [router.query?.method]);
 
   useEffect(() => {
     if (
@@ -66,22 +67,27 @@ const CreateApi = () => {
         (router.query.activeTab === createApiSteps[2] && !publish.apiData) ||
         (router.query.method && !validMethod(router.query?.method as string)))
     ) {
-      router.push(router.pathname + `?activeTab=${createApiSteps[0]}`)
+      void router.push(router.pathname + `?activeTab=${createApiSteps[0]}`);
     }
-  }, [router.isReady, router.query?.activeTab, router.query?.method, router.pathname])
+  }, [
+    router.isReady,
+    router.query?.activeTab,
+    router.query?.method,
+    router.pathname,
+  ]);
 
   return (
     <Layout>
       <Header />
       <CreateApiContext.Provider value={{ uploadMethod, setUploadMethod }}>
         <Flex>
-          <main sx={{ pb: 5, px: '10.3125rem' }}>
+          <main sx={{ pb: 5, px: "10.3125rem" }}>
             <div className="contents" sx={styles}>
               <Flex
                 className="header"
                 sx={{
-                  justifyContent: 'space-between',
-                  mb: '.75rem',
+                  justifyContent: "space-between",
+                  mb: ".75rem",
                 }}
               >
                 <Themed.h2 sx={{ mb: 0 }}>Create New Wrapper</Themed.h2>
@@ -89,7 +95,8 @@ const CreateApi = () => {
               </Flex>
               <Box className="content">
                 {activeStep === createApiSteps[0] && <UploadApiMethod />}
-                {activeStep === createApiSteps[1] && uploadComponents[uploadMethod]}
+                {activeStep === createApiSteps[1] &&
+                  uploadComponents[uploadMethod]}
                 {activeStep === createApiSteps[2] && <Publish />}
               </Box>
             </div>
@@ -97,7 +104,7 @@ const CreateApi = () => {
         </Flex>
       </CreateApiContext.Provider>
     </Layout>
-  )
-}
+  );
+};
 
-export default CreateApi
+export default CreateApi;

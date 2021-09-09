@@ -1,5 +1,4 @@
 /** @jsxImportSource theme-ui **/
-
 import NavButtons from '../NavButtons'
 import { Wrapper } from '../Wrapper'
 import { useDropzone } from 'react-dropzone'

@@ -8,7 +8,7 @@ import { Wrapper } from '../Wrapper'
 import useDebounce from '../../../utils/useDebounce'
 
 export const IPFSHash = () => {
-  const [{ publish }, dispatch] = useStateValue()
+  const [{ publish }, dispatch] = useStateValue();
 
   const handleIPFSHashInput: ChangeEventHandler<HTMLInputElement> = async (e) => {
     dispatch({ type: 'setipfs', payload: e.target.value })
@@ -42,18 +42,18 @@ export const IPFSHash = () => {
   }, [debouncedIpfsInput])
 
   const ipfsClasses = publish.ipfsLoading
-    ? 'loading'
+    ? "loading"
     : publish.ipfsSuccess
-    ? 'success'
+    ? "success"
     : publish.ipfsError
-    ? 'error'
-    : ''
+    ? "error"
+    : "";
 
   return (
     <Wrapper>
       <div className="fieldset">
         <label>Input IPFS</label>
-        <div className={'inputwrap ' + ipfsClasses}>
+        <div className={"inputwrap " + ipfsClasses}>
           <Input
             type="text"
             name="ipfs"
@@ -69,7 +69,7 @@ export const IPFSHash = () => {
       </div>
       <NavButtons continueEnabled={publish.ipfsSuccess} />
     </Wrapper>
-  )
-}
+  );
+};
 
-export default IPFSHash
+export default IPFSHash;

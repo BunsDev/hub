@@ -1,28 +1,29 @@
 /** @jsxImportSource theme-ui **/
-import { Themed } from 'theme-ui'
-import Editor, { Monaco, OnChange } from '@monaco-editor/react'
+import solarizedDark from "../theme/Solarized-dark.json";
+
+// eslint-disable-next-line import/order
+import Editor, { Monaco, OnChange } from "@monaco-editor/react";
 
 // https://github.com/brijeshb42/monaco-themes/tree/master/themes
-import solarizedDark from '../theme/Solarized-dark.json'
-import { MouseEventHandler, useMemo } from 'react'
+import { MouseEventHandler } from "react";
 
 type GQLCodeBlockProps = {
-  height?: string
-  value: Record<string, unknown>
-  onClick?: MouseEventHandler<HTMLDivElement>
-  handleEditorChange?: OnChange
-}
+  height?: string;
+  value: Record<string, unknown>;
+  onClick?: MouseEventHandler<HTMLDivElement>;
+  handleEditorChange?: OnChange;
+};
 
 const JSONEditor = ({
-  height = '100%',
+  height = "100%",
   value,
   handleEditorChange,
   onClick,
 }: GQLCodeBlockProps) => {
   const handleEditorWillMount = (monaco: Monaco) => {
-    monaco.editor.defineTheme('solarizedDark', solarizedDark)
-    monaco.editor.setTheme('solarizedDark')
-  }
+    monaco.editor.defineTheme("solarizedDark", solarizedDark);
+    monaco.editor.setTheme("solarizedDark");
+  };
 
   return (
     <div className="GQLCodeBlock-wrap" onClick={onClick} sx={{ height }}>
@@ -36,12 +37,12 @@ const JSONEditor = ({
           minimap: {
             enabled: false,
           },
-          fontFamily: 'Nunito sans',
-          lineNumbers: 'off',
+          fontFamily: "Nunito sans",
+          lineNumbers: "off",
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default JSONEditor
+export default JSONEditor;

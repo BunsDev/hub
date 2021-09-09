@@ -11,73 +11,73 @@ import { useStateValue } from '../state/state'
 import { useAuth } from '../hooks/useAuth'
 
 type APIDetailProps = {
-  api?: APIData
-  update: () => Promise<void>
-}
+  api?: APIData;
+  update: () => Promise<void>;
+};
 
 const APIDetail = ({ api, update }: APIDetailProps) => {
-  const router = useRouter()
-  const [{ dapp }] = useStateValue()
-  const { authenticate } = useAuth(dapp)
+  const router = useRouter();
+  const [{ dapp }] = useStateValue();
+  const { authenticate } = useAuth(dapp);
 
   const handleFavorite = async () => {
-    if (!dapp.did) return authenticate()
+    if (!dapp.did) return authenticate();
 
-    const response = await fetch(domain + '/api/apis/favorites/action', {
-      method: 'POST',
+    const response = await fetch(domain + "/api/apis/favorites/action", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ userDid: dapp.did, apiId: api.id }),
-    })
-    const result = await response.json()
+    });
+    const result = await response.json();
 
     if (result.status === 200) {
-      await update()
+      await update();
     }
-  }
+  };
 
   useEffect(() => {
     if (dapp.did) {
-      update()
+      void update();
     }
-  }, [dapp.did])
+  }, [dapp.did]);
 
   return (
     <div
       className="wrap"
       sx={{
-        borderRadius: '20px',
-        bg: 'black',
-        p: '3.75rem',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '12px 20px 54px -6px #141316',
-        display: 'flex',
-        justifyContent: 'space-between',
+        borderRadius: "20px",
+        bg: "black",
+        p: "3.75rem",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
+        boxShadow: "12px 20px 54px -6px #141316",
+        display: "flex",
+        justifyContent: "space-between",
       }}
     >
-      <Flex className="left" sx={{ flexDirection: 'column', width: '100%' }}>
-        <Flex sx={{ alignItems: 'flex-start', gap: '40px' }}>
+      <Flex className="left" sx={{ flexDirection: "column", width: "100%" }}>
+        <Flex sx={{ alignItems: "flex-start", gap: "40px" }}>
           <img
             className="api-logo"
             src={`${ipfsGateway}${api.locationUri}${api.icon.replace('./', '/')}`}
             sx={{
-              width: '6.25rem',
-              height: '6.25rem',
-              borderRadius: '20px',
+              width: "6.25rem",
+              height: "6.25rem",
+              borderRadius: "20px",
             }}
           />
-          <div className="api-info" sx={{ width: '100%', mb: '2.5rem' }}>
-            <Themed.h2 className="title" sx={{ mb: '.75rem' }}>
+          <div className="api-info" sx={{ width: "100%", mb: "2.5rem" }}>
+            <Themed.h2 className="title" sx={{ mb: ".75rem" }}>
               {api.name}
             </Themed.h2>
             <div
               className="subtitle"
               sx={{
-                color: '#FFF',
-                mb: '.75rem',
-                fontSize: '1rem',
-                fontWeight: 'bold',
+                color: "#FFF",
+                mb: ".75rem",
+                fontSize: "1rem",
+                fontWeight: "bold",
               }}
             >
               {api.subtext}
@@ -85,8 +85,8 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
             <p
               className="description"
               sx={{
-                fontSize: '.875rem',
-                color: 'rgba(255, 255, 255, .5)',
+                fontSize: ".875rem",
+                color: "rgba(255, 255, 255, .5)",
               }}
             >
               {api.description}
@@ -94,8 +94,8 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
           </div>
         </Flex>
         <Flex className="bottom">
-          <div sx={{ width: '100%', maxWidth: '50rem' }}>
-            <Themed.h3 sx={{ textAlign: 'left' }}>Get Started</Themed.h3>
+          <div sx={{ width: "100%", maxWidth: "50rem" }}>
+            <Themed.h3 sx={{ textAlign: "left" }}>Get Started</Themed.h3>
             <Themed.code>
               <Themed.pre>{`yarn install @web3api/client`}</Themed.pre>
             </Themed.code>
@@ -121,56 +121,61 @@ const api = new Web3API({
           </div>
         </Flex>
       </Flex>
-      <Flex className="right" sx={{ width:'100%', maxWidth: '300px' }}>
+      <Flex className="right" sx={{ width: "100%", maxWidth: "300px" }}>
         <div className="info-card">
           <Flex
             sx={{
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mb: '1rem',
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: "1rem",
             }}
           >
             <Themed.h3 className="title">{api.name}</Themed.h3>
-            <Stars onClick={handleFavorite} count={api.favorites || 0} large onDark />
+            <Stars
+              onClick={handleFavorite}
+              count={api.favorites || 0}
+              large
+              onDark
+            />
           </Flex>
           <ul
             className="links"
             sx={{
-              mb: '3rem',
-              '*': {
-                color: 'rgba(255, 255, 255, 0.5)',
-                textDecoration: 'none',
+              mb: "3rem",
+              "*": {
+                color: "rgba(255, 255, 255, 0.5)",
+                textDecoration: "none",
               },
               li: {
-                fontFamily: 'Nunito Sans',
-                fontStyle: 'normal',
-                fontWeight: 'normal',
-                fontSize: '.875rem',
-                lineHeight: '120%',
-                mb: '11px',
-                color: 'rgba(255, 255, 255, 0.5)',
+                fontFamily: "Nunito Sans",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: ".875rem",
+                lineHeight: "120%",
+                mb: "11px",
+                color: "rgba(255, 255, 255, 0.5)",
               },
             }}
           >
-            {'pointerUris' in api &&
+            {"pointerUris" in api &&
               api.pointerUris.map((pointer, idx) => {
                 return (
-                  <li sx={{ display: 'flex' }} key={idx + 'pointerURI'}>
+                  <li sx={{ display: "flex" }} key={idx + "pointerURI"}>
                     <img
-                      sx={{ maxWidth: '1rem', mr: '.5rem' }}
+                      sx={{ maxWidth: "1rem", mr: ".5rem" }}
                       src="/images/link.svg"
                       alt="icon"
                     />
-                    <a href={pointer} target="_BLANK">
+                    <a href={pointer} target="_BLANK" rel="noreferrer">
                       {pointer}
                     </a>
                   </li>
-                )
+                );
               })}
-            {'locationUri' in api && (
-              <li sx={{ display: 'flex' }}>
+            {"locationUri" in api && (
+              <li sx={{ display: "flex" }}>
                 <img
-                  sx={{ maxWidth: '1rem', mr: '.5rem' }}
+                  sx={{ maxWidth: "1rem", mr: ".5rem" }}
                   src="/images/link.svg"
                   alt="icon"
                 />
@@ -213,9 +218,9 @@ const api = new Web3API({
           </ul>
           <Button
             variant="secondaryMedium"
-            sx={{ backgroundColor: 'white', color: 'black', ml: 'auto' }}
+            sx={{ backgroundColor: "white", color: "black", ml: "auto" }}
             onClick={() => {
-              router.push(`/playground/ens/${api.pointerUris[0]}`)
+              void router.push(`/playground/ens/${api.pointerUris[0]}`);
             }}
           >
             Open Playground
@@ -223,7 +228,7 @@ const api = new Web3API({
         </div>
       </Flex>
     </div>
-  )
-}
+  );
+};
 
-export default APIDetail
+export default APIDetail;

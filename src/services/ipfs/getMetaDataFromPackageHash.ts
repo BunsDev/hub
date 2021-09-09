@@ -1,7 +1,9 @@
 import axios from 'axios'
 import { ipfsGateway } from '../../constants'
 
-const yaml = require('js-yaml')
+import axios from "axios";
+
+const yaml = require("js-yaml"); // eslint-disable-line
 
 export default async function getMetaDataFromPackageHash(
   hash: string,
@@ -17,7 +19,7 @@ export default async function getMetaDataFromPackageHash(
     )
     ipfsData = ipfsDataFromJSON.data
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
   try {
     ipfsDataFromYAML = await axios.get(
@@ -25,17 +27,17 @@ export default async function getMetaDataFromPackageHash(
     )
     ipfsData = ipfsDataFromYAML.data
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 
   if (ipfsDataFromJSON === null && ipfsDataFromYAML === null) {
-    return 'NO METADATA FOUND'
+    return "NO METADATA FOUND";
   } else {
     try {
-      const doc = yaml.load(ipfsData)
-      return doc
+      const doc = yaml.load(ipfsData);
+      return doc;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 }

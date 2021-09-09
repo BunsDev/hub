@@ -1,16 +1,15 @@
 /** @jsxImportSource theme-ui **/
-import { Flex } from 'theme-ui'
-import { useStateValue } from '../state/state'
+import { useStateValue } from "../state/state";
+import Layout from "../components/Layout";
+import SortNav from "../components/SortNav";
+import ApiGrid from "../components/ApiGrid";
+import Header from "../components/Header";
+import BottomSpace from "../components/BottomSpace";
 
-import Layout from '../components/Layout'
-import SortNav from '../components/SortNav'
-import ApiGrid from '../components/ApiGrid'
-import Header from '../components/Header'
-import BGCircles from '../components/BGCircles'
-import BottomSpace from '../components/BottomSpace'
+import { Flex } from "theme-ui";
 
 const Home = () => {
-  const [{ dapp }] = useStateValue()
+  const [{ dapp }] = useStateValue();
   return (
     <Layout>
       <Header />
@@ -26,7 +25,7 @@ const Home = () => {
         </main>
       </Flex>
     </Layout>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
