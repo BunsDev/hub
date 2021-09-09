@@ -271,7 +271,7 @@ const Playground = ({ api }: PlaygroundProps) => {
           '>div': {
             minHeight: '200px',
             minWidth: '200px',
-            width: schemaVisible ? '30vw' : '45vw',
+            width: schemaVisible ? 'calc((100vw - 4.6875rem)/3 - 2.5rem)' : 'calc((100vw - 4.6875rem)/2 - 3rem)',
             transition: '.2s all',
             borderRadius: '1.25rem',
             '>section': {
@@ -395,9 +395,9 @@ const Playground = ({ api }: PlaygroundProps) => {
           sx={{
             position: 'relative',
             bg: 'black',
-            minWidth: 0,
+            minWidth: '0 !important',
             transition: '.2s all ease',
-            width: schemaVisible ? '30vw' : 0,
+            width: schemaVisible ? '30vw' : '0 !important',
             overflowY: 'scroll',
           }}
         >
