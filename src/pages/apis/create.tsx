@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { useState, useEffect, createContext, Dispatch, SetStateAction } from 'react'
-import { useRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 import { Box, Flex, Themed } from 'theme-ui'
 import Layout from '../../components/Layout'
 import Publish from '../../components/CreateApi/Publish'
@@ -10,6 +10,7 @@ import Steps from '../../components/Steps'
 import { DirectUpload, EnsAddress, IPFSHash } from '../../components/CreateApi/UploadBy'
 import {
   createApiSteps,
+  pushToStep,
   UPLOAD_METHODS,
   validMethod,
   validStep,
@@ -37,6 +38,7 @@ export const CreateApiContext = createContext<{
   uploadMethod: '',
   setUploadMethod: () => {},
 })
+
 
 const CreateApi = () => {
   const router = useRouter()
@@ -80,7 +82,26 @@ const CreateApi = () => {
                 }}
               >
                 <Themed.h2 sx={{ mb: 0 }}>Create New Wrapper</Themed.h2>
-                <Steps activeStep={activeStep} />
+                <Steps
+                  activeStep={activeStep}
+                  stepsData={[
+                    {
+                      value: 'start',
+                      label: 'Intro',
+                      onClick: () => {
+                        pushToStep(router, 0)
+                      },
+                    },
+                    {
+                      value: 'upload',
+                      label: 'Upload',
+                      onClick: () => {
+                        pushToStep(router, 1)
+                      },
+                    },
+                    { value: 'publish', label: 'Publish', onClick: () => {} },
+                  ]}
+                />
               </Flex>
               <Box as="form" className="content">
                 {activeStep === createApiSteps[0] && <UploadApiMethod />}

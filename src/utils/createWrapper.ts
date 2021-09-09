@@ -1,3 +1,5 @@
+import { NextRouter } from 'next/router'
+
 export const UPLOAD_METHODS: {
   DIRECT_UPLOAD: string
   IPFS_HASH: string
@@ -10,6 +12,11 @@ export const UPLOAD_METHODS: {
 
 export const createApiSteps = ['start', 'upload', 'publish']
 
-export const validStep = (stepInput: string) => createApiSteps.some((step) => stepInput === step)
+export const validStep = (stepInput: string) =>
+  createApiSteps.some((step) => stepInput === step)
 export const validMethod = (methodInput: string) =>
   Object.values(UPLOAD_METHODS).some((method) => methodInput === method)
+
+export const pushToStep = (router: NextRouter, stepIndex: number) => {
+  router.push(router.pathname + `?activeTab=${createApiSteps[stepIndex]}`)
+}

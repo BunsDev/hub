@@ -1,18 +1,23 @@
 /** @jsxImportSource theme-ui **/
-
-import { useMemo } from 'react'
 import { Flex } from 'theme-ui'
 
+interface Step {
+  value: string
+  label: string
+  onClick: () => any
+}
 interface Steps {
-  stepsData?: { [key: string]: string }
+  stepsData?: Step[]
   activeStep?: string
 }
 
-const defaultSteps = { start: 'Intro', upload: 'Upload', publish: 'Publish' }
+export const defaultSteps: Step[] = [
+  { value: 'start', label: 'Intro', onClick: () => {} },
+  { value: 'upload', label: 'Upload', onClick: () => {} },
+  { value: 'publish', label: 'Publish', onClick: () => {} },
+]
 
 const Steps = ({ stepsData = defaultSteps, activeStep = '' }: Steps) => {
-  const steps = useMemo(() => Object.values(stepsData), [stepsData])
-
   return (
     <Flex
       sx={{
@@ -35,14 +40,22 @@ const Steps = ({ stepsData = defaultSteps, activeStep = '' }: Steps) => {
         'span.active': { color: 'white' },
       }}
     >
-      {steps.map((step, index) => (
-        <span
-          key={step}
-          className={index <= steps.indexOf(stepsData[activeStep]) ? 'active' : ''}
-        >
-          {index + 1}. {step}
-        </span>
-      ))}
+      {stepsData.map((step, index) => {
+        const isHighlighted =
+          index <= stepsData.indexOf(stepsData.find((step) => step.value === activeStep))
+        return (
+          <span
+            key={step.label}
+            sx={{
+              cursor: isHighlighted ? 'pointer' : 'default',
+            }}
+            className={isHighlighted ? 'active' : ''}
+            onClick={isHighlighted && stepsData[index].onClick}
+          >
+            {index + 1}. {step.label}
+          </span>
+        )
+      })}
     </Flex>
   )
 }
