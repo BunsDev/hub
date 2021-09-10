@@ -1,13 +1,12 @@
 /** @jsxImportSource theme-ui **/
-import Stars from "../components/Stars";
-import { cloudFlareGateway, domain } from "../constants";
-import { APIData } from "../hooks/ens/useGetAPIfromENS";
-import { useStateValue } from "../state/state";
-import { useAuth } from "../hooks/useAuth";
-
-import { useRouter } from "next/router";
-import { Flex, Themed, Button } from "theme-ui";
-import { useEffect } from "react";
+import { useEffect } from 'react'
+import { Flex, Themed, Button } from 'theme-ui'
+import Stars from '../components/Stars'
+import { ipfsGateway, domain } from '../constants'
+import { useRouter } from 'next/router'
+import { APIData } from '../hooks/ens/useGetAPIfromENS'
+import { useStateValue } from '../state/state'
+import { useAuth } from '../hooks/useAuth'
 
 type APIDetailProps = {
   api?: APIData;
@@ -59,10 +58,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
         <Flex sx={{ alignItems: "flex-start", gap: "40px" }}>
           <img
             className="api-logo"
-            src={`${cloudFlareGateway}${api.locationUri}${api.icon.replace(
-              "./",
-              "/"
-            )}`}
+            src={`${ipfsGateway}${api.locationUri}${api.icon.replace('./', '/')}`}
             sx={{
               width: "6.25rem",
               height: "6.25rem",
@@ -181,12 +177,8 @@ const api = new Web3API({
                   src="/images/link.svg"
                   alt="icon"
                 />
-                <a
-                  href={`${cloudFlareGateway}${api.locationUri}`}
-                  target="_BLANK"
-                  rel="noreferrer"
-                >
-                  {("ipfs/" + api.locationUri).substring(0, 25) + "..."}
+                <a href={`${ipfsGateway}${api.locationUri}`} target="_BLANK">
+                  {('ipfs/' + api.locationUri).substring(0, 25) + '...'}
                 </a>
               </li>
             )}

@@ -1,9 +1,8 @@
 /** @jsxImportSource theme-ui **/
-import SearchIcon from "../../public/images/magnifying-glass.svg";
-
-import { Flex, Input } from "theme-ui";
-import { useState, useCallback } from "react";
-import router from "next/router";
+import { useState, useCallback } from 'react'
+import { Flex, Input } from 'theme-ui'
+import SearchIcon from '../../public/images/magnifying-glass.svg'
+import router from 'next/router'
 
 const SearchBar = () => {
   const [searchValue, setSearchValue] = useState<string>("");

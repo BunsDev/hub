@@ -1,14 +1,23 @@
 /** @jsxImportSource theme-ui **/
-import { useState, useEffect, createContext, Dispatch, SetStateAction } from 'react'
-import { NextRouter, useRouter } from 'next/router'
-import { Box, Flex, Themed } from 'theme-ui'
-import Layout from '../../components/Layout'
-import Publish from '../../components/CreateApi/Publish'
-import Header from '../../components/Header'
-import UploadApiMethod from '../../components/CreateApi/Start'
-import Steps from '../../components/Steps'
-import { DirectUpload, EnsAddress, IPFSHash } from '../../components/CreateApi/UploadBy'
-
+import {
+  useState,
+  useEffect,
+  createContext,
+  Dispatch,
+  SetStateAction,
+} from "react";
+import { useRouter } from "next/router";
+import { Box, Flex, Themed } from "theme-ui";
+import Layout from "../../components/Layout";
+import Publish from "../../components/CreateApi/Publish";
+import Header from "../../components/Header";
+import UploadApiMethod from "../../components/CreateApi/Start";
+import Steps from "../../components/Steps";
+import {
+  DirectUpload,
+  EnsAddress,
+  IPFSHash,
+} from "../../components/CreateApi/UploadBy";
 import {
   createApiSteps,
   pushToStep,
@@ -16,6 +25,7 @@ import {
   validMethod,
   validStep,
 } from "../../utils/createWrapper";
+import { useStateValue } from "../../state/state";
 
 const styles = {
   height: "fit-content",
@@ -40,9 +50,9 @@ export const CreateApiContext = createContext<{
   setUploadMethod: () => undefined,
 });
 
-
 const CreateApi = () => {
   const router = useRouter();
+  const [{ publish }] = useStateValue();
   const [activeStep, setActiveStep] = useState<string>();
   const [uploadMethod, setUploadMethod] = useState<string>("");
 
@@ -62,6 +72,7 @@ const CreateApi = () => {
     if (
       router.isReady &&
       (!validStep(router.query?.activeTab as string) ||
+        (router.query.activeTab === createApiSteps[2] && !publish.apiData) ||
         (router.query.method && !validMethod(router.query?.method as string)))
     ) {
       void router.push(router.pathname + `?activeTab=${createApiSteps[0]}`);
@@ -92,24 +103,24 @@ const CreateApi = () => {
                   activeStep={activeStep}
                   stepsData={[
                     {
-                      value: 'start',
-                      label: 'Intro',
+                      value: "start",
+                      label: "Intro",
                       onClick: () => {
-                        pushToStep(router, 0)
+                        pushToStep(router, 0);
                       },
                     },
                     {
-                      value: 'upload',
-                      label: 'Upload',
+                      value: "upload",
+                      label: "Upload",
                       onClick: () => {
-                        pushToStep(router, 1)
+                        pushToStep(router, 1);
                       },
                     },
-                    { value: 'publish', label: 'Publish', onClick: () => {} },
+                    { value: "publish", label: "Publish", onClick: () => {} },
                   ]}
                 />
               </Flex>
-              <Box as="form" className="content">
+              <Box className="content">
                 {activeStep === createApiSteps[0] && <UploadApiMethod />}
                 {activeStep === createApiSteps[1] &&
                   uploadComponents[uploadMethod]}

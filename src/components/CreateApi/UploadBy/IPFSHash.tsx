@@ -1,30 +1,48 @@
-/** @jsxImportSource theme-ui **/
-import { ChangeEventHandler, MouseEventHandler } from 'react'
-import Input from '../../Input'
+import React, { ChangeEventHandler, MouseEventHandler, useEffect, useState } from 'react'
+import { Flex, Image, Button } from 'theme-ui'
 import getMetaDataFromPackageHash from '../../../services/ipfs/getMetaDataFromPackageHash'
 import { useStateValue } from '../../../state/state'
 import ErrorMsg from '../ErrorMsg'
 import NavButtons from '../NavButtons'
 import { Wrapper } from '../Wrapper'
-import { Button, Flex, Image } from '@theme-ui/components'
+import useDebounce from '../../../utils/useDebounce'
 import Spinner from '../../Spinner'
+import Input from '../../Input'
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();
 
-  const ipfsClasses = publish.ipfsLoading
-    ? "loading"
-    : publish.ipfsSuccess
-    ? "success"
-    : publish.ipfsError
-    ? "error"
-    : "";
-
-  const handleIPFSHashInput: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleIPFSHashInput: ChangeEventHandler<HTMLInputElement> = async (e) => {
     dispatch({ type: 'setipfs', payload: e.target.value })
-    dispatch({ type: 'setipfsSuccess', payload: false })
-    dispatch({ type: 'setipfsError', payload: '' })
   }
+
+  const debouncedIpfsInput = useDebounce(publish.ipfs, 500)
+
+  useEffect(() => {
+    //TODO reduce dispatch quantity
+    if (debouncedIpfsInput) {
+      dispatch({ type: 'setipfsLoading', payload: true })
+      dispatch({ type: 'setipfsSuccess', payload: false })
+      dispatch({ type: 'setipfsError', payload: '' })
+
+      getMetaDataFromPackageHash(publish.ipfs).then((metaData) => {
+        if (!metaData || metaData === 'NO METADATA FOUND') {
+          dispatch({ type: 'setipfsLoading', payload: false })
+          dispatch({ type: 'setApiData', payload: null })
+          dispatch({ type: 'setipfsError', payload: 'No Package available' })
+        } else {
+          dispatch({ type: 'setipfsLoading', payload: false })
+          dispatch({ type: 'setipfsSuccess', payload: true })
+          dispatch({ type: 'setApiData', payload: metaData })
+        }
+      })
+    } else {
+      dispatch({ type: 'setipfsLoading', payload: false })
+      dispatch({ type: 'setApiData', payload: null })
+      dispatch({ type: 'setipfsError', payload: '' })
+    }
+  }, [debouncedIpfsInput])
+
 
   const handleApplyButton: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault()

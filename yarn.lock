@@ -3286,6 +3286,11 @@
     "@types/node" "*"
     domhandler "^2.4.0"
 
+"@types/js-yaml@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@types/js-yaml/-/js-yaml-4.0.3.tgz#9f33cd6fbf0d5ec575dc8c8fc69c7fec1b4eb200"
+  integrity sha512-5t9BhoORasuF5uCPr+d5/hdB++zRFUTMIZOzbNkr+jZh3yQht4HYbRDyj9fY8n2TZT30iW9huzav73x4NikqWg==
+
 "@types/json-schema@^7.0.7":
   version "7.0.9"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
@@ -3684,7 +3689,7 @@
   resolved "https://registry.yarnpkg.com/@web3api/asyncify-js/-/asyncify-js-0.0.1-prealpha.40.tgz#3f89d7f487f252ebf13148e19278598be0037f56"
   integrity sha512-Yqz8sfDIR8LXhaNShUznhRwlgrDLqJrxrvsliE+GJc1Wq3e8ov5ef5zkGmrQ1qKM+UvRNwb3lK1yPCgU+YqLyw==
 
-"@web3api/client-js@0.0.1-prealpha.40":
+"@web3api/client-js@0.0.1-prealpha.40", "@web3api/client-js@^0.0.1-prealpha.40":
   version "0.0.1-prealpha.40"
   resolved "https://registry.yarnpkg.com/@web3api/client-js/-/client-js-0.0.1-prealpha.40.tgz#5836e68b71a6f35c831048bca2e6b0927a9604ba"
   integrity sha512-XfxWvNkp8jznbnu2lzu7BvZkYnKu9WzY+IBYY7rqH82VagNBipilC0ECeTVFXTzkX3eVWiemhAtQlUUiDH7O5Q==
@@ -3726,7 +3731,7 @@
     "@web3api/core-js" "0.0.1-prealpha.40"
     ethers "5.0.7"
 
-"@web3api/ethereum-plugin-js@0.0.1-prealpha.40":
+"@web3api/ethereum-plugin-js@0.0.1-prealpha.40", "@web3api/ethereum-plugin-js@^0.0.1-prealpha.40":
   version "0.0.1-prealpha.40"
   resolved "https://registry.yarnpkg.com/@web3api/ethereum-plugin-js/-/ethereum-plugin-js-0.0.1-prealpha.40.tgz#4dde1bc8712953f415596ba1abb960f70fcbbb67"
   integrity sha512-NC1PrdBLRj0TWhXgtKBY7p1AE3noyxs5thQ0V5kE3zXOHWw8F1cYOXbr5+rScUSxs1+2zZraA/9Q8PrgsKL9dw==
@@ -3744,7 +3749,7 @@
     "@web3api/core-js" "0.0.1-prealpha.40"
     axios "0.21.1"
 
-"@web3api/ipfs-plugin-js@0.0.1-prealpha.40":
+"@web3api/ipfs-plugin-js@0.0.1-prealpha.40", "@web3api/ipfs-plugin-js@^0.0.1-prealpha.40":
   version "0.0.1-prealpha.40"
   resolved "https://registry.yarnpkg.com/@web3api/ipfs-plugin-js/-/ipfs-plugin-js-0.0.1-prealpha.40.tgz#6236842867c2a74256d3908bae00f8e8e6b52e13"
   integrity sha512-9FDdHwbY4Uui6Bc1qzyyvuh5xlc1vZrbcvHxNpLtRDYZvGCriOo+XnS1v65N7qgEK8/O14kVGIg9o+PJ3MnoZw==
@@ -3767,7 +3772,7 @@
   resolved "https://registry.yarnpkg.com/@web3api/manifest-schemas/-/manifest-schemas-0.0.1-prealpha.40.tgz#2e0ba0e9130bf1631ab76d04a2607e1b32f330c2"
   integrity sha512-0kW3XFE/iem7kiPf97GnF3FGFHWuMf6nWn4cu+zvwEcxQGruQoiBlB0x2sqVbE2wKmP0qFatqzhbpv2FJmfPRw==
 
-"@web3api/react@0.0.1-prealpha.40":
+"@web3api/react@^0.0.1-prealpha.40":
   version "0.0.1-prealpha.40"
   resolved "https://registry.yarnpkg.com/@web3api/react/-/react-0.0.1-prealpha.40.tgz#ae6c3124f9aec39a32b6899fed0dc4795e356658"
   integrity sha512-AMBfOvfujjbLswJdqukWHBCRLonqkEFaMB0AJGKjW7jY0TajIxz6DaWhWRLARQDV44gbHRydbZxNaCa8bmVkRQ==
@@ -4021,6 +4026,11 @@ argparse@^1.0.7:
   integrity sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==
   dependencies:
     sprintf-js "~1.0.2"
+
+argparse@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
+  integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
 arr-diff@^4.0.0:
   version "4.0.0"
@@ -6865,7 +6875,15 @@ ethereum-public-key-to-address@0.0.1:
     meow "^5.0.0"
     secp256k1 "^3.7.1"
 
-ethereumjs-abi@^0.6.8, "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
+ethereumjs-abi@^0.6.8:
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/ethereumjs-abi/-/ethereumjs-abi-0.6.8.tgz#71bc152db099f70e62f108b7cdfca1b362c6fcae"
+  integrity sha512-Tx0r/iXI6r+lRsdvkFDlut0N08jWMnKRZ6Gkq+Nmw75lZe4e6o3EkSnkaBP5NF6+m5PTGAr9JP43N3LyeoglsA==
+  dependencies:
+    bn.js "^4.11.8"
+    ethereumjs-util "^6.0.0"
+
+"ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
   version "0.6.8"
   resolved "git+https://github.com/ethereumjs/ethereumjs-abi.git#ee3994657fa7a427238e6ba92a84d0b529bbcde0"
   dependencies:
@@ -8723,6 +8741,13 @@ js-yaml@^3.13.1:
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
+
+js-yaml@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
+  integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
+  dependencies:
+    argparse "^2.0.1"
 
 jsbi@^3.1.5:
   version "3.2.1"

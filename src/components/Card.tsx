@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import Stars from './Stars'
 import Badge from './Badge'
-import Dots from '../../public/images/dots-vertical.svg'
-import { cloudFlareGateway } from '../constants'
+import Dots from '../../public/images/dots.svg'
+import { ipfsGateway } from '../constants'
 import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 
@@ -56,7 +56,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
             <div sx={{ display: "flex", gap: "1.5rem" }}>
               <img
                 className="api-logo"
-                src={`${cloudFlareGateway}${
+                src={`${ipfsGateway}${
                   ipfsHash || stripIPFSPrefix(api.locationUri)
                 }${api.icon.replace("./", "/")}`}
                 sx={{

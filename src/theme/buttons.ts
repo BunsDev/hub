@@ -49,11 +49,6 @@ const buttonColorStates = {
       borderColor: "w3TextNavTeal",
       cursor: "not-allowed",
     },
-    '&[disabled]': {
-      bg: 'w3TextNavTeal',
-      borderColor: 'w3TextNavTeal',
-      cursor: 'not-allowed',
-    },
   },
   secondary: {
     bg: "#141D32",
