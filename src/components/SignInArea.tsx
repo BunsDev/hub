@@ -42,7 +42,11 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
     <Flex
       className="sign-in-wrap"
       sx={{
-        ul: { display: 'flex', color: onDark ? 'white !important' : '', gap: '1.5rem' },
+        ul: {
+          display: "flex",
+          color: onDark ? "white !important" : "",
+          gap: "1.5rem",
+        },
       }}
     >
       {showGithubSignInModal && (
@@ -89,13 +93,13 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
           />
         </div>
       )}
-      <ul sx={{ display: 'flex', alignItems: 'center' }}>
-        {router.pathname !== '/apis/create' && (
+      <ul sx={{ display: "flex", alignItems: "center" }}>
+        {dapp.address && router.pathname !== "/apis/create" && (
           <li>
             <Button
               variant="primaryMedium"
               onClick={() => {
-                router.push('/apis/create?activeTab=create')
+                router.push("/apis/create?activeTab=create");
               }}
             >
               Publish Wrapper
@@ -109,7 +113,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
           >
             <Button variant="primaryMedium" sx={{ display: "inline-block" }}>
-              ?
+              Log In
             </Button>
             {/* <User /> */}
           </li>
