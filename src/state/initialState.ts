@@ -12,6 +12,7 @@ export interface State {
   };
   publish: PublishType;
   search: SearchType;
+  mobile: MobileType;
 }
 
 export const initialState: State = {
@@ -61,6 +62,10 @@ export const initialState: State = {
   search: {
     sortedApi: [],
   },
+  mobile: {
+    isMobile: false,
+    isMobileNavActive: false,
+  },
 };
 
 type DappType = {
@@ -98,9 +103,14 @@ type PublishType = {
 type SearchType = {
   sortedApi: -1 | APIData[];
 };
+type MobileType = {
+  isMobile: boolean;
+  isMobileNavActive: boolean;
+};
 
 export default initialState;
 export type { DappType };
 export type { Web3apiType };
 export type { PublishType };
 export type { SearchType };
+export type { MobileType };

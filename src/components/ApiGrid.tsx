@@ -32,13 +32,11 @@ const ApiGrid = ({ apis, main }: ApiGridProps) => {
             gap="1rem"
             sx={{
               gridTemplateColumns: [
-                `${gridTemplateColumn}`,
-                `${gridTemplateColumn} ${gridTemplateColumn}`,
-                null,
                 `${gridTemplateColumn} ${gridTemplateColumn} ${gridTemplateColumn}`,
-                `${gridTemplateColumn} ${gridTemplateColumn} ${gridTemplateColumn} ${gridTemplateColumn}`,
+                `${gridTemplateColumn}`,
               ],
               mx: "auto",
+              mb: 3,
             }}
           >
             {search !== undefined && search.sortedApi !== -1 ? (

@@ -39,29 +39,26 @@ const PlaygroundPage = () => {
   }, [dapp.web3]);
   return (
     <Layout>
-      <Header />
-      <Flex>
-        {showSignInModal && !dapp.web3 && (
-          <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>
-            <Modal
-              screen={"connect"}
-              noLeftShift
-              close={() => {
-                dispatch({ type: "setShowConnectModal", payload: false });
-              }}
-            />{" "}
-          </div>
-        )}
-        <main>
-          <div className="contents animate">
-            {data !== null && web3api.plugins && (
-              <Web3ApiProvider plugins={web3api.plugins}>
-                <Playground api={data} />
-              </Web3ApiProvider>
-            )}
-          </div>
-        </main>
-      </Flex>
+      {showSignInModal && !dapp.web3 && (
+        <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>
+          <Modal
+            screen={"connect"}
+            noLeftShift
+            close={() => {
+              dispatch({ type: "setShowConnectModal", payload: false });
+            }}
+          />{" "}
+        </div>
+      )}
+      <main>
+        <div className="contents animate">
+          {data !== null && web3api.plugins && (
+            <Web3ApiProvider plugins={web3api.plugins}>
+              <Playground api={data} />
+            </Web3ApiProvider>
+          )}
+        </div>
+      </main>
     </Layout>
   );
 };

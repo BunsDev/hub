@@ -6,7 +6,8 @@ export type StateAction =
   | Web3APIReducerAction
   | SearchAction
   | PublishAction
-  | DAppAction;
+  | DAppAction
+  | MobileAction;
 
 export type Web3APIReducerAction = {
   type: "recreateplugins";
@@ -32,6 +33,8 @@ export type PublishAction =
   | SET_SHOW_SUCCESS_MODAL
   | SET_API_DATA
   | SET_REGISTRATION_STATUS;
+
+export type MobileAction = SET_IS_MOBILE | SET_IS_MOBILE_NAV_ACTIVE
 
 type SET_SUBDOMAIN = { // eslint-disable-line
   type: "setsubdomain";
@@ -155,3 +158,13 @@ type SET_DID = { // eslint-disable-line
   type: "SET_DID";
   payload: string;
 };
+
+type SET_IS_MOBILE = { 
+  type: "setismobile"
+  payload:boolean
+}
+
+type SET_IS_MOBILE_NAV_ACTIVE = {
+  type: "setismobilenavactive"
+  payload:boolean
+}

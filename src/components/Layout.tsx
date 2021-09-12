@@ -7,6 +7,9 @@ import BGCircles from "./BGCircles";
 import useSWR from "swr";
 import { Global } from "@emotion/react";
 import { useEffect } from "react";
+import { Flex } from "@theme-ui/components";
+import Header from "./Header";
+import MobileNav from "./Navigation/MobileNav";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -27,6 +30,15 @@ const Layout = ({ children }: LayoutProps) => {
     }
   }, [apis]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.innerWidth <= 375 &&
+        dispatch({
+          type: "setismobile",
+          payload: true,
+        });
+    }
+  }, []);
   return (
     <div
       className="layout"
@@ -39,10 +51,27 @@ const Layout = ({ children }: LayoutProps) => {
         background: "#1E1D22",
       }}
     >
-      {children}
+      <Header />
+      <main>
+        <div
+          className="contents animate"
+          sx={{
+            width: "100%",
+            height: "100%",
+            padding: [null, "0 4.6875rem"],
+            px: [3, 3, "4.6875rem"],
+          }}
+        >
+          {children}
+        </div>
+      </main>
       <BGCircles />
+      {typeof window !== "undefined" && window.innerWidth <= 768 && (
+        <MobileNav />
+      )}
       <Global
-        styles={(theme: any) => ({ // eslint-disable-line
+        styles={(theme: any) => ({
+          // eslint-disable-line
           "@keyframes shift": {
             from: { transform: "translate(-10px, 0)" },
             to: { transform: "translate(0, 0)" },
@@ -104,7 +133,7 @@ const Layout = ({ children }: LayoutProps) => {
           },
           main: {
             overflowX: "hidden",
-            paddingTop: "3.25rem",
+            paddingTop: [null, "3.25rem"],
             paddingBottom: "4.6875rem",
             flex: 1,
             display: "flex",
@@ -146,11 +175,6 @@ const Layout = ({ children }: LayoutProps) => {
             code: {
               color: "inherit",
             },
-          },
-          ".contents": {
-            width: "100%",
-            height: "100%",
-            padding: "0 4.6875rem",
           },
           ".contents.animate": {
             animation: `fadeIn ${pageLevelAnimationTiming}, shift ${pageLevelAnimationTiming}`,
@@ -214,9 +238,10 @@ const Layout = ({ children }: LayoutProps) => {
             lineHeight: "100%",
             color: "rgba(255, 255, 255, 0.5)",
           },
-          ':-webkit-autofill, :-webkit-autofill:hover, :-webkit-autofill:focus': {
-            //TODO styles for input autocomplete
-          },
+          ":-webkit-autofill, :-webkit-autofill:hover, :-webkit-autofill:focus":
+            {
+              //TODO styles for input autocomplete
+            },
         })}
       />
     </div>

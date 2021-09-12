@@ -86,7 +86,6 @@ const CreateApi = () => {
 
   return (
     <Layout>
-      <Header />
       <CreateApiContext.Provider value={{ uploadMethod, setUploadMethod }}>
         <Flex>
           <main sx={{ pb: 5, px: "10.3125rem" }}>

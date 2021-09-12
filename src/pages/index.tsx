@@ -12,18 +12,10 @@ const Home = () => {
   const [{ dapp }] = useStateValue();
   return (
     <Layout>
-      <Header />
-      <Flex>
-        <main>
-          <div className="contents animate">
-            <section className="content">
-              <SortNav />
-              {dapp?.apis ? <ApiGrid main apis={dapp.apis} /> : null}
-            </section>
-            <BottomSpace />
-          </div>
-        </main>
-      </Flex>
+      <section className="content">
+        <SortNav />
+        {dapp?.apis ? <ApiGrid main apis={dapp.apis} /> : null}
+      </section>
     </Layout>
   );
 };

@@ -4,6 +4,7 @@ import {
   SearchAction,
   StateAction,
   Web3APIReducerAction,
+  MobileAction,
 } from "./action";
 import { State, initialState } from "./initialState";
 import { networks } from "../utils/networks";
@@ -42,7 +43,8 @@ export function web3apiReducer(
           plugins,
         };
       }
-    default: // eslint-disable-line
+    default:
+      // eslint-disable-line
       return state.web3api;
   }
 }
@@ -142,6 +144,25 @@ export function dappReducer(state: State, action: DAppAction): State["dapp"] {
   }
 }
 
+export function mobileReducer(
+  state: State,
+  action: MobileAction
+): State["mobile"] {
+  const newStateObj: State["mobile"] = initialState.mobile;
+  switch (action.type) {
+    case "setismobile": {
+      newStateObj.isMobile = action.payload;
+      return newStateObj;
+    }
+    case "setismobilenavactive": {
+      newStateObj.isMobileNavActive = action.payload;
+      return newStateObj;
+    }
+    default:
+      return state.mobile;
+  }
+}
+
 export default function mainReducer(
   w3hubStates: State,
   action: StateAction
@@ -153,5 +174,6 @@ export default function mainReducer(
     web3api: web3apiReducer(w3hubStates, action as Web3APIReducerAction),
     publish: publishReducer(w3hubStates, action as PublishAction),
     search: searchReducer(w3hubStates, action as SearchAction),
+    mobile: mobileReducer(w3hubStates, action as MobileAction),
   };
 }

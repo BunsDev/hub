@@ -2,7 +2,7 @@
 
 import onboardInit from "../utils/onboardInit";
 import { useStateValue } from "../state/state";
-import Navbar from "./Navbar";
+import Navbar from "./Navigation/Navbar";
 const SignInArea = dynamic(() => import("./SignInArea"), { ssr: false });
 
 import { useEffect, useState } from "react";
@@ -12,7 +12,12 @@ import dynamic from "next/dynamic";
 import { API } from "bnc-onboard/dist/src/interfaces";
 
 const Header = () => {
-  const [_, dispatch] = useStateValue();
+  const [
+    {
+      mobile: { isMobile },
+    },
+    dispatch,
+  ] = useStateValue();
   const [onboard, setOnboard] = useState<API>();
 
   useEffect(() => {
@@ -35,12 +40,11 @@ const Header = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        pl: "2.365rem",
-        pr: "2.5rem",
+        pl: ["2.365rem", 3],
+        pr: ["2.5rem", 3],
+        py: [null, "44px"],
         maxHeight: "4.5625rem",
         background: "transparent",
-        "> *": { display: "flex" },
-        ".col": { flex: 2, "&:last-of-type": { justifyContent: "flex-end" } },
       }}
     >
       <Flex sx={{ alignItems: "center" }}>
@@ -57,9 +61,26 @@ const Header = () => {
         </Link>
         <Navbar />
       </Flex>
-      <Flex sx={{ justifyItems: "flex-end", gap: "1.5rem" }}>
-        <SignInArea onDark />
-      </Flex>
+      {isMobile ? (
+        <img
+          src="/images/burger.svg"
+          alt="nav-menu-button"
+          onClick={(e) => {
+            e.preventDefault();
+            dispatch({ type: "setismobilenavactive", payload: true });
+          }}
+        />
+      ) : (
+        <Flex
+          sx={{
+            display: ["flex", "none"],
+            justifyItems: "flex-end",
+            gap: "1.5rem",
+          }}
+        >
+          <SignInArea onDark />
+        </Flex>
+      )}
     </header>
   );
 };

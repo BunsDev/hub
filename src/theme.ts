@@ -8,6 +8,7 @@ const GlobalTheme: Theme = {
   // eslint-disable-line
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   sizes: [0, 4, 8, 16, 32, 64, 128, 256, 512],
+  breakpoints: ["@media (max-width: 375px)", "@media (min-width: 992px)"],
   fonts: {
     body: '"Nunito Sans", sans-serif',
     heading: '"Nunito Sans", sans-serif',
@@ -28,13 +29,13 @@ const GlobalTheme: Theme = {
     background: "#EEE",
     text: "#FFF",
 
-    w3green: '#509DAC',
-    w3darkGreen: '#0D373C',
-    w3beige: '#688184',
-    w3darkGray: '#141A1E',
-    w3Grey1: '#141417',
-    w3Grey2: '#141D32',
-    w3Grey3: '#1F1F20',
+    w3green: "#509DAC",
+    w3darkGreen: "#0D373C",
+    w3beige: "#688184",
+    w3darkGray: "#141A1E",
+    w3Grey1: "#141417",
+    w3Grey2: "#141D32",
+    w3Grey3: "#1F1F20",
 
     w3shade0: "#12191E",
     w3shade1: "#13212C",
