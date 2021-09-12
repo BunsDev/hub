@@ -1,17 +1,21 @@
 /** @jsxImportSource theme-ui **/
-import { FormEventHandler, useEffect } from 'react'
-import { Input, Flex, Button, Themed } from 'theme-ui'
-import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
-import { useStateValue } from '../../state/state'
-import { ipfsGateway, domain, MAIN_DOMAIN } from '../../constants'
+import { FormEventHandler, useEffect } from "react";
+import { Flex, Button, Themed, Image } from "theme-ui";
+import { useCreateSubdomain } from "../../hooks/ens/useCreateSubdomain";
+import { useStateValue } from "../../state/state";
+import { ipfsGateway, domain, MAIN_DOMAIN } from "../../constants";
 import { useRouter } from "next/router";
-import { useAuth } from '../../hooks/useAuth'
-import { Wrapper } from './Wrapper'
-import stripIPFSPrefix from '../../utils/stripIPFSPrefix'
-
+import { useAuth } from "../../hooks/useAuth";
+import { Wrapper } from "./Wrapper";
+import stripIPFSPrefix from "../../utils/stripIPFSPrefix";
+import useToggle from "../../hooks/useToggle";
+import Input from "../Input";
 
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
+  const [ensInputVisible, toggleEnsInput] = useToggle(
+    Boolean(publish.subdomain)
+  );
   const [executeCreateSubdomain, { status }] = useCreateSubdomain();
   const { authenticate } = useAuth(dapp);
   const router = useRouter();
@@ -101,13 +105,65 @@ const PublishAPI = () => {
               />
             )}
           </div>
-          <div className="inputs" sx={{ width: "100%", minWidth: "30.5rem" }}>
-            <label>IPFS</label>
-            <Input value={publish?.ipfs} disabled />
-            <label>ENS Name</label>
-            <Input value={publish?.subdomain} disabled />
+          <div className="inputs" sx={{ minWidth: "30.5rem", flexGrow: 1 }}>
+            <div sx={{ mb: "26px" }}>
+              <label className="subtitle-1">IPFS</label>
+              <Input
+                value={publish?.ipfs}
+                disabled
+                suffix={
+                  <Flex sx={{ width: "65px", justifyContent: "center" }}>
+                    <Image src="/images/success.svg" alt="success" />
+                  </Flex>
+                }
+              />
+            </div>
+            <div>
+              {!publish.subdomain && !ensInputVisible && (
+                <Button
+                  variant="primaryMedium"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleEnsInput(true);
+                  }}
+                >
+                  Add ENS Name
+                </Button>
+              )}
+              {ensInputVisible && (
+                <>
+                  <label className="subtitle-1">ENS Name</label>
+                  <Input
+                    value={publish?.subdomain}
+                    disabled
+                    suffix={
+                      <Button
+                        variant="suffixSmall"
+                        sx={{
+                          bg: "rgba(255, 255, 255, .1)",
+                          width: "65px",
+                          alignSelf: "stretch",
+                          borderRadius: "6px",
+                          border: "none",
+                          margin: "2px",
+                          justifyContent: "center",
+                          fontSize: "14px",
+                          lineHeight: "120%",
+                          fontWeight: "normal",
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                        }}
+                      >
+                        Save
+                      </Button>
+                    }
+                  />
+                </>
+              )}
+            </div>
           </div>
-          <div className="info" sx={{ maxWidth: "30%" }}>
+          <div className="info" sx={{ maxWidth: "30%", width: "19.75" }}>
             {publish?.apiData?.name && (
               <Themed.h2>{publish?.apiData?.name}</Themed.h2>
             )}

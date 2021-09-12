@@ -212,7 +212,7 @@ const Layout = ({ children }: LayoutProps) => {
             fontWeight: "normal",
             fontSize: "16px",
             lineHeight: "100%",
-            color: "white",
+            color: "rgba(255, 255, 255, 0.5)",
           },
           ':-webkit-autofill, :-webkit-autofill:hover, :-webkit-autofill:focus': {
             //TODO styles for input autocomplete
