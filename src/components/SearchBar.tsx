@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui **/
 import { useState, useCallback } from "react";
-import { Flex } from "theme-ui";
 import SearchIcon from "../../public/images/magnifying-glass.svg";
 import router from "next/router";
 import Input from "./Input";
@@ -28,7 +27,7 @@ const SearchBar = () => {
         p: "0.625rem 0.75rem",
         background: "rgba(0, 0, 0, 0.24)",
         borderRadius: "1.25rem",
-        width: ["100%", null],
+        width: ["17.5rem", "100%"],
       }}
       sx={{
         border: "none",

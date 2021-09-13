@@ -5,9 +5,11 @@ import Link from "next/link";
 
 import useRouter from "../../hooks/useRouter";
 import NavItem from "./NavItem";
-import navItems from "./navigationItems";
+import { navItems } from "./navigationItems";
+import { useStateValue } from "../../state/state";
 
 const Navbar = () => {
+  const [{ dapp }] = useStateValue();
   return (
     <nav
       role="nav"
@@ -26,9 +28,11 @@ const Navbar = () => {
           height: "4.5625rem",
         }}
       >
-        {navItems.map((item) => (
-          <NavItem item={item} />
-        ))}
+        {navItems.map((item) => {
+          if (item.authRequired && !dapp.address) {
+            return null;
+          } else return <NavItem item={item} />;
+        })}
       </ul>
     </nav>
   );

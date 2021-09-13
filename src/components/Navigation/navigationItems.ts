@@ -4,10 +4,11 @@ export interface NavItem {
   color?: string;
   bg?: string;
   href?: string;
+  authRequired?: boolean;
   children?: NavItem[];
 }
 
-const navItems: NavItem[] = [
+export const navItems: NavItem[] = [
   {
     title: "Wrappers",
     color: "w3NavPink",
@@ -28,7 +29,7 @@ const navItems: NavItem[] = [
     imgSrc: "/images/dots-horizontal.svg",
     bg: "#4B401B",
     children: [
-      { title: "Favorites" },
+      { title: "Favorites", authRequired: true },
       { title: "About" },
       { title: "Docs" },
       { title: "Code" },
@@ -38,4 +39,24 @@ const navItems: NavItem[] = [
   },
 ];
 
-export default navItems;
+interface ConditionalNavItems {
+  favorites: NavItem;
+  logout: NavItem;
+}
+
+export const conditionalNavItems: ConditionalNavItems = {
+  favorites: {
+    title: "Favorites",
+    color: "#EC467E",
+    imgSrc: "/images/heart.svg",
+    bg: "w3NavPinkBg",
+    authRequired: true,
+  },
+  logout: {
+    title: "Logout",
+    color: "w3NavBlue",
+    imgSrc: "/images/logout.svg",
+    bg: "w3NavBlue",
+    authRequired: true,
+  },
+};

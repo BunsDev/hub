@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui **/
 import { Link } from "@theme-ui/components";
 import { ThemeUIStyleObject } from "@theme-ui/css";
-import React, { useMemo } from "react";
+import React, { MouseEventHandler, useMemo } from "react";
 import useRouter from "../../hooks/useRouter";
 import { NavItem as NavItemType } from "./navigationItems";
 
@@ -44,11 +44,12 @@ const styles: { [key: string]: ThemeUIStyleObject } = {
     borderBottomRightRadius: "0",
     "&:hover": {
       ".dropdown-content": {
-        display: "block",
+        display: "flex",
       },
     },
     ".dropdown-content": {
       display: "none",
+      flexDirection: "column",
       position: "absolute",
       top: "100%",
       bg: "inherit",
@@ -57,7 +58,7 @@ const styles: { [key: string]: ThemeUIStyleObject } = {
       borderBottomLeftRadius: ".25rem",
       borderBottomRightRadius: ".25rem",
       "&:hover": {
-        display: "block",
+        display: "flex",
       },
       ">a": {
         mb: "1rem",
@@ -66,7 +67,13 @@ const styles: { [key: string]: ThemeUIStyleObject } = {
   },
 };
 
-const NavItem = ({ item }: { item: NavItemType }) => {
+const NavItem = ({
+  item,
+  onClick,
+}: {
+  item: NavItemType;
+  onClick?: MouseEventHandler<HTMLLIElement>;
+}) => {
   const { activeRoute } = useRouter();
   const expandable = useMemo(() => !!item.children, []);
   const expandableSx = useMemo(
@@ -75,7 +82,9 @@ const NavItem = ({ item }: { item: NavItemType }) => {
   );
   return (
     <li
-      className={activeRoute === item.href ? "active" : ""}
+      className={`navItem ${expandable ? "expandable" : ""} ${
+        activeRoute === item.href ? "active" : ""
+      }`}
       sx={{
         ...styles.navLi,
         svg: {
@@ -88,11 +97,21 @@ const NavItem = ({ item }: { item: NavItemType }) => {
             backgroundColor: item?.color,
           },
         },
+        ".dropdown-content::before": {
+          backgroundColor: item?.color,
+        },
         ...expandableSx,
       }}
+      onClick={onClick}
     >
       <Link href={item?.href} sx={{ alignItems: "center" }}>
-        {item.imgSrc && <img src={item.imgSrc} alt={item.title + "icon"} />}
+        {item.imgSrc && (
+          <img
+            src={item.imgSrc}
+            alt={item.title + "icon"}
+            sx={{ width: "1.25rem", height: "1.25rem" }}
+          />
+        )}
         <span className="text-nav" sx={{ ml: "8px" }}>
           {item.title}
         </span>

@@ -94,18 +94,6 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
         </div>
       )}
       <ul sx={{ display: "flex", alignItems: "center" }}>
-        {dapp.address && router.pathname !== "/apis/create" && (
-          <li>
-            <Button
-              variant="primaryMedium"
-              onClick={() => {
-                router.push("/apis/create?activeTab=create");
-              }}
-            >
-              Publish Wrapper
-            </Button>
-          </li>
-        )}
         {!dapp.address ? (
           <li
             onClick={handleSignIn}

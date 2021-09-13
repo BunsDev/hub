@@ -7,17 +7,20 @@ const SignInArea = dynamic(() => import("./SignInArea"), { ssr: false });
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Flex } from "theme-ui";
+import { Flex, Button } from "theme-ui";
 import dynamic from "next/dynamic";
 import { API } from "bnc-onboard/dist/src/interfaces";
+import useRouter from "../hooks/useRouter";
 
 const Header = () => {
   const [
     {
+      dapp,
       mobile: { isMobile },
     },
     dispatch,
   ] = useStateValue();
+  const router = useRouter();
   const [onboard, setOnboard] = useState<API>();
 
   useEffect(() => {
@@ -78,6 +81,18 @@ const Header = () => {
             gap: "1.5rem",
           }}
         >
+          {dapp.address && router.pathname !== "/apis/create" && (
+            <li>
+              <Button
+                variant="primaryMedium"
+                onClick={() => {
+                  router.push("/apis/create?activeTab=create");
+                }}
+              >
+                Publish Wrapper
+              </Button>
+            </li>
+          )}
           <SignInArea onDark />
         </Flex>
       )}
