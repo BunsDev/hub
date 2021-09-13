@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import Stars from './Stars'
 import Badge from './Badge'
 import Dots from '../../public/images/dots-vertical.svg'
-import { ipfsGateway } from '../constants'
+import { cloudFlareGateway } from '../constants'
 import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 
@@ -56,7 +56,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
             <div sx={{ display: "flex", gap: "1.5rem" }}>
               <img
                 className="api-logo"
-                src={`${ipfsGateway}${
+                src={`${cloudFlareGateway}${
                   ipfsHash || stripIPFSPrefix(api.locationUri)
                 }${api.icon.replace("./", "/")}`}
                 sx={{

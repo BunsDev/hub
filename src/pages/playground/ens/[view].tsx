@@ -50,15 +50,11 @@ const PlaygroundPage = () => {
           />{" "}
         </div>
       )}
-      <main>
-        <div className="contents animate">
-          {data !== null && web3api.plugins && (
-            <Web3ApiProvider plugins={web3api.plugins}>
-              <Playground api={data} />
-            </Web3ApiProvider>
-          )}
-        </div>
-      </main>
+      {data !== null && web3api.plugins && (
+        <Web3ApiProvider plugins={web3api.plugins}>
+          <Playground api={data} />
+        </Web3ApiProvider>
+      )}
     </Layout>
   );
 };

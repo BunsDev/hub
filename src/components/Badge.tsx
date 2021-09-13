@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui **/
-import { ipfsGateway } from '../constants'
+import { cloudFlareGateway } from '../constants'
 
 type BadgeProps = {
   label: string;
@@ -24,7 +24,7 @@ const Badge = ({ label, onDark, ipfsHash }: BadgeProps) => {
       }}
       onClick={()=>{
         if(ipfsHash) {
-          window.open(ipfsGateway+ipfsHash)
+          window.open(cloudFlareGateway+ipfsHash)
         }
       }}
     >

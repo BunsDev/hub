@@ -22,7 +22,8 @@ import { QueryApiResult } from "@web3api/client-js";
 import { useWeb3ApiQuery } from "@web3api/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { Flex, Button, Themed, Input, Grid } from "theme-ui";
+import { Flex, Button, Themed, Grid } from "theme-ui";
+import Input from "./Input";
 
 type PlaygroundProps = {
   api?: APIData;
@@ -164,10 +165,14 @@ const Playground = ({ api }: PlaygroundProps) => {
     >
       <Flex
         className="head"
-        sx={{ justifyContent: "space-between", mb: "2.25rem" }}
+        sx={{
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          mb: "2.25rem",
+        }}
       >
         <Themed.h1>Playground</Themed.h1>
-        <Flex sx={{ gap: "1rem" }}>
+        <Flex sx={{ gap: "1rem", flexWrap: "wrap" }}>
           <SearchBox
             key={"search-api-box"}
             dark
@@ -194,59 +199,63 @@ const Playground = ({ api }: PlaygroundProps) => {
               }
             }}
           />
-          <Flex
-            sx={{
-              alignItems: "center",
-              backgroundColor: "black",
-              height: "2.5rem",
-              borderRadius: ".5rem",
-              pl: "1rem",
-            }}
-          >
-            <Input sx={{ border: "none" }} placeholder="Enter wrapper URL" />
-            <Button
-              className="body-2"
+          <Input
+            wrapperSx={{ width: [null, "100%"] }}
+            placeholder="Enter wrapper URL"
+            suffix={
+              <Button
+              variant="suffixSmall"
               sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "2.25rem",
-                backgroundColor: "#0F0F0F",
+                width: "65px",
+                alignSelf: "stretch",
                 borderRadius: "6px",
-                p: "9px 12px 10px 15px",
                 border: "none",
+                margin: "2px",
+                justifyContent: "center",
+                fontSize: "14px",
+                lineHeight: "120%",
+                fontWeight: "normal",
               }}
             >
               Apply
             </Button>
-          </Flex>
+            }
+          />
         </Flex>
       </Flex>
       {api && (
         <Flex
           className="subheader"
-          sx={{ justifyContent: "space-between", mb: "1.25rem" }}
+          sx={{
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            mb: "1.25rem",
+          }}
         >
-          <Flex sx={{ alignItems: "center", gap: "1rem" }}>
-            <Themed.h3 sx={{ mr: ".5rem" }}>
+          <Flex sx={{ alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
+            <Themed.h3 sx={{ mr: [null, ".5rem"], width: [null, "100%"] }}>
               {api?.name || "Placeholder"}
             </Themed.h3>
-            <Stars count={api?.favorites || 0} onDark large />
-            {api?.locationUri && (
-              <div className="category-Badges">
-                <Badge label="IPFS" onDark ipfsHash={api.locationUri} />
-              </div>
-            )}
+            <Flex sx={{ mb: [null, "1.25rem"], gap: "1rem" }}>
+              <Stars count={api?.favorites || 0} onDark large />
+              {api?.locationUri && (
+                <div className="category-Badges">
+                  <Badge label="IPFS" onDark ipfsHash={api.locationUri} />
+                </div>
+              )}
+            </Flex>
           </Flex>
           <a
             href={router.asPath.replace("playground", "apis")}
             sx={{
               backgroundColor: "white",
-              p: "10px 18px",
+              p: ["10px 18px", "20px 0"],
               color: "#141417",
-              borderRadius: "1.25rem",
+              borderRadius: ["1.25rem", "100px"],
               fontWeight: "bold",
               lineHeight: "100%",
+              textAlign: "center",
+              width: [null, "100%"],
             }}
           >
             Open Wrapper Page
@@ -255,21 +264,23 @@ const Playground = ({ api }: PlaygroundProps) => {
       )}
       <Grid
         gap="1rem"
-        columns={[3, "min-content min-content min-content"]}
+        columns={["1fr", "1fr", "min-content min-content min-content"]}
         sx={{
-          overflow: 'hidden',
-          '>div': {
-            minHeight: '200px',
-            minWidth: '200px',
-            width: schemaVisible ? 'calc((100vw - 4.6875rem)/3 - 2.5rem)' : 'calc((100vw - 4.6875rem)/2 - 3rem)',
-            transition: '.2s all',
-            borderRadius: '1.25rem',
-            '>section': {
-              minHeight: '17.5rem',
-              backgroundColor: 'black',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '1.25rem',
-              boxShadow: '12px 20px 54px -6px #141316',
+          overflow: "hidden",
+          ">div": {
+            minHeight: "200px",
+            minWidth: "200px",
+            width: schemaVisible
+              ? ["100%", null, "calc((100vw - 4.6875rem)/3 - 2.5rem)"]
+              : ["100%", null, "calc((100vw - 4.6875rem)/2 - 3rem)"],
+            transition: ".2s all",
+            borderRadius: "1.25rem",
+            ">section": {
+              minHeight: "17.5rem",
+              backgroundColor: "black",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              borderRadius: "1.25rem",
+              boxShadow: "12px 20px 54px -6px #141316",
             },
           },
         }}
@@ -283,11 +294,10 @@ const Playground = ({ api }: PlaygroundProps) => {
             overflow: "hidden",
           }}
         >
-          <section className="templates" sx={{ overflow: "hidden" }}>
+          <section className="templates" sx={{ p: "20px" }}>
             {apiContents?.queries && (
               <SelectBox
                 key={"queries-box"}
-                dark
                 skinny
                 labelField="id"
                 valueField="id"
@@ -301,6 +311,7 @@ const Playground = ({ api }: PlaygroundProps) => {
                 key={newSelectedMethod}
                 value={selectedMethod}
                 height={"300px"}
+                sx={{ ml: "-16px" }}
               />
             )}
           </section>
@@ -395,19 +406,20 @@ const Playground = ({ api }: PlaygroundProps) => {
         <div
           className="schema"
           sx={{
-            position: 'relative',
-            bg: 'black',
-            minWidth: '0 !important',
-            transition: '.2s all ease',
-            width: schemaVisible ? '30vw' : '0 !important',
-            overflowY: 'scroll',
+            position: "relative",
+            bg: "black",
+            minWidth: "0 !important",
+            transition: ".2s all ease",
+            width: schemaVisible ? "30vw" : "0 !important",
+            overflowY: "scroll",
+            height: [null, "270px"],
           }}
         >
           <section
             sx={{
               position: "absolute",
               top: 0,
-              right: 0,
+              right: [null, 0],
               width: "100%",
             }}
           >

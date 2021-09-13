@@ -60,6 +60,7 @@ const Layout = ({ children }: LayoutProps) => {
             height: "100%",
             padding: [null, "0 4.6875rem"],
             px: [3, 3, "4.6875rem"],
+            pb: "18px",
           }}
         >
           {children}

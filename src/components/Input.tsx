@@ -20,7 +20,7 @@ const Input = ({ prefix, suffix, wrapperSx, ...props }: InputProps) => {
       className="input-wrap"
       sx={{
         alignItems: "center",
-        bg: "w3Grey3",
+        bg: "black",
         borderRadius: ".5rem",
         height: "2.5rem",
         ...wrapperSx,

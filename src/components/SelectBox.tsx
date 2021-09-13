@@ -1,4 +1,5 @@
 /** @jsxImportSource theme-ui **/
+import { ThemeUIStyleObject } from "@theme-ui/css";
 import RDS from "react-dropdown-select";
 
 type RDSProps = {
@@ -10,6 +11,7 @@ type RDSProps = {
   options: { id: string; value: string }[];
   values?: { id: string; value: string }[];
   onChange: (values: { id: string; value: string }[]) => void;
+  sx?: ThemeUIStyleObject;
 };
 
 const SelectBox = ({
@@ -21,12 +23,30 @@ const SelectBox = ({
   options,
   values = [],
   onChange,
+  sx,
 }: RDSProps) => {
   return (
     <RDS
       sx={{
         border: "none !important",
+        bg: "w3Grey3",
+        borderRadius: ".5rem !important",
         color: "text",
+        fontFamily: "Nunito Sans",
+        fontWeight: "normal",
+        fontSize: "16px",
+        lineHeight: "150%",
+        p: ".5rem 1rem !important",
+        pr: "10px !important",
+        mb: "1rem",
+        '& [aria-expanded="true"]': {
+          ".react-dropdown-select-dropdown-handle": {
+            transform: "rotate(90deg)",
+          },
+        },
+        ".react-dropdown-select-dropdown-handle": {
+          transition: ".2s transform",
+        },
         ".react-dropdown-select-no-data": {
           color: "text",
         },
@@ -44,32 +64,29 @@ const SelectBox = ({
           top: "2.5rem",
           bg: "black",
           color: "white",
+          p: "14px 0 20px",
+          mt:'.5rem !important',
+          borderRadius: "1.25rem",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          boxShadow: "12px 20px 54px -6px #141316",
         },
         ".react-dropdown-select-item": {
-          borderColor: "rgba(104,129,132,.5) !important",
-          fontFamily: "Montserrat !important",
-          fontWeight: "bold !important",
-          fontSize: "0.875rem !important",
-          lineHeight: "0.875rem !important",
+          border: "none !important",
+          fontFamily: "Nunito Sans !important",
+          fontWeight: "600",
+          fontSize: "16px",
+          lineHeight: "100% !important",
           color: dark ? "white !important" : "text",
-          padding: "1rem 2rem !important",
+          padding: "6px 24px !important",
           height: skinny ? "2.25rem !important" : "3 !important.5rem",
           display: "flex !important",
           alignItems: "center !important",
           justifyContent: "left !important",
-          pl: "1.25rem !important",
           "&.react-dropdown-select-item-selected": {
-            bg: dark ? "w3shade1 !important" : "white !important",
-            borderBottomColor: "inherit !important",
+            bg: "w3Grey3",
           },
           "&:hover": {
-            bg: dark ? "w3shade3 !important" : "#cad9f3 !important",
-          },
-          "&:last-of-type": {
-            borderBottom: "none !important",
-          },
-          "&:first-of-type": {
-            borderTop: "none !important",
+            bg: "w3Grey3",
           },
         },
         ".react-dropdown-select-content": {
@@ -79,13 +96,9 @@ const SelectBox = ({
             flexDirection: "column",
             alignItems: "center !important",
             justifyContent: "center !important",
-            fontFamily: "Montserrat !important",
-
-            fontWeight: "bold !important",
-            fontSize: "0.875rem !important",
-            lineHeight: "0.875rem !important",
-            letterSpacing: "-0.004em !important",
-
+            fontFamily: "Nunito Sans !important",
+            fontSize: "16px !important",
+            lineHeight: "150% !important",
             color: dark ? "white !important" : "text",
           },
         },

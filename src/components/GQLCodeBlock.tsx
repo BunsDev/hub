@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui **/
 import solarizedDark from "../theme/Solarized-dark.json";
 
-import { Themed } from "theme-ui";
+import { Themed, ThemeUIStyleObject } from "theme-ui";
 // eslint-disable-next-line import/order
 import Editor, { OnChange, Monaco } from "@monaco-editor/react";
 
@@ -15,6 +15,7 @@ type GQLCodeBlockProps = {
   value: string | string[];
   onClick?: MouseEventHandler<HTMLDivElement>;
   handleEditorChange?: OnChange;
+  sx?: ThemeUIStyleObject;
 };
 
 const GQLCodeBlock = ({
@@ -24,13 +25,27 @@ const GQLCodeBlock = ({
   value,
   handleEditorChange,
   onClick,
+  sx,
 }: GQLCodeBlockProps) => {
   const handleEditorWillMount = (monaco: Monaco) => {
     monaco.editor.defineTheme("solarizedDark", solarizedDark);
     monaco.editor.setTheme("solarizedDark");
   };
   return (
-    <div className="GQLCodeBlock-wrap" onClick={onClick}>
+    <div
+      className="GQLCodeBlock-wrap"
+      onClick={onClick}
+      sx={{
+        ".margin-view-overlays": {
+          ">div": {
+            ">div": {
+              width: "34px !important",
+            },
+          },
+        },
+        ...sx,
+      }}
+    >
       {title ? (
         <Themed.h5
           sx={{

@@ -46,6 +46,7 @@ const Header = () => {
         pl: ["2.365rem", 3],
         pr: ["2.5rem", 3],
         py: [null, "44px"],
+        mb: "52px",
         maxHeight: "4.5625rem",
         background: "transparent",
       }}

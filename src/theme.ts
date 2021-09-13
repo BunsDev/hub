@@ -35,7 +35,7 @@ const GlobalTheme: Theme = {
     w3darkGray: "#141A1E",
     w3Grey1: "#141417",
     w3Grey2: "#141D32",
-    w3Grey3: "#1F1F20",
+    w3Grey3: "#0F0F0F",
 
     w3shade0: "#12191E",
     w3shade1: "#13212C",
