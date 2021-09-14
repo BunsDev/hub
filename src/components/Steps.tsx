@@ -1,34 +1,35 @@
 /** @jsxImportSource theme-ui **/
-import { Flex } from 'theme-ui'
+import { Flex } from "theme-ui";
 
 interface Step {
-  value: string
-  label: string
-  onClick: () => any
+  value: string;
+  label: string;
+  onClick: () => any;
 }
 interface Steps {
-  stepsData?: Step[]
-  activeStep?: string
+  stepsData?: Step[];
+  activeStep?: string;
 }
 
 export const defaultSteps: Step[] = [
-  { value: 'start', label: 'Intro', onClick: () => {} },
-  { value: 'upload', label: 'Upload', onClick: () => {} },
-  { value: 'publish', label: 'Publish', onClick: () => {} },
-]
-const Steps = ({ stepsData = defaultSteps, activeStep = '' }: Steps) => {
-
+  { value: "start", label: "Intro", onClick: () => {} },
+  { value: "upload", label: "Upload", onClick: () => {} },
+  { value: "publish", label: "Publish", onClick: () => {} },
+];
+const Steps = ({ stepsData = defaultSteps, activeStep = "" }: Steps) => {
   return (
     <Flex
       sx={{
+        width: [null, "100%", ],
+        justifyContent: [null, "space-between"],
         span: {
-          fontWeight: "800",
-          fontSize: "20px",
+          fontWeight: ["800", "600"],
+          fontSize: ["20px", "16px"],
           color: "rgba(255, 255, 255, 0.5)",
           transition: ".2s all",
           "&:after": {
             content: "'-'",
-            m: "0 12px",
+            m: ["0 12px", "0 22px"],
             color: "rgba(255, 255, 255, 0.5)",
           },
           "&:last-child": {
@@ -42,19 +43,22 @@ const Steps = ({ stepsData = defaultSteps, activeStep = '' }: Steps) => {
     >
       {stepsData.map((step, index) => {
         const isHighlighted =
-          index <= stepsData.indexOf(stepsData.find((step) => step.value === activeStep))
+          index <=
+          stepsData.indexOf(
+            stepsData.find((step) => step.value === activeStep)
+          );
         return (
           <span
             key={step.label}
             sx={{
-              cursor: isHighlighted ? 'pointer' : 'default',
+              cursor: isHighlighted ? "pointer" : "default",
             }}
-            className={isHighlighted ? 'active' : ''}
+            className={isHighlighted ? "active" : ""}
             onClick={isHighlighted && stepsData[index].onClick}
           >
             {index + 1}. {step.label}
           </span>
-        )
+        );
       })}
     </Flex>
   );

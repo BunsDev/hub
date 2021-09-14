@@ -12,34 +12,49 @@ const styles: { [key: string]: ThemeUICSSObject } = {
     border: "1px solid rgba(255, 255, 255, 0.2)",
     borderRadius: "1.25rem",
     justifyContent: "space-between",
-    gap: "1.875rem",
-    p: "1.75rem 2rem",
-    mb: "2rem",
+    flexWrap: "wrap",
+    gap: ["1.875rem", "1.25rem"],
+    p: ["0 84px 26px 49px", "12px 46px 40px"],
     div: {
       display: "flex",
       flexDirection: "column",
-      alignItems: "flex-start",
-      "span, a": {
-        color: "rgba(255, 255, 255, 0.5)",
-        fontSize: "0.875rem",
-        lineHeight: "120%",
-        m: 0,
-      },
-      li: {
+      alignItems: "center",
+      justifyContent: "flex-end",
+      height: "110px",
+      maxWidth: "192px",
+      span: {
         mb: ".5rem",
-        img: { maxWidth: "1rem", mr: ".5rem" },
-        a: { display: "flex", alignItems: "center" },
-        "&:last-child": { mb: 0 },
       },
-      code: {
-        mt: ".25rem",
+      a: {
+        display: "flex",
+        alignItems: "center",
+        gap: ".5rem",
+        fontSize: "14px",
+        lineHeight: "120%",
+        textDecorationLine: "underline",
+        color: "rgba(255, 255, 255, 0.5)",
       },
-      pre: {
+      p: {
+        fontSize: "14px",
+        lineHeight: "120%",
+        color: "rgba(255, 255, 255, 0.5)",
         m: "0",
-        p: "0",
-        bg: "transparent",
+        textAlign: "center",
+      },
+      ".subtitle-1": {
+        color: "white",
       },
     },
+  },
+  bgText: {
+    pointerEvents: "none",
+    position: "absolute",
+    bottom: 0,
+    left: "auto",
+    fontWeight: "bold",
+    fontSize: "110px",
+    lineHeight: "100%",
+    color: "rgba(255, 255, 255, 0.1)",
   },
 };
 
@@ -62,56 +77,58 @@ const Start = () => {
         flexDirection: "column",
       }}
     >
-      <div sx={{ mb: "1.75rem" }} className="body-1">
-        Choose one of creating options
-      </div>
       <Flex className="tutorial" sx={styles["tutorial"]}>
-        <div>
-          <ul>
-            <li>
-              <a
-                href="https://github.com/Web3Api/boilerplate"
-                target="_BLANK"
-                rel="noreferrer"
-              >
-                <img src="/images/link.svg" alt="icon" />
-                Starter Repo
-              </a>
-            </li>
-            <li>
-              <a href="/" target="_BLANK">
-                <img src="/images/link.svg" alt="icon" />
-                First time developing with Web3API?
-              </a>
-            </li>
-          </ul>
+        <div sx={{ width: "fit-content" }}>
+          <div className="bg" sx={styles.bgText}>
+            One
+          </div>
+          <span className="subtitle-1">What is Polywrap ?</span>
+          <a href="https://docs.polywrap.io/" target="_BLANK" rel="noreferrer">
+            <img src="/images/link.svg" alt="icon" />
+            Read about Polywrap
+          </a>
         </div>
         <div>
-          <span sx={{ mb: 2 }}>
-            Clone the starter repo to your local dev environment
-          </span>
-          <code>
-            <pre>
-              {`git clone https://github.com/web3api-start/uniswapv2 
-cd uniswapv2
-yarn install`}
-            </pre>
-          </code>
+          <div className="bg" sx={styles.bgText}>
+            Two
+          </div>
+          <span className="subtitle-1">Creating a Wrapper</span>
+          <a
+            href="https://docs.polywrap.io/guides/create-as-wrapper/project-setup/"
+            target="_BLANK"
+            rel="noreferrer"
+          >
+            <img src="/images/link.svg" alt="icon" />
+            How to create a Wrapper
+          </a>
         </div>
         <div>
-          <span>When ready deploy the package to IPFS using the following</span>
-          <Themed.code>
-            <Themed.pre>{`yarn codegen
-yarn build
-yarn deploy --IPFS`}</Themed.pre>
-          </Themed.code>
+          <div className="bg" sx={styles.bgText}>
+            Three
+          </div>
+          <span className="subtitle-1">Upload a Wrapper</span>
+          <p>Choose one of the options below to upload your wrapper</p>
         </div>
       </Flex>
+      <div
+        className="arrow"
+        sx={{
+          width: ".75rem",
+          height: ".75rem",
+          border: "2px solid #FFFFFF",
+          borderTop: "none",
+          borderRight: "none",
+          transform: "rotate(-45deg)",
+          my: ["20px", "23px"],
+          mx: "auto",
+        }}
+      />
       <Flex
         className="options"
         sx={{
-          mb: "2.5rem",
+          mb: ["2.5rem", "3.75rem"],
           gap: "1rem",
+          flexWrap: [null, "wrap"],
           div: {
             maxWidth: "14,1875rem",
             width: "100%",
@@ -151,6 +168,12 @@ yarn deploy --IPFS`}</Themed.pre>
       <Flex className="buttons">
         <Button
           variant="secondaryMedium"
+          sx={{
+            width: [null, "100%"],
+            justifyContent: "center",
+            py: [null, "1.25rem"],
+            borderRadius: [null, "100px"],
+          }}
           onClick={(e) => {
             e.preventDefault();
             router.back();

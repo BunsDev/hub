@@ -135,7 +135,7 @@ const Layout = ({ children }: LayoutProps) => {
           main: {
             overflowX: "hidden",
             paddingTop: [null, "3.25rem"],
-            paddingBottom: "4.6875rem",
+            paddingBottom: ["4.6875rem", "1rem"],
             flex: 1,
             display: "flex",
           },

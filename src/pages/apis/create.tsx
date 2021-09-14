@@ -6,11 +6,10 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import { useRouter } from "next/router";
+
 import { Box, Flex, Themed } from "theme-ui";
 import Layout from "../../components/Layout";
 import Publish from "../../components/CreateApi/Publish";
-import Header from "../../components/Header";
 import UploadApiMethod from "../../components/CreateApi/Start";
 import Steps from "../../components/Steps";
 import {
@@ -26,10 +25,11 @@ import {
   validStep,
 } from "../../utils/createWrapper";
 import { useStateValue } from "../../state/state";
+import useRouter from "../../hooks/useRouter";
 
 const styles = {
   height: "fit-content",
-  p: "50px 73px 59px 59px",
+  p: ["50px 73px 59px 59px", ["20px"]],
   background: "black",
   border: "1px solid rgba(255, 255, 255, 0.2)",
   boxShadow: "12px 20px 54px -6px #141316",
@@ -87,47 +87,50 @@ const CreateApi = () => {
   return (
     <Layout>
       <CreateApiContext.Provider value={{ uploadMethod, setUploadMethod }}>
-        <Flex>
-          <main sx={{ pb: 5, px: "10.3125rem" }}>
-            <div className="contents" sx={styles}>
-              <Flex
-                className="header"
-                sx={{
-                  justifyContent: "space-between",
-                  mb: ".75rem",
-                }}
-              >
-                <Themed.h2 sx={{ mb: 0 }}>Publish Wrapper</Themed.h2>
-                <Steps
-                  activeStep={activeStep}
-                  stepsData={[
-                    {
-                      value: "start",
-                      label: "Intro",
-                      onClick: () => {
-                        pushToStep(router, 0);
-                      },
-                    },
-                    {
-                      value: "upload",
-                      label: "Upload",
-                      onClick: () => {
-                        pushToStep(router, 1);
-                      },
-                    },
-                    { value: "publish", label: "Publish", onClick: () => {} },
-                  ]}
-                />
-              </Flex>
-              <Box className="content">
-                {activeStep === createApiSteps[0] && <UploadApiMethod />}
-                {activeStep === createApiSteps[1] &&
-                  uploadComponents[uploadMethod]}
-                {activeStep === createApiSteps[2] && <Publish />}
-              </Box>
-            </div>
-          </main>
-        </Flex>
+        <div className="contents" sx={styles}>
+          <Flex
+            className="header"
+            sx={{
+              justifyContent: "space-between",
+              mb: [".75rem", "1.375rem"],
+              flexWrap: "wrap",
+            }}
+          >
+            <Flex sx={{ flexDirection: "column" }}>
+              <Themed.h2 sx={{ mb: '12px' }}>Publish Wrapper</Themed.h2>
+              {router?.query?.activeTab === createApiSteps[0] && (
+                <div sx={{ mb: "1rem" }} className="body-1">
+                  Choose one of creating options
+                </div>
+              )}
+            </Flex>
+            <Steps
+              activeStep={activeStep}
+              stepsData={[
+                {
+                  value: "start",
+                  label: "Intro",
+                  onClick: () => {
+                    pushToStep(router, 0);
+                  },
+                },
+                {
+                  value: "upload",
+                  label: "Upload",
+                  onClick: () => {
+                    pushToStep(router, 1);
+                  },
+                },
+                { value: "publish", label: "Publish", onClick: () => {} },
+              ]}
+            />
+          </Flex>
+          <Box className="content">
+            {activeStep === createApiSteps[0] && <UploadApiMethod />}
+            {activeStep === createApiSteps[1] && uploadComponents[uploadMethod]}
+            {activeStep === createApiSteps[2] && <Publish />}
+          </Box>
+        </div>
       </CreateApiContext.Provider>
     </Layout>
   );
