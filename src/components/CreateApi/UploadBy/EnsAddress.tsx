@@ -1,17 +1,22 @@
 /** @jsxImportSource theme-ui **/
-import { ChangeEventHandler, MouseEventHandler, useCallback, useEffect } from 'react'
-import Input from '../../Input'
-import { MAIN_DOMAIN, ZERO_ADDRESS } from '../../../constants'
-import { getOwner } from '../../../services/ens/getOwner'
-import { useStateValue } from '../../../state/state'
-import ErrorMsg from '../ErrorMsg'
-import NavButtons from '../NavButtons'
-import { Wrapper } from '../Wrapper'
-import Spinner from '../../Spinner'
-import { Button, Image, Flex } from '@theme-ui/components'
+import {
+  ChangeEventHandler,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+} from "react";
+import Input from "../../Input";
+import { MAIN_DOMAIN, ZERO_ADDRESS } from "../../../constants";
+import { getOwner } from "../../../services/ens/getOwner";
+import { useStateValue } from "../../../state/state";
+import ErrorMsg from "../ErrorMsg";
+import NavButtons from "../NavButtons";
+import { Wrapper } from "../Wrapper";
+import Spinner from "../../Spinner";
+import { Button, Image, Flex } from "@theme-ui/components";
 
 export const EnsAddress = () => {
-  const [{ dapp, publish }, dispatch] = useStateValue()
+  const [{ dapp, publish }, dispatch] = useStateValue();
 
   useEffect(() => {
     if (publish.subdomain !== "") {
@@ -43,26 +48,26 @@ export const EnsAddress = () => {
   );
 
   const handleSubdomainChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    dispatch({ type: 'setsubdomain', payload: e.target.value })
-    dispatch({ type: 'setsubdomainError', payload: '' })
-    dispatch({ type: 'setsubdomainLookupSuccess', payload: false })
-  }
+    dispatch({ type: "setsubdomain", payload: e.target.value });
+    dispatch({ type: "setsubdomainError", payload: "" });
+    dispatch({ type: "setsubdomainLookupSuccess", payload: false });
+  };
   const handleApplyButton: MouseEventHandler<HTMLButtonElement> = async (e) => {
-    e.preventDefault()
-    publish.subdomain && checkForENSAvailability(publish.subdomain)
-  }
+    e.preventDefault();
+    publish.subdomain && checkForENSAvailability(publish.subdomain);
+  };
 
   const subdomainStatus = publish.subdomainLookupSuccess
-    ? 'available'
+    ? "available"
     : publish.subdomainRegisterSuccess
-    ? 'registered'
+    ? "registered"
     : publish.subdomainLoading
-    ? 'loading'
+    ? "loading"
     : publish.subdomainError
-    ? 'error'
-    : 'none'
+    ? "error"
+    : "none";
 
-  console.log(publish)
+  console.log(publish);
   //subdomainRegisterSuccess
 
   const inputSuffix: { [key: string]: JSX.Element } = {
@@ -70,15 +75,16 @@ export const EnsAddress = () => {
       <Button
         variant="suffixSmall"
         sx={{
-          width: '65px',
-          alignSelf: 'stretch',
-          borderRadius: '6px',
-          border: 'none',
-          margin: '2px',
-          justifyContent: 'center',
-          fontSize: '14px',
-          lineHeight: '120%',
-          fontWeight: 'normal',
+          width: "65px",
+          boxSizing: "content-box",
+          alignSelf: "stretch",
+          borderRadius: "6px",
+          border: "none",
+          margin: "2px",
+          justifyContent: "center",
+          fontSize: "14px",
+          lineHeight: "120%",
+          fontWeight: "normal",
         }}
         onClick={handleApplyButton}
       >
@@ -86,27 +92,27 @@ export const EnsAddress = () => {
       </Button>
     ),
     available: (
-      <Flex sx={{ width: '65px', justifyContent: 'center' }}>
+      <Flex sx={{ width: "65px", justifyContent: "center" }}>
         <Image src="/images/success.svg" alt="success" sx={{}} />
       </Flex>
     ),
     loading: (
-      <Flex sx={{ width: '65px', height: '100%', justifyContent: 'center' }}>
+      <Flex sx={{ width: "65px", height: "100%", justifyContent: "center" }}>
         <Spinner />
       </Flex>
     ),
-    error: <div style={{ width: '65px' }} />,
-  }
+    error: <div style={{ width: "65px" }} />,
+  };
 
   return (
     <Wrapper>
       <div className="fieldset">
-        <label>Input ENS Name</label>
-        <div className={'inputwrap'}>
+        <label className="subtitle-1">Input ENS Name</label>
+        <div className={"inputwrap"}>
           <Input
             type="text"
             name="ens"
-            placeholder="{SUBDOMAIN}"
+            placeholder="ksc787wkbnlscv7sdclsvl;s;..."
             required
             onChange={handleSubdomainChange}
             suffix={inputSuffix[subdomainStatus]}

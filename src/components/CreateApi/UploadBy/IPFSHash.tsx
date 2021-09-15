@@ -56,6 +56,7 @@ export const IPFSHash = () => {
         sx={{
           width: "65px",
           alignSelf: "stretch",
+          boxSizing: "content-box",
           borderRadius: "6px",
           border: "none",
           margin: "2px",
@@ -84,7 +85,7 @@ export const IPFSHash = () => {
   return (
     <Wrapper>
       <div className="fieldset">
-        <label>Input IPFS</label>
+        <label className="subtitle-1">Input IPFS</label>
         <div className={"inputwrap"}>
           <Input
             type="text"

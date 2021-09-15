@@ -7,7 +7,7 @@ import {
   SetStateAction,
 } from "react";
 
-import { Box, Flex, Themed } from "theme-ui";
+import { Box, Flex, Themed, ThemeUIStyleObject } from "theme-ui";
 import Layout from "../../components/Layout";
 import Publish from "../../components/CreateApi/Publish";
 import UploadApiMethod from "../../components/CreateApi/Start";
@@ -27,8 +27,9 @@ import {
 import { useStateValue } from "../../state/state";
 import useRouter from "../../hooks/useRouter";
 
-const styles = {
-  height: "fit-content",
+const styles: ThemeUIStyleObject = {
+  flexDirection: "column",
+  height: ["fit-content", "100%"],
   p: ["50px 73px 59px 59px", ["20px"]],
   background: "black",
   border: "1px solid rgba(255, 255, 255, 0.2)",
@@ -87,7 +88,7 @@ const CreateApi = () => {
   return (
     <Layout>
       <CreateApiContext.Provider value={{ uploadMethod, setUploadMethod }}>
-        <div className="contents" sx={styles}>
+        <Flex className="contents" sx={styles}>
           <Flex
             className="header"
             sx={{
@@ -97,7 +98,7 @@ const CreateApi = () => {
             }}
           >
             <Flex sx={{ flexDirection: "column" }}>
-              <Themed.h2 sx={{ mb: '12px' }}>Publish Wrapper</Themed.h2>
+              <Themed.h2 sx={{ mb: "12px" }}>Publish Wrapper</Themed.h2>
               {router?.query?.activeTab === createApiSteps[0] && (
                 <div sx={{ mb: "1rem" }} className="body-1">
                   Choose one of creating options
@@ -125,12 +126,12 @@ const CreateApi = () => {
               ]}
             />
           </Flex>
-          <Box className="content">
+          <Box className="content" sx={{ height: "100%" }}>
             {activeStep === createApiSteps[0] && <UploadApiMethod />}
             {activeStep === createApiSteps[1] && uploadComponents[uploadMethod]}
             {activeStep === createApiSteps[2] && <Publish />}
           </Box>
-        </div>
+        </Flex>
       </CreateApiContext.Provider>
     </Layout>
   );

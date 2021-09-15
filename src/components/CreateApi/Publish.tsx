@@ -12,7 +12,14 @@ import useToggle from "../../hooks/useToggle";
 import Input from "../Input";
 
 const PublishAPI = () => {
-  const [{ dapp, publish }, dispatch] = useStateValue();
+  const [
+    {
+      dapp,
+      mobile: { isMobile },
+      publish,
+    },
+    dispatch,
+  ] = useStateValue();
   const [ensInputVisible, toggleEnsInput] = useToggle(
     Boolean(publish.subdomain)
   );
@@ -74,107 +81,150 @@ const PublishAPI = () => {
     if (!dapp.did) void authenticate();
   }, [dapp.did]);
 
+  const blocks = {
+    image: (
+      <div
+        className="image_wrap"
+        sx={{
+          height: ["10.125rem", "auto"],
+          width: ["10.125rem", "100%"],
+          minHeight: "10.125rem",
+          minWidth: "10.125rem",
+          background: "white",
+          borderRadius: "1.25rem",
+          overflow: "hidden",
+        }}
+      >
+        {publish.apiData && (
+          <img
+            sx={{
+              width: "100%",
+              height: "auto",
+            }}
+            src={`${ipfsGateway}${
+              publish.ipfs || stripIPFSPrefix(publish.apiData.locationUri)
+            }${publish.apiData.icon.replace("./", "/")}`}
+          />
+        )}
+      </div>
+    ),
+    inputs: (
+      <div
+        className="inputs"
+        sx={{ minWidth: ["30.5rem", "auto"], flexGrow: 1 }}
+      >
+        <div sx={{ mb: "26px" }}>
+          <label className="subtitle-1">IPFS</label>
+          <Input
+            value={publish?.ipfs}
+            disabled
+            suffix={
+              <Flex sx={{ width: "65px", justifyContent: "center" }}>
+                <Image src="/images/success.svg" alt="success" />
+              </Flex>
+            }
+          />
+        </div>
+        <div>
+          {!publish.subdomain && !ensInputVisible && (
+            <Button
+              variant="primaryMedium"
+              sx={{
+                m: [null, "0 auto"],
+                p: [null, "20px 30.5px"],
+                borderRadius: [null, "100px"],
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                toggleEnsInput(true);
+              }}
+            >
+              Add ENS Name
+            </Button>
+          )}
+          {ensInputVisible && (
+            <>
+              <label className="subtitle-1">ENS Name</label>
+              <Input
+                value={publish?.subdomain}
+                disabled
+                suffix={
+                  <Button
+                    variant="suffixSmall"
+                    sx={{
+                      bg: "rgba(255, 255, 255, .1)",
+                      width: "65px",
+                      alignSelf: "stretch",
+                      borderRadius: "6px",
+                      border: "none",
+                      margin: "2px",
+                      justifyContent: "center",
+                      fontSize: "14px",
+                      lineHeight: "120%",
+                      fontWeight: "normal",
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    Save
+                  </Button>
+                }
+              />
+            </>
+          )}
+        </div>
+      </div>
+    ),
+    info: (
+      <div className="info" sx={{ maxWidth: ["30%", "100%"] }}>
+        {publish?.apiData?.name && (
+          <Themed.h2>{publish?.apiData?.name}</Themed.h2>
+        )}
+        {publish?.apiData?.description && (
+          <p className="body-1">{publish?.apiData?.description}</p>
+        )}
+      </div>
+    ),
+  };
   return (
     <Wrapper>
       <form onSubmit={handleSubmit} onInvalid={handleInvalid}>
         <Flex
           className="publish"
-          sx={{ gap: "3.75rem", justifyContent: "space-between" }}
+          sx={{
+            gap: ["3.75rem", "20px"],
+            justifyContent: "space-between",
+            flexDirection: [null, "column"],
+          }}
         >
-          <div
-            className="image_wrap"
-            sx={{
-              height: "10.125rem",
-              width: "10.125rem",
-              minHeight: "10.125rem",
-              minWidth: "10.125rem",
-              background: "white",
-              borderRadius: "1.25rem",
-              overflow: "hidden",
-            }}
-          >
-            {publish.apiData && (
-              <img
-                sx={{
-                  width: "100%",
-                  height: "auto",
-                }}
-                src={`${ipfsGateway}${
-                  publish.ipfs || stripIPFSPrefix(publish.apiData.locationUri)
-                }${publish.apiData.icon.replace("./", "/")}`}
-              />
-            )}
-          </div>
-          <div className="inputs" sx={{ minWidth: "30.5rem", flexGrow: 1 }}>
-            <div sx={{ mb: "26px" }}>
-              <label className="subtitle-1">IPFS</label>
-              <Input
-                value={publish?.ipfs}
-                disabled
-                suffix={
-                  <Flex sx={{ width: "65px", justifyContent: "center" }}>
-                    <Image src="/images/success.svg" alt="success" />
-                  </Flex>
-                }
-              />
-            </div>
-            <div>
-              {!publish.subdomain && !ensInputVisible && (
-                <Button
-                  variant="primaryMedium"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleEnsInput(true);
-                  }}
-                >
-                  Add ENS Name
-                </Button>
-              )}
-              {ensInputVisible && (
-                <>
-                  <label className="subtitle-1">ENS Name</label>
-                  <Input
-                    value={publish?.subdomain}
-                    disabled
-                    suffix={
-                      <Button
-                        variant="suffixSmall"
-                        sx={{
-                          bg: "rgba(255, 255, 255, .1)",
-                          width: "65px",
-                          alignSelf: "stretch",
-                          borderRadius: "6px",
-                          border: "none",
-                          margin: "2px",
-                          justifyContent: "center",
-                          fontSize: "14px",
-                          lineHeight: "120%",
-                          fontWeight: "normal",
-                        }}
-                        onClick={(e) => {
-                          e.preventDefault();
-                        }}
-                      >
-                        Save
-                      </Button>
-                    }
-                  />
-                </>
-              )}
-            </div>
-          </div>
-          <div className="info" sx={{ maxWidth: "30%", width: "19.75" }}>
-            {publish?.apiData?.name && (
-              <Themed.h2>{publish?.apiData?.name}</Themed.h2>
-            )}
-            {publish?.apiData?.description && (
-              <p className="body-1">{publish?.apiData?.description}</p>
-            )}
-          </div>
+          {isMobile ? (
+            <>
+              {blocks.info}
+              {blocks.image}
+              {blocks.inputs}
+            </>
+          ) : (
+            <>
+              {blocks.image}
+              {blocks.inputs}
+              {blocks.info}
+            </>
+          )}
         </Flex>
         <Flex
           className="buttons"
-          sx={{ justifyContent: "space-between", mt: "2.5rem" }}
+          sx={{
+            justifyContent: "space-between",
+            mt: "2.5rem",
+            flexDirection: [null, "column-reverse"],
+            gap: [null, "1.25rem"],
+            button: {
+              width: [null, "100%"],
+              p: [null, "20px 0"],
+              borderRadius: [null, "100px"],
+            },
+          }}
         >
           <Button
             variant="secondaryMedium"

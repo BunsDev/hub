@@ -200,7 +200,7 @@ const Playground = ({ api }: PlaygroundProps) => {
             }}
           />
           <Input
-            wrapperSx={{ width: [null, "100%"] }}
+            wrapperSx={{ width: [null, "100%"], bg: "black" }}
             placeholder="Enter wrapper URL"
             suffix={
               <Button

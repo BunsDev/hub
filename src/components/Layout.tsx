@@ -138,6 +138,9 @@ const Layout = ({ children }: LayoutProps) => {
             paddingBottom: ["4.6875rem", "1rem"],
             flex: 1,
             display: "flex",
+            "@media screen and (max-width: 400px)": {
+              minHeight: "calc(100vh - 140px)",
+            },
           },
           fieldset: {
             padding: 0,

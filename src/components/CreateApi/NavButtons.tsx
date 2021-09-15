@@ -20,7 +20,20 @@ const NavButtons = ({ backBtn, nextBtn, continueEnabled }: Props) => {
   const router = useRouter();
 
   return (
-    <Flex sx={{ justifyContent: "space-between", mt: "2.5rem" }}>
+    <Flex
+      sx={{
+        justifyContent: "space-between",
+        mt: "2.5rem",
+        flexWrap: "wrap",
+        button: {
+          textAlign: "center",
+          width: [null, "100%"],
+          py: [null, "20px"],
+          borderRadius: [null, "100px"],
+        },
+        flexDirection: [null, "column-reverse"],
+      }}
+    >
       <Button
         variant="secondaryMedium"
         onClick={(e) => {
@@ -34,6 +47,9 @@ const NavButtons = ({ backBtn, nextBtn, continueEnabled }: Props) => {
       <Button
         variant="primaryMedium"
         disabled={!continueEnabled}
+        sx={{
+          mb: [null, "1.25rem"],
+        }}
         onClick={(e) => {
           e.preventDefault();
           nextBtn?.onClick() ||

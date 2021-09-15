@@ -1,34 +1,35 @@
 const buttons: Record<string, any> = {}; // eslint-disable-line
 
 const buttonBase = {
-  fontFamily: 'Nunito Sans',
-  fontStyle: 'normal',
-  fontWeight: 'bold',
-  fontSize: '16px',
-  lineHeight: '14px',
-  display: 'flex',
-  alignItems: 'center',
-  textAlign: 'center',
-  letterSpacing: '-0.6px',
-  borderRadius: '20px',
-  bg: 'transparent',
-  border: '2px solid transparent',
-  color: 'white',
-  transition: 'all .2s',
-}
+  fontFamily: "Nunito Sans",
+  fontStyle: "normal",
+  fontWeight: "bold",
+  fontSize: "16px",
+  lineHeight: "14px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center",
+  letterSpacing: "-0.6px",
+  borderRadius: "20px",
+  bg: "transparent",
+  border: "2px solid transparent",
+  color: "white",
+  transition: "all .2s",
+};
 
 const buttonPaddingSizes = {
   small: {
-    px: '.75rem',
-    py: '0.625rem',
+    px: ".75rem",
+    py: "0.625rem",
   },
   medium: {
-    px: '1.125rem',
-    py: '0.625rem',
+    px: "1.125rem",
+    py: "0.625rem",
   },
   large: {
-    px: '4rem',
-    py: '1.25rem',
+    px: "4rem",
+    py: "1.25rem",
   },
 };
 
@@ -45,8 +46,8 @@ const buttonColorStates = {
       borderColor: "#255661",
     },
     "&[disabled]": {
-      bg: "w3TextNavTeal",
-      borderColor: "w3TextNavTeal",
+      bg: "gradient(270.27deg, #1B5FED 0.46%, #1B5FED 39.12%, #1B87ED 72.6%, #1B87ED 99.55%)",
+      opacity: ".3",
       cursor: "not-allowed",
     },
   },
@@ -57,8 +58,8 @@ const buttonColorStates = {
     "&:active": {
       bg: "rgba(104, 129, 132, 0.2)",
     },
-    '&[disabled]': {
-      cursor: 'not-allowed',
+    "&[disabled]": {
+      cursor: "not-allowed",
     },
   },
   hollow: {
@@ -70,10 +71,10 @@ const buttonColorStates = {
     background: "linear-gradient(0deg, #529DAD 1.85%, #60C092 97.11%)",
   },
   suffix: {
-    color: 'white',
-    bg: 'w3Grey2',
+    color: "white",
+    bg: "w3Grey2",
   },
-}
+};
 
 Object.keys(buttonColorStates).map((name) => {
   Object.keys(buttonPaddingSizes).map((size) => {
@@ -81,8 +82,8 @@ Object.keys(buttonColorStates).map((name) => {
       ...buttonBase,
       ...buttonColorStates[name as keyof typeof buttonColorStates],
       ...buttonPaddingSizes[size as keyof typeof buttonPaddingSizes],
-    }
-  })
-})
+    };
+  });
+});
 
 export default buttons;

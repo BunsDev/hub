@@ -1,11 +1,11 @@
 /** @jsxImportSource theme-ui **/
-import { APIData } from '../hooks/ens/useGetAPIfromENS'
-import stripIPFSPrefix from '../utils/stripIPFSPrefix'
+import { APIData } from "../hooks/ens/useGetAPIfromENS";
+import stripIPFSPrefix from "../utils/stripIPFSPrefix";
 
-import RDS from 'react-dropdown-select'
-import { useState, useEffect } from 'react'
-import { ThemeUIStyleObject } from 'theme-ui'
-import { ipfsGateway } from '../constants'
+import RDS from "react-dropdown-select";
+import { useState, useEffect } from "react";
+import { ThemeUIStyleObject } from "theme-ui";
+import { ipfsGateway } from "../constants";
 
 type RDSProps = {
   large?: boolean;
@@ -46,10 +46,10 @@ const SearchBox = ({
     const key = `.react-dropdown-select-item:nth-of-type(${idx + 1}):before`;
     bgs[key] = {
       background: `url(${ipfsGateway}${stripIPFSPrefix(
-        opt.locationUri,
-      )}${opt.icon.replace('./', '/')})`,
-    }
-  })
+        opt.locationUri
+      )}${opt.icon.replace("./", "/")})`,
+    };
+  });
 
   return (
     <RDS
@@ -61,6 +61,11 @@ const SearchBox = ({
         bg: "black",
         border: "none !important",
         boxShadow: "none !important",
+        ".react-dropdown-select-input": {
+          fontFamily: "Nunito Sans",
+          fontSize: "16px",
+          lineHeight: "150%",
+        },
         ".react-dropdown-select-no-data": {
           color: "text",
         },

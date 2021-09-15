@@ -31,7 +31,7 @@ const Navbar = () => {
         {navItems.map((item) => {
           if (item.authRequired && !dapp.address) {
             return null;
-          } else return <NavItem item={item} />;
+          } else return <NavItem key={item.title} item={item} />;
         })}
       </ul>
     </nav>
