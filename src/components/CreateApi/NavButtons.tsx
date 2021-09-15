@@ -7,7 +7,7 @@ import { Button, Flex } from "theme-ui";
 
 interface NavButtonProps {
   label: string;
-  onClick: () => unknown;
+  onClick?: () => unknown;
   disabled?: boolean;
 }
 interface Props {
@@ -56,7 +56,7 @@ const NavButtons = ({ backBtn, nextBtn, continueEnabled }: Props) => {
             router.push(router.pathname + `?activeTab=${createApiSteps[2]}`);
         }}
       >
-        {backBtn?.label || "Next"}
+        {nextBtn?.label || "Next"}
       </Button>
     </Flex>
   );

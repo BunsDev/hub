@@ -18,7 +18,12 @@ import { IpfsPlugin } from "@web3api/ipfs-plugin-js";
 import axios from "axios";
 
 export const DirectUpload = () => {
-  const [{}, dispatch] = useStateValue();
+  const [
+    {
+      mobile: { isMobile },
+    },
+    dispatch,
+  ] = useStateValue();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -61,35 +66,53 @@ export const DirectUpload = () => {
 
   return (
     <Wrapper>
-      <Flex
-        {...getRootProps()}
-        sx={{
-          margin: "0 auto",
-          flexDirection: "column",
-          alignItems: "center",
-          p: "3.75rem",
-          border: "1.5px dashed #FFFFFF50",
-          borderRadius: "1.25rem",
-          maxWidth: "32.125rem",
-        }}
-      >
-        {loading ? (
-          <>
-            <Spinner />
-            <p>Uploading...</p>
-          </>
-        ) : (
-          <>
-            <input {...getInputProps()} />
-            <img src="/images/dragndrop.svg" alt="drag here" />
-            <p sx={{ color: "rgba(255, 255, 255, 0.5)", textAlign: "center" }}>
-              Drag and Drop To Upload
-            </p>
-            <p sx={{ cursor: "pointer" }}>Or Browse</p>
-          </>
-        )}
-      </Flex>
-      <NavButtons continueEnabled={true} />
+      {isMobile ? (
+        <Flex sx={{ height: "30vh" }}>
+          <img
+            src="/images/dragndrop.svg"
+            alt="drag here"
+            sx={{ width: "160px", height: "auto", m: "auto" }}
+          />
+        </Flex>
+      ) : (
+        <Flex
+          {...getRootProps()}
+          sx={{
+            margin: "0 auto",
+            flexDirection: "column",
+            alignItems: "center",
+            p: "3.75rem",
+            border: "1.5px dashed #FFFFFF50",
+            borderRadius: "1.25rem",
+            maxWidth: "32.125rem",
+          }}
+        >
+          {loading ? (
+            <>
+              <Spinner />
+              <p>Uploading...</p>
+            </>
+          ) : (
+            <>
+              <input {...getInputProps()} />
+              <img src="/images/dragndrop.svg" alt="drag here" />
+              <>
+                <p
+                  sx={{
+                    color: "rgba(255, 255, 255, 0.5)",
+                    textAlign: "center",
+                  }}
+                >
+                  Drag and Drop To Upload
+                </p>
+                <p sx={{ cursor: "pointer" }}>Or Browse</p>
+              </>
+            </>
+          )}
+        </Flex>
+      )}
+
+      <NavButtons continueEnabled={true} nextBtn={{ label: "Browse Files" }} />
     </Wrapper>
   );
 };
