@@ -1,12 +1,11 @@
 /** @jsxImportSource theme-ui **/
+
 import { useStateValue } from "../state/state";
 import Badge from "./Badge";
 import Stars from "./Stars";
-import BGWave from "./BGWave";
 import SelectBox from "./SelectBox";
 import SearchBox from "./SearchBox";
 import LoadingSpinner from "./LoadingSpinner";
-import Close from "../../public/images/close.svg";
 import getPackageSchemaFromAPIObject from "../services/ipfs/getPackageSchemaFromAPIObject";
 import getPackageQueriesFromAPIObject, {
   QueryAttributes,
@@ -20,11 +19,10 @@ import { APIData } from "../hooks/ens/useGetAPIfromENS";
 import JSONEditor from "./JSONEditor";
 
 import { QueryApiResult } from "@web3api/client-js";
-import { OnChange } from "@monaco-editor/react";
 import { useWeb3ApiQuery } from "@web3api/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { Flex, Button, Themed } from "theme-ui";
+import { Flex, Button, Themed, Input, Grid } from "theme-ui";
 
 type PlaygroundProps = {
   api?: APIData;
@@ -38,14 +36,15 @@ interface APIContents {
 const Playground = ({ api }: PlaygroundProps) => {
   const [{ dapp }] = useStateValue();
   const router = useRouter();
-  const [apiOptions] = useState(dapp.apis);
+
+  const [schemaVisible, setSchemaVisible] = useState(false);
+  const [apiOptions, setApiOptions] = useState(dapp.apis);
 
   const [searchboxvalues, setsearchboxvalues] = useState([]);
 
   const [apiContents, setapiContents] = useState<APIContents>();
   const [loadingPackageContents, setloadingPackageContents] = useState(false);
 
-  const [showschema, setshowschema] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState("");
   const [newSelectedMethod, setnewSelectedMethod] = useState("");
   const [methodName, setMethodName] = useState("");
@@ -53,16 +52,7 @@ const Playground = ({ api }: PlaygroundProps) => {
   const [structuredschema, setstructuredschema] = useState<StructuredSchema>();
 
   const [clientresponded, setclientresponed] =
-    useState<QueryApiResult<Record<string, any>>>(); // eslint-disable-line
-
-  const [customquerytext, setcustomquerytext] = useState("");
-
-  const [varformstoggle, setvarformstoggle] = useState(false);
-
-  const varsList =
-    [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)].concat([
-      ...customquerytext.matchAll(/\$([a-zA-Z0-9_-]{1,})/g),
-    ]) || null;
+    useState<QueryApiResult<Record<string, unknown>>>();
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({});
   const { name: networkName } = networks[networkID];
@@ -71,10 +61,6 @@ const Playground = ({ api }: PlaygroundProps) => {
     uri: `ens/${networkName}/${router.asPath.split("/playground/ens/")[1]}`,
     query: selectedMethod,
   });
-
-  function handleShowSchema(_: React.BaseSyntheticEvent) {
-    return setshowschema(!showschema);
-  }
 
   function handleQueryValuesChange(method: { value: string; id: string }[]) {
     setMethodName(method[0].id);
@@ -103,14 +89,6 @@ const Playground = ({ api }: PlaygroundProps) => {
     setclientresponed(undefined);
   }
 
-  function handleVarsFormToggle() {
-    setvarformstoggle(!varformstoggle);
-  }
-
-  const handleEditorChange: OnChange = (e) => {
-    setcustomquerytext(e);
-  };
-
   async function exec() {
     const response = await execute(formVarsToSubmit);
     setclientresponed(response);
@@ -121,6 +99,10 @@ const Playground = ({ api }: PlaygroundProps) => {
       setloadingPackageContents(true);
     }
   }, [router]);
+
+  useEffect(() => {
+    setApiOptions(dapp.apis);
+  }, [dapp.apis]);
 
   useEffect(() => {
     async function go() {
@@ -172,31 +154,20 @@ const Playground = ({ api }: PlaygroundProps) => {
     <div
       className="playground"
       sx={{
-        backgroundColor: "w3shade3",
-        borderRadius: "1rem",
-        overflow: "hidden",
         "code, pre, textarea": {
           border: "none",
           fontSize: "0.875rem",
           lineHeight: "0.875rem",
+          pt: "3.25rem",
         },
       }}
     >
       <Flex
-        className="header"
-        sx={{
-          p: "1.5rem",
-          backgroundColor: "w3shade2",
-          "*": { display: "flex" },
-          "&label": {
-            display: "none",
-          },
-          ".react-dropdown-select-input": {
-            display: "none",
-          },
-        }}
+        className="head"
+        sx={{ justifyContent: "space-between", mb: "2.25rem" }}
       >
-        {api === undefined ? (
+        <Themed.h1>Playground</Themed.h1>
+        <Flex sx={{ gap: "1rem" }}>
           <SearchBox
             key={"search-api-box"}
             dark
@@ -223,54 +194,96 @@ const Playground = ({ api }: PlaygroundProps) => {
               }
             }}
           />
-        ) : (
-          <Themed.h1 sx={{ mb: 0 }}>{api.name}</Themed.h1>
-        )}
+          <Flex
+            sx={{
+              alignItems: "center",
+              backgroundColor: "black",
+              height: "2.5rem",
+              borderRadius: ".5rem",
+              pl: "1rem",
+            }}
+          >
+            <Input sx={{ border: "none" }} placeholder="Enter wrapper URL" />
+            <Button
+              className="body-2"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "2.25rem",
+                backgroundColor: "#0F0F0F",
+                borderRadius: "6px",
+                p: "9px 12px 10px 15px",
+                border: "none",
+              }}
+            >
+              Apply
+            </Button>
+          </Flex>
+        </Flex>
+      </Flex>
+      {api && (
         <Flex
-          className="selection-detail"
-          sx={{
-            ml: 4,
-            alignItems: "center",
-            justifyContent: "space-between",
-            flex: 1,
-          }}
+          className="subheader"
+          sx={{ justifyContent: "space-between", mb: "1.25rem" }}
         >
-          <div className="left">
-            <Stars count={0} onDark />
+          <Flex sx={{ alignItems: "center", gap: "1rem" }}>
+            <Themed.h3 sx={{ mr: ".5rem" }}>
+              {api?.name || "Placeholder"}
+            </Themed.h3>
+            <Stars count={api?.favorites || 0} onDark large />
             {api?.locationUri && (
-              <div className="category-Badges" sx={{ ml: 3 }}>
+              <div className="category-Badges">
                 <Badge label="IPFS" onDark ipfsHash={api.locationUri} />
               </div>
             )}
-          </div>
-          <div className="right">
-            <a
-              className="text-nav"
-              href={router.asPath.replace("playground", "apis")}
-              sx={{
-                "&:hover": { textDecoration: "underline" },
-                color: "w3TextNavTeal",
-              }}
-            >
-              GO TO API PAGE
-            </a>
-          </div>
+          </Flex>
+          <a
+            href={router.asPath.replace("playground", "apis")}
+            sx={{
+              backgroundColor: "white",
+              p: "10px 18px",
+              color: "#141417",
+              borderRadius: "1.25rem",
+              fontWeight: "bold",
+              lineHeight: "100%",
+            }}
+          >
+            Open Wrapper Page
+          </a>
         </Flex>
-      </Flex>
-      <Flex className="body" sx={{ height: "65vh" }}>
-        <div
+      )}
+      <Grid
+        gap="1rem"
+        columns={[3, "min-content min-content min-content"]}
+        sx={{
+          overflow: "hidden",
+          ">div": {
+            minHeight: "200px",
+            minWidth: "200px",
+            width: schemaVisible ? "30vw" : "45vw",
+            transition: ".2s all",
+            borderRadius: "1.25rem",
+            ">section": {
+              minHeight: "17.5rem",
+              backgroundColor: "black",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              borderRadius: "1.25rem",
+              boxShadow: "12px 20px 54px -6px #141316",
+            },
+          },
+        }}
+      >
+        <Flex
           className="query"
           sx={{
-            width: "40%",
-            backgroundColor: "w3PlayGroundNavy",
-            p: "1.5rem",
-            minWidth: "435px",
+            flexDirection: "column",
+            gap: "1rem",
+            section: { height: "50%" },
+            overflow: "hidden",
           }}
         >
-          <Flex
-            className="templates"
-            sx={{ flex: 1, mb: 4, justifyContent: "space-between" }}
-          >
+          <section className="templates" sx={{ overflow: "hidden" }}>
             {apiContents?.queries && (
               <SelectBox
                 key={"queries-box"}
@@ -283,47 +296,21 @@ const Playground = ({ api }: PlaygroundProps) => {
                 onChange={handleQueryValuesChange}
               />
             )}
-          </Flex>
-          {selectedMethod !== "" && selectedMethod === newSelectedMethod && (
-            <div
-              sx={{
-                border: "2px solid gray",
-                borderRadius: "8px",
-                overflow: "Hidden",
-                bg: "#002b36",
-              }}
-            >
+            {selectedMethod !== "" && selectedMethod === newSelectedMethod && (
               <GQLCodeBlock
                 key={newSelectedMethod}
                 value={selectedMethod}
                 height={"300px"}
-                handleEditorChange={handleEditorChange}
               />
-            </div>
-          )}
-          <div
-            className={varformstoggle ? "vars expanded" : "vars"}
-            sx={{
-              display: varsList.length ? "block" : "none",
-              position: "absolute",
-              width: "100%",
-              height: "40px",
-              bottom: 0,
-              left: 0,
-              "&.expanded": { height: "max-content" },
-            }}
-          >
+            )}
+          </section>
+
+          <section className="vars">
             <div
-              className="lip"
-              onClick={handleVarsFormToggle}
+              className="subtitle-1"
               sx={{
-                bg: "#284c5d",
-                height: "40px",
-                px: 3,
-                alignItems: "center",
-                display: "grid",
-                color: "white",
-                cursor: "pointer",
+                p: "12px 16px",
+                borderBottom: "1px solid rgba(255, 255, 255, .2)",
               }}
             >
               Vars
@@ -332,157 +319,154 @@ const Playground = ({ api }: PlaygroundProps) => {
               value={formVarsToSubmit}
               handleEditorChange={handleVariableChanges}
             />
-          </div>
-        </div>
-        &nbsp;
-        <div
-          className="result"
-          sx={{
-            width: "60%",
-            maxWidth: "712px",
-            backgroundColor: "w3PlayGroundNavy",
-            display: "flex",
-            flexDirection: "column",
-            p: "1.5rem",
-            pb: 0,
-          }}
-        >
-          <Flex
-            className="controls"
-            sx={{
-              justifyContent: "space-between",
-              mb: 2,
-              "*": { display: "flex", alignItems: "center" },
-            }}
-          >
-            <div className="left" sx={{ "> *": { mr: "1rem !important" } }}>
-              {apiContents?.queries && (
-                <Button variant="primarySmall" onClick={exec}>
-                  Run
-                </Button>
-              )}
-
-              {clientresponded !== undefined && (
-                <React.Fragment>
-                  <Button variant="secondarySmall" onClick={handleSaveBtnClick}>
-                    Save
+          </section>
+        </Flex>
+        <div className="result" sx={{ overflow: "hidden" }}>
+          <section sx={{ height: "100%" }}>
+            <Flex
+              className="controls"
+              sx={{
+                justifyContent: "space-between",
+                p: "1.25rem 1.5rem .75rem 1rem",
+              }}
+            >
+              <Flex sx={{ gap: "1rem" }}>
+                {apiContents?.queries && (
+                  <Button variant="primaryMedium" onClick={exec}>
+                    Run
                   </Button>
-                  <Button
-                    variant="secondarySmall"
-                    onClick={handleClearBtnClick}
-                  >
-                    Clear
-                  </Button>
-                </React.Fragment>
-              )}
-            </div>
-            <div className="right">
+                )}
+                {clientresponded !== undefined && (
+                  <React.Fragment>
+                    <Button
+                      variant="secondarySmall"
+                      onClick={handleSaveBtnClick}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="secondarySmall"
+                      onClick={handleClearBtnClick}
+                    >
+                      Clear
+                    </Button>
+                  </React.Fragment>
+                )}
+              </Flex>
               {loadingPackageContents
                 ? "Loading Schema..."
-                : apiContents?.schema && (
+                : apiContents?.schema &&
+                  !schemaVisible && (
                     <span
-                      className="text-nav left-chevron"
-                      onClick={handleShowSchema}
-                      sx={{ cursor: "pointer" }}
+                      sx={{
+                        cursor: "pointer",
+                        alignSelf: "flex-start",
+                        lineHeight: "100%",
+                      }}
+                      onClick={() => {
+                        setSchemaVisible(true);
+                      }}
                     >
-                      {loadingPackageContents && "Loading Schema..."}
-                      <span sx={{ fontSize: "2.5rem", pr: "1rem" }}>‹</span>
-                      <span>Show Schema</span>
+                      {`${"<"}`} Show Schema
                     </span>
                   )}
-            </div>
-          </Flex>
-          <Themed.pre
-            sx={{ height: "100%", color: "w3PlaygroundSoftBlue", pb: 0, mb: 0 }}
-          >
-            {loading ? (
-              <div
-                sx={{ display: "grid", placeItems: "center", height: "60%" }}
-              >
-                <LoadingSpinner />
-              </div>
-            ) : (
-              <React.Fragment>
-                {clientresponded !== undefined &&
-                  JSON.stringify(clientresponded.data, undefined, 2)}
-                {clientresponded !== undefined &&
-                  clientresponded.errors !== undefined &&
-                  clientresponded.errors.toString()}
-              </React.Fragment>
-            )}
-          </Themed.pre>
+            </Flex>
+            <Themed.pre
+              sx={{ height: "100%", backgroundColor: "black", pb: 0, mb: 0 }}
+            >
+              {loading ? (
+                <div
+                  sx={{ display: "grid", placeItems: "center", height: "60%" }}
+                >
+                  <LoadingSpinner />
+                </div>
+              ) : (
+                <React.Fragment>
+                  {clientresponded !== undefined &&
+                    JSON.stringify(clientresponded.data, undefined, 2)}
+                  {clientresponded !== undefined &&
+                    clientresponded.errors !== undefined &&
+                    clientresponded.errors.toString()}
+                </React.Fragment>
+              )}
+            </Themed.pre>
+          </section>
         </div>
-        {structuredschema?.localqueries && (
-          <Flex
+        <div
+          className="schema"
+          sx={{
+            position: "relative",
+            bg: "black",
+            minWidth: 0,
+            transition: ".2s all ease",
+            width: schemaVisible ? "30vw" : 0,
+            overflowY: "scroll",
+          }}
+        >
+          <section
             sx={{
-              p: 0,
               position: "absolute",
-              right: !showschema ? "-100%" : "0",
-              transition: ".25s all ease",
-              height: "510px",
-              overflowY: "scroll",
-              width: "max-content",
-              borderRadius: "8px",
-              borderTopRightRadius: "0px",
+              top: 0,
+              right: 0,
+              width: "100%",
             }}
           >
-            <Close
-              onClick={handleShowSchema}
-              sx={{
-                fill: "#FFF",
-                width: "30px",
-                height: "30px",
-                top: "18px",
-                position: "sticky",
-                left: 0,
-                "&:hover": {
-                  fill: "w3PlaygroundSoftBlue",
-                  cursor: "pointer",
-                },
-              }}
-            />
-            <div>
-              <Themed.h3 sx={{ m: 0, p: ".75rem", bg: "#cecece" }}>
-                Schema
-              </Themed.h3>
-              <aside
-                className="hidden-schema-panel"
-                sx={{
-                  color: "w3shade3",
-                  width: "400px",
-                }}
-              >
-                <GQLCodeBlock
-                  readOnly
-                  title="Queries"
-                  value={structuredschema.localqueries}
-                />
-                <GQLCodeBlock
-                  readOnly
-                  title="Mutations"
-                  value={structuredschema.localmutations}
-                />
-                <GQLCodeBlock
-                  readOnly
-                  title="Custom Types"
-                  value={structuredschema.localcustom}
-                />
-                <GQLCodeBlock
-                  readOnly
-                  title="Imported Queries"
-                  value={structuredschema.importedqueries}
-                />
-                <GQLCodeBlock
-                  readOnly
-                  title="Imported Mutations"
-                  value={structuredschema.importedmutations}
-                />
-              </aside>
-            </div>
-          </Flex>
-        )}
-      </Flex>
-      <BGWave dark />
+            {structuredschema && (
+              <>
+                <Flex
+                  className="subtitle-1"
+                  sx={{
+                    position: "sticky",
+                    top: "0",
+                    bg: "black",
+                    zIndex: "10",
+                    justifyContent: "space-between",
+                    p: "1.25rem 1.5rem .75rem 1rem",
+                    borderBottom: "1px solid rgba(255, 255, 255, .2)",
+                  }}
+                >
+                  <span>Schema</span>
+                  <span
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setSchemaVisible(false);
+                    }}
+                  >
+                    {`${">"}`} Hide Schema
+                  </span>
+                </Flex>
+                <div>
+                  <GQLCodeBlock
+                    readOnly
+                    title="Queries"
+                    value={structuredschema.localqueries}
+                  />
+                  <GQLCodeBlock
+                    readOnly
+                    title="Mutations"
+                    value={structuredschema.localmutations}
+                  />
+                  <GQLCodeBlock
+                    readOnly
+                    title="Custom Types"
+                    value={structuredschema.localcustom}
+                  />
+                  <GQLCodeBlock
+                    readOnly
+                    title="Imported Queries"
+                    value={structuredschema.importedqueries}
+                  />
+                  <GQLCodeBlock
+                    readOnly
+                    title="Imported Mutations"
+                    value={structuredschema.importedmutations}
+                  />
+                </div>
+              </>
+            )}
+          </section>
+        </div>
+      </Grid>
     </div>
   );
 };

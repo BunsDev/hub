@@ -32,7 +32,17 @@ const GQLCodeBlock = ({
   return (
     <div className="GQLCodeBlock-wrap" onClick={onClick}>
       {title ? (
-        <Themed.h5 sx={{ m: 0, py: 2, px: ".75rem", bg: "white" }}>
+        <Themed.h5
+          sx={{
+            m: 0,
+            py: 2,
+            px: ".75rem",
+            bg: "#1e1e1e1",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            borderLeft: "none",
+            borderRight: "none",
+          }}
+        >
           {title}
         </Themed.h5>
       ) : null}
@@ -42,6 +52,7 @@ const GQLCodeBlock = ({
           minimap: {
             enabled: false,
           },
+          fontFamily: "Nunito sans",
           scrollBeyondLastLine: false,
           readOnly: readOnly,
         }}

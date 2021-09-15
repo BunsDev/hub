@@ -5,6 +5,7 @@ import stripIPFSPrefix from "../utils/stripIPFSPrefix";
 
 import RDS from "react-dropdown-select";
 import { useState, useEffect } from "react";
+import { ThemeUIStyleObject } from "theme-ui";
 
 type RDSProps = {
   large?: boolean;
@@ -18,10 +19,10 @@ type RDSProps = {
   values: APIData[];
   searchable?: boolean;
   onChange?: (value: APIData[]) => void;
+  sx?: ThemeUIStyleObject;
 };
 
 const SearchBox = ({
-  large,
   dark,
   detachedResults,
   searchBy,
@@ -32,6 +33,7 @@ const SearchBox = ({
   values,
   onChange,
   searchable = true,
+  sx,
 }: RDSProps) => {
   // Styling fix
   const forceUpdate: () => void = useState()[1].bind(null, {});
@@ -52,46 +54,15 @@ const SearchBox = ({
   return (
     <RDS
       sx={{
-        borderRadius: "1.125rem !important",
-        width: large ? "100% !important" : "25rem !important",
-        border: "0.125rem solid transparent !important",
+        borderRadius: "0.5rem !important",
         color: dark ? "text" : "#598188 !important",
-        bg: dark ? "rgba(0, 0, 0, .32) !important" : "#EFF5F4 !important",
-        p: "1rem !important",
-        height: "2.5rem !important",
-        '&[aria-expanded="true"]': {
-          borderBottomLeftRadius: detachedResults
-            ? "1.125rem !important"
-            : "0 !important",
-          borderBottomRightRadius: detachedResults
-            ? "1.125rem !important"
-            : "0 !important",
-          borderBottomColor: detachedResults
-            ? "text"
-            : "transparent !important",
-          "*": {
-            color: dark ? "white !important" : "text",
-          },
-          ".react-dropdown-select-content": {
-            "&::before": {
-              background: "url(/images/magnifying-glass-white.svg) no-repeat",
-            },
-          },
-        },
+        height: "2.5rem",
+        width: "21.25rem !important",
+        bg: "black",
+        border: "none !important",
+        boxShadow: "none !important",
         ".react-dropdown-select-no-data": {
           color: "text",
-        },
-        "&:hover, &:focus-within": {
-          borderColor: dark ? "text" : "transparent !important",
-          boxShadow: "none !important",
-        },
-        ".react-dropdown-select-input": {
-          color: dark ? "white !important" : "text",
-          fontFamily: "Nunito Sans",
-          fontSize: "1rem !important",
-          fontWeight: "600",
-          lineHeight: "100% !important",
-          width: "12.5rem !important",
         },
         ".react-dropdown-select-clear": {
           fontSize: "1.5625rem !important",
@@ -99,53 +70,31 @@ const SearchBox = ({
           right: "-0.375rem !important",
         },
         ".react-dropdown-select-dropdown": {
-          top: detachedResults ? "4.6875rem" : "3.625rem",
-          bg: dark ? "w3shade1" : "#EFF5F4",
-          color: "white",
-          border: "0.125rem solid",
-          borderColor: "w3beige",
-          borderBottomLeftRadius: "0.5rem",
-          borderBottomRightRadius: "0.5rem",
-          borderTopLeftRadius: detachedResults ? "0.5rem" : "0rem",
-          borderTopRightRadius: detachedResults ? "0.5rem" : "0rem",
+          top: "3rem",
+          bg: "black",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          borderRadius: "1.25rem",
+          boxShadow: "12px 20px 54px -6px #141316",
           borderTop: detachedResults ? "0.125rem solid" : "0.0625rem solid",
           borderTopColor: detachedResults ? "w3beige" : "rgba(104,129,132,.5)",
-          left: "-0.125rem",
-          width: detachedResults ? "30%" : "calc(100% + 0.25rem) !important",
         },
         ".react-dropdown-select-item": {
-          borderColor: "rgba(104,129,132,.5) !important",
-          fontWeight: "bold !important",
-          fontSize: "0.875rem !important",
-          lineHeight: "0.875rem !important",
-          color: dark ? "white !important" : "text",
-          padding: "1rem 2rem !important",
-          height: "3.5rem !important",
-          display: "flex !important",
-          alignItems: "center !important",
-          justifyContent: "left !important",
-          pl: "1.25rem !important",
-          "&.react-dropdown-select-item-selected": {
-            bg: dark ? "w3shade1 !important" : "#EFF5F4 !important",
-            color: dark ? "white !important" : "text",
-            borderBottomColor: "rgba(104,129,132,.5) !important",
-          },
-          "&:hover, &.react-dropdown-select-item-active": {
-            bg: dark ? "w3shade3" : "w3TextNavTeal",
-            color: dark ? "inherit" : "white",
-          },
+          display: "flex",
+          border: "none !important",
+          lineHeight: "100%",
+          py: "0.375rem",
           "&::before": {
             display: "block !important",
             content: "''",
-            width: "1.5rem !important",
-            height: "1.5rem !important",
+            width: "1rem !important",
+            height: "1rem !important",
             mr: ".75rem !important",
           },
-          "&:last-of-type": {
-            borderBottom: "none !important",
+          "&:hover, &.react-dropdown-select-item-selected": {
+            bg: "rgba(255, 255, 255, 0.2)",
           },
-          "&:first-of-type": {
-            borderTop: "none !important",
+          "&.react-dropdown-select-item-selected": {
+            bg: "rgba(255, 255, 255, 0.4)",
           },
         },
         ".react-dropdown-select-content": {
@@ -159,17 +108,12 @@ const SearchBox = ({
               "url(/images/magnifying-glass.svg) no-repeat !important",
           },
           span: {
-            pl: ".25rem",
-            fontSize: "0.875rem",
+            fontSize: "16px",
             lineHeight: "150%",
-            height: "1.5rem",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
           },
         },
         ...bgs,
+        ...sx,
       }}
       clearable
       keepSelectedInList

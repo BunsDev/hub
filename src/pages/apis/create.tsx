@@ -1,107 +1,113 @@
 /** @jsxImportSource theme-ui **/
 import Layout from "../../components/Layout";
-import CreateAPI from "../../components/tabs/CreateAPI";
-import PublishAPI from "../../components/tabs/PublishAPI";
+import Publish from "../../components/CreateApi/Publish";
 import Header from "../../components/Header";
-import BottomSpace from "../../components/BottomSpace";
+import UploadApiMethod from "../../components/CreateApi/Start";
+import Steps from "../../components/Steps";
+import {
+  DirectUpload,
+  EnsAddress,
+  IPFSHash,
+} from "../../components/CreateApi/UploadBy";
+import {
+  createApiSteps,
+  UPLOAD_METHODS,
+  validMethod,
+  validStep,
+} from "../../utils/createWrapper";
 
-import { Flex, Themed } from "theme-ui";
+import { Box, Flex, Themed } from "theme-ui";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect,
+  createContext,
+  Dispatch,
+  SetStateAction,
+} from "react";
+
+const styles = {
+  height: "fit-content",
+  p: "50px 73px 59px 59px",
+  background: "black",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
+  boxShadow: "12px 20px 54px -6px #141316",
+  borderRadius: "20px",
+};
+
+export const uploadComponents = {
+  [UPLOAD_METHODS.DIRECT_UPLOAD]: <DirectUpload />,
+  [UPLOAD_METHODS.IPFS_HASH]: <IPFSHash />,
+  [UPLOAD_METHODS.ENS_ADDRESS]: <EnsAddress />,
+};
+
+export const CreateApiContext = createContext<{
+  uploadMethod: string;
+  setUploadMethod: Dispatch<SetStateAction<string>>;
+}>({
+  uploadMethod: "",
+  setUploadMethod: () => undefined,
+});
 
 const CreateApi = () => {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<string | string[]>();
-
-  const handleTabClick = (e: React.BaseSyntheticEvent) => {
-    e.stopPropagation();
-    setActiveTab(e.target.classList[1]);
-    void router.push(router.pathname + "?activeTab=" + e.target.classList[1]);
-  };
+  const [activeStep, setActiveStep] = useState<string>();
+  const [uploadMethod, setUploadMethod] = useState<string>("");
 
   useEffect(() => {
-    if (router.query.activeTab && !activeTab) {
-      setActiveTab(router.query.activeTab);
+    if (router.query.activeTab) {
+      setActiveStep(router.query.activeTab as string);
     }
-  }, [router.query.activeTab, activeTab]);
+  }, [router.query?.activeTab]);
 
   useEffect(() => {
-    if (router.isReady && !router.query.activeTab) {
-      void router.push(router.pathname + "?activeTab=create");
+    if (router.query.method) {
+      setUploadMethod(router.query.method as string);
     }
-  }, [router.isReady, router.query?.activeTab, router.pathname]);
+  }, [router.query?.method]);
+
+  useEffect(() => {
+    if (
+      router.isReady &&
+      (!validStep(router.query?.activeTab as string) ||
+        (router.query.method && !validMethod(router.query?.method as string)))
+    ) {
+      void router.push(router.pathname + `?activeTab=${createApiSteps[0]}`);
+    }
+  }, [
+    router.isReady,
+    router.query?.activeTab,
+    router.query?.method,
+    router.pathname,
+  ]);
 
   return (
     <Layout>
-      <Flex>
-        <main sx={{ pb: 5 }}>
-          <div className="contents" sx={{ maxWidth: "calc(76.5rem + 112px)" }}>
-            <Header title={"Create a Web3API"} />
-            <Flex
-              className="tabs"
-              onClick={handleTabClick}
-              sx={{
-                "*": { cursor: "pointer", mr: 2, mb: 4 },
-                ".tab": {
-                  textAlign: "center",
-                  fontSize: "1rem",
-                  fontWeight: "bold",
-                  lineHeight: "1.25rem",
-                  letterSpacing: "-0.025rem",
-                  pb: " 1.125rem",
-                  color: "text",
-                  mb: 0,
-                  "&.active": {
-                    fontWeight: "bold",
-                    color: "w3darkGreen",
-                    borderBottom: "0.125rem solid",
-                    borderBottomColor: "w3NavNeonHighlightTeal",
-                    "&:hover": {
-                      borderBottom: "0.125rem solid",
-                      borderBottomColor: "w3NavNeonHighlightTeal",
-                    },
-                  },
-                  "&:hover": {
-                    borderBottom: "0.125rem solid",
-                    borderBottomColor: "background",
-                  },
-                },
-              }}
-            >
-              <Themed.h3
-                className={
-                  "tab create " + (activeTab === "create" ? "active" : "")
-                }
-                sx={{ flex: 1 }}
+      <Header />
+      <CreateApiContext.Provider value={{ uploadMethod, setUploadMethod }}>
+        <Flex>
+          <main sx={{ pb: 5, px: "10.3125rem" }}>
+            <div className="contents" sx={styles}>
+              <Flex
+                className="header"
+                sx={{
+                  justifyContent: "space-between",
+                  mb: ".75rem",
+                }}
               >
-                Create
-              </Themed.h3>
-              <Themed.h3
-                className={
-                  "tab publish " + (activeTab === "publish" ? "active" : "")
-                }
-                sx={{ flex: 1 }}
-              >
-                Publish
-              </Themed.h3>
-            </Flex>
-            <div
-              className="tab-content"
-              sx={{
-                bg: "white",
-                "> *": {
-                  px: "3.4375rem",
-                  pt: "5.625rem",
-                },
-              }}
-            >
-              {activeTab === "create" && <CreateAPI />}
-              {activeTab === "publish" && <PublishAPI />}
+                <Themed.h2 sx={{ mb: 0 }}>Create New Wrapper</Themed.h2>
+                <Steps activeStep={activeStep} />
+              </Flex>
+              <Box as="form" className="content">
+                {activeStep === createApiSteps[0] && <UploadApiMethod />}
+                {activeStep === createApiSteps[1] &&
+                  uploadComponents[uploadMethod]}
+                {activeStep === createApiSteps[2] && <Publish />}
+              </Box>
             </div>
-            <BottomSpace />
-          </div>
-        </main>
-      </Flex>
+          </main>
+        </Flex>
+      </CreateApiContext.Provider>
     </Layout>
   );
 };

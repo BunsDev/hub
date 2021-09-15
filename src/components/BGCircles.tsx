@@ -13,7 +13,18 @@ const circleProps: ThemeUIStyleObject = {
 };
 const BGCircles = () => {
   return (
-    <>
+    <div
+      className="circles"
+      sx={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: "-1",
+        overflow: "hidden",
+      }}
+    >
       <div
         sx={{
           ...circleProps,
@@ -36,7 +47,7 @@ const BGCircles = () => {
             "linear-gradient(90deg, #FFC272 0%, #FFC272 34.41%, #FFE272 76.97%, #FFE272 99.99%)",
         }}
       />
-    </>
+    </div>
   );
 };
 

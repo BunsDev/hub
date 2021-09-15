@@ -51,8 +51,8 @@ const buttonColorStates = {
     },
   },
   secondary: {
-    bg: "w3ButtonSecondary",
-    borderColor: "w3ButtonSecondary",
+    bg: "#141D32",
+    borderColor: "transparent",
     color: "white",
     "&:active": {
       bg: "rgba(104, 129, 132, 0.2)",

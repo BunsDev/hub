@@ -3,9 +3,7 @@ import { useStateValue } from "../state/state";
 import Layout from "../components/Layout";
 import SortNav from "../components/SortNav";
 import ApiGrid from "../components/ApiGrid";
-import Navbar from "../components/Navbar";
-import Head from "../components/Head";
-import BGCircles from "../components/BGCircles";
+import Header from "../components/Header";
 import BottomSpace from "../components/BottomSpace";
 
 import { Flex } from "theme-ui";
@@ -14,9 +12,8 @@ const Home = () => {
   const [{ dapp }] = useStateValue();
   return (
     <Layout>
-      <Head />
+      <Header />
       <Flex>
-        <Navbar />
         <main>
           <div className="contents animate">
             <section className="content">
@@ -27,7 +24,6 @@ const Home = () => {
           </div>
         </main>
       </Flex>
-      <BGCircles />
     </Layout>
   );
 };

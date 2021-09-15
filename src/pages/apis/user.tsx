@@ -1,7 +1,5 @@
 /** @jsxImportSource theme-ui **/
 import Layout from "../../components/Layout";
-import Header from "../../components/Header";
-import Navbar from "../../components/Navbar";
 import ContentNav from "../../components/ContentNav";
 import Published from "../../components/tabs/Published";
 import Favorites from "../../components/tabs/Favorites";
@@ -10,7 +8,7 @@ import { useStateValue } from "../../state/state";
 import { useAuth } from "../../hooks/useAuth";
 import { domain } from "../../constants";
 
-import { Flex } from "theme-ui";
+import { Flex, Themed } from "theme-ui";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import useSWR from "swr";
@@ -58,10 +56,9 @@ const UserApis = () => {
   return (
     <Layout>
       <Flex>
-        <Navbar />
         <main>
           <div className="contents">
-            <Header title="My API's" />
+            <Themed.h1>My API&apos;s</Themed.h1>
             <section className="content">
               <ContentNav
                 setActiveTab={handleTabClick}
