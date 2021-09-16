@@ -11,12 +11,12 @@ const SortNav = () => {
           sx={{
             justifyContent: "space-between",
             flex: 1,
-            flexWrap:'wrap',
+            flexWrap: "wrap",
             alignItems: "center",
-            mb:[3, null]
+            mb: [3, null],
           }}
         >
-          <h2 sx={{ fontSize: "28px" }}>Wrappers</h2>
+          <h2 sx={{ fontSize: "28px", mt: [null, "0"] }}>Wrappers</h2>
           <SearchBar />
         </Flex>
       </form>
