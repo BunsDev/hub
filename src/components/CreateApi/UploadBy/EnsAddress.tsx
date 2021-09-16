@@ -14,6 +14,7 @@ import NavButtons from "../NavButtons";
 import { Wrapper } from "../Wrapper";
 import Spinner from "../../Spinner";
 import { Button, Image, Flex } from "@theme-ui/components";
+import styles from "./styles";
 
 export const EnsAddress = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
@@ -74,18 +75,7 @@ export const EnsAddress = () => {
     none: (
       <Button
         variant="suffixSmall"
-        sx={{
-          width: "65px",
-          boxSizing: "content-box",
-          alignSelf: "stretch",
-          borderRadius: "6px",
-          border: "none",
-          margin: "2px",
-          justifyContent: "center",
-          fontSize: "14px",
-          lineHeight: "120%",
-          fontWeight: "normal",
-        }}
+        sx={styles.suffixButton}
         onClick={handleApplyButton}
       >
         Apply

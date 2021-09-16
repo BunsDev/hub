@@ -10,6 +10,7 @@ import { Wrapper } from "./Wrapper";
 import stripIPFSPrefix from "../../utils/stripIPFSPrefix";
 import useToggle from "../../hooks/useToggle";
 import Input from "../Input";
+import styles from "./UploadBy/styles";
 
 const PublishAPI = () => {
   const [
@@ -190,14 +191,7 @@ const PublishAPI = () => {
   return (
     <Wrapper>
       <form onSubmit={handleSubmit} onInvalid={handleInvalid}>
-        <Flex
-          className="publish"
-          sx={{
-            gap: ["3.75rem", "20px"],
-            justifyContent: "space-between",
-            flexDirection: [null, "column"],
-          }}
-        >
+        <Flex className="publish" sx={styles.publish}>
           {isMobile ? (
             <>
               {blocks.info}
@@ -212,20 +206,7 @@ const PublishAPI = () => {
             </>
           )}
         </Flex>
-        <Flex
-          className="buttons"
-          sx={{
-            justifyContent: "space-between",
-            mt: "2.5rem",
-            flexDirection: [null, "column-reverse"],
-            gap: [null, "1.25rem"],
-            button: {
-              width: [null, "100%"],
-              p: [null, "20px 0"],
-              borderRadius: [null, "100px"],
-            },
-          }}
-        >
+        <Flex className="buttons">
           <Button
             variant="secondaryMedium"
             onClick={(e) => {

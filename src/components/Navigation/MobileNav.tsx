@@ -16,6 +16,7 @@ import NavItem from "./NavItem";
 import useRouter from "../../hooks/useRouter";
 import User from "../../../public/images/user.svg";
 import Modal from "../Modal";
+import styles from "./styles";
 
 export default function MobileNav() {
   const [
@@ -69,42 +70,20 @@ export default function MobileNav() {
       <div
         className="nav-mobile-bg"
         sx={{
+          ...styles.mobileNav,
           zIndex: isMobileNavActive ? "1" : "-1",
-          position: "fixed",
-          top: "0",
-          height: "100vh",
-          width: "100vw",
-          transition: ".3s all",
           bg: isMobileNavActive ? "rgba(255, 255, 255, 0.5)" : "transparent",
         }}
         onClick={handleCloseNavMenu}
       >
         <nav
           className={`nav-mobile ${isMobileNavActive ? "active" : ""}`}
-          sx={{
-            position: "absolute",
-            top: "0",
-            right: isMobileNavActive ? "0" : "-100%",
-            height: "100%",
-            width: "80%",
-            bg: "black",
-            transition: ".3s all",
-            display: "flex",
-            flexDirection: "column",
-            overflowY: "scroll",
-          }}
+          sx={{ right: isMobileNavActive ? "0" : "-100%" }}
           onClick={(e) => {
             e.stopPropagation();
           }}
         >
-          <Flex
-            className="head"
-            sx={{
-              justifyContent: "space-between",
-              alignItems: "center",
-              p: "2.25rem 1rem 2.25rem 2rem",
-            }}
-          >
+          <Flex className="head">
             <Themed.h2 sx={{ mb: "0" }}>Menu</Themed.h2>
             <img
               src="/images/close.svg"
@@ -112,16 +91,7 @@ export default function MobileNav() {
               onClick={handleCloseNavMenu}
             />
           </Flex>
-          <Flex
-            className="user"
-            sx={{
-              flexDirection: "column",
-              alignItems: "center",
-              py: "1.5rem",
-              mb: "1.5rem",
-              ".wallet-addr": { svg: { width: "140px", height: "auto" } },
-            }}
-          >
+          <Flex className="user">
             {dapp.address ? (
               <>
                 <User sx={{ cursor: "pointer", mb: "1.25rem" }} />
@@ -146,38 +116,7 @@ export default function MobileNav() {
               </div>
             )}
           </Flex>
-          <Flex
-            className="navList"
-            sx={{
-              flexDirection: "column",
-              "li.navItem": {
-                maxWidth: "237px",
-                "&.expandable::before": {
-                  borderBottomLeftRadius: 0,
-                  borderBottomRightRadius: 0,
-                },
-                ".dropdown-content::before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                },
-                "&::before, .dropdown-content::before": {
-                  top: "auto",
-                  left: "0",
-                  width: ".5rem",
-                  height: "100%",
-                },
-                a: {
-                  p: "1rem 2rem",
-                },
-                ".dropdown-content a": {
-                  p: "1rem",
-                  paddingBottom: "6px",
-                  marginBottom: "0",
-                },
-              },
-            }}
-          >
+          <Flex className="navList">
             {navList.map((navItem) => (
               <NavItem item={navItem} />
             ))}
@@ -189,18 +128,8 @@ export default function MobileNav() {
             )}
           </Flex>
           {dapp.address && router.pathname !== "/apis/create" && (
-            <Flex
-              sx={{
-                py: "3.4375rem",
-                px: "2rem",
-                justifySelf: "flex-end",
-              }}
-            >
+            <Flex className="btnWrap">
               <Button
-                sx={{
-                  width: "100%",
-                  justifyContent: "center",
-                }}
                 variant="primaryMedium"
                 onClick={() => {
                   router.push("/apis/create?activeTab=create");

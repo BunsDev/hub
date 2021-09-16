@@ -4,6 +4,7 @@ import { createApiSteps } from "../../utils/createWrapper";
 
 import { useRouter } from "next/router";
 import { Button, Flex } from "theme-ui";
+import styles from "./UploadBy/styles";
 
 interface NavButtonProps {
   label: string;
@@ -20,20 +21,7 @@ const NavButtons = ({ backBtn, nextBtn, continueEnabled }: Props) => {
   const router = useRouter();
 
   return (
-    <Flex
-      sx={{
-        justifyContent: "space-between",
-        mt: "2.5rem",
-        flexWrap: "wrap",
-        button: {
-          textAlign: "center",
-          width: [null, "100%"],
-          py: [null, "20px"],
-          borderRadius: [null, "100px"],
-        },
-        flexDirection: [null, "column-reverse"],
-      }}
-    >
+    <Flex sx={styles.navButtons}>
       <Button
         variant="secondaryMedium"
         onClick={(e) => {

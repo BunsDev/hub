@@ -6,57 +6,7 @@ import { createApiSteps, UPLOAD_METHODS } from "../../utils/createWrapper";
 import { useRouter } from "next/router";
 import { useCallback, useContext } from "react";
 import { Button, Flex, Themed, ThemeUICSSObject } from "theme-ui";
-
-const styles: { [key: string]: ThemeUICSSObject } = {
-  tutorial: {
-    border: "1px solid rgba(255, 255, 255, 0.2)",
-    borderRadius: "1.25rem",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    gap: ["1.875rem", "1.25rem"],
-    p: ["0 84px 26px 49px", "12px 46px 40px"],
-    div: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "flex-end",
-      height: "110px",
-      maxWidth: "192px",
-      span: {
-        mb: ".5rem",
-      },
-      a: {
-        display: "flex",
-        alignItems: "center",
-        gap: ".5rem",
-        fontSize: "14px",
-        lineHeight: "120%",
-        textDecorationLine: "underline",
-        color: "rgba(255, 255, 255, 0.5)",
-      },
-      p: {
-        fontSize: "14px",
-        lineHeight: "120%",
-        color: "rgba(255, 255, 255, 0.5)",
-        m: "0",
-        textAlign: "center",
-      },
-      ".subtitle-1": {
-        color: "white",
-      },
-    },
-  },
-  bgText: {
-    pointerEvents: "none",
-    position: "absolute",
-    bottom: 0,
-    left: "auto",
-    fontWeight: "bold",
-    fontSize: "110px",
-    lineHeight: "100%",
-    color: "rgba(255, 255, 255, 0.1)",
-  },
-};
+import styles from "./UploadBy/styles";
 
 const Start = () => {
   const router = useRouter();
@@ -77,7 +27,7 @@ const Start = () => {
         flexDirection: "column",
       }}
     >
-      <Flex className="tutorial" sx={styles["tutorial"]}>
+      <Flex className="tutorial" sx={styles.tutorial}>
         <div sx={{ width: "fit-content" }}>
           <div className="bg" sx={styles.bgText}>
             One
@@ -110,39 +60,8 @@ const Start = () => {
           <p>Choose one of the options below to upload your wrapper</p>
         </div>
       </Flex>
-      <div
-        className="arrow"
-        sx={{
-          width: ".75rem",
-          height: ".75rem",
-          border: "2px solid #FFFFFF",
-          borderTop: "none",
-          borderRight: "none",
-          transform: "rotate(-45deg)",
-          my: ["20px", "23px"],
-          mx: "auto",
-        }}
-      />
-      <Flex
-        className="options"
-        sx={{
-          mb: ["2.5rem", "3.75rem"],
-          gap: "1rem",
-          flexWrap: [null, "wrap"],
-          div: {
-            maxWidth: "14,1875rem",
-            width: "100%",
-            p: "1.75rem",
-            background: "#0F0F0F",
-            borderRadius: "20px",
-            transition: ".2s background",
-            "&:hover": {
-              cursor: "pointer",
-              background: "#141D32",
-            },
-          },
-        }}
-      >
+      <div className="arrow" sx={styles.arrow} />
+      <Flex className="options" sx={styles.uploadOptions}>
         <div
           onClick={() => handleMethodSelection(UPLOAD_METHODS.DIRECT_UPLOAD)}
         >

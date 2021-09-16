@@ -5,6 +5,7 @@ import { useStateValue } from "../state/state";
 
 import { useRouter } from "next/router";
 import { Grid, Button } from "theme-ui";
+import { Styles } from "../utils/stylesInterface";
 
 type ApiGridProps = {
   apis: APIData[];
@@ -13,32 +14,44 @@ type ApiGridProps = {
 
 const gridTemplateColumn = "minmax(300px, 380px)";
 
+const styles: Styles = {
+  apiGrid: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    minHeight: "70vh",
+    ".grid-main": {
+      gridTemplateColumns: [
+        `${gridTemplateColumn} ${gridTemplateColumn} ${gridTemplateColumn}`,
+        `${gridTemplateColumn}`,
+      ],
+      mx: "auto",
+      mb: 3,
+    },
+    ".endOfList": {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      alignSelf: "center",
+      textAlign: "center",
+      mb: 4,
+      button: { mt: "14px" },
+    },
+    ".grid": {
+      gridTemplateColumns: ["1fr", "1fr 1fr", "1fr 1fr 1fr", "1fr 1fr 1fr 1fr"],
+      rowGap: ["1%", "2%", "3%", "4%"],
+    },
+  },
+};
 const ApiGrid = ({ apis, main }: ApiGridProps) => {
   const [{ search }] = useStateValue();
 
   const router = useRouter();
   return (
-    <div
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        minHeight: "70vh",
-      }}
-    >
+    <div className="apiGrid" sx={styles.apiGrid}>
       {main ? (
         <>
-          <Grid
-            gap="1rem"
-            sx={{
-              gridTemplateColumns: [
-                `${gridTemplateColumn} ${gridTemplateColumn} ${gridTemplateColumn}`,
-                `${gridTemplateColumn}`,
-              ],
-              mx: "auto",
-              mb: 3,
-            }}
-          >
+          <Grid className="grid-main" gap="1rem">
             {search !== undefined && search.sortedApi !== -1 ? (
               <Card api={search.sortedApi[0]} boxShadowOn />
             ) : (
@@ -47,19 +60,9 @@ const ApiGrid = ({ apis, main }: ApiGridProps) => {
               ))
             )}
           </Grid>
-          <div
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              alignSelf: "center",
-              textAlign: "center",
-              mb: 4,
-            }}
-          >
+          <div className="endOfList">
             You reached the end of the list. <b>Don’t stop here!</b>
             <Button
-              sx={{ mt: "14px" }}
               variant="primaryMedium"
               onClick={() => {
                 void router.push("/apis/create?activeTab=start");
@@ -70,18 +73,7 @@ const ApiGrid = ({ apis, main }: ApiGridProps) => {
           </div>
         </>
       ) : (
-        <Grid
-          gap={"3%"}
-          sx={{
-            gridTemplateColumns: [
-              "1fr",
-              "1fr 1fr",
-              "1fr 1fr 1fr",
-              "1fr 1fr 1fr 1fr",
-            ],
-            rowGap: ["1%", "2%", "3%", "4%"],
-          }}
-        >
+        <Grid className="grid" gap={"3%"}>
           {apis.map((api, idx) => (
             <Card
               api={api}

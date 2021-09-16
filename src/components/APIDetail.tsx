@@ -1,19 +1,20 @@
 /** @jsxImportSource theme-ui **/
 import { useEffect } from "react";
-import { Flex, Themed, Button, ThemeUIStyleObject, Grid } from "theme-ui";
+import { Flex, Themed, Button, Grid } from "theme-ui";
 import Stars from "../components/Stars";
 import { ipfsGateway, domain } from "../constants";
 import { useRouter } from "next/router";
 import { APIData } from "../hooks/ens/useGetAPIfromENS";
 import { useStateValue } from "../state/state";
 import { useAuth } from "../hooks/useAuth";
+import { Styles } from "../utils/stylesInterface";
 
 type APIDetailProps = {
   api?: APIData;
   update: () => Promise<void>;
 };
 
-const styles: { [key: string]: ThemeUIStyleObject } = {
+const styles: Styles = {
   wrap: {
     borderRadius: "20px",
     bg: "black",
@@ -23,6 +24,63 @@ const styles: { [key: string]: ThemeUIStyleObject } = {
     display: "flex",
     justifyContent: "space-between",
     flexDirection: [null, "column-reverse"],
+    ".left": {
+      flexDirection: "column",
+      width: "100%",
+      ".head": {
+        gridTemplateColumns: ["min-content max-content", "min-content"],
+        gridTemplateRows: ["min-content", "min-content min-content"],
+        gridTemplateAreas: [
+          `'logo title'
+         'logo description'`,
+          `'logo title'
+         'description description'`,
+        ],
+        alignItems: "flex-start",
+        gap: ["40px", ".75rem"],
+        rowGap: "0",
+        mb: ["32px", "40px"],
+      },
+    },
+    ".right": {
+      width: "100%",
+      maxWidth: "300px",
+      ".info-card": {
+        width: [null, "100%"],
+        mb: [null, "2rem"],
+        ">div": {
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: "1rem",
+        },
+        ">ul.links": {
+          mb: ["3rem", "1.5rem"],
+          "*": {
+            color: "rgba(255, 255, 255, 0.5)",
+            textDecoration: "none",
+          },
+          li: {
+            display: "flex",
+            fontFamily: "Nunito Sans",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: ".875rem",
+            lineHeight: "120%",
+            mb: "11px",
+            color: "rgba(255, 255, 255, 0.5)",
+            img: { maxWidth: "1rem", mr: ".5rem" },
+          },
+        },
+        ">button": {
+          backgroundColor: "white",
+          color: "black",
+          ml: "auto",
+          width: "100%",
+          p: [null, "1.25rem"],
+          borderRadius: [null, "100px"],
+        },
+      },
+    },
   },
 };
 const APIDetail = ({ api, update }: APIDetailProps) => {
@@ -55,23 +113,8 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
 
   return (
     <div className="wrap" sx={styles.wrap}>
-      <Flex className="left" sx={{ flexDirection: "column", width: "100%" }}>
-        <Grid
-          sx={{
-            gridTemplateColumns: ["min-content max-content", "min-content"],
-            gridTemplateRows: ["min-content", "min-content min-content"],
-            gridTemplateAreas: [
-              `'logo title'
-               'logo description'`,
-              `'logo title'
-               'description description'`,
-            ],
-            alignItems: "flex-start",
-            gap: ["40px", ".75rem"],
-            rowGap: "0",
-            mb: ["32px", "40px"],
-          }}
-        >
+      <Flex className="left">
+        <Grid className="head">
           <img
             className="api-logo"
             src={`${ipfsGateway}${api.locationUri}${api.icon.replace(
@@ -147,48 +190,17 @@ const api = new Web3API({
           </div>
         </Flex>
       </Flex>
-      <Flex className="right" sx={{ width: "100%", maxWidth: "300px" }}>
-        <div
-          className="info-card"
-          sx={{ width: [null, "100%"], mb: [null, "2rem"] }}
-        >
-          <Flex
-            sx={{
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: "1rem",
-            }}
-          >
+      <Flex className="right">
+        <div className="info-card">
+          <Flex>
             <Themed.h3 className="title">{api.name}</Themed.h3>
           </Flex>
-          <ul
-            className="links"
-            sx={{
-              mb: ["3rem", "1.5rem"],
-              "*": {
-                color: "rgba(255, 255, 255, 0.5)",
-                textDecoration: "none",
-              },
-              li: {
-                fontFamily: "Nunito Sans",
-                fontStyle: "normal",
-                fontWeight: "normal",
-                fontSize: ".875rem",
-                lineHeight: "120%",
-                mb: "11px",
-                color: "rgba(255, 255, 255, 0.5)",
-              },
-            }}
-          >
+          <ul className="links">
             {"pointerUris" in api &&
               api.pointerUris.map((pointer, idx) => {
                 return (
-                  <li sx={{ display: "flex" }} key={idx + "pointerURI"}>
-                    <img
-                      sx={{ maxWidth: "1rem", mr: ".5rem" }}
-                      src="/images/link.svg"
-                      alt="icon"
-                    />
+                  <li key={idx + "pointerURI"}>
+                    <img src="/images/link.svg" alt="icon" />
                     <a href={pointer} target="_BLANK" rel="noreferrer">
                       {pointer}
                     </a>
@@ -196,59 +208,16 @@ const api = new Web3API({
                 );
               })}
             {"locationUri" in api && (
-              <li sx={{ display: "flex" }}>
-                <img
-                  sx={{ maxWidth: "1rem", mr: ".5rem" }}
-                  src="/images/link.svg"
-                  alt="icon"
-                />
+              <li>
+                <img src="/images/link.svg" alt="icon" />
                 <a href={`${ipfsGateway}${api.locationUri}`} target="_BLANK">
                   {("ipfs/" + api.locationUri).substring(0, 25) + "..."}
                 </a>
               </li>
             )}
-            {/* {'links' in api &&
-              api.links.map((link, idx) => {
-                if (link.name === 'github') {
-                  return (
-                    <li sx={{ display: 'flex' }} key={'apilink' + idx}>
-                      <img
-                        sx={{ maxWidth: '1.1875rem', mr: 2 }}
-                        src="/images/github.svg"
-                        alt="icon"
-                      />
-                      <a href="https://www.github.com/ORG/REPO" target="_BLANK">
-                        github.com/ORG/REPO
-                      </a>
-                    </li>
-                  )
-                }
-                if (link.name === 'website') {
-                  return (
-                    <li sx={{ display: 'flex' }} key={'apilink' + idx}>
-                      <img
-                        sx={{ maxWidth: '1.1875rem', mr: 2 }}
-                        src="/images/doc.svg"
-                        alt="icon"
-                      />
-                      <a href="https://www.github.com/ORG/docs" target="_BLANK">
-                        github.com/ORG/DOCS
-                      </a>
-                    </li>
-                  )
-                }
-              })} */}
           </ul>
           <Button
             variant="secondaryMedium"
-            sx={{
-              backgroundColor: "white",
-              color: "black",
-              ml: "auto",
-              width: [null, "100%"],
-              p: [null, "1.25rem"],
-              borderRadius: [null, "100px"],
-            }}
             onClick={() => {
               void router.push(`/playground/ens/${api.pointerUris[0]}`);
             }}

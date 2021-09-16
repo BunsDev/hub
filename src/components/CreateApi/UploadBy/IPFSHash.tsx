@@ -1,9 +1,4 @@
-import React, {
-  ChangeEventHandler,
-  MouseEventHandler,
-  useEffect,
-  useState,
-} from "react";
+import React, { ChangeEventHandler, MouseEventHandler } from "react";
 import { Flex, Image, Button } from "theme-ui";
 import getMetaDataFromPackageHash from "../../../services/ipfs/getMetaDataFromPackageHash";
 import { useStateValue } from "../../../state/state";
@@ -12,6 +7,7 @@ import NavButtons from "../NavButtons";
 import { Wrapper } from "../Wrapper";
 import Spinner from "../../Spinner";
 import Input from "../../Input";
+import styles from "./styles";
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();
@@ -53,18 +49,7 @@ export const IPFSHash = () => {
     none: (
       <Button
         variant="suffixSmall"
-        sx={{
-          width: "65px",
-          alignSelf: "stretch",
-          boxSizing: "content-box",
-          borderRadius: "6px",
-          border: "none",
-          margin: "2px",
-          justifyContent: "center",
-          fontSize: "14px",
-          lineHeight: "120%",
-          fontWeight: "normal",
-        }}
+        sx={styles.suffixButton}
         onClick={handleApplyButton}
       >
         Apply

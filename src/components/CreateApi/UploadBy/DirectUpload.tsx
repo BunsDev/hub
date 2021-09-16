@@ -14,8 +14,7 @@ import {
   validateUploadedWrapper,
 } from "../../../utils/createWrapper";
 import { APIData } from "../../../hooks/ens/useGetAPIfromENS";
-import { IpfsPlugin } from "@web3api/ipfs-plugin-js";
-import axios from "axios";
+import styles from "./styles";
 
 export const DirectUpload = () => {
   const [
@@ -75,18 +74,7 @@ export const DirectUpload = () => {
           />
         </Flex>
       ) : (
-        <Flex
-          {...getRootProps()}
-          sx={{
-            margin: "0 auto",
-            flexDirection: "column",
-            alignItems: "center",
-            p: "3.75rem",
-            border: "1.5px dashed #FFFFFF50",
-            borderRadius: "1.25rem",
-            maxWidth: "32.125rem",
-          }}
-        >
+        <Flex {...getRootProps()} sx={styles.dropzoneWrap}>
           {loading ? (
             <>
               <Spinner />
