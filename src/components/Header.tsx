@@ -83,16 +83,14 @@ const Header = () => {
           }}
         >
           {dapp.address && router.pathname !== "/apis/create" && (
-            <li>
-              <Button
-                variant="primaryMedium"
-                onClick={() => {
-                  router.push("/apis/create?activeTab=create");
-                }}
-              >
-                Publish Wrapper
-              </Button>
-            </li>
+            <Button
+              variant="primaryMedium"
+              onClick={() => {
+                router.push("/apis/create?activeTab=create");
+              }}
+            >
+              Publish Wrapper
+            </Button>
           )}
           <SignInArea onDark />
         </Flex>
