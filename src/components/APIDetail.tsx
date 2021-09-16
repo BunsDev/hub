@@ -1,18 +1,30 @@
 /** @jsxImportSource theme-ui **/
-import { useEffect } from 'react'
-import { Flex, Themed, Button } from 'theme-ui'
-import Stars from '../components/Stars'
-import { ipfsGateway, domain } from '../constants'
-import { useRouter } from 'next/router'
-import { APIData } from '../hooks/ens/useGetAPIfromENS'
-import { useStateValue } from '../state/state'
-import { useAuth } from '../hooks/useAuth'
+import { useEffect } from "react";
+import { Flex, Themed, Button, ThemeUIStyleObject, Grid } from "theme-ui";
+import Stars from "../components/Stars";
+import { ipfsGateway, domain } from "../constants";
+import { useRouter } from "next/router";
+import { APIData } from "../hooks/ens/useGetAPIfromENS";
+import { useStateValue } from "../state/state";
+import { useAuth } from "../hooks/useAuth";
 
 type APIDetailProps = {
   api?: APIData;
   update: () => Promise<void>;
 };
 
+const styles: { [key: string]: ThemeUIStyleObject } = {
+  wrap: {
+    borderRadius: "20px",
+    bg: "black",
+    p: ["3.75rem", "1.25rem"],
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    boxShadow: "12px 20px 54px -6px #141316",
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: [null, "column-reverse"],
+  },
+};
 const APIDetail = ({ api, update }: APIDetailProps) => {
   const router = useRouter();
   const [{ dapp }] = useStateValue();
@@ -42,33 +54,48 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
   }, [dapp.did]);
 
   return (
-    <div
-      className="wrap"
-      sx={{
-        borderRadius: "20px",
-        bg: "black",
-        p: "3.75rem",
-        border: "1px solid rgba(255, 255, 255, 0.2)",
-        boxShadow: "12px 20px 54px -6px #141316",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
+    <div className="wrap" sx={styles.wrap}>
       <Flex className="left" sx={{ flexDirection: "column", width: "100%" }}>
-        <Flex sx={{ alignItems: "flex-start", gap: "40px" }}>
+        <Grid
+          sx={{
+            gridTemplateColumns: ["min-content max-content", "min-content"],
+            gridTemplateRows: ["min-content", "min-content min-content"],
+            gridTemplateAreas: [
+              `'logo title'
+               'logo description'`,
+              `'logo title'
+               'description description'`,
+            ],
+            alignItems: "flex-start",
+            gap: ["40px", ".75rem"],
+            rowGap: "0",
+            mb: ["32px", "40px"],
+          }}
+        >
           <img
             className="api-logo"
-            src={`${ipfsGateway}${api.locationUri}${api.icon.replace('./', '/')}`}
+            src={`${ipfsGateway}${api.locationUri}${api.icon.replace(
+              "./",
+              "/"
+            )}`}
             sx={{
+              gridArea: `logo`,
               width: "6.25rem",
               height: "6.25rem",
               borderRadius: "20px",
             }}
           />
-          <div className="api-info" sx={{ width: "100%", mb: "2.5rem" }}>
-            <Themed.h2 className="title" sx={{ mb: ".75rem" }}>
-              {api.name}
-            </Themed.h2>
+          <Themed.h2
+            className="title"
+            sx={{
+              gridArea: "title",
+              mb: [".75rem", "1.25rem"],
+              fontSize: [null, "20px"],
+            }}
+          >
+            {api.name}
+          </Themed.h2>
+          <div sx={{ gridArea: "description" }}>
             <div
               className="subtitle"
               sx={{
@@ -85,12 +112,13 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
               sx={{
                 fontSize: ".875rem",
                 color: "rgba(255, 255, 255, .5)",
+                mb: [null, "0"],
               }}
             >
               {api.description}
             </p>
           </div>
-        </Flex>
+        </Grid>
         <Flex className="bottom">
           <div sx={{ width: "100%", maxWidth: "50rem" }}>
             <Themed.h3 sx={{ textAlign: "left" }}>Get Started</Themed.h3>
@@ -98,7 +126,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
               <Themed.pre>{`yarn install @web3api/client`}</Themed.pre>
             </Themed.code>
             <Themed.code>
-              <Themed.pre>
+              <Themed.pre sx={{ mb: [null, "0"] }}>
                 {`import {
   Web3API,
   Ethereum,
@@ -120,7 +148,10 @@ const api = new Web3API({
         </Flex>
       </Flex>
       <Flex className="right" sx={{ width: "100%", maxWidth: "300px" }}>
-        <div className="info-card">
+        <div
+          className="info-card"
+          sx={{ width: [null, "100%"], mb: [null, "2rem"] }}
+        >
           <Flex
             sx={{
               justifyContent: "space-between",
@@ -129,17 +160,11 @@ const api = new Web3API({
             }}
           >
             <Themed.h3 className="title">{api.name}</Themed.h3>
-            <Stars
-              onClick={handleFavorite}
-              count={api.favorites || 0}
-              large
-              onDark
-            />
           </Flex>
           <ul
             className="links"
             sx={{
-              mb: "3rem",
+              mb: ["3rem", "1.5rem"],
               "*": {
                 color: "rgba(255, 255, 255, 0.5)",
                 textDecoration: "none",
@@ -178,7 +203,7 @@ const api = new Web3API({
                   alt="icon"
                 />
                 <a href={`${ipfsGateway}${api.locationUri}`} target="_BLANK">
-                  {('ipfs/' + api.locationUri).substring(0, 25) + '...'}
+                  {("ipfs/" + api.locationUri).substring(0, 25) + "..."}
                 </a>
               </li>
             )}
@@ -216,7 +241,14 @@ const api = new Web3API({
           </ul>
           <Button
             variant="secondaryMedium"
-            sx={{ backgroundColor: "white", color: "black", ml: "auto" }}
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              ml: "auto",
+              width: [null, "100%"],
+              p: [null, "1.25rem"],
+              borderRadius: [null, "100px"],
+            }}
             onClick={() => {
               void router.push(`/playground/ens/${api.pointerUris[0]}`);
             }}

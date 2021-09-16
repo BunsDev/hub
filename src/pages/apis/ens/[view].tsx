@@ -11,15 +11,7 @@ const ApiView = () => {
   const { data, fetchApiDetails } = useGetAPIfromENSParamInURL();
   return (
     <Layout>
-      <Header />
-      <Flex>
-        <main>
-          <div className="contents">
-            {!!data && <APIDetail api={data} update={fetchApiDetails} />}
-            <BottomSpace />
-          </div>
-        </main>
-      </Flex>
+      {!!data && <APIDetail api={data} update={fetchApiDetails} />}
     </Layout>
   );
 };
