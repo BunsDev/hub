@@ -1,14 +1,45 @@
-import getMetaDataFromPackageHash from "../../../services/ipfs/getMetaDataFromPackageHash";
-import { useStateValue } from "../../../state/state";
-import ErrorMsg from "../ErrorMsg";
-import NavButtons from "../NavButtons";
-import { Wrapper } from "../Wrapper";
-
-import { Input } from "theme-ui";
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, useEffect, useState } from 'react'
+import { Input } from 'theme-ui'
+import getMetaDataFromPackageHash from '../../../services/ipfs/getMetaDataFromPackageHash'
+import { useStateValue } from '../../../state/state'
+import ErrorMsg from '../ErrorMsg'
+import NavButtons from '../NavButtons'
+import { Wrapper } from '../Wrapper'
+import useDebounce from '../../../utils/useDebounce'
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();
+
+  const handleIPFSHashInput: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    dispatch({ type: 'setipfs', payload: e.target.value })
+  }
+
+  const debouncedIpfsInput = useDebounce(publish.ipfs, 500)
+
+  useEffect(() => {
+    //TODO reduce dispatch quantity
+    if (debouncedIpfsInput) {
+      dispatch({ type: 'setipfsLoading', payload: true })
+      dispatch({ type: 'setipfsSuccess', payload: false })
+      dispatch({ type: 'setipfsError', payload: '' })
+
+      getMetaDataFromPackageHash(publish.ipfs).then((metaData) => {
+        if (!metaData || metaData === 'NO METADATA FOUND') {
+          dispatch({ type: 'setipfsLoading', payload: false })
+          dispatch({ type: 'setApiData', payload: null })
+          dispatch({ type: 'setipfsError', payload: 'No Package available' })
+        } else {
+          dispatch({ type: 'setipfsLoading', payload: false })
+          dispatch({ type: 'setipfsSuccess', payload: true })
+          dispatch({ type: 'setApiData', payload: metaData })
+        }
+      })
+    } else {
+      dispatch({ type: 'setipfsLoading', payload: false })
+      dispatch({ type: 'setApiData', payload: null })
+      dispatch({ type: 'setipfsError', payload: '' })
+    }
+  }, [debouncedIpfsInput])
 
   const ipfsClasses = publish.ipfsLoading
     ? "loading"
@@ -17,29 +48,6 @@ export const IPFSHash = () => {
     : publish.ipfsError
     ? "error"
     : "";
-
-  const handleIPFSHashInput: ChangeEventHandler<HTMLInputElement> = async (
-    e
-  ) => {
-    dispatch({ type: "setipfs", payload: e.target.value });
-    dispatch({ type: "setipfsLoading", payload: true });
-    dispatch({ type: "setipfsSuccess", payload: false });
-    dispatch({ type: "setipfsError", payload: "" });
-    if (e.target.value !== "") {
-      const metaData = await getMetaDataFromPackageHash(e.target.value);
-      if (metaData === undefined || metaData === "NO METADATA FOUND") {
-        dispatch({ type: "setipfsLoading", payload: false });
-        dispatch({ type: "setApiData", payload: null });
-        dispatch({ type: "setipfsError", payload: "No Package available" });
-      } else {
-        dispatch({ type: "setipfsLoading", payload: false });
-        dispatch({ type: "setipfsSuccess", payload: true });
-        dispatch({ type: "setApiData", payload: metaData });
-      }
-    } else {
-      dispatch({ type: "setipfsLoading", payload: false });
-    }
-  };
 
   return (
     <Wrapper>

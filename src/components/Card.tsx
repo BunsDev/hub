@@ -1,14 +1,13 @@
 /** @jsxImportSource theme-ui **/
-import Stars from "./Stars";
-import Badge from "./Badge";
-import Dots from "../../public/images/dots.svg";
-import { cloudFlareGateway } from "../constants";
-import stripIPFSPrefix from "../utils/stripIPFSPrefix";
-import { APIData } from "../hooks/ens/useGetAPIfromENS";
-
-import { useMemo } from "react";
-import { useRouter } from "next/router";
-import { Flex, Themed } from "theme-ui";
+import { Flex, Themed } from 'theme-ui'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
+import Stars from './Stars'
+import Badge from './Badge'
+import Dots from '../../public/images/dots.svg'
+import { ipfsGateway } from '../constants'
+import stripIPFSPrefix from '../utils/stripIPFSPrefix'
+import { APIData } from '../hooks/ens/useGetAPIfromENS'
 
 type CardProps = {
   api?: APIData;
@@ -57,7 +56,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
             <div sx={{ display: "flex", gap: "1.5rem" }}>
               <img
                 className="api-logo"
-                src={`${cloudFlareGateway}${
+                src={`${ipfsGateway}${
                   ipfsHash || stripIPFSPrefix(api.locationUri)
                 }${api.icon.replace("./", "/")}`}
                 sx={{

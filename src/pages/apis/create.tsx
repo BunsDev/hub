@@ -10,21 +10,18 @@ import {
   IPFSHash,
 } from "../../components/CreateApi/UploadBy";
 import {
+  apiDataInState,
   createApiSteps,
   UPLOAD_METHODS,
   validMethod,
   validStep,
-} from "../../utils/createWrapper";
-
-import { Box, Flex, Themed } from "theme-ui";
+} from '../../utils/createWrapper'
+import publish from '../api/apis/publish'
+import { useStateValue } from '../../state/state'
+import { createContext, Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  useState,
-  useEffect,
-  createContext,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { Box, Flex } from "@theme-ui/components";
+import { Themed } from "@theme-ui/mdx";
 
 const styles = {
   height: "fit-content",
@@ -50,9 +47,10 @@ export const CreateApiContext = createContext<{
 });
 
 const CreateApi = () => {
-  const router = useRouter();
-  const [activeStep, setActiveStep] = useState<string>();
-  const [uploadMethod, setUploadMethod] = useState<string>("");
+  const router = useRouter()
+  const [{ publish }] = useStateValue()
+  const [activeStep, setActiveStep] = useState<string>()
+  const [uploadMethod, setUploadMethod] = useState<string>('')
 
   useEffect(() => {
     if (router.query.activeTab) {
@@ -70,6 +68,7 @@ const CreateApi = () => {
     if (
       router.isReady &&
       (!validStep(router.query?.activeTab as string) ||
+        (router.query.activeTab === createApiSteps[2] && !publish.apiData) ||
         (router.query.method && !validMethod(router.query?.method as string)))
     ) {
       void router.push(router.pathname + `?activeTab=${createApiSteps[0]}`);
@@ -98,7 +97,7 @@ const CreateApi = () => {
                 <Themed.h2 sx={{ mb: 0 }}>Create New Wrapper</Themed.h2>
                 <Steps activeStep={activeStep} />
               </Flex>
-              <Box as="form" className="content">
+              <Box className="content">
                 {activeStep === createApiSteps[0] && <UploadApiMethod />}
                 {activeStep === createApiSteps[1] &&
                   uploadComponents[uploadMethod]}

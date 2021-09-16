@@ -1,11 +1,11 @@
 /** @jsxImportSource theme-ui **/
-import { cloudFlareGateway } from "../constants";
-import { APIData } from "../hooks/ens/useGetAPIfromENS";
-import stripIPFSPrefix from "../utils/stripIPFSPrefix";
+import { APIData } from '../hooks/ens/useGetAPIfromENS'
+import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 
-import RDS from "react-dropdown-select";
-import { useState, useEffect } from "react";
-import { ThemeUIStyleObject } from "theme-ui";
+import RDS from 'react-dropdown-select'
+import { useState, useEffect } from 'react'
+import { ThemeUIStyleObject } from 'theme-ui'
+import { ipfsGateway } from '../constants'
 
 type RDSProps = {
   large?: boolean;
@@ -45,11 +45,11 @@ const SearchBox = ({
   options.map((opt, idx) => {
     const key = `.react-dropdown-select-item:nth-of-type(${idx + 1}):before`;
     bgs[key] = {
-      background: `url(${cloudFlareGateway}${stripIPFSPrefix(
-        opt.locationUri
-      )}${opt.icon.replace("./", "/")})`,
-    };
-  });
+      background: `url(${ipfsGateway}${stripIPFSPrefix(
+        opt.locationUri,
+      )}${opt.icon.replace('./', '/')})`,
+    }
+  })
 
   return (
     <RDS
