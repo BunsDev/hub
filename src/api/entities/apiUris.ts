@@ -1,3 +1,4 @@
+import Apis from "./apis";
 import UriTypes from "./uriTypes";
 
 import {
@@ -20,6 +21,10 @@ export default class ApiUris {
 
   @Column("bigint", { name: "fk_api_id" })
   public apiId: string;
+
+  @ManyToOne(() => Apis, (api) => api.id)
+  @JoinColumn([{ name: "fk_api_id", referencedColumnName: "id" }])
+  public api: Partial<Apis>;
 
   @ManyToOne(() => UriTypes, (uriType) => uriType.apiUrises)
   @JoinColumn([{ name: "fk_uri_type_id", referencedColumnName: "id" }])

@@ -85,7 +85,7 @@ const ApiGrid = ({ apis, main }: ApiGridProps) => {
             <Card
               api={api}
               boxShadowOn
-              redirectUrl={"ens/" + api.pointerUris[0]}
+              redirectUrl={"ens/" + api.apiUris[0]?.uri}
               key={idx + "-api"}
             />
           ))}

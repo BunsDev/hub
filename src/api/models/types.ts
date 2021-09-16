@@ -6,7 +6,7 @@ export interface ApiData {
   description: string;
   icon: string;
   locationUri: string;
-  pointerUris: string[];
+  apiUris: string[];
   ownerId?: string;
 }
 

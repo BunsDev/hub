@@ -17,7 +17,7 @@ export default async (request: VercelRequest) => {
 
       apis.forEach(async (api: ApiData) => {
         const { valid } = await checkContentIsValid(
-          api.pointerUris,
+          api.apiUris,
           api.locationUri
         );
         if (!valid) {

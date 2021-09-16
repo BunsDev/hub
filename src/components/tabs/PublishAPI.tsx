@@ -123,7 +123,7 @@ const PublishAPI = () => {
           subtext: publish.apiData.subtext,
           icon: publish.apiData.icon,
           locationUri: publish.ipfs,
-          pointerUris: [`${publish.subdomain}.${MAIN_DOMAIN}`],
+          apiUris: [`${publish.subdomain}.${MAIN_DOMAIN}`],
           did: dapp.did,
         }),
         headers: {

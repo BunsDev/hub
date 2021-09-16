@@ -19,12 +19,12 @@ export default withValidatePublishBody(
           ...request.body,
         };
 
-        const { locationUri, pointerUris } = apiInfo;
+        const { locationUri, apiUris } = apiInfo;
 
         // @TODO: Remove checkContentIsValid method
         // and use Web3Api Client instead
         const { valid, message } = await checkContentIsValid(
-          pointerUris,
+          apiUris,
           locationUri
         );
 

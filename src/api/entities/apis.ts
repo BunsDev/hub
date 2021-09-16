@@ -1,6 +1,7 @@
 import Organizations from "./organizations";
 import Users from "./users";
 import StarredApis from "./starredApis";
+import ApiUris from "./apiUris";
 
 import {
   Column,
@@ -43,4 +44,7 @@ export default class Apis {
 
   @OneToMany(() => StarredApis, (starredApi) => starredApi.api)
   public starredApis: Partial<StarredApis>[];
+
+  @OneToMany(() => ApiUris, (apiUris) => apiUris.api)
+  public apiUris: Partial<ApiUris>[];
 }

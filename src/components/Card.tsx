@@ -22,8 +22,8 @@ const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
   const router = useRouter();
 
   const redirect = useMemo(
-    () => ipfsHash || redirectUrl || "apis/ens/" + api?.pointerUris[0],
-    [ipfsHash, redirectUrl, api?.pointerUris]
+    () => ipfsHash || redirectUrl || "apis/ens/" + api?.apiUris[0].uri,
+    [ipfsHash, redirectUrl, api?.apiUris]
   );
 
   return (
@@ -40,9 +40,9 @@ const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
           : "none",
       }}
     >
-      {api && api.pointerUris && api.pointerUris.length > 0 ? (
+      {api && api.apiUris && api.apiUris.length > 0 ? (
         <a
-          href="#"
+          href={redirect}
           sx={{
             textDecoration: "none",
             p: "2rem",
@@ -57,7 +57,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
               <img
                 className="api-logo"
                 src={`${cloudFlareGateway}${
-                  ipfsHash || stripIPFSPrefix(api.locationUri)
+                  ipfsHash || stripIPFSPrefix(api?.apiUris[0].uri)
                 }${api.icon.replace("./", "/")}`}
                 sx={{
                   width: "4.25rem",

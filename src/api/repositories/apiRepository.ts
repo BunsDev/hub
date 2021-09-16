@@ -18,10 +18,44 @@ export default class ApiRepository extends Repository<Apis> {
     return this.createQueryBuilder("apis").where("visible = true").getCount();
   }
 
-  // TODO: will be updated in the search issue
-  public async getAllActive(_ = 10, _1 = 1): Promise<ApiData[]> {
+  public async searchCount(search: string): Promise<number> {
+    const query = this.createQueryBuilder("apis")
+      .where("visible = true")
+      .leftJoinAndSelect("apis.apiUris", "apiUris");
+
+    if (search && search.length > 2) {
+      query.where(
+        "(apis.name ILIKE :search or apis.description ILIKE :search or apis.subtext ILIKE :search or apiUris.uri ILIKE :search)",
+        { search: `%${search}%` }
+      );
+    }
+
+    return query.getCount();
+  }
+
+  public async search(limit = 10, page = 1, search?: string): Promise<Apis[]> {
+    const query = this.createQueryBuilder("apis")
+      .where("visible = true")
+      .leftJoinAndSelect("apis.apiUris", "apiUris")
+      .loadRelationCountAndMap("apis.favorites", "apis.starredApis")
+      .take(limit)
+      .skip((page - 1) * limit)
+      .orderBy("apis.id", "DESC");
+
+    if (search && search.length > 2) {
+      query.where(
+        "(apis.name ILIKE :search or apis.description ILIKE :search or apis.subtext ILIKE :search or apiUris.uri ILIKE :search)",
+        { search: `%${search}%` }
+      );
+    }
+
+    return query.getMany();
+  }
+
+  // TODO: deprecated
+  public async getAllActive(): Promise<ApiData[]> {
     const data = await this.query(
-      `SELECT 
+      `SELECT
 				apis.id, 
 				apis.description, 
 				apis.name, 
