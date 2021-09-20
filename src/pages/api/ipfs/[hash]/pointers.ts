@@ -3,8 +3,8 @@ import UriCacheRepository from "../../../../api/repositories/uriCacheRepository"
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getCustomRepository } from "typeorm";
-import { Uri, Web3ApiClient } from "@web3api/client-js";
-import { ipfsPlugin } from "@web3api/ipfs-plugin-js";
+import { Web3ApiClient } from "@web3api/client-js";
+import { ensPlugin } from "@web3api/ens-plugin-js";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "GET") {
@@ -17,29 +17,21 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       const client = new Web3ApiClient({
         plugins: [
           {
-            uri: new Uri("w3://ens/ipfs.web3api.eth").toString(),
-            plugin: ipfsPlugin({
-              provider: "https://ipfs.io",
-              fallbackProviders: [
-                "https://polywrap-dev.mypinata.cloud",
-                "https://ipfs.infura.io",
-              ],
-            }),
+            uri: "w3://ens/ens.web3api.eth",
+            plugin: ensPlugin({}),
           },
         ],
       });
-      console.log({ hash });
 
-      const info = await client.query({
-        uri: "ens/ipfs.web3api.eth",
-        query: `query {
-          catFile(cid: $cid)
-        }`,
-        variables: {
-          cid: `/ipfs/${hash}`,
-        },
+      const metadata = await client.getManifest("ens/yay2.open.web3api.eth", {
+        type: "meta",
       });
-      console.log(info);
+
+      // TODO: get file
+      // client.getFile({
+      //   uri: uri,
+      //   path: metadata.icon,
+      // });
 
       const uriCaches = await getCustomRepository(
         UriCacheRepository
@@ -48,7 +40,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       return response.json({
         status: 200,
         pointers: uriCaches.map((uriCache) => uriCache.uri),
-        info,
+        metadata,
       });
     } catch (error) {
       return response.json({
