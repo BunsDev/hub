@@ -6,7 +6,7 @@ export type StateAction =
   | Web3APIReducerAction
   | SearchAction
   | PublishAction
-  | DAppAction;
+  | DAppAction
 
 export type Web3APIReducerAction = {
   type: "recreateplugins";

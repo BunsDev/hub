@@ -1,17 +1,14 @@
 /** @jsxImportSource theme-ui **/
-import Layout from "../../components/Layout";
-import ContentNav from "../../components/ContentNav";
-import Published from "../../components/tabs/Published";
-import Favorites from "../../components/tabs/Favorites";
-import BottomSpace from "../../components/BottomSpace";
-import { useStateValue } from "../../state/state";
-import { useAuth } from "../../hooks/useAuth";
-import { domain } from "../../constants";
-
 import { Flex, Themed } from "theme-ui";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import useSWR from "swr";
+
+import { Layout, ContentNav } from "components";
+import Published from "../../components/Tabs/Published";
+import Favorites from "../../components/Tabs/Favorites";
+import { useAuth, useStateValue } from "hooks";
+import { domain } from "../../constants";
 
 const UserApis = () => {
   const router = useRouter();
@@ -84,7 +81,6 @@ const UserApis = () => {
                 <Favorites apis={favoriteData?.data || []} />
               )}
             </section>
-            <BottomSpace />
           </div>
         </main>
       </Flex>

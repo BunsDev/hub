@@ -1,59 +1,76 @@
-import { ChangeEventHandler, useEffect, useState } from 'react'
-import { Input } from 'theme-ui'
-import getMetaDataFromPackageHash from '../../../services/ipfs/getMetaDataFromPackageHash'
-import { useStateValue } from '../../../state/state'
-import ErrorMsg from '../ErrorMsg'
-import NavButtons from '../NavButtons'
-import { Wrapper } from '../Wrapper'
-import useDebounce from '../../../utils/useDebounce'
+import React, { ChangeEventHandler, MouseEventHandler } from "react";
+import { Flex, Image, Button } from "theme-ui";
+
+import getMetaDataFromPackageHash from "services/ipfs/getMetaDataFromPackageHash";
+import { useStateValue } from "hooks";
+import { Wrapper, NavButtons, ErrorMsg } from "components/CreateApi";
+import { Spinner, Input} from "components";
+
+import styles from "./styles";
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();
 
-  const handleIPFSHashInput: ChangeEventHandler<HTMLInputElement> = async (e) => {
-    dispatch({ type: 'setipfs', payload: e.target.value })
-  }
+  const handleIPFSHashInput: ChangeEventHandler<HTMLInputElement> = async (
+    e
+  ) => {
+    dispatch({ type: "setipfs", payload: e.target.value });
+  };
 
-  const debouncedIpfsInput = useDebounce(publish.ipfs, 500)
-
-  useEffect(() => {
-    //TODO reduce dispatch quantity
-    if (debouncedIpfsInput) {
-      dispatch({ type: 'setipfsLoading', payload: true })
-      dispatch({ type: 'setipfsSuccess', payload: false })
-      dispatch({ type: 'setipfsError', payload: '' })
-
-      getMetaDataFromPackageHash(publish.ipfs).then((metaData) => {
-        if (!metaData || metaData === 'NO METADATA FOUND') {
-          dispatch({ type: 'setipfsLoading', payload: false })
-          dispatch({ type: 'setApiData', payload: null })
-          dispatch({ type: 'setipfsError', payload: 'No Package available' })
-        } else {
-          dispatch({ type: 'setipfsLoading', payload: false })
-          dispatch({ type: 'setipfsSuccess', payload: true })
-          dispatch({ type: 'setApiData', payload: metaData })
-        }
-      })
+  const handleApplyButton: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
+    dispatch({ type: "setipfsLoading", payload: true });
+    if (publish.ipfs !== "") {
+      let metaData = await getMetaDataFromPackageHash(publish.ipfs);
+      if (metaData === undefined || metaData === "NO METADATA FOUND") {
+        dispatch({ type: "setipfsLoading", payload: false });
+        dispatch({ type: "setApiData", payload: null });
+        dispatch({ type: "setipfsError", payload: "No Package available" });
+      } else {
+        dispatch({ type: "setipfsLoading", payload: false });
+        dispatch({ type: "setipfsSuccess", payload: true });
+        dispatch({ type: "setApiData", payload: metaData });
+      }
     } else {
-      dispatch({ type: 'setipfsLoading', payload: false })
-      dispatch({ type: 'setApiData', payload: null })
-      dispatch({ type: 'setipfsError', payload: '' })
+      dispatch({ type: "setipfsLoading", payload: false });
     }
-  }, [debouncedIpfsInput])
+  };
 
-  const ipfsClasses = publish.ipfsLoading
+  const ipfsStatus = publish.ipfsLoading
     ? "loading"
     : publish.ipfsSuccess
     ? "success"
     : publish.ipfsError
     ? "error"
-    : "";
+    : "none";
 
+  const inputSuffix = {
+    none: (
+      <Button
+        variant="suffixSmall"
+        sx={styles.suffixButton}
+        onClick={handleApplyButton}
+      >
+        Apply
+      </Button>
+    ),
+    success: (
+      <Flex sx={{ width: "65px", justifyContent: "center" }}>
+        <Image src="/images/success.svg" alt="success" />
+      </Flex>
+    ),
+    loading: (
+      <Flex sx={{ width: "65px", height: "100%", justifyContent: "center" }}>
+        <Spinner />
+      </Flex>
+    ),
+    error: <div style={{ width: "65px" }} />,
+  };
   return (
     <Wrapper>
       <div className="fieldset">
-        <label>Input IPFS</label>
-        <div className={"inputwrap " + ipfsClasses}>
+        <label className="subtitle-1">Input IPFS</label>
+        <div className={"inputwrap"}>
           <Input
             type="text"
             name="ipfs"
@@ -63,6 +80,7 @@ export const IPFSHash = () => {
             onChange={handleIPFSHashInput}
             value={publish.ipfs}
             disabled={publish.ipfsSuccess}
+            suffix={inputSuffix[ipfsStatus]}
           />
         </div>
         {publish.ipfsError && <ErrorMsg>{publish.ipfsError}</ErrorMsg>}

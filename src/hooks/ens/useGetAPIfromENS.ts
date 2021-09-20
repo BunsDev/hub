@@ -43,3 +43,5 @@ export const useGetAPIfromENSParamInURL = () => {
   }, [router.isReady]);
   return { error, isLoading, data, fetchApiDetails };
 };
+
+export default useGetAPIfromENSParamInURL

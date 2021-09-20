@@ -1,5 +1,7 @@
 /** @jsxImportSource theme-ui **/
 
+import styles from "./UploadBy/styles";
+
 type ErrorMsg = {
   children: React.ReactNode;
   bottomshift?: boolean;
@@ -9,12 +11,7 @@ type ErrorMsg = {
 const ErrorMsg = ({ children, bottomshift }: ErrorMsg) => (
   <span
     sx={{
-      fontSize: "14px",
-      lineHeight: "22px",
-      letterSpacing: "-0.4000000059604645px",
-      textAlign: "left",
-      color: "rgba(255, 0, 0, 0.5)",
-      mt: 2,
+      ...styles.errorMsg,
       position: bottomshift ? "relative" : "absolute",
     }}
   >

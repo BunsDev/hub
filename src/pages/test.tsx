@@ -1,12 +1,10 @@
 /** @jsxImportSource theme-ui **/
-import Layout from "../components/Layout";
-import BGWave from "../components/BGWave";
-import BottomSpace from "../components/BottomSpace";
+import Layout from "../components/Layout/Layout";
 import cleanSchema from "../utils/cleanSchema";
 
 import { Flex, Themed } from "theme-ui";
 import dynamic from "next/dynamic";
-const GQLCodeBlock = dynamic(() => import("../components/GQLCodeBlock"), { // eslint-disable-line
+const GQLCodeBlock = dynamic(() => import("../components/GQLCodeBlock/GQLCodeBlock"), { // eslint-disable-line
   ssr: false,
 });
 
@@ -38,11 +36,9 @@ const Test = () => {
                 value={importedmutations}
               />
             </section>
-            <BottomSpace />
           </div>
         </main>
       </Flex>
-      <BGWave light />
     </Layout>
   );
 };

@@ -1,22 +1,26 @@
 /** @jsxImportSource theme-ui **/
-import NavButtons from "../NavButtons";
-import { Wrapper } from "../Wrapper";
+import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { FormEventHandler, useState } from "react";
 import yaml from "js-yaml";
-import Spinner from "../../Spinner";
 import { Flex } from "@theme-ui/components";
-import { useStateValue } from "../../../state/state";
-import { useRouter } from "next/router";
+
+import { Wrapper, NavButtons } from "components/CreateApi";
+import { Spinner } from "components";
+import { useStateValue, useRouter, useResponsiveContext } from "hooks";
 import {
   createApiSteps,
   uploadToIPFS,
   validateUploadedWrapper,
-} from "../../../utils/createWrapper";
-import { APIData } from "../../../hooks/ens/useGetAPIfromENS";
+} from "utils/createWrapper";
+import { APIData } from "hooks/ens/useGetAPIfromENS";
+
+import styles from "./styles";
 
 export const DirectUpload = () => {
-  const [{}, dispatch] = useStateValue();
+  const [_, dispatch] = useStateValue();
+  const {
+    mobile: { isMobile },
+  } = useResponsiveContext();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -25,9 +29,7 @@ export const DirectUpload = () => {
 
     const [filesValidated, filesObj] = validateUploadedWrapper(acceptedFiles);
 
-    if (!filesValidated) {
-      console.error("Wrapper files validation failure");
-    } else {
+    if (filesValidated) {
       let uploadSuccess: boolean;
 
       try {
@@ -51,6 +53,8 @@ export const DirectUpload = () => {
           console.error("Error reading metadata: ", error);
         }
       }
+    } else {
+      console.error("Wrapper files validation failure");
     }
     setLoading(false);
   };
@@ -59,36 +63,42 @@ export const DirectUpload = () => {
 
   return (
     <Wrapper>
-      <Flex
-        {...getRootProps()}
-        sx={{
-          margin: "0 auto",
-          flexDirection: "column",
-          alignItems: "center",
-          p: "3.75rem",
-          border: "1.5px dashed #FFFFFF50",
-          borderRadius: "1.25rem",
-          maxWidth: "32.125rem",
-        }}
-      >
-        {loading ? (
-          <>
-            <Spinner />
-            <p>Uploading...</p>
-          </>
-        ) : (
-          <>
-            <input {...getInputProps()} />
-            <img src="/images/dragndrop.svg" alt="drag here" />
-            <p sx={{ color: "rgba(255, 255, 255, 0.5)" }}>
-              Drag and Drop To Upload
-            </p>
-            <p sx={{ cursor: "pointer" }}>Or Browse</p>
-          </>
-        )}
-      </Flex>
+      {isMobile ? (
+        <Flex sx={{ height: "30vh" }}>
+          <img
+            src="/images/dragndrop.svg"
+            alt="drag here"
+            sx={{ width: "160px", height: "auto", m: "auto" }}
+          />
+        </Flex>
+      ) : (
+        <Flex {...getRootProps()} sx={styles.dropzoneWrap}>
+          {loading ? (
+            <>
+              <Spinner />
+              <p>Uploading...</p>
+            </>
+          ) : (
+            <>
+              <input {...getInputProps()} />
+              <img src="/images/dragndrop.svg" alt="drag here" />
+              <>
+                <p
+                  sx={{
+                    color: "rgba(255, 255, 255, 0.5)",
+                    textAlign: "center",
+                  }}
+                >
+                  Drag and Drop To Upload
+                </p>
+                <p sx={{ cursor: "pointer" }}>Or Browse</p>
+              </>
+            </>
+          )}
+        </Flex>
+      )}
 
-      <NavButtons continueEnabled={true} />
+      <NavButtons continueEnabled={true} nextBtn={{ label: "Browse Files" }} />
     </Wrapper>
   );
 };

@@ -1,5 +1,6 @@
+import { NextRouter } from "next/router";
 /* eslint-disable @typescript-eslint/naming-convention */
-import axios from "axios";
+import { IpfsPlugin } from "@web3api/ipfs-plugin-js";
 
 export const UPLOAD_METHODS: {
   DIRECT_UPLOAD: string;
@@ -15,8 +16,13 @@ export const createApiSteps = ["start", "upload", "publish"];
 
 export const validStep = (stepInput: string) =>
   createApiSteps.some((step) => stepInput === step);
+
 export const validMethod = (methodInput: string) =>
   Object.values(UPLOAD_METHODS).some((method) => methodInput === method);
+
+export const pushToStep = (router: NextRouter, stepIndex: number) => {
+  router.push(router.pathname + `?activeTab=${createApiSteps[stepIndex]}`);
+};
 
 export const apiDataInState = (activeTab: string, apiData: any) =>
   activeTab === createApiSteps[2] && apiData;
@@ -25,7 +31,7 @@ interface WrapperReqFiles {
   [key: string]: File;
   config: File;
   build: File;
-  meta: File;
+  buildMeta: File;
   mutation: File;
   query: File;
   schema: File;
@@ -37,7 +43,7 @@ export const validateUploadedWrapper = (
   const validated: WrapperReqFiles = {
     config: files?.find((file) => file.name === "web3api.yaml"),
     build: files?.find((file) => file.name === "web3api.build.yaml"),
-    meta: files?.find((file) => file.name === "web3api.meta.yaml"),
+    buildMeta: files?.find((file) => file.name === "web3api.build.meta.yaml"),
     mutation: files?.find((file) => file.name === "mutation.wasm"),
     query: files?.find((file) => file.name === "query.wasm"),
     schema: files?.find((file) => file.name === "schema.graphql"),
@@ -54,34 +60,20 @@ export const validateUploadedWrapper = (
 };
 
 export const uploadToIPFS = async (files: File[]) => {
-  try {
-    return await pinDirectoryToIPFS(files);
-  } catch (e) {
-    console.error(e);
-  }
-};
+  const ipfsPlugin = new IpfsPlugin({
+    provider: process.env.IPFS_PROVIDER,
+  });
+  const filesFormatted = files.map((file) => ({
+    path: file.name,
+    content: file,
+  }));
 
-export const pinDirectoryToIPFS = async (files: any[]): Promise<string> => {
-  const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
-
-  const pinataApiKey = process.env.IPFS_API_KEY;
-  const pinataSecretApiKey = process.env.IPFS_SECRET_API_KEY;
-
-  let data = new FormData();
-  files.forEach((file) => data.append("file", file, file.path));
-
-  return axios
-    .post(url, data, {
-      maxBodyLength: 10000000,
-      headers: {
-        //@ts-ignore
-        "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
-        pinata_api_key: pinataApiKey,
-        pinata_secret_api_key: pinataSecretApiKey,
-      },
-    })
-    .then((res) => res.data.IpfsHash)
-    .catch((e) => {
-      throw new Error(e);
+  const uploadedFiles: { name: string; hash: string }[] =
+    //@ts-ignore
+    await ipfsPlugin._ipfs.add(filesFormatted, {
+      wrapWithDirectory: true,
     });
+  const rootHash = uploadedFiles?.find((file) => file.name === "")?.hash;
+
+  return rootHash || "";
 };

@@ -1,10 +1,10 @@
-export const cloudFlareGateway = 'https://cloudflare-ipfs.com/ipfs/'
-export const ipfsGateway = process.env.IPFS_GATEWAY || cloudFlareGateway
-export const networkID = Number(process.env.NETWORK_ID)
-export const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"
-export const MAIN_DOMAIN = "open.web3api.eth"
-export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
-export const FIFS_REGISTRAR = "0x99BeF0ec344a354303Bc5F3BB2E7e0a104B1E9f2"
+export const cloudFlareGateway = "https://cloudflare-ipfs.com/ipfs/";
+export const ipfsGateway = process.env.IPFS_GATEWAY || cloudFlareGateway;
+export const networkID = Number(process.env.NETWORK_ID);
+export const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
+export const MAIN_DOMAIN = "open.web3api.eth";
+export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+export const FIFS_REGISTRAR = "0x99BeF0ec344a354303Bc5F3BB2E7e0a104B1E9f2";
 
 export const domain = global.location?.protocol + "//" + global.location?.host;
 
@@ -152,3 +152,11 @@ export const responseData = [
     isActive: true,
   },
 ];
+
+export const RESPONSOVE_BREAKPOINTS = {
+  XSMALL: 576,
+  SMALL: 768,
+  MEDIUM: 992,
+  LARGE: 1200,
+  XLARGE: 1400,
+};

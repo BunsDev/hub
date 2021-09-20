@@ -1,15 +1,9 @@
 /** @jsxImportSource theme-ui **/
-import Layout from "../../../components/Layout";
-import Header from "../../../components/Header";
-import Playground from "../../../components/Playground";
-import { useGetAPIfromENSParamInURL } from "../../../hooks/ens/useGetAPIfromENS";
-import { useStateValue } from "../../../state/state";
-import Modal from "../../../components/Modal";
-
-import { Web3ApiProvider } from "@web3api/react";
 import { useEffect } from "react";
-import { Flex } from "theme-ui";
-import { useRouter } from "next/router";
+import { Web3ApiProvider } from "@web3api/react";
+
+import { Modal, Playground, Layout} from "components";
+import { useRouter, useGetAPIfromENSParamInURL, useStateValue } from "hooks";
 
 const PlaygroundPage = () => {
   const router = useRouter();
@@ -39,29 +33,22 @@ const PlaygroundPage = () => {
   }, [dapp.web3]);
   return (
     <Layout>
-      <Header />
-      <Flex>
-        {showSignInModal && !dapp.web3 && (
-          <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>
-            <Modal
-              screen={"connect"}
-              noLeftShift
-              close={() => {
-                dispatch({ type: "setShowConnectModal", payload: false });
-              }}
-            />{" "}
-          </div>
-        )}
-        <main>
-          <div className="contents animate">
-            {data !== null && web3api.plugins && (
-              <Web3ApiProvider plugins={web3api.plugins}>
-                <Playground api={data} />
-              </Web3ApiProvider>
-            )}
-          </div>
-        </main>
-      </Flex>
+      {showSignInModal && !dapp.web3 && (
+        <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>
+          <Modal
+            screen={"connect"}
+            noLeftShift
+            close={() => {
+              dispatch({ type: "setShowConnectModal", payload: false });
+            }}
+          />{" "}
+        </div>
+      )}
+      {data !== null && web3api.plugins && (
+        <Web3ApiProvider plugins={web3api.plugins}>
+          <Playground api={data} />
+        </Web3ApiProvider>
+      )}
     </Layout>
   );
 };

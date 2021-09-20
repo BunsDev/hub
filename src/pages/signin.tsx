@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { useStateValue } from "../state/state";
-import Layout from "../components/Layout";
-import BGWave from "../components/BGWave";
+import Layout from "../components/Layout/Layout";
 import { domain } from "../constants";
 
 import axios from "axios";
@@ -47,7 +46,6 @@ const SignIn = (): unknown => {
           </div>
         </main>
       </Flex>
-      <BGWave light />
     </Layout>
   );
 };

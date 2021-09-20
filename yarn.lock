@@ -3689,7 +3689,7 @@
   resolved "https://registry.yarnpkg.com/@web3api/asyncify-js/-/asyncify-js-0.0.1-prealpha.40.tgz#3f89d7f487f252ebf13148e19278598be0037f56"
   integrity sha512-Yqz8sfDIR8LXhaNShUznhRwlgrDLqJrxrvsliE+GJc1Wq3e8ov5ef5zkGmrQ1qKM+UvRNwb3lK1yPCgU+YqLyw==
 
-"@web3api/client-js@0.0.1-prealpha.40", "@web3api/client-js@^0.0.1-prealpha.40":
+"@web3api/client-js@0.0.1-prealpha.40":
   version "0.0.1-prealpha.40"
   resolved "https://registry.yarnpkg.com/@web3api/client-js/-/client-js-0.0.1-prealpha.40.tgz#5836e68b71a6f35c831048bca2e6b0927a9604ba"
   integrity sha512-XfxWvNkp8jznbnu2lzu7BvZkYnKu9WzY+IBYY7rqH82VagNBipilC0ECeTVFXTzkX3eVWiemhAtQlUUiDH7O5Q==
@@ -3731,7 +3731,7 @@
     "@web3api/core-js" "0.0.1-prealpha.40"
     ethers "5.0.7"
 
-"@web3api/ethereum-plugin-js@0.0.1-prealpha.40", "@web3api/ethereum-plugin-js@^0.0.1-prealpha.40":
+"@web3api/ethereum-plugin-js@0.0.1-prealpha.40":
   version "0.0.1-prealpha.40"
   resolved "https://registry.yarnpkg.com/@web3api/ethereum-plugin-js/-/ethereum-plugin-js-0.0.1-prealpha.40.tgz#4dde1bc8712953f415596ba1abb960f70fcbbb67"
   integrity sha512-NC1PrdBLRj0TWhXgtKBY7p1AE3noyxs5thQ0V5kE3zXOHWw8F1cYOXbr5+rScUSxs1+2zZraA/9Q8PrgsKL9dw==
@@ -3772,7 +3772,7 @@
   resolved "https://registry.yarnpkg.com/@web3api/manifest-schemas/-/manifest-schemas-0.0.1-prealpha.40.tgz#2e0ba0e9130bf1631ab76d04a2607e1b32f330c2"
   integrity sha512-0kW3XFE/iem7kiPf97GnF3FGFHWuMf6nWn4cu+zvwEcxQGruQoiBlB0x2sqVbE2wKmP0qFatqzhbpv2FJmfPRw==
 
-"@web3api/react@^0.0.1-prealpha.40":
+"@web3api/react@0.0.1-prealpha.40":
   version "0.0.1-prealpha.40"
   resolved "https://registry.yarnpkg.com/@web3api/react/-/react-0.0.1-prealpha.40.tgz#ae6c3124f9aec39a32b6899fed0dc4795e356658"
   integrity sha512-AMBfOvfujjbLswJdqukWHBCRLonqkEFaMB0AJGKjW7jY0TajIxz6DaWhWRLARQDV44gbHRydbZxNaCa8bmVkRQ==

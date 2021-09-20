@@ -1,6 +1,7 @@
 import buttonVariants from "./theme/buttons";
 
 import { Theme } from "theme-ui";
+import { RESPONSOVE_BREAKPOINTS } from "./constants";
 
 export const timing = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 3];
 
@@ -8,6 +9,10 @@ const GlobalTheme: Theme = {
   // eslint-disable-line
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   sizes: [0, 4, 8, 16, 32, 64, 128, 256, 512],
+  breakpoints: [
+    `@media (max-width: ${RESPONSOVE_BREAKPOINTS.XSMALL}px)`,
+    `@media (min-width: ${RESPONSOVE_BREAKPOINTS.MEDIUM}px)`,
+  ],
   fonts: {
     body: '"Nunito Sans", sans-serif',
     heading: '"Nunito Sans", sans-serif',
@@ -33,7 +38,8 @@ const GlobalTheme: Theme = {
     w3beige: "#688184",
     w3darkGray: "#141A1E",
     w3Grey1: "#141417",
-    w3Grey3: "#1F1F20",
+    w3Grey2: "#141D32",
+    w3Grey3: "#0F0F0F",
 
     w3shade0: "#12191E",
     w3shade1: "#13212C",
@@ -95,15 +101,6 @@ const GlobalTheme: Theme = {
         color: "white",
         borderColor: "rgba(202,217,243, .3)",
       },
-    },
-    input: {
-      fontFamily: "Nunito sans",
-      lineHeight: "150%",
-      height: "2.5rem",
-      border: "none",
-      borderRadius: ".5rem",
-      background: "transparent",
-      px: "1rem",
     },
     label: {
       fontFamily: "Nunito Sans",

@@ -1,35 +1,33 @@
 /** @jsxImportSource theme-ui **/
-import Layout from "../../components/Layout";
-import Publish from "../../components/CreateApi/Publish";
-import Header from "../../components/Header";
-import UploadApiMethod from "../../components/CreateApi/Start";
-import Steps from "../../components/Steps";
+import { useState, useEffect } from "react";
+import { Box, Flex, Themed, ThemeUIStyleObject } from "theme-ui";
+
+import { Steps, Layout } from "components";
+import { Start, Publish } from "components/CreateApi";
 import {
   DirectUpload,
   EnsAddress,
   IPFSHash,
-} from "../../components/CreateApi/UploadBy";
+} from "components/CreateApi/UploadBy";
 import {
-  apiDataInState,
   createApiSteps,
+  pushToStep,
   UPLOAD_METHODS,
   validMethod,
   validStep,
-} from '../../utils/createWrapper'
-import publish from '../api/apis/publish'
-import { useStateValue } from '../../state/state'
-import { createContext, Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { Box, Flex } from "@theme-ui/components";
-import { Themed } from "@theme-ui/mdx";
+} from "utils/createWrapper";
+import { useRouter, useStateValue } from "hooks";
+import { CreateApiContext } from "context";
 
-const styles = {
-  height: "fit-content",
-  p: "50px 73px 59px 59px",
+const styles: ThemeUIStyleObject = {
+  flexDirection: "column",
+  height: ["fit-content", "100%"],
+  p: ["50px 73px 59px 59px", ["20px"]],
   background: "black",
   border: "1px solid rgba(255, 255, 255, 0.2)",
   boxShadow: "12px 20px 54px -6px #141316",
   borderRadius: "20px",
+  width: "100%",
 };
 
 export const uploadComponents = {
@@ -38,19 +36,11 @@ export const uploadComponents = {
   [UPLOAD_METHODS.ENS_ADDRESS]: <EnsAddress />,
 };
 
-export const CreateApiContext = createContext<{
-  uploadMethod: string;
-  setUploadMethod: Dispatch<SetStateAction<string>>;
-}>({
-  uploadMethod: "",
-  setUploadMethod: () => undefined,
-});
-
 const CreateApi = () => {
-  const router = useRouter()
-  const [{ publish }] = useStateValue()
-  const [activeStep, setActiveStep] = useState<string>()
-  const [uploadMethod, setUploadMethod] = useState<string>('')
+  const router = useRouter();
+  const [{ publish }] = useStateValue();
+  const [activeStep, setActiveStep] = useState<string>();
+  const [uploadMethod, setUploadMethod] = useState<string>("");
 
   useEffect(() => {
     if (router.query.activeTab) {
@@ -82,29 +72,50 @@ const CreateApi = () => {
 
   return (
     <Layout>
-      <Header />
       <CreateApiContext.Provider value={{ uploadMethod, setUploadMethod }}>
-        <Flex>
-          <main sx={{ pb: 5, px: "10.3125rem" }}>
-            <div className="contents" sx={styles}>
-              <Flex
-                className="header"
-                sx={{
-                  justifyContent: "space-between",
-                  mb: ".75rem",
-                }}
-              >
-                <Themed.h2 sx={{ mb: 0 }}>Create New Wrapper</Themed.h2>
-                <Steps activeStep={activeStep} />
-              </Flex>
-              <Box className="content">
-                {activeStep === createApiSteps[0] && <UploadApiMethod />}
-                {activeStep === createApiSteps[1] &&
-                  uploadComponents[uploadMethod]}
-                {activeStep === createApiSteps[2] && <Publish />}
-              </Box>
-            </div>
-          </main>
+        <Flex className="contents" sx={styles}>
+          <Flex
+            className="header"
+            sx={{
+              justifyContent: "space-between",
+              mb: [".75rem", "1.375rem"],
+              flexWrap: "wrap",
+            }}
+          >
+            <Flex sx={{ flexDirection: "column" }}>
+              <Themed.h2 sx={{ mb: "12px" }}>Publish Wrapper</Themed.h2>
+              {router?.query?.activeTab === createApiSteps[0] && (
+                <div sx={{ mb: "1rem" }} className="body-1">
+                  Choose one of creating options
+                </div>
+              )}
+            </Flex>
+            <Steps
+              activeStep={activeStep}
+              stepsData={[
+                {
+                  value: "start",
+                  label: "Intro",
+                  onClick: () => {
+                    pushToStep(router, 0);
+                  },
+                },
+                {
+                  value: "upload",
+                  label: "Upload",
+                  onClick: () => {
+                    pushToStep(router, 1);
+                  },
+                },
+                { value: "publish", label: "Publish", onClick: () => {} },
+              ]}
+            />
+          </Flex>
+          <Box className="content" sx={{ height: "100%" }}>
+            {activeStep === createApiSteps[0] && <Start />}
+            {activeStep === createApiSteps[1] && uploadComponents[uploadMethod]}
+            {activeStep === createApiSteps[2] && <Publish />}
+          </Box>
         </Flex>
       </CreateApiContext.Provider>
     </Layout>

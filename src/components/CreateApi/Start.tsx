@@ -1,47 +1,12 @@
 /** @jsxImportSource theme-ui **/
-
-import { CreateApiContext } from "../../pages/apis/create";
-import { createApiSteps, UPLOAD_METHODS } from "../../utils/createWrapper";
-
-import { useRouter } from "next/router";
 import { useCallback, useContext } from "react";
-import { Button, Flex, Themed, ThemeUICSSObject } from "theme-ui";
+import { Button, Flex, Themed } from "theme-ui";
 
-const styles: { [key: string]: ThemeUICSSObject } = {
-  tutorial: {
-    border: "1px solid rgba(255, 255, 255, 0.2)",
-    borderRadius: "1.25rem",
-    justifyContent: "space-between",
-    gap: "1.875rem",
-    p: "1.75rem 2rem",
-    mb: "2rem",
-    div: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "flex-start",
-      "span, a": {
-        color: "rgba(255, 255, 255, 0.5)",
-        fontSize: "0.875rem",
-        lineHeight: "120%",
-        m: 0,
-      },
-      li: {
-        mb: ".5rem",
-        img: { maxWidth: "1rem", mr: ".5rem" },
-        a: { display: "flex", alignItems: "center" },
-        "&:last-child": { mb: 0 },
-      },
-      code: {
-        mt: ".25rem",
-      },
-      pre: {
-        m: "0",
-        p: "0",
-        bg: "transparent",
-      },
-    },
-  },
-};
+import { CreateApiContext } from "context";
+import { createApiSteps, UPLOAD_METHODS } from "utils/createWrapper";
+import { useRouter } from "hooks";
+
+import styles from "./UploadBy/styles";
 
 const Start = () => {
   const router = useRouter();
@@ -62,70 +27,41 @@ const Start = () => {
         flexDirection: "column",
       }}
     >
-      <div sx={{ mb: "1.75rem" }} className="body-1">
-        Choose one of creating options
-      </div>
-      <Flex className="tutorial" sx={styles["tutorial"]}>
-        <div>
-          <ul>
-            <li>
-              <a
-                href="https://github.com/Web3Api/boilerplate"
-                target="_BLANK"
-                rel="noreferrer"
-              >
-                <img src="/images/link.svg" alt="icon" />
-                Starter Repo
-              </a>
-            </li>
-            <li>
-              <a href="/" target="_BLANK">
-                <img src="/images/link.svg" alt="icon" />
-                First time developing with Web3API?
-              </a>
-            </li>
-          </ul>
+      <Flex className="tutorial" sx={styles.tutorial}>
+        <div sx={{ width: "fit-content" }}>
+          <div className="bg" sx={styles.bgText}>
+            One
+          </div>
+          <span className="subtitle-1">What is Polywrap ?</span>
+          <a href="https://docs.polywrap.io/" target="_BLANK" rel="noreferrer">
+            <img src="/images/link.svg" alt="icon" />
+            Read about Polywrap
+          </a>
         </div>
         <div>
-          <span sx={{ mb: 2 }}>
-            Clone the starter repo to your local dev environment
-          </span>
-          <code>
-            <pre>
-              {`git clone https://github.com/web3api-start/uniswapv2 
-cd uniswapv2
-yarn install`}
-            </pre>
-          </code>
+          <div className="bg" sx={styles.bgText}>
+            Two
+          </div>
+          <span className="subtitle-1">Creating a Wrapper</span>
+          <a
+            href="https://docs.polywrap.io/guides/create-as-wrapper/project-setup/"
+            target="_BLANK"
+            rel="noreferrer"
+          >
+            <img src="/images/link.svg" alt="icon" />
+            How to create a Wrapper
+          </a>
         </div>
         <div>
-          <span>When ready deploy the package to IPFS using the following</span>
-          <Themed.code>
-            <Themed.pre>{`yarn codegen
-yarn build
-yarn deploy --IPFS`}</Themed.pre>
-          </Themed.code>
+          <div className="bg" sx={styles.bgText}>
+            Three
+          </div>
+          <span className="subtitle-1">Upload a Wrapper</span>
+          <p>Choose one of the options below to upload your wrapper</p>
         </div>
       </Flex>
-      <Flex
-        className="options"
-        sx={{
-          mb: "2.5rem",
-          gap: "1rem",
-          div: {
-            maxWidth: "14,1875rem",
-            width: "100%",
-            p: "1.75rem",
-            background: "#0F0F0F",
-            borderRadius: "20px",
-            transition: ".2s background",
-            "&:hover": {
-              cursor: "pointer",
-              background: "#141D32",
-            },
-          },
-        }}
-      >
+      <div className="arrow" sx={styles.arrow} />
+      <Flex className="options" sx={styles.uploadOptions}>
         <div
           onClick={() => handleMethodSelection(UPLOAD_METHODS.DIRECT_UPLOAD)}
         >
@@ -151,6 +87,12 @@ yarn deploy --IPFS`}</Themed.pre>
       <Flex className="buttons">
         <Button
           variant="secondaryMedium"
+          sx={{
+            width: [null, "100%"],
+            justifyContent: "center",
+            py: [null, "1.25rem"],
+            borderRadius: [null, "100px"],
+          }}
           onClick={(e) => {
             e.preventDefault();
             router.back();

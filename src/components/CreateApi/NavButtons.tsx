@@ -1,13 +1,14 @@
 /** @jsxImportSource theme-ui **/
-
-import { createApiSteps } from "../../utils/createWrapper";
-
-import { useRouter } from "next/router";
 import { Button, Flex } from "theme-ui";
+
+import { useRouter } from "hooks";
+import { createApiSteps } from "utils/createWrapper";
+
+import styles from "./UploadBy/styles";
 
 interface NavButtonProps {
   label: string;
-  onClick: () => unknown;
+  onClick?: () => unknown;
   disabled?: boolean;
 }
 interface Props {
@@ -20,7 +21,7 @@ const NavButtons = ({ backBtn, nextBtn, continueEnabled }: Props) => {
   const router = useRouter();
 
   return (
-    <Flex sx={{ justifyContent: "space-between", mt: "2.5rem" }}>
+    <Flex sx={styles.navButtons}>
       <Button
         variant="secondaryMedium"
         onClick={(e) => {
@@ -34,13 +35,16 @@ const NavButtons = ({ backBtn, nextBtn, continueEnabled }: Props) => {
       <Button
         variant="primaryMedium"
         disabled={!continueEnabled}
+        sx={{
+          mb: [null, "1.25rem"],
+        }}
         onClick={(e) => {
           e.preventDefault();
           nextBtn?.onClick() ||
             router.push(router.pathname + `?activeTab=${createApiSteps[2]}`);
         }}
       >
-        {backBtn?.label || "Next"}
+        {nextBtn?.label || "Next"}
       </Button>
     </Flex>
   );
