@@ -318,7 +318,7 @@ const Playground = ({ api }: PlaygroundProps) => {
           </section>
         </div>
         <div
-          className="schema"
+          className="schema scrollable"
           sx={{
             width: schemaVisible ? "30vw" : "0 !important",
           }}

@@ -22,6 +22,7 @@ const getGlobalStyles = (theme: Theme): Interpolation<Theme> => ({
   },
   html: {
     scrollBehavior: "smooth",
+    scrollbarWidth: "thin",
     fontSize: "100%",
     WebkitTextSizeAdjust: "100%", // eslint-disable-line
     fontVariantLigatures: "none",
@@ -181,6 +182,21 @@ const getGlobalStyles = (theme: Theme): Interpolation<Theme> => ({
   },
   ":-webkit-autofill, :-webkit-autofill:hover, :-webkit-autofill:focus": {
     //TODO styles for input autocomplete
+  },
+  ".scrollable::-webkit-scrollbar": {
+    width: ".75vw",
+    backgroundColor: "transparent",
+  },
+  ".scrollable::-webkit-scrollbar-thumb": {
+    backgroundColor: "#171717",
+    borderRadius: "20px",
+    transition: ".2s all",
+  },
+  ".scrollable::-webkit-scrollbar-thumb:hover": {
+    backgroundColor: "#393939",
+  },
+  ".scrollable::-webkit-scrollbar-track": {
+    backgroundColor: "transparent",
   },
 });
 
