@@ -17,7 +17,7 @@ import {
   validStep,
 } from "utils/createWrapper";
 import { useRouter, useStateValue } from "hooks";
-import { CreateApiContext } from "context";
+import { CreateApiProvider } from "hooks/useCreateApi";
 
 const styles: ThemeUIStyleObject = {
   flexDirection: "column",
@@ -72,7 +72,7 @@ const CreateApi = () => {
 
   return (
     <Layout>
-      <CreateApiContext.Provider value={{ uploadMethod, setUploadMethod }}>
+      <CreateApiProvider value={{ uploadMethod, setUploadMethod }}>
         <Flex className="contents" sx={styles}>
           <Flex
             className="header"
@@ -117,7 +117,7 @@ const CreateApi = () => {
             {activeStep === createApiSteps[2] && <Publish />}
           </Box>
         </Flex>
-      </CreateApiContext.Provider>
+      </CreateApiProvider>
     </Layout>
   );
 };

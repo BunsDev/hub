@@ -7,7 +7,7 @@ import Link from "next/link";
 import onboardInit from "utils/onboardInit";
 import { Navbar } from "components/Layout/Navigation";
 const SignInArea = dynamic(() => import("./SignInArea"), { ssr: false });
-import { useStateValue, useRouter, useResponsiveContext } from "hooks";
+import { useStateValue, useRouter, useResponsive } from "hooks";
 import { API } from "bnc-onboard/dist/src/interfaces";
 import { RESPONSOVE_BREAKPOINTS } from "../../constants";
 
@@ -18,7 +18,7 @@ const Header = () => {
   const {
     windowSize,
     mobileNav: { setMobileNavActive },
-  } = useResponsiveContext();
+  } = useResponsive();
   const router = useRouter();
   const [onboard, setOnboard] = useState<API>();
 

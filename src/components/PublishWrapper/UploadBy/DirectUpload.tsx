@@ -6,7 +6,7 @@ import { Flex } from "@theme-ui/components";
 
 import { Wrapper, NavButtons } from "components/PublishWrapper";
 import { Spinner } from "components";
-import { useStateValue, useRouter, useResponsiveContext } from "hooks";
+import { useStateValue, useRouter, useResponsive } from "hooks";
 import {
   createApiSteps,
   uploadToIPFS,
@@ -20,7 +20,7 @@ export const DirectUpload = () => {
   const [_, dispatch] = useStateValue();
   const {
     mobile: { isMobile },
-  } = useResponsiveContext();
+  } = useResponsive();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 

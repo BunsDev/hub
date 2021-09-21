@@ -7,7 +7,7 @@ import {
   useRouter,
   useAuth,
   useToggle,
-  useResponsiveContext,
+  useResponsive,
   useStateValue,
   useCreateSubdomain,
 } from "hooks";
@@ -21,7 +21,7 @@ const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
   const {
     mobile: { isMobile },
-  } = useResponsiveContext();
+  } = useResponsive();
   const [ensInputVisible, toggleEnsInput] = useToggle(
     Boolean(publish.subdomain)
   );

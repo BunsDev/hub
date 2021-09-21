@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 import { Global } from "@emotion/react";
 import useSWR from "swr";
 
-
 import { useStateValue, useWindowSize } from "hooks";
 import { domain, RESPONSOVE_BREAKPOINTS } from "../../constants";
 import { Header, BGCircles } from "components";
 import { MobileNav } from "components/Layout/Navigation";
-import { ResponsiveContext } from "context";
+import { ResponsiveContext, ResponsiveProvider } from "hooks/useResponsive";
 
 import styles from "./styles";
 import getGlobalStyles from "./styles-global";
@@ -46,7 +45,7 @@ const Layout = ({ children }: LayoutProps) => {
   }, [windowSize.width]);
 
   return (
-    <ResponsiveContext.Provider
+    <ResponsiveProvider
       value={{
         windowSize,
         mobile: { isMobile },
@@ -60,7 +59,7 @@ const Layout = ({ children }: LayoutProps) => {
         {windowSize.width <= RESPONSOVE_BREAKPOINTS.MEDIUM && <MobileNav />}
         <Global styles={(theme) => getGlobalStyles(theme)} />
       </div>
-    </ResponsiveContext.Provider>
+    </ResponsiveProvider>
   );
 };
 export default Layout;

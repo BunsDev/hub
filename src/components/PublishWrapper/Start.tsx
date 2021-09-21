@@ -2,16 +2,14 @@
 import { useCallback, useContext } from "react";
 import { Button, Flex, Themed } from "theme-ui";
 
-import { CreateApiContext } from "context";
 import { createApiSteps, UPLOAD_METHODS } from "utils/createWrapper";
-import { useRouter } from "hooks";
+import { useCreateApi, useRouter } from "hooks";
 
 import styles from "./UploadBy/styles";
 
 const Start = () => {
   const router = useRouter();
-
-  const { setUploadMethod } = useContext(CreateApiContext);
+  const { setUploadMethod } = useCreateApi();
 
   const handleMethodSelection = useCallback((method: string) => {
     setUploadMethod(method);

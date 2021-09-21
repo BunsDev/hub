@@ -13,7 +13,7 @@ import { NavItem } from "components/Layout/Navigation";
 import { Modal } from "components";
 import { navItems, conditionalNavItems } from "./navItemsData";
 import addrShortener from "utils/addrShortener";
-import { useRouter, useStateValue, useResponsiveContext } from "hooks";
+import { useRouter, useStateValue, useResponsive } from "hooks";
 import User from "../../../../public/images/user.svg";
 
 import styles from "./styles";
@@ -22,7 +22,7 @@ export default function MobileNav() {
   const [{ dapp }] = useStateValue();
   const {
     mobileNav: { isMobileNavActive, setMobileNavActive },
-  } = useResponsiveContext();
+  } = useResponsive();
   const router = useRouter();
 
   const [showDisconnectModal, setShowDisconnectModal] = useState(false);
