@@ -4,7 +4,7 @@ import cleanSchema from "../utils/cleanSchema";
 
 import { Flex, Themed } from "theme-ui";
 import dynamic from "next/dynamic";
-const GQLCodeBlock = dynamic(() => import("../components/GQLCodeBlock/GQLCodeBlock"), { // eslint-disable-line
+const GQLCodeBlock = dynamic(() => import("../components/common/GQLCodeBlock"), { // eslint-disable-line
   ssr: false,
 });
 

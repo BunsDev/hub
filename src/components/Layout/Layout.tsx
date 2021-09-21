@@ -7,7 +7,7 @@ import { timing } from "../../theme";
 import { useStateValue, useWindowSize } from "hooks";
 import { domain, RESPONSOVE_BREAKPOINTS } from "../../constants";
 import { Header, BGCircles } from "components";
-import { MobileNav } from "components/Navigation";
+import { MobileNav } from "components/Layout/Navigation";
 import { ResponsiveContext } from "context";
 
 import styles from "./styles";
