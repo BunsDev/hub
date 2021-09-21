@@ -24,6 +24,19 @@ const styles: Styles = {
     img: {
       height: [null, "1.5rem"],
     },
+    ".nav-wrap": {
+      alignItems: "center",
+      ".logo-wrap": {
+        display: "flex",
+        height: "100%",
+        mr: "3.125rem",
+      },
+    },
+    ".user-authorized": {
+      display: ["flex", "none"],
+      justifyItems: "flex-end",
+      gap: "1.5rem",
+    },
   },
   signInArea: {
     ul: {

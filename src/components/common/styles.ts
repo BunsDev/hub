@@ -12,21 +12,19 @@ const styles: Styles = {
     fontSize: "0.75rem",
     lineHeight: "1.125rem",
   },
+  inputWrap: {
+    alignItems: "center",
+    bg: "w3Grey3",
+    borderRadius: ".5rem",
+    height: "2.5rem",
+  },
   input: {
-    wrap: {
-      alignItems: "center",
-      bg: "w3Grey3",
-      borderRadius: ".5rem",
-      height: "2.5rem",
-    },
-    input: {
-      border: "none",
-      pl: "1rem",
-      height: "100%",
-      fontFamily: "Nunito Sans",
-      fontSize: "16px",
-      lineHeight: "150%",
-    },
+    border: "none",
+    pl: "1rem",
+    height: "100%",
+    fontFamily: "Nunito Sans",
+    fontSize: "16px",
+    lineHeight: "150%",
   },
   star: {
     cursor: "pointer",

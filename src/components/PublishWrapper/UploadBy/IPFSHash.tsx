@@ -4,7 +4,7 @@ import { Flex, Image, Button } from "theme-ui";
 import getMetaDataFromPackageHash from "services/ipfs/getMetaDataFromPackageHash";
 import { useStateValue } from "hooks";
 import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
-import { Spinner, Input} from "components";
+import { Spinner, Input } from "components";
 
 import styles from "./styles";
 
@@ -55,12 +55,12 @@ export const IPFSHash = () => {
       </Button>
     ),
     success: (
-      <Flex sx={{ width: "65px", justifyContent: "center" }}>
+      <Flex sx={styles.successIcon}>
         <Image src="/images/success.svg" alt="success" />
       </Flex>
     ),
     loading: (
-      <Flex sx={{ width: "65px", height: "100%", justifyContent: "center" }}>
+      <Flex sx={styles.loadingIcon}>
         <Spinner />
       </Flex>
     ),
@@ -70,7 +70,7 @@ export const IPFSHash = () => {
     <Wrapper>
       <div className="fieldset">
         <label className="subtitle-1">Input IPFS</label>
-        <div className={"inputwrap"}>
+        <div className="inputwrap">
           <Input
             type="text"
             name="ipfs"

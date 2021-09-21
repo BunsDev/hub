@@ -37,15 +37,9 @@ const Header = () => {
 
   return (
     <header role="header" sx={styles.header}>
-      <Flex sx={{ alignItems: "center" }}>
+      <Flex className="nav-wrap">
         <Link href="/">
-          <a
-            sx={{
-              display: "flex",
-              height: "100%",
-              mr: "3.125rem",
-            }}
-          >
+          <a className="logo-wrap">
             <img src="/images/logo.svg" alt="logo" />
           </a>
         </Link>
@@ -61,13 +55,7 @@ const Header = () => {
           }}
         />
       ) : (
-        <Flex
-          sx={{
-            display: ["flex", "none"],
-            justifyItems: "flex-end",
-            gap: "1.5rem",
-          }}
-        >
+        <Flex className="user-authorized">
           {dapp.address && router.pathname !== "/apis/create" && (
             <Button
               variant="primaryMedium"

@@ -53,19 +53,19 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
             )}`}
           />
           <Themed.h2 className="title">{api.name}</Themed.h2>
-          <div sx={{ gridArea: "description" }}>
+          <div className="description-wrap">
             <div className="subtitle">{api.subtext}</div>
             <p className="description">{api.description}</p>
           </div>
         </Grid>
-        <Flex className="bottom">
-          <div sx={{ width: "100%", maxWidth: "50rem" }}>
-            <Themed.h3 sx={{ textAlign: "left" }}>Get Started</Themed.h3>
+        <Flex className="body">
+          <div>
+            <Themed.h3>Get Started</Themed.h3>
             <Themed.code>
               <Themed.pre>{`yarn install @web3api/client`}</Themed.pre>
             </Themed.code>
             <Themed.code>
-              <Themed.pre sx={{ mb: [null, "0"] }}>
+              <Themed.pre>
                 {`import {
   Web3API,
   Ethereum,

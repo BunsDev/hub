@@ -85,24 +85,9 @@ const PublishAPI = () => {
 
   const blocks = {
     image: (
-      <div
-        className="image_wrap"
-        sx={{
-          height: ["10.125rem", "auto"],
-          width: ["10.125rem", "100%"],
-          minHeight: "10.125rem",
-          minWidth: "10.125rem",
-          background: "white",
-          borderRadius: "1.25rem",
-          overflow: "hidden",
-        }}
-      >
+      <div className="image_wrap">
         {publish.apiData && (
           <img
-            sx={{
-              width: "100%",
-              height: "auto",
-            }}
             src={`${ipfsGateway}${
               publish.ipfs || stripIPFSPrefix(publish.apiData.locationUri)
             }${publish.apiData.icon.replace("./", "/")}`}
@@ -111,17 +96,14 @@ const PublishAPI = () => {
       </div>
     ),
     inputs: (
-      <div
-        className="inputs"
-        sx={{ minWidth: ["30.5rem", "auto"], flexGrow: 1 }}
-      >
-        <div sx={{ mb: "26px" }}>
+      <div className="inputs">
+        <div>
           <label className="subtitle-1">IPFS</label>
           <Input
             value={publish?.ipfs}
             disabled
             suffix={
-              <Flex sx={{ width: "65px", justifyContent: "center" }}>
+              <Flex className="succes-icon-wrap">
                 <Image src="/images/success.svg" alt="success" />
               </Flex>
             }
@@ -131,11 +113,7 @@ const PublishAPI = () => {
           {!publish.subdomain && !ensInputVisible && (
             <Button
               variant="primaryMedium"
-              sx={{
-                m: [null, "0 auto"],
-                p: [null, "20px 30.5px"],
-                borderRadius: [null, "100px"],
-              }}
+              className="btn-add-ens"
               onClick={(e) => {
                 e.preventDefault();
                 toggleEnsInput(true);
@@ -153,18 +131,7 @@ const PublishAPI = () => {
                 suffix={
                   <Button
                     variant="suffixSmall"
-                    sx={{
-                      bg: "rgba(255, 255, 255, .1)",
-                      width: "65px",
-                      alignSelf: "stretch",
-                      borderRadius: "6px",
-                      border: "none",
-                      margin: "2px",
-                      justifyContent: "center",
-                      fontSize: "14px",
-                      lineHeight: "120%",
-                      fontWeight: "normal",
-                    }}
+                    className="btn-save-ens"
                     onClick={(e) => {
                       e.preventDefault();
                     }}
@@ -179,7 +146,7 @@ const PublishAPI = () => {
       </div>
     ),
     info: (
-      <div className="info" sx={{ maxWidth: ["30%", "100%"] }}>
+      <div className="info">
         {publish?.apiData?.name && (
           <Themed.h2>{publish?.apiData?.name}</Themed.h2>
         )}

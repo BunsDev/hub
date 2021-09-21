@@ -2,14 +2,14 @@
 import { useMemo } from "react";
 import { Flex, Themed } from "theme-ui";
 
-import {Badge, Stars} from "components";
+import { Badge, Stars } from "components";
 import { ipfsGateway } from "../../../constants";
-import { useRouter } from "hooks"; 
+import { useRouter } from "hooks";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
 import Dots from "../../../../public/images/dots-vertical.svg";
 
-import styles from './styles'
+import styles from "./styles";
 
 type CardProps = {
   api?: APIData;
@@ -40,24 +40,20 @@ const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
       {api && api.pointerUris && api.pointerUris.length > 0 ? (
         <a href="#" onClick={() => router.replace(redirect)}>
           <div className="wrap-contents">
-            <div>
+            <div className="head">
               <img
                 className="api-logo"
                 src={`${ipfsGateway}${
                   ipfsHash || stripIPFSPrefix(api.locationUri)
                 }${api.icon.replace("./", "/")}`}
               />
-              <Flex
-                sx={{ display: "flex", flexDirection: "column", gap: "14px" }}
-              >
+              <Flex className="labels">
                 <Badge label="ipfs" />
                 <Stars count={api.favorites} onDark large />
               </Flex>
-              <Dots
-                sx={{ position: "absolute", top: "-4px", right: "-12px" }}
-              />
+              <Dots className="dots" />
             </div>
-            <div className="info">
+            <div className="body">
               <div className="row">
                 <Themed.h3 className="title">{api.name}</Themed.h3>
                 <div className="subtitle">{api.subtext}</div>

@@ -15,7 +15,7 @@ const styles: Styles = {
       width: "100%",
       height: "100%",
       ".wrap-contents": {
-        ">div": {
+        ".head": {
           display: "flex",
           gap: "1.5rem",
           ">img": {
@@ -23,8 +23,10 @@ const styles: Styles = {
             height: "4.25rem",
             borderRadius: "20px",
           },
+          ".labels": { display: "flex", flexDirection: "column", gap: "14px" },
+          ".dots": { position: "absolute", top: "-4px", right: "-12px" },
         },
-        ".info": {
+        ".body": {
           ">div.row": {
             justifyContent: "space-between",
             h3: {

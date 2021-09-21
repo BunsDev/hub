@@ -5,8 +5,6 @@ import { useState, useEffect } from "react";
 import useSWR from "swr";
 
 import { Layout, ContentNav } from "components";
-import Published from "components/Legacy/Published";
-import Favorites from "components/Legacy/Favorites";
 import { useAuth, useStateValue } from "hooks";
 import { domain } from "../../constants";
 
@@ -74,12 +72,12 @@ const UserApis = () => {
                 ]}
               />
               <br />
-              {activeTab === "published" && (
+              {/*               {activeTab === "published" && (
                 <Published apis={publishedData?.apis || []} />
               )}
               {activeTab === "favorites" && (
                 <Favorites apis={favoriteData?.data || []} />
-              )}
+              )} */}
             </section>
           </div>
         </main>

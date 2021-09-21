@@ -3,26 +3,13 @@ import { NavItem } from "components/Layout/Navigation";
 import { navItems } from "./navItemsData";
 import { useStateValue } from "hooks";
 
+import styles from "./styles";
+
 const Navbar = () => {
   const [{ dapp }] = useStateValue();
   return (
-    <nav
-      role="nav"
-      sx={{
-        display: ["flex", "none"],
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: "100%",
-        width: "100%",
-      }}
-    >
-      <ul
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          height: "4.5625rem",
-        }}
-      >
+    <nav role="nav" sx={styles.navBar}>
+      <ul>
         {navItems.map((item) => {
           if (item.authRequired && !dapp.address) {
             return null;

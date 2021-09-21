@@ -30,6 +30,7 @@ const styles: Styles = {
     flexWrap: "wrap",
     gap: ["1.875rem", "1.25rem"],
     p: ["0 84px 26px 49px", "12px 46px 40px"],
+    ">div:first-child": { width: "fit-content" },
     div: {
       display: "flex",
       flexDirection: "column",
@@ -60,16 +61,16 @@ const styles: Styles = {
         color: "white",
       },
     },
-  },
-  bgText: {
-    pointerEvents: "none",
-    position: "absolute",
-    bottom: 0,
-    left: "auto",
-    fontWeight: "bold",
-    fontSize: "110px",
-    lineHeight: "100%",
-    color: "rgba(255, 255, 255, 0.1)",
+    ".bg": {
+      pointerEvents: "none",
+      position: "absolute",
+      bottom: 0,
+      left: "auto",
+      fontWeight: "bold",
+      fontSize: "110px",
+      lineHeight: "100%",
+      color: "rgba(255, 255, 255, 0.1)",
+    },
   },
   arrow: {
     width: ".75rem",
@@ -98,6 +99,16 @@ const styles: Styles = {
       },
     },
   },
+  buttons: {
+    ".btn-cancel": {
+      width: [null, "100%"],
+      justifyContent: "center",
+      py: [null, "1.25rem"],
+      borderRadius: [null, "100px"],
+    },
+  },
+  successIcon: { width: "65px", justifyContent: "center" },
+  loadingIcon: { width: "65px", height: "100%", justifyContent: "center" },
 };
 
 export default styles;

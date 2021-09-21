@@ -1,5 +1,4 @@
 /** @jsxImportSource theme-ui **/
-import React from "react";
 import { ThemeUIStyleObject } from "@theme-ui/css";
 
 const Spinner = ({ size }: { size?: "small" }) => {

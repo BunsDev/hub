@@ -28,7 +28,7 @@ const Start = () => {
       }}
     >
       <Flex className="tutorial" sx={styles.tutorial}>
-        <div sx={{ width: "fit-content" }}>
+        <div>
           <div className="bg" sx={styles.bgText}>
             One
           </div>
@@ -39,9 +39,7 @@ const Start = () => {
           </a>
         </div>
         <div>
-          <div className="bg" sx={styles.bgText}>
-            Two
-          </div>
+          <div className="bg">Two</div>
           <span className="subtitle-1">Creating a Wrapper</span>
           <a
             href="https://docs.polywrap.io/guides/create-as-wrapper/project-setup/"
@@ -53,9 +51,7 @@ const Start = () => {
           </a>
         </div>
         <div>
-          <div className="bg" sx={styles.bgText}>
-            Three
-          </div>
+          <div className="bg">Three</div>
           <span className="subtitle-1">Upload a Wrapper</span>
           <p>Choose one of the options below to upload your wrapper</p>
         </div>
@@ -84,15 +80,10 @@ const Start = () => {
           </p>
         </div>
       </Flex>
-      <Flex className="buttons">
+      <Flex className="buttons" sx={styles.buttons}>
         <Button
           variant="secondaryMedium"
-          sx={{
-            width: [null, "100%"],
-            justifyContent: "center",
-            py: [null, "1.25rem"],
-            borderRadius: [null, "100px"],
-          }}
+          className="btn-cancel"
           onClick={(e) => {
             e.preventDefault();
             router.back();

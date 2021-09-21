@@ -21,6 +21,7 @@ const styles: Styles = {
         justifyContent: "space-between",
         alignItems: "center",
         p: "2.25rem 1rem 2.25rem 2rem",
+        h2: { mb: "0" },
       },
       ".user": {
         flexDirection: "column",
@@ -28,6 +29,12 @@ const styles: Styles = {
         py: "1.5rem",
         mb: "1.5rem",
         ".wallet-addr": { svg: { width: "140px", height: "auto" } },
+        ".user-icon": { cursor: "pointer", mb: "1.25rem" },
+        ".btn-wrap": {
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+        },
       },
       ".navList": {
         flexDirection: "column",
@@ -67,6 +74,18 @@ const styles: Styles = {
           justifyContent: "center",
         },
       },
+    },
+  },
+  navBar: {
+    display: ["flex", "none"],
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: "100%",
+    width: "100%",
+    ul: {
+      display: "flex",
+      flexDirection: "row",
+      height: "4.5625rem",
     },
   },
 };

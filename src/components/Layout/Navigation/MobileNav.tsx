@@ -78,7 +78,7 @@ export default function MobileNav() {
           }}
         >
           <Flex className="head">
-            <Themed.h2 sx={{ mb: "0" }}>Menu</Themed.h2>
+            <Themed.h2>Menu</Themed.h2>
             <img
               src="/images/close.svg"
               alt="close-button"
@@ -88,25 +88,16 @@ export default function MobileNav() {
           <Flex className="user">
             {dapp.address ? (
               <>
-                <User sx={{ cursor: "pointer", mb: "1.25rem" }} />
+                <User className="user-icon" />
                 {dapp.address && <span>{addrShortener(dapp.address)}</span>}
               </>
             ) : (
               <div
                 onClick={handleSignIn}
                 onKeyUp={handleSignIn}
-                sx={{
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                }}
+                className="btn-wrap"
               >
-                <Button
-                  variant="primaryMedium"
-                  sx={{ display: "inline-block" }}
-                >
-                  Log In
-                </Button>
+                <Button variant="primaryMedium">Log In</Button>
               </div>
             )}
           </Flex>

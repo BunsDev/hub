@@ -12,7 +12,7 @@ const SearchBar = () => {
 
   const handleSearch = useCallback((input: string) => {
     if (input) void router.push(`/?search=${input?.trim()}`);
-  }, []);
+  }, [router]);
 
   return (
     <Input

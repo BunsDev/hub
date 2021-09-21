@@ -96,7 +96,7 @@ export const EnsAddress = () => {
     <Wrapper>
       <div className="fieldset">
         <label className="subtitle-1">Input ENS Name</label>
-        <div className={"inputwrap"}>
+        <div className="inputwrap">
           <Input
             type="text"
             name="ens"
