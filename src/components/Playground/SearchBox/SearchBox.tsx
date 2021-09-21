@@ -60,7 +60,7 @@ const SearchBox = ({
         color: dark ? "text" : "#598188 !important",
         ".react-dropdown-select-dropdown": {
           borderTop: detachedResults ? "0.125rem solid" : "0.0625rem solid",
-          borderTopColor: detachedResults ? "w3beige" : "rgba(104,129,132,.5)",
+          borderTopColor: detachedResults ? "polyBeige" : "rgba(104,129,132,.5)",
         },
         ...bgs,
         ...sx,

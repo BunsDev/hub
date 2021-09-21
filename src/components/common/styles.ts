@@ -14,7 +14,7 @@ const styles: Styles = {
   },
   inputWrap: {
     alignItems: "center",
-    bg: "w3Grey3",
+    bg: "polyGrey3",
     borderRadius: ".5rem",
     height: "2.5rem",
   },
@@ -41,7 +41,7 @@ const styles: Styles = {
     },
     ".star-count": {
       fontWeight: "400",
-      color: "w3OffWhite",
+      color: "polyOffWhite",
       ml: 2,
       fontSize: "1.25rem",
       lineHeight: "1.5rem",
@@ -49,7 +49,7 @@ const styles: Styles = {
     "&.large .star-count": {
       fontWeight: "400",
       letterSpacing: "0rem",
-      color: "w3OffWhite",
+      color: "polyOffWhite",
       fontSize: "1.25rem",
       lineHeight: "1.5rem",
     },
@@ -73,7 +73,7 @@ const styles: Styles = {
       position: "absolute",
       right: "20px",
       top: "20px",
-      fill: "w3Grey3",
+      fill: "polyGrey3",
       cursor: "pointer",
     },
     ".modal": {

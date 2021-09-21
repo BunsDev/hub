@@ -11,21 +11,21 @@ export interface NavItem {
 export const navItems: NavItem[] = [
   {
     title: "Wrappers",
-    color: "w3NavPink",
+    color: "polyNavPink",
     imgSrc: "/images/apis.svg",
-    bg: "w3NavPinkBg",
+    bg: "polyNavPinkBg",
     href: "/",
   },
   {
     title: "Playground",
-    color: "w3NavGreen",
+    color: "polyNavGreen",
     imgSrc: "/images/playground.svg",
-    bg: "w3NavGreenBg",
+    bg: "polyNavGreenBg",
     href: "/playground",
   },
   {
     title: "More",
-    color: "w3NavYellow",
+    color: "polyNavYellow",
     imgSrc: "/images/dots-horizontal.svg",
     bg: "#4B401B",
     children: [
@@ -49,14 +49,14 @@ export const conditionalNavItems: ConditionalNavItems = {
     title: "Favorites",
     color: "#EC467E",
     imgSrc: "/images/heart.svg",
-    bg: "w3NavPinkBg",
+    bg: "polyNavPinkBg",
     authRequired: true,
   },
   logout: {
     title: "Logout",
-    color: "w3NavBlue",
+    color: "polyNavBlue",
     imgSrc: "/images/logout.svg",
-    bg: "w3NavBlue",
+    bg: "polyNavBlueBg",
     authRequired: true,
   },
 };

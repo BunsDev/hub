@@ -13,12 +13,10 @@ const styles: Styles = {
       minWidth: "7.5rem",
       "&.active": {
         fontWeight: "bold",
-        color: "w3darkGreen",
+        color: "polyDarkGreen",
         borderBottom: "0.125rem solid",
-        borderBottomColor: "w3NavNeonHighlightTeal",
         "&:hover": {
           borderBottom: "0.125rem solid",
-          borderBottomColor: "w3NavNeonHighlightTeal",
         },
       },
       "&:hover": {
@@ -31,7 +29,7 @@ const styles: Styles = {
       fontSize: "1rem",
       lineHeight: "1.25rem",
       letterSpacing: "-0.025rem",
-      color: "w3darkGreen",
+      color: "polyDarkGreen",
       mixBlendMode: "normal",
       opacity: "0.9",
       mb: 0,
@@ -44,7 +42,7 @@ const styles: Styles = {
       lineHeight: "1rem",
       textAlign: "center",
       letterSpacing: "-0.025rem",
-      color: "w3darkGreen",
+      color: "polyDarkGreen",
       mixBlendMode: "normal",
       px: "0.3rem",
       py: "0.1rem",

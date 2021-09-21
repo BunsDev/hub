@@ -60,7 +60,7 @@ const Modal = ({
           <h4
             className="body-1"
             sx={{
-              color: "w3Grey3",
+              color: "polyGrey3",
               textAlign: "center",
             }}
           >
@@ -104,7 +104,7 @@ const Modal = ({
             </span>
             <span
               className="body-1"
-              sx={{ display: "block", color: "w3Grey3" }}
+              sx={{ display: "block", color: "polyGrey3" }}
             >
               {dapp.address}
             </span>

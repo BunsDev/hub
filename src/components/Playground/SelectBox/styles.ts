@@ -3,7 +3,7 @@ import { Styles } from "utils/stylesInterface";
 const styles: Styles = {
   selectBox: {
     border: "none !important",
-    bg: "w3Grey3",
+    bg: "polyGrey3",
     borderRadius: ".5rem !important",
     color: "text",
     fontFamily: "Nunito Sans",
@@ -55,10 +55,10 @@ const styles: Styles = {
       alignItems: "center !important",
       justifyContent: "left !important",
       "&.react-dropdown-select-item-selected": {
-        bg: "w3Grey3",
+        bg: "polyGrey3",
       },
       "&:hover": {
-        bg: "w3Grey3",
+        bg: "polyGrey3",
       },
     },
     ".react-dropdown-select-content": {

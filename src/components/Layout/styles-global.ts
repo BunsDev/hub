@@ -42,7 +42,6 @@ const getGlobalStyles = (theme: Theme): Interpolation<Theme> => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "100% 100%",
     backgroundAttachment: "scroll",
-    background: theme.colors.w3hazeGradient,
   },
   "body::before": {
     display: "none",
@@ -106,7 +105,7 @@ const getGlobalStyles = (theme: Theme): Interpolation<Theme> => ({
     overflowX: "auto",
     padding: ".5rem 1rem",
     borderRadius: "8px",
-    backgroundColor: theme.colors.w3Grey3,
+    backgroundColor: theme.colors.polyGrey3,
     wordBreak: "break-all",
     whiteSpace: "pre-wrap",
     fontStyle: "normal",
@@ -157,7 +156,6 @@ const getGlobalStyles = (theme: Theme): Interpolation<Theme> => ({
     letterSpacing: "-0.0375rem",
     textTransform: "uppercase",
     textDecoration: "none",
-    color: theme.colors.w3TextNavTeal,
   },
   ".bn-onboard-custom": {
     zIndex: 100000,

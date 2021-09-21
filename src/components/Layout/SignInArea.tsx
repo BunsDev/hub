@@ -107,13 +107,13 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
               sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
             >
               <Github
-                fill={onDark ? "white" : theme.colors.w3darkGreen}
+                fill={onDark ? "white" : theme.colors.polyDarkGreen}
                 width="40px"
               />
               <span>&nbsp;</span>
               <span
                 sx={{
-                  color: onDark ? "white" : "w3darkGreen",
+                  color: onDark ? "white" : "polyDarkGreen",
                   fontFamily: "Montserrat",
                   fontSize: "0.875rem",
                   fontWeight: "600",
