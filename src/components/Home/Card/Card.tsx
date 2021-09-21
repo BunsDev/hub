@@ -14,14 +14,11 @@ import styles from "./styles";
 type CardProps = {
   api?: APIData;
   ipfsHash?: string;
-  boxShadowOn?: boolean;
-  noHover?: boolean;
   redirectUrl?: string;
 };
 
-const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
+const Card = ({ api, ipfsHash, redirectUrl }: CardProps) => {
   const router = useRouter();
-
   const redirect = useMemo(
     () => 'info?uri=' + (ipfsHash || redirectUrl || "/ens/" + api?.pointerUris[0]),
     [ipfsHash, redirectUrl, api?.pointerUris]
@@ -30,12 +27,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
   return (
     <div
       className="Card"
-      sx={{
-        ...styles.card,
-        boxShadow: boxShadowOn
-          ? "0rem 2rem 2.75rem rgba(28, 94, 93, 0.1)"
-          : "none",
-      }}
+      sx={styles.card}
     >
       {api && api.pointerUris && api.pointerUris.length > 0 ? (
         <a href="#" onClick={() => router.replace(redirect)}>

@@ -8,6 +8,7 @@ const styles: Styles = {
     border: "1px solid rgba(255, 255, 255, 0.2)",
     height: "13.4375rem",
     transition: "transform .2s ease",
+    boxShadow: "0rem 2rem 2.75rem rgba(28, 94, 93, 0.1)",
     ">a": {
       textDecoration: "none",
       p: "2rem",

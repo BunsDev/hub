@@ -23,10 +23,10 @@ const ApiGrid = ({ apis, main }: ApiGridProps) => {
         <>
           <Grid className="grid-main" gap="1rem">
             {search !== undefined && search.sortedApi !== -1 ? (
-              <Card api={search.sortedApi[0]} boxShadowOn />
+              <Card api={search.sortedApi[0]} />
             ) : (
               apis.map((api, idx) => (
-                <Card api={api} boxShadowOn key={idx + "-api"} />
+                <Card api={api} key={idx + "-api"} />
               ))
             )}
           </Grid>
@@ -47,7 +47,6 @@ const ApiGrid = ({ apis, main }: ApiGridProps) => {
           {apis.map((api, idx) => (
             <Card
               api={api}
-              boxShadowOn
               redirectUrl={"ens/" + api.pointerUris[0]}
               key={idx + "-api"}
             />
