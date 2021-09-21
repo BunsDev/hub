@@ -88,6 +88,67 @@ const styles: Styles = {
       height: "4.5625rem",
     },
   },
+  navItem: {
+    transition: "background-color 0.5s ease",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "4px",
+    "&:before": {
+      content: '""',
+      display: "block",
+      position: "absolute",
+      top: 0,
+      width: "100%",
+      height: "0.5rem",
+      borderRadius: "4px",
+      transition: "background-color 0.5s ease",
+    },
+    ">a": {
+      p: "21.25px",
+      pt: "34.25px",
+      textDecoration: "none",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      height: "100%",
+      width: "100%",
+      img: { width: "1.25rem", height: "1.25rem" },
+      "span.text-nav": { ml: "8px" },
+    },
+    span: {
+      color: "white",
+      fontSize: "1rem",
+    },
+  },
+  expandableNavItem: {
+    minWidth: "10rem",
+    zIndex: 10,
+    borderBottomLeftRadius: "0",
+    borderBottomRightRadius: "0",
+    "&:hover": {
+      ".dropdown-content": {
+        display: "flex",
+      },
+    },
+    ".dropdown-content": {
+      display: "none",
+      flexDirection: "column",
+      position: "absolute",
+      top: "100%",
+      bg: "inherit",
+      width: "100%",
+      p: "0 40px 14px 48px",
+      borderBottomLeftRadius: ".25rem",
+      borderBottomRightRadius: ".25rem",
+      "&:hover": {
+        display: "flex",
+      },
+      ">a": {
+        mb: "1rem",
+      },
+    },
+  },
 };
 
 export default styles;
