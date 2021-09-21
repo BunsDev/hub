@@ -23,7 +23,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, redirectUrl }: CardProps) => {
   const router = useRouter();
 
   const redirect = useMemo(
-    () => ipfsHash || redirectUrl || "apis/ens/" + api?.pointerUris[0],
+    () => 'info?uri=' + (ipfsHash || redirectUrl || "/ens/" + api?.pointerUris[0]),
     [ipfsHash, redirectUrl, api?.pointerUris]
   );
 

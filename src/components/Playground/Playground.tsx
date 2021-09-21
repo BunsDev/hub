@@ -98,16 +98,11 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   useEffect(() => {
-    if (router.asPath.includes("ens/")) {
-      setloadingPackageContents(true);
-    }
-  }, [router]);
-
-  useEffect(() => {
     setApiOptions(dapp.apis);
   }, [dapp.apis]);
 
   useEffect(() => {
+    setloadingPackageContents(true);
     async function go() {
       const schemaData = await getPackageSchemaFromAPIObject(api);
       const queriesData = await getPackageQueriesFromAPIObject(api);
@@ -138,7 +133,7 @@ const Playground = ({ api }: PlaygroundProps) => {
     if (loadingPackageContents && api) {
       void go();
     }
-  }, [loadingPackageContents, api]);
+  }, [api]);
 
   useEffect(() => {
     if (selectedMethod !== newSelectedMethod) {
@@ -152,6 +147,17 @@ const Playground = ({ api }: PlaygroundProps) => {
     const newVars = queryInfo && queryInfo.recipe ? queryInfo.recipe : {};
     setformVarsToSubmit(newVars);
   }, [newSelectedMethod]);
+
+  useEffect(() => {
+    if (router.query.uri !== undefined) {
+      const apiInQuery = dapp.apis?.find((api) =>
+        router?.query.uri.includes(api.pointerUris[0])
+      );
+      if (apiInQuery) {
+        setsearchboxvalues([apiInQuery]);
+      }
+    }
+  }, [dapp.apis]);
 
   return (
     <div className="playground" sx={styles.playground}>
@@ -169,15 +175,16 @@ const Playground = ({ api }: PlaygroundProps) => {
             values={searchboxvalues}
             searchable={false}
             onChange={(values) => {
+              setSchemaVisible(false);
               setsearchboxvalues(values);
               if (values.length > 0) {
                 if (values[0]?.pointerUris.length > 0) {
                   void router.push(
-                    "/playground/ens/" + values[0].pointerUris[0]
+                    "/query?uri=/ens/" + values[0].pointerUris[0]
                   );
                 } else {
                   void router.push(
-                    "/playground/ipfs/" +
+                    "/query?uri=/ipfs/" +
                       stripIPFSPrefix(values[0].locationUri[0])
                   );
                 }
@@ -223,9 +230,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               )}
             </Flex>
           </Flex>
-          <a href={router.asPath.replace("playground", "apis")}>
-            Open Wrapper Page
-          </a>
+          <a href={router.asPath.replace("query", "info")}>Open Wrapper Page</a>
         </Flex>
       )}
       <Grid

@@ -115,7 +115,7 @@ const api = new Web3API({
           <Button
             variant="secondaryMedium"
             onClick={() => {
-              void router.push(`/playground/ens/${api.pointerUris[0]}`);
+              void router.push(`/query?uri=/ens/${api.pointerUris[0]}`);
             }}
           >
             Open Playground

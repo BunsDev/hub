@@ -2,11 +2,10 @@
 import { useEffect } from "react";
 import { Web3ApiProvider } from "@web3api/react";
 
-import { Modal, Playground, Layout} from "components";
-import { useRouter, useGetAPIfromENSParamInURL, useStateValue } from "hooks";
+import { Modal, Playground, Layout } from "components";
+import { useGetAPIfromENSParamInURL, useStateValue } from "hooks";
 
 const PlaygroundPage = () => {
-  const router = useRouter();
   const [
     {
       web3api,
@@ -16,13 +15,6 @@ const PlaygroundPage = () => {
     dispatch,
   ] = useStateValue();
   const { data } = useGetAPIfromENSParamInURL();
-
-  if (
-    router.asPath !== "/playground" &&
-    !router.asPath.includes("/playground/ens/")
-  ) {
-    void router.push("/playground");
-  }
 
   useEffect(() => {
     const previouslySelectedWallet = localStorage.getItem("selectedWallet");
