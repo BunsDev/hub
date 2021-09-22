@@ -1,4 +1,4 @@
-import StarredApiRepository from "../../../../api/repositories/starredApiRepository";
+import StarredApiRepository from "../../../../api/repositories/starredApi";
 import { Api } from "../../../../api/models/Api";
 
 import { getConnection } from "typeorm";

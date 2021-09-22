@@ -1,6 +1,6 @@
 import Database from "../db";
 import { ApiData } from "../../../api/models/types";
-import ApiRepository from "../../../api/repositories/apiRepository";
+import ApiRepository from "../../../api/repositories/api";
 import { checkContentIsValid } from "../../../api/services/ens";
 
 import { VercelRequest } from "@vercel/node";

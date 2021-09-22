@@ -1,5 +1,5 @@
 import Database from "../db";
-import ApiRepository from "../../../api/repositories/apiRepository";
+import ApiRepository from "../../../api/repositories/api";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getCustomRepository } from "typeorm";
