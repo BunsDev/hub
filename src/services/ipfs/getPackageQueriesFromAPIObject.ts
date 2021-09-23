@@ -1,4 +1,3 @@
-import { ApiData } from "../../api/models/types";
 import { cloudFlareGateway } from "../../constants";
 import { APIData } from "../../hooks/ens/useGetAPIfromENS";
 import get_CFG_UI_DOM from "../../utils/get_CFG_UI_DOM";
@@ -50,7 +49,7 @@ const getPackageQueries = async (api: APIData): Promise<QueryAttributes[]> => {
   });
 };
 
-async function getPackageRecipes(api: ApiData): Promise<QueryAttributes[]> {
+async function getPackageRecipes(api: APIData): Promise<QueryAttributes[]> {
   try {
     const $recipes = await get_CFG_UI_DOM(api, "/meta/recipes");
     const recipesInformation = Array.from(

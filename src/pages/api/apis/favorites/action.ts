@@ -1,5 +1,5 @@
-import StarredApiRepository from "../../../../api/repositories/starredApiRepository";
-import UserRepository from "../../../../api/repositories/userRepository";
+import StarredApiRepository from "../../../../api/repositories/starredApi";
+import UserRepository from "../../../../api/repositories/user";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getConnection } from "typeorm";

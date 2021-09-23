@@ -161,14 +161,14 @@ export class Api {
     const apiSanitized = {
       ...metadata,
       name,
-      pointerUris: [],
+      apiUris: [],
       ...(acc[apiIndex] || {}),
     };
 
     if (api.type === "storage") {
       apiSanitized.locationUri = api.uri;
     } else {
-      apiSanitized.pointerUris.push(api.uri);
+      apiSanitized.apiUris.push(api.uri);
     }
 
     if (apiIndex === -1) return [...acc, apiSanitized];

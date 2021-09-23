@@ -210,9 +210,9 @@ const Playground = ({ api }: PlaygroundProps) => {
             onChange={(values) => {
               setsearchboxvalues(values);
               if (values.length > 0) {
-                if (values[0]?.pointerUris.length > 0) {
+                if (values[0]?.apiUris.length > 0) {
                   void router.push(
-                    "/playground/ens/" + values[0].pointerUris[0]
+                    "/playground/ens/" + values[0].apiUris[0]?.uri
                   );
                 } else {
                   void router.push(
