@@ -1,6 +1,6 @@
 import { Styles } from "utils/stylesInterface";
 
-const gridTemplateColumn = "minmax(300px, 380px)";
+const gridTemplateColumn = "minmax(275px, 380px)";
 
 const styles: Styles = {
   apiGrid: {
@@ -10,8 +10,9 @@ const styles: Styles = {
     minHeight: "70vh",
     ".grid-main": {
       gridTemplateColumns: [
-        `${gridTemplateColumn} ${gridTemplateColumn} ${gridTemplateColumn}`,
+        `${gridTemplateColumn} ${gridTemplateColumn}`,
         `${gridTemplateColumn}`,
+        `${gridTemplateColumn} ${gridTemplateColumn} ${gridTemplateColumn}`,
       ],
       mx: "auto",
       mb: 3,

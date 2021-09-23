@@ -2,7 +2,7 @@ import { Styles } from "utils/stylesInterface";
 
 const styles: Styles = {
   card: {
-    minWidth: "300px",
+    minWidth: "275px",
     borderRadius: "1.25rem",
     bg: "cardBg",
     border: "1px solid rgba(255, 255, 255, 0.2)",
