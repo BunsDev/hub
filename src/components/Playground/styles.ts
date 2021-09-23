@@ -23,6 +23,7 @@ const styles: Styles = {
           width: "340px",
           maxWidth: "100%",
           bg: "black",
+          borderRadius: "8px",
           ".btn-suffix": {
             width: "65px",
             alignSelf: "stretch",
@@ -59,14 +60,27 @@ const styles: Styles = {
         width: [null, "100%"],
       },
     },
+    ".grid.withSchema": {
+      ".query, .result": {
+        width: [null, null, "398px !important"],
+      },
+      ".schema": {
+        width: "100%",
+        height: ["270px", "270px !important", "auto"],
+      },
+      ".dynamic": {
+        gap: ["1rem", "1.25rem", "1rem"],
+        ".result, .schema": {
+          width: ["50%", "100%", null],
+        },
+      },
+    },
     ".grid": {
-      overflow: "hidden",
-      ">div": {
-        minHeight: "200px",
-        minWidth: "200px",
+      gap: ["1.25rem", "1rem", "1rem"],
+      flexDirection: ["column", "column", "row"],
+      ".query, .result, .schema": {
         transition: ".2s all",
-        borderRadius: "1.25rem",
-        ">section": {
+        section: {
           minHeight: "17.5rem",
           backgroundColor: "black",
           border: "1px solid rgba(255, 255, 255, 0.2)",
@@ -74,11 +88,19 @@ const styles: Styles = {
           boxShadow: "12px 20px 54px -6px #141316",
         },
       },
+      ".query, .result": {
+        maxWidth: [null, null, "577px"],
+      },
       ".query": {
-        flexDirection: "column",
+        flexDirection: ["row", "column", "column"],
         gap: "1rem",
-        section: { height: "50%" },
-        overflow: "hidden",
+        width: "100%",
+        "section.templates, section.vars": {
+          overflow: "scroll",
+          width: ["50%", "100%", "100%"],
+          height: [null, "50%", null],
+          maxHeight: "280px",
+        },
         "section.templates": { p: "20px" },
         "section.vars": {
           ">div.subtitle-1": {
@@ -87,77 +109,67 @@ const styles: Styles = {
           },
         },
       },
-      ".result": {
-        overflow: "hidden",
-        ">section": {
-          height: "100%",
-          ".controls": {
-            justifyContent: "space-between",
-            p: "1.25rem 1.5rem .75rem 1rem",
-            ">div": { gap: "1rem" },
-            span: {
-              cursor: "pointer",
-              alignSelf: "flex-start",
-              lineHeight: "100%",
+      ".dynamic": {
+        gap: ["0", "1.25rem", "1rem"],
+        flexGrow: 1,
+        flexWrap: [null, "wrap", "nowrap"],
+        ".result": {
+          width: "100%",
+          ">section": {
+            height: "100%",
+            ".controls": {
+              justifyContent: "space-between",
+              p: "1.25rem 1.5rem .75rem 1rem",
+              ">div": { gap: "1rem" },
+              span: {
+                cursor: "pointer",
+                alignSelf: "flex-start",
+                lineHeight: "100%",
+              },
+            },
+            ".body": {
+              overflow: "scroll",
+              pre: {
+                height: "100%",
+                backgroundColor: "black",
+                pb: 0,
+                mb: 0,
+                ">div": {
+                  display: "grid",
+                  placeItems: "center",
+                  height: "60%",
+                },
+              },
             },
           },
-          pre: {
-            height: "100%",
-            backgroundColor: "black",
-            pb: 0,
-            mb: 0,
-            ">div": { display: "grid", placeItems: "center", height: "60%" },
+        },
+        ".schema": {
+          position: "relative",
+          bg: "black",
+          minWidth: "0 !important",
+          maxWidth: [null, null, "339px !important"],
+          transition: ".2s all ease",
+          overflowY: "scroll",
+          height: ["270px", "0", "auto"],
+          borderRadius: "1.25rem",
+          section: {
+            position: "absolute",
+            top: 0,
+            right: [null, 0],
+            width: "100%",
+            "div.subtitle-1": {
+              position: "sticky",
+              top: "0",
+              bg: "black",
+              zIndex: "10",
+              justifyContent: "space-between",
+              p: "1.25rem 1.5rem .75rem 1rem",
+              borderBottom: "1px solid rgba(255, 255, 255, .2)",
+              "span.btn": { cursor: "pointer" },
+            },
           },
         },
       },
-      ".schema": {
-        position: "relative",
-        bg: "black",
-        minWidth: "0 !important",
-        maxWidth: "339px !important",
-        transition: ".2s all ease",
-        overflowY: "scroll",
-        height: [null, "270px"],
-        section: {
-          position: "absolute",
-          top: 0,
-          right: [null, 0],
-          width: "100%",
-          "div.subtitle-1": {
-            position: "sticky",
-            top: "0",
-            bg: "black",
-            zIndex: "10",
-            justifyContent: "space-between",
-            p: "1.25rem 1.5rem .75rem 1rem",
-            borderBottom: "1px solid rgba(255, 255, 255, .2)",
-            "span.btn": { cursor: "pointer" },
-          },
-        },
-      },
-    },
-  },
-  grid: {
-    overflow: "hidden",
-    ">div": {
-      minHeight: "200px",
-      minWidth: "200px",
-      transition: ".2s all",
-      borderRadius: "1.25rem",
-      ">section": {
-        minHeight: "17.5rem",
-        backgroundColor: "black",
-        border: "1px solid rgba(255, 255, 255, 0.2)",
-        borderRadius: "1.25rem",
-        boxShadow: "12px 20px 54px -6px #141316",
-      },
-    },
-    ".query": {
-      maxWidth: "339px",
-      flexDirection: "column",
-      gap: "1rem",
-      section: { height: "50%" },
-      overflow: "hidden",
     },
   },
 };

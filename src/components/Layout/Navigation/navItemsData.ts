@@ -21,7 +21,7 @@ export const navItems: NavItem[] = [
     color: "polyNavGreen",
     imgSrc: "/images/playground.svg",
     bg: "polyNavGreenBg",
-    href: "/playground",
+    href: "/query",
   },
   {
     title: "More",

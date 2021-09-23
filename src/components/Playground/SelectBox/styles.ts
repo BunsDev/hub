@@ -46,6 +46,7 @@ const styles: Styles = {
     },
     ".react-dropdown-select-item": {
       border: "none !important",
+      borderBottom: "none !important",
       fontFamily: "Nunito Sans !important",
       fontWeight: "600",
       fontSize: "16px",

@@ -80,6 +80,9 @@ const getGlobalStyles = (theme: Theme): Interpolation<Theme> => ({
     "@media screen and (max-width: 400px)": {
       minHeight: "calc(100vh - 140px)",
     },
+    "@media screen and (min-width:577px) and (max-width:991px)":{
+      padding: "0 2rem",
+    }
   },
   fieldset: {
     padding: 0,

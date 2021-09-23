@@ -218,19 +218,7 @@ const Playground = ({ api }: PlaygroundProps) => {
           <a href={router.asPath.replace("query", "info")}>Open Wrapper Page</a>
         </Flex>
       )}
-      <Grid
-        className="grid"
-        gap="1rem"
-        columns={["1fr", "1fr", "min-content min-content min-content"]}
-        sx={{
-          ">div": {
-            maxWidth: schemaVisible ? "398px" : "577px",
-            width: schemaVisible
-              ? ["100%", null, "calc((100vw - 4.6875rem)/3 - 2.5rem)"]
-              : ["100%", null, "calc((100vw - 4.6875rem)/2 - 3rem)"],
-          },
-        }}
-      >
+      <Flex className={`grid ${schemaVisible ? "withSchema" : ""}`}>
         <Flex className="query">
           <section className="templates">
             {apiContents?.queries && (
@@ -261,114 +249,118 @@ const Playground = ({ api }: PlaygroundProps) => {
             />
           </section>
         </Flex>
-        <div className="result">
-          <section>
-            <Flex className="controls">
-              <Flex>
-                {apiContents?.queries && (
-                  <Button variant="primaryMedium" onClick={exec}>
-                    Run
-                  </Button>
-                )}
-                {clientresponded !== undefined && (
-                  <React.Fragment>
-                    <Button
-                      variant="secondarySmall"
-                      onClick={handleSaveBtnClick}
-                    >
-                      Save
+        <Flex className="dynamic">
+          <div className="result">
+            <section>
+              <Flex className="controls">
+                <Flex>
+                  {apiContents?.queries && (
+                    <Button variant="primaryMedium" onClick={exec}>
+                      Run
                     </Button>
-                    <Button
-                      variant="secondarySmall"
-                      onClick={handleClearBtnClick}
-                    >
-                      Clear
-                    </Button>
-                  </React.Fragment>
-                )}
+                  )}
+                  {clientresponded !== undefined && (
+                    <React.Fragment>
+                      <Button
+                        variant="secondarySmall"
+                        onClick={handleSaveBtnClick}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="secondarySmall"
+                        onClick={handleClearBtnClick}
+                      >
+                        Clear
+                      </Button>
+                    </React.Fragment>
+                  )}
+                </Flex>
+                {loadingPackageContents
+                  ? "Loading Schema..."
+                  : apiContents?.schema &&
+                    !schemaVisible && (
+                      <span
+                        onClick={() => {
+                          setSchemaVisible(true);
+                        }}
+                      >
+                        {`${"<"}`} Show Schema
+                      </span>
+                    )}
               </Flex>
-              {loadingPackageContents
-                ? "Loading Schema..."
-                : apiContents?.schema &&
-                  !schemaVisible && (
+              <div className="body">
+                <Themed.pre>
+                  {loading ? (
+                    <div>
+                      <LoadingSpinner />
+                    </div>
+                  ) : (
+                    <React.Fragment>
+                      {clientresponded !== undefined &&
+                        JSON.stringify(clientresponded.data, undefined, 2)}
+                      {clientresponded !== undefined &&
+                        clientresponded.errors !== undefined &&
+                        clientresponded.errors.toString()}
+                    </React.Fragment>
+                  )}
+                </Themed.pre>
+              </div>
+            </section>
+          </div>
+          <div
+            className="schema scrollable"
+            sx={{
+              width: schemaVisible ? "30vw" : "0 !important",
+            }}
+          >
+            <section>
+              {structuredschema && (
+                <>
+                  <Flex className="subtitle-1">
+                    <span>Schema</span>
                     <span
+                      className="btn"
                       onClick={() => {
-                        setSchemaVisible(true);
+                        setSchemaVisible(false);
                       }}
                     >
-                      {`${"<"}`} Show Schema
+                      {`${">"}`} Hide Schema
                     </span>
-                  )}
-            </Flex>
-            <Themed.pre>
-              {loading ? (
-                <div>
-                  <LoadingSpinner />
-                </div>
-              ) : (
-                <React.Fragment>
-                  {clientresponded !== undefined &&
-                    JSON.stringify(clientresponded.data, undefined, 2)}
-                  {clientresponded !== undefined &&
-                    clientresponded.errors !== undefined &&
-                    clientresponded.errors.toString()}
-                </React.Fragment>
+                  </Flex>
+                  <div>
+                    <GQLCodeBlock
+                      readOnly
+                      title="Queries"
+                      value={structuredschema.localqueries}
+                    />
+                    <GQLCodeBlock
+                      readOnly
+                      title="Mutations"
+                      value={structuredschema.localmutations}
+                    />
+                    <GQLCodeBlock
+                      readOnly
+                      title="Custom Types"
+                      value={structuredschema.localcustom}
+                    />
+                    <GQLCodeBlock
+                      readOnly
+                      title="Imported Queries"
+                      value={structuredschema.importedqueries}
+                    />
+                    <GQLCodeBlock
+                      readOnly
+                      title="Imported Mutations"
+                      value={structuredschema.importedmutations}
+                    />
+                  </div>
+                </>
               )}
-            </Themed.pre>
-          </section>
-        </div>
-        <div
-          className="schema scrollable"
-          sx={{
-            width: schemaVisible ? "30vw" : "0 !important",
-          }}
-        >
-          <section>
-            {structuredschema && (
-              <>
-                <Flex className="subtitle-1">
-                  <span>Schema</span>
-                  <span
-                    className="btn"
-                    onClick={() => {
-                      setSchemaVisible(false);
-                    }}
-                  >
-                    {`${">"}`} Hide Schema
-                  </span>
-                </Flex>
-                <div>
-                  <GQLCodeBlock
-                    readOnly
-                    title="Queries"
-                    value={structuredschema.localqueries}
-                  />
-                  <GQLCodeBlock
-                    readOnly
-                    title="Mutations"
-                    value={structuredschema.localmutations}
-                  />
-                  <GQLCodeBlock
-                    readOnly
-                    title="Custom Types"
-                    value={structuredschema.localcustom}
-                  />
-                  <GQLCodeBlock
-                    readOnly
-                    title="Imported Queries"
-                    value={structuredschema.importedqueries}
-                  />
-                  <GQLCodeBlock
-                    readOnly
-                    title="Imported Mutations"
-                    value={structuredschema.importedmutations}
-                  />
-                </div>
-              </>
-            )}
-          </section>
-        </div>
-      </Grid>
+            </section>
+          </div>
+        </Flex>
+      </Flex>
     </div>
   );
 };
