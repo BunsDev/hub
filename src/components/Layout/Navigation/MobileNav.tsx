@@ -15,6 +15,7 @@ import { navItems, conditionalNavItems } from "./navItemsData";
 import addrShortener from "utils/addrShortener";
 import { useRouter, useStateValue, useResponsive } from "hooks";
 import User from "../../../../public/images/user-large.svg";
+import Close from "../../../../public/images/close-white.svg";
 
 import styles from "./styles";
 
@@ -79,11 +80,7 @@ export default function MobileNav() {
         >
           <Flex className="head">
             <Themed.h2>Menu</Themed.h2>
-            <img
-              src="/images/close.svg"
-              alt="close-button"
-              onClick={handleCloseNavMenu}
-            />
+            <Close onClick={handleCloseNavMenu} />
           </Flex>
           <Flex className="user">
             {dapp.address ? (
