@@ -1,12 +1,11 @@
 /** @jsxImportSource theme-ui **/
+import { ipfsGateway, domain } from "../../constants";
+import styles from "./styles";
+
 import { useEffect } from "react";
 import { Flex, Themed, Button, Grid } from "theme-ui";
-
-import { ipfsGateway, domain } from "../../constants";
 import { useAuth, useStateValue, useRouter } from "hooks";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
-
-import styles from "./styles";
 
 type APIDetailProps = {
   api?: APIData;
@@ -53,19 +52,19 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
             )}`}
           />
           <Themed.h2 className="title">{api.name}</Themed.h2>
-          <div sx={{ gridArea: "description" }}>
+          <div className="description-wrap">
             <div className="subtitle">{api.subtext}</div>
             <p className="description">{api.description}</p>
           </div>
         </Grid>
-        <Flex className="bottom">
-          <div sx={{ width: "100%", maxWidth: "50rem" }}>
-            <Themed.h3 sx={{ textAlign: "left" }}>Get Started</Themed.h3>
+        <Flex className="body">
+          <div>
+            <Themed.h3>Get Started</Themed.h3>
             <Themed.code>
               <Themed.pre>{`yarn install @web3api/client`}</Themed.pre>
             </Themed.code>
             <Themed.code>
-              <Themed.pre sx={{ mb: [null, "0"] }}>
+              <Themed.pre>
                 {`import {
   Web3API,
   Ethereum,
@@ -106,7 +105,11 @@ const api = new Web3API({
             {"locationUri" in api && (
               <li>
                 <img src="/images/link.svg" alt="icon" />
-                <a href={`${ipfsGateway}${api.locationUri}`} target="_BLANK">
+                <a
+                  href={`${ipfsGateway}${api.locationUri}`}
+                  target="_BLANK"
+                  rel="noreferrer"
+                >
                   {("ipfs/" + api.locationUri).substring(0, 25) + "..."}
                 </a>
               </li>
@@ -115,7 +118,7 @@ const api = new Web3API({
           <Button
             variant="secondaryMedium"
             onClick={() => {
-              void router.push(`/playground/ens/${api.pointerUris[0]}`);
+              void router.push(`/query?uri=/ens/${api.pointerUris[0]}`);
             }}
           >
             Open Playground

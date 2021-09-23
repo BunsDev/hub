@@ -1,10 +1,12 @@
 import Head from "next/head";
 import { ThemeProvider } from "theme-ui";
 import { SWRConfig } from "swr";
+
 import "animate.css/animate.css";
 import theme from "../theme";
 import { StateProvider, useStateValue } from "../state/state";
 import { fetcherREST } from "../utils/fetcher";
+
 import { useAuth } from "hooks";
 
 const swrOptions = {

@@ -36,11 +36,11 @@ const buttonPaddingSizes = {
 
 const buttonColorStates = {
   primary: {
-    backgroundColor: "w3ButtonPrimary",
-    borderColor: "w3ButtonPrimary",
+    backgroundColor: "polyButtonPrimary",
+    borderColor: "polyButtonPrimary",
     "&:hover": {
-      bg: "w3ButtonPrimaryHover",
-      borderColor: "w3ButtonPrimaryHover",
+      bg: "polyButtonPrimaryHover",
+      borderColor: "polyButtonPrimaryHover",
     },
     "&:active": {
       bg: "#255661",
@@ -73,7 +73,7 @@ const buttonColorStates = {
   },
   suffix: {
     color: "white",
-    bg: "w3Grey2",
+    bg: "polyGrey2",
   },
 };
 

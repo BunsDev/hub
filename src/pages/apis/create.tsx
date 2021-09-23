@@ -1,14 +1,13 @@
 /** @jsxImportSource theme-ui **/
 import { useState, useEffect } from "react";
 import { Box, Flex, Themed, ThemeUIStyleObject } from "theme-ui";
-
 import { Steps, Layout } from "components";
-import { Start, Publish } from "components/CreateApi";
+import { Start, Publish } from "components/PublishWrapper";
 import {
   DirectUpload,
   EnsAddress,
   IPFSHash,
-} from "components/CreateApi/UploadBy";
+} from "components/PublishWrapper/UploadBy";
 import {
   createApiSteps,
   pushToStep,
@@ -17,7 +16,7 @@ import {
   validStep,
 } from "utils/createWrapper";
 import { useRouter, useStateValue } from "hooks";
-import { CreateApiContext } from "context";
+import { CreateApiProvider } from "hooks/useCreateApi";
 
 const styles: ThemeUIStyleObject = {
   flexDirection: "column",
@@ -72,7 +71,7 @@ const CreateApi = () => {
 
   return (
     <Layout>
-      <CreateApiContext.Provider value={{ uploadMethod, setUploadMethod }}>
+      <CreateApiProvider value={{ uploadMethod, setUploadMethod }}>
         <Flex className="contents" sx={styles}>
           <Flex
             className="header"
@@ -117,7 +116,7 @@ const CreateApi = () => {
             {activeStep === createApiSteps[2] && <Publish />}
           </Box>
         </Flex>
-      </CreateApiContext.Provider>
+      </CreateApiProvider>
     </Layout>
   );
 };

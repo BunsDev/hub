@@ -1,9 +1,10 @@
-import axios from 'axios'
-import { Element } from 'cheerio'
-import { ApiData } from '../../api/models/types'
-import { cloudFlareGateway } from '../../constants'
-import { APIData } from '../../hooks/ens/useGetAPIfromENS'
-import get_CFG_UI_DOM from '../../utils/get_CFG_UI_DOM'
+import { ApiData } from "../../api/models/types";
+import { cloudFlareGateway } from "../../constants";
+import { APIData } from "../../hooks/ens/useGetAPIfromENS";
+import get_CFG_UI_DOM from "../../utils/get_CFG_UI_DOM";
+
+import { Element } from "cheerio";
+import axios from "axios";
 
 export interface QueryAttributes {
   id: string;
@@ -16,11 +17,11 @@ const getInfo = async (
   folder: string
 ): Promise<QueryAttributes> => {
   const queryData = await axios.get(
-    `${cloudFlareGateway.replace('/ipfs/', '')}${row.attribs.href}`,
-  )
-  const key = row.attribs.href.split(`meta/${folder}/`)[1].split('.graphql')[0]
-  return { id: key, value: queryData.data }
-}
+    `${cloudFlareGateway.replace("/ipfs/", "")}${row.attribs.href}`
+  );
+  const key = row.attribs.href.split(`meta/${folder}/`)[1].split(".graphql")[0];
+  return { id: key, value: queryData.data };
+};
 
 const getPackageQueries = async (api: APIData): Promise<QueryAttributes[]> => {
   const $queries = await get_CFG_UI_DOM(api, "/meta/queries");

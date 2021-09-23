@@ -40,16 +40,27 @@ const styles: Styles = {
           mb: [".75rem", "1.25rem"],
           fontSize: [null, "20px"],
         },
-        ".subtitle": {
-          color: "#FFF",
-          mb: ".75rem",
-          fontSize: "1rem",
-          fontWeight: "bold",
+        "div.description-wrap": {
+          gridArea: "description",
+          ".subtitle": {
+            color: "#FFF",
+            mb: ".75rem",
+            fontSize: "1rem",
+            fontWeight: "bold",
+          },
+          "p.description": {
+            fontSize: ".875rem",
+            color: "rgba(255, 255, 255, .5)",
+            mb: [null, "0"],
+          },
         },
-        "p.description": {
-          fontSize: ".875rem",
-          color: "rgba(255, 255, 255, .5)",
-          mb: [null, "0"],
+      },
+      ".body": {
+        ">div": {
+          width: "100%",
+          maxWidth: "50rem",
+          h3: { textAlign: "left" },
+          pre: { mb: [null, "0"] },
         },
       },
     },

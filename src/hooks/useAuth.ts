@@ -85,4 +85,4 @@ const useAuth = (dapp: State["dapp"]) => {
   return { set, get, authenticate, isAuthenticated };
 };
 
-export default useAuth
+export default useAuth;
