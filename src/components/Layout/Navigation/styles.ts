@@ -7,11 +7,12 @@ const styles: Styles = {
     height: "100vh",
     width: "100vw",
     transition: ".3s all",
-    nav: {
+    "nav.nav-mobile": {
       position: "absolute",
       top: "0",
       height: "100%",
       width: "80%",
+      maxWidth: "435px",
       bg: "black",
       transition: ".3s all",
       display: "flex",
@@ -39,7 +40,7 @@ const styles: Styles = {
       ".navList": {
         flexDirection: "column",
         "li.navItem": {
-          maxWidth: "237px",
+          maxWidth: ["341px", "237px"],
           "&.expandable::before": {
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
