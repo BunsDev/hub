@@ -40,7 +40,7 @@ const styles: Styles = {
       ".navList": {
         flexDirection: "column",
         "li.navItem": {
-          maxWidth: ["341px", "237px"],
+          maxWidth: ["100%", "237px"],
           "&.expandable::before": {
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
