@@ -22,7 +22,7 @@ const styles: Styles = {
       top: "-0.125rem !important",
       right: "-0.375rem !important",
     },
-    ".react-dropdown-select-dropdown": {
+    ".react-dropdown-select-dropdown.react-dropdown-select-dropdown-position-bottom": {
       top: "3rem",
       bg: "black",
       border: "1px solid rgba(255, 255, 255, 0.2)",
@@ -45,7 +45,7 @@ const styles: Styles = {
         bg: "rgba(255, 255, 255, 0.2)",
       },
       "&.react-dropdown-select-item-selected": {
-        bg: "rgba(255, 255, 255, 0.4)",
+        bg: "rgba(255, 255, 255, 0.1)",
       },
     },
     ".react-dropdown-select-content": {

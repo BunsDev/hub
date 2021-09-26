@@ -219,7 +219,7 @@ const Playground = ({ api }: PlaygroundProps) => {
       )}
       <Flex className={`grid ${schemaVisible ? "withSchema" : ""}`}>
         <Flex className="query">
-          <section className="templates">
+          <section className="templates scrollable">
             {apiContents?.queries && (
               <SelectBox
                 key={"queries-box"}
@@ -240,7 +240,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               />
             )}
           </section>
-          <section className="vars">
+          <section className="vars scrollable">
             <div className="subtitle-1">Vars</div>
             <JSONEditor
               value={formVarsToSubmit}

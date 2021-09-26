@@ -96,7 +96,6 @@ const styles: Styles = {
         gap: "1rem",
         width: "100%",
         "section.templates, section.vars": {
-          overflow: "scroll",
           width: ["50%", "100%", "100%"],
           height: [null, "50%", null],
           maxHeight: "280px",
@@ -128,7 +127,6 @@ const styles: Styles = {
               },
             },
             ".body": {
-              overflow: "scroll",
               pre: {
                 height: "100%",
                 backgroundColor: "black",
@@ -149,7 +147,6 @@ const styles: Styles = {
           minWidth: "0 !important",
           maxWidth: [null, null, "339px !important"],
           transition: ".2s all ease",
-          overflowY: "scroll",
           height: ["270px", "0", "auto"],
           borderRadius: "1.25rem",
           section: {
