@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { useEffect } from "react";
 import { Web3ApiProvider } from "@web3api/react";
-
 import { Modal, Playground, Layout } from "components";
 import { useGetAPIfromENSParamInURL, useStateValue } from "hooks";
 

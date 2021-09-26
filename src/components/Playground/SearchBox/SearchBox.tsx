@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { ThemeUIStyleObject } from "theme-ui";
 import RDS from "react-dropdown-select";
-
 import { APIData } from "hooks/ens/useGetAPIfromENS";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
 import { ipfsGateway } from "../../../constants";

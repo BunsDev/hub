@@ -1,9 +1,8 @@
 /** @jsxImportSource theme-ui **/
+import styles from "./styles";
+
 import { Flex } from "theme-ui";
-
 import { SearchBar } from "components";
-
-import styles from './styles'
 
 const SortNav = () => {
   return (

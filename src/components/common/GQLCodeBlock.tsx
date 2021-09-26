@@ -1,12 +1,12 @@
 /** @jsxImportSource theme-ui **/
+import solarizedDark from "../../theme/Solarized-dark.json";
+import styles from "./styles";
+
 import { MouseEventHandler } from "react";
 import { Themed, ThemeUIStyleObject } from "theme-ui";
 // eslint-disable-next-line import/order
 import Editor, { OnChange, Monaco } from "@monaco-editor/react";
 // https://github.com/brijeshb42/monaco-themes/tree/master/themes
-
-import solarizedDark from "../../theme/Solarized-dark.json";
-import styles from './styles'
 
 type GQLCodeBlockProps = {
   title?: string;

@@ -1,29 +1,30 @@
-import axios from 'axios'
-import { ipfsGateway } from '../../constants'
+import { ipfsGateway } from "../../constants";
+
+import axios from "axios";
 
 const yaml = require("js-yaml"); // eslint-disable-line
 
 export default async function getMetaDataFromPackageHash(
   hash: string,
-  metaPath?: string,
+  metaPath?: string
 ) {
-  let ipfsDataFromJSON = null
-  let ipfsDataFromYAML = null
-  let ipfsData = null
+  let ipfsDataFromJSON = null;
+  let ipfsDataFromYAML = null;
+  let ipfsData = null;
 
   try {
     ipfsDataFromJSON = await axios.get(
-      ipfsGateway + hash + (metaPath || '/web3api.meta.json'),
-    )
-    ipfsData = ipfsDataFromJSON.data
+      ipfsGateway + hash + (metaPath || "/web3api.meta.json")
+    );
+    ipfsData = ipfsDataFromJSON.data;
   } catch (error) {
     console.log(error);
   }
   try {
     ipfsDataFromYAML = await axios.get(
-      ipfsGateway + hash + (metaPath || '/web3api.meta.yaml'),
-    )
-    ipfsData = ipfsDataFromYAML.data
+      ipfsGateway + hash + (metaPath || "/web3api.meta.yaml")
+    );
+    ipfsData = ipfsDataFromYAML.data;
   } catch (error) {
     console.log(error);
   }

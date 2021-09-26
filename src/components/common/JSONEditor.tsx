@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui **/
 // https://github.com/brijeshb42/monaco-themes/tree/master/themes
+import solarizedDark from "../../theme/Solarized-dark.json";
+
 import { MouseEventHandler } from "react";
 // eslint-disable-next-line import/order
 import Editor, { Monaco, OnChange } from "@monaco-editor/react";
-
-import solarizedDark from "../../theme/Solarized-dark.json";
 
 type GQLCodeBlockProps = {
   height?: string;

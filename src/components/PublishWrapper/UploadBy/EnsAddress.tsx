@@ -6,12 +6,11 @@ import {
   useEffect,
 } from "react";
 import { Button, Image, Flex } from "@theme-ui/components";
-
-import { MAIN_DOMAIN, ZERO_ADDRESS } from "../../../constants";
 import { getOwner } from "services/ens/getOwner";
 import { useStateValue } from "hooks";
 import { Spinner, Input } from "components";
 import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
+import { MAIN_DOMAIN, ZERO_ADDRESS } from "../../../constants";
 
 import styles from "./styles";
 

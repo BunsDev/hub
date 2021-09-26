@@ -1,9 +1,12 @@
 /** @jsxImportSource theme-ui **/
+import { networkID } from "../../constants";
+import { APIData } from "../../hooks/ens/useGetAPIfromENS";
+import styles from "./styles";
+
 import React, { useEffect, useState } from "react";
 import { Flex, Button, Themed, Grid } from "theme-ui";
 import { QueryApiResult } from "@web3api/client-js";
 import { useWeb3ApiQuery } from "@web3api/react";
-
 import { useRouter, useStateValue } from "hooks";
 import {
   Badge,
@@ -22,10 +25,6 @@ import getPackageQueriesFromAPIObject, {
 import cleanSchema, { StructuredSchema } from "utils/cleanSchema";
 import { networks } from "utils/networks";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
-import { networkID } from "../../constants";
-import { APIData } from "../../hooks/ens/useGetAPIfromENS";
-
-import styles from "./styles";
 
 type PlaygroundProps = {
   api?: APIData;

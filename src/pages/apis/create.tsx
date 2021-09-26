@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { useState, useEffect } from "react";
 import { Box, Flex, Themed, ThemeUIStyleObject } from "theme-ui";
-
 import { Steps, Layout } from "components";
 import { Start, Publish } from "components/PublishWrapper";
 import {

@@ -1,12 +1,11 @@
 /** @jsxImportSource theme-ui **/
+import { ipfsGateway, domain } from "../../constants";
+import styles from "./styles";
+
 import { useEffect } from "react";
 import { Flex, Themed, Button, Grid } from "theme-ui";
-
-import { ipfsGateway, domain } from "../../constants";
 import { useAuth, useStateValue, useRouter } from "hooks";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
-
-import styles from "./styles";
 
 type APIDetailProps = {
   api?: APIData;
@@ -104,7 +103,11 @@ const api = new Web3API({
             {"locationUri" in api && (
               <li>
                 <img src="/images/link.svg" alt="icon" />
-                <a href={`${ipfsGateway}${api.locationUri}`} target="_BLANK">
+                <a
+                  href={`${ipfsGateway}${api.locationUri}`}
+                  target="_BLANK"
+                  rel="noreferrer"
+                >
                   {("ipfs/" + api.locationUri).substring(0, 25) + "..."}
                 </a>
               </li>

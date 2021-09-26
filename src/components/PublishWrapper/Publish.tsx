@@ -1,8 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { FormEventHandler, useEffect } from "react";
 import { Flex, Button, Themed, Image } from "theme-ui";
-
-import { ipfsGateway, domain, MAIN_DOMAIN } from "../../constants";
 import {
   useRouter,
   useAuth,
@@ -14,6 +12,7 @@ import {
 import { Wrapper } from "components/PublishWrapper";
 import { Input } from "components";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
+import { ipfsGateway, domain, MAIN_DOMAIN } from "../../constants";
 
 import styles from "./styles";
 

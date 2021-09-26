@@ -53,7 +53,7 @@ export default function MobileNav() {
   );
 
   const navList = useMemo(() => {
-    let res = [...navItems];
+    const res = [...navItems];
     if (dapp.address) {
       res.splice(2, 0, conditionalNavItems.favorites);
     }

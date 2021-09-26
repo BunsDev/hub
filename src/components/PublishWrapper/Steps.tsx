@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui **/
-import { Flex } from "theme-ui";
-
 import styles from "./styles";
+
+import { Flex } from "theme-ui";
 
 interface Step {
   value: string;

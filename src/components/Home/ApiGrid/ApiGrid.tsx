@@ -1,12 +1,11 @@
 /** @jsxImportSource theme-ui **/
+import styles from "./styles";
+
 import { useRouter } from "next/router";
 import { Grid, Button } from "theme-ui";
-
 import { APIData } from "hooks/ens/useGetAPIfromENS";
 import { Card } from "components";
 import { useStateValue } from "hooks";
-
-import styles from "./styles";
 
 type ApiGridProps = {
   apis: APIData[];

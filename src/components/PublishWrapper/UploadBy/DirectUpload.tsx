@@ -1,9 +1,10 @@
 /** @jsxImportSource theme-ui **/
+import styles from "./styles";
+
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import yaml from "js-yaml";
 import { Flex } from "@theme-ui/components";
-
 import { Wrapper, NavButtons } from "components/PublishWrapper";
 import { Spinner } from "components";
 import { useStateValue, useRouter, useResponsive } from "hooks";
@@ -13,8 +14,6 @@ import {
   validateUploadedWrapper,
 } from "utils/createWrapper";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
-
-import styles from "./styles";
 
 export const DirectUpload = () => {
   const [_, dispatch] = useStateValue();

@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui **/
 import { ApiData } from "../../../api/models/types";
-
 import { Flex, Themed } from "theme-ui";
 
 import styles from "./styles";

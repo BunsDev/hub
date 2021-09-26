@@ -1,12 +1,12 @@
 /** @jsxImportSource theme-ui **/
+import styles from "./styles";
+
 import {
   Input as ThemeUiInput,
   InputProps as ThemeUiInputProps,
   Flex,
   ThemeUIStyleObject,
 } from "theme-ui";
-
-import styles from "./styles";
 
 type ThemeUiInputPropsOmmited = Omit<ThemeUiInputProps, "prefix">;
 

@@ -33,4 +33,4 @@ const styles: Styles = {
   },
 };
 
-export default styles
+export default styles;

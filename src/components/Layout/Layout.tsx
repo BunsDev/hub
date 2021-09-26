@@ -2,15 +2,14 @@
 import { useEffect, useState } from "react";
 import { Global } from "@emotion/react";
 import useSWR from "swr";
-
 import { useStateValue, useWindowSize } from "hooks";
-import { domain, RESPONSOVE_BREAKPOINTS } from "../../constants";
 import { Header, BGCircles } from "components";
 import { MobileNav } from "components/Layout/Navigation";
-import { ResponsiveContext, ResponsiveProvider } from "hooks/useResponsive";
+import { ResponsiveProvider } from "hooks/useResponsive";
+import { domain, RESPONSOVE_BREAKPOINTS } from "../../constants";
 
-import styles from "./styles";
 import getGlobalStyles from "./styles-global";
+import styles from "./styles";
 
 type LayoutProps = {
   children?: React.ReactNode;

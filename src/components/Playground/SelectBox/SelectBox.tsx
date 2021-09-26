@@ -1,8 +1,8 @@
 /** @jsxImportSource theme-ui **/
+import styles from "./styles";
+
 import { ThemeUIStyleObject } from "@theme-ui/css";
 import RDS from "react-dropdown-select";
-
-import styles from "./styles";
 
 type RDSProps = {
   dark?: boolean;

@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import { Flex, Button } from "theme-ui";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-
 import onboardInit from "utils/onboardInit";
 import { Navbar } from "components/Layout/Navigation";
 const SignInArea = dynamic(() => import("./SignInArea"), { ssr: false });
 import { useStateValue, useRouter, useResponsive } from "hooks";
 import { API } from "bnc-onboard/dist/src/interfaces";
-import { RESPONSOVE_BREAKPOINTS } from "../../constants";
 
+import { RESPONSOVE_BREAKPOINTS } from "../../constants";
 import styles from "./styles";
 
 const Header = () => {

@@ -1,7 +1,7 @@
 import buttonVariants from "./theme/buttons";
+import { RESPONSOVE_BREAKPOINTS } from "./constants";
 
 import { Theme } from "theme-ui";
-import { RESPONSOVE_BREAKPOINTS } from "./constants";
 
 export const timing = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 3];
 

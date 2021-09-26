@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { cloudFlareGateway } from "../../constants";
-
-import styles from './styles'
+import styles from "./styles";
 
 type BadgeProps = {
   label: string;

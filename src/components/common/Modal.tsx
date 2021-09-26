@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import React, { useCallback } from "react";
 import { Flex, Button, Themed } from "theme-ui";
-
 import onboardInit from "utils/onboardInit";
 import { useStateValue, useRouter } from "hooks";
 import Close from "../../../public/images/close.svg";

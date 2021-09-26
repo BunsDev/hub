@@ -1,6 +1,6 @@
+/** @jsxImportSource theme-ui **/
 import React, { ChangeEventHandler, MouseEventHandler } from "react";
 import { Flex, Image, Button } from "theme-ui";
-
 import getMetaDataFromPackageHash from "services/ipfs/getMetaDataFromPackageHash";
 import { useStateValue } from "hooks";
 import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
@@ -21,7 +21,7 @@ export const IPFSHash = () => {
     e.preventDefault();
     dispatch({ type: "setipfsLoading", payload: true });
     if (publish.ipfs !== "") {
-      let metaData = await getMetaDataFromPackageHash(publish.ipfs);
+      const metaData = await getMetaDataFromPackageHash(publish.ipfs);
       if (metaData === undefined || metaData === "NO METADATA FOUND") {
         dispatch({ type: "setipfsLoading", payload: false });
         dispatch({ type: "setApiData", payload: null });

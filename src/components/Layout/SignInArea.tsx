@@ -1,13 +1,12 @@
 /** @jsxImportSource theme-ui **/
-import { useState } from "react";
-import { Flex, Button, useThemeUI } from "theme-ui";
-
-import { Modal } from "components";
-import { useAuth, useStateValue, useRouter } from "hooks";
 import User from "../../../public/images/user.svg";
 import Github from "../../../public/images/github-icon-large.svg";
-
 import styles from "./styles";
+
+import { useState } from "react";
+import { Flex, Button, useThemeUI } from "theme-ui";
+import { Modal } from "components";
+import { useAuth, useStateValue, useRouter } from "hooks";
 
 type SignInAreaProps = {
   onDark?: boolean;

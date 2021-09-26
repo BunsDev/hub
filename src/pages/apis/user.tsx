@@ -1,12 +1,12 @@
 /** @jsxImportSource theme-ui **/
+import { domain } from "../../constants";
+
 import { Flex, Themed } from "theme-ui";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import useSWR from "swr";
-
 import { Layout, ContentNav } from "components";
 import { useAuth, useStateValue } from "hooks";
-import { domain } from "../../constants";
 
 const UserApis = () => {
   const router = useRouter();
