@@ -4,8 +4,8 @@ const styles: Styles = {
   wrap: {
     display: "flex",
     justifyContent: "space-between",
-    flexDirection: [null, "column-reverse"],
-    gap: "1rem",
+    flexDirection: ["column-reverse", "column-reverse", "row"],
+    gap: "2rem",
     width: "100%",
     p: ["3.75rem", "1.25rem"],
     border: "1px solid rgba(255, 255, 255, 0.2)",
@@ -66,17 +66,17 @@ const styles: Styles = {
     },
     ".right": {
       width: "100%",
-      maxWidth: ["300px", "none"],
+      maxWidth: ["100%", "100%", "221px"],
+      flexDirection: ["row", "column", "column"],
+      justifyContent: ["space-between", "normal", "normal"],
       ".info-card": {
-        width: [null, "100%"],
-        mb: [null, "2rem"],
-        ">div": {
-          justifyContent: "space-between",
-          alignItems: "center",
+        flexDirection: "column",
+        width: ["100%", "100%", null],
+        ">h3": {
           mb: "1rem",
         },
         ">ul.links": {
-          mb: ["3rem", "1.5rem"],
+          mb: ["2.5rem", "1.5rem", "2.5rem"],
           "*": {
             color: "rgba(255, 255, 255, 0.5)",
             textDecoration: "none",
@@ -93,14 +93,16 @@ const styles: Styles = {
             img: { maxWidth: "1rem", mr: ".5rem" },
           },
         },
-        ">button": {
-          backgroundColor: "white",
-          color: "black",
-          ml: "auto",
-          width: "100%",
-          p: [null, "1.25rem"],
-          borderRadius: [null, "100px"],
-        },
+      },
+      ">button": {
+        backgroundColor: "white",
+        alignSelf: "flex-start",
+        color: "black",
+        ml: "auto",
+        width: "100%",
+        maxWidth: ["221px", "100%", "221px"],
+        p: [null, "1.25rem"],
+        borderRadius: [null, "100px"],
       },
     },
   },
