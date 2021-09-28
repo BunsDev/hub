@@ -9,6 +9,7 @@ const styles: Styles = {
     bg: "black",
     border: "none !important",
     boxShadow: "none !important",
+    p: "3px 16px !important",
     ".react-dropdown-select-input": {
       fontFamily: "Nunito Sans",
       fontSize: "16px",
@@ -22,41 +23,44 @@ const styles: Styles = {
       top: "-0.125rem !important",
       right: "-0.375rem !important",
     },
-    ".react-dropdown-select-dropdown.react-dropdown-select-dropdown-position-bottom": {
-      top: "3rem",
-      bg: "black",
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      borderRadius: "1.25rem",
-      boxShadow: "12px 20px 54px -6px #141316",
-    },
-    ".react-dropdown-select-item": {
-      display: "flex",
-      border: "none !important",
-      lineHeight: "100%",
-      py: "0.375rem",
-      "&::before": {
-        display: "block !important",
-        content: "''",
-        width: "1rem !important",
-        height: "1rem !important",
-        mr: ".75rem !important",
+    ".react-dropdown-select-dropdown.react-dropdown-select-dropdown-position-bottom":
+      {
+        top: "3rem",
+        bg: "black",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
+        borderRadius: "1.25rem",
+        boxShadow: "12px 20px 54px -6px #141316",
       },
-      "&:hover, &.react-dropdown-select-item-selected": {
-        bg: "rgba(255, 255, 255, 0.2)",
+    ".dropdown-content": {
+      ".dropdown-search": {
+        p: "1rem 1.5rem .5rem",
+        borderBottom: "1px solid #FFFFFF20",
       },
-      "&.react-dropdown-select-item-selected": {
-        bg: "rgba(255, 255, 255, 0.1)",
+      ".dropdown-options": {
+        pt: "4px",
+        pb: "22px",
+        ".dropdown-item": {
+          display: "flex",
+          border: "none",
+          lineHeight: "100%",
+          py: "0.375rem",
+          "&::before": {
+            display: "block !important",
+            content: "''",
+            width: "1rem !important",
+            height: "1rem !important",
+            mr: ".75rem !important",
+          },
+          "&:hover": {
+            bg: "rgba(255, 255, 255, 0.2)",
+          },
+          "&.selected": {
+            bg: "rgba(255, 255, 255, 0.1)",
+          },
+        },
       },
     },
     ".react-dropdown-select-content": {
-      "&::before": {
-        display: "block !important",
-        content: "''",
-        width: "1.5rem !important",
-        height: "1.5rem !important",
-        mr: ".75rem !important",
-        background: "url(/images/magnifying-glass.svg) no-repeat !important",
-      },
       span: {
         fontSize: "16px",
         lineHeight: "150%",

@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui **/
-import { networkID } from "../../constants";
+import { domain, networkID } from "../../constants";
 import { APIData } from "../../hooks/ens/useGetAPIfromENS";
 import styles from "./styles";
 
 import React, { useEffect, useState } from "react";
-import { Flex, Button, Themed, Grid } from "theme-ui";
+import { Flex, Button, Themed } from "theme-ui";
 import { QueryApiResult } from "@web3api/client-js";
 import { useWeb3ApiQuery } from "@web3api/react";
 import { useRouter, useStateValue } from "hooks";
@@ -40,7 +40,6 @@ const Playground = ({ api }: PlaygroundProps) => {
   const router = useRouter();
 
   const [schemaVisible, setSchemaVisible] = useState(false);
-  const [apiOptions, setApiOptions] = useState(dapp.apis);
 
   const [searchboxvalues, setsearchboxvalues] = useState([]);
 
@@ -95,10 +94,6 @@ const Playground = ({ api }: PlaygroundProps) => {
     const response = await execute(formVarsToSubmit);
     setclientresponed(response);
   }
-
-  useEffect(() => {
-    setApiOptions(dapp.apis);
-  }, [dapp.apis]);
 
   useEffect(() => {
     setloadingPackageContents(true);
@@ -170,9 +165,8 @@ const Playground = ({ api }: PlaygroundProps) => {
             placeholder={"Search API’s"}
             labelField="name"
             valueField="name"
-            options={apiOptions}
+            options={dapp.apis}
             values={searchboxvalues}
-            searchable={false}
             onChange={(values) => {
               setSchemaVisible(false);
               setsearchboxvalues(values);

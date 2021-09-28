@@ -10,7 +10,7 @@ const Home = () => {
     <Layout>
       <section className="content">
         <SortNav />
-        {dapp?.apis ? <ApiGrid main apis={dapp.apis} /> : null}
+        <ApiGrid apis={dapp?.apis} />
       </section>
     </Layout>
   );
