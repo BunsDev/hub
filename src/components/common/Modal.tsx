@@ -4,7 +4,7 @@ import { Flex, Button, Themed } from "theme-ui";
 import onboardInit from "utils/onboardInit";
 import { useStateValue, useRouter } from "hooks";
 import Close from "../../../public/images/close.svg";
-import styles from './styles'
+import styles from "./styles";
 
 type ModalProps = {
   screen: string;
@@ -142,6 +142,12 @@ const Modal = ({
             title: "View API",
             onClick: () => router.push(`/apis/ens/${data}`),
           }
+        );
+      case "switch":
+        return generateModalContent(
+          "Switch To Desktop Version",
+          "This feature is not available on a mobile, please switch to a desktop version",
+          { title: "Ok", onClick: close }
         );
     }
   };

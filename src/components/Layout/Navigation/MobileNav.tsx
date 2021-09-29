@@ -28,6 +28,8 @@ export default function MobileNav() {
 
   const [showDisconnectModal, setShowDisconnectModal] = useState(false);
   const [showSignInModal, setShowSignInModal] = useState(false);
+  const [showSwitchToDesktopModal, setShowSwitchToDesktopModal] =
+    useState(false);
 
   const handleDisconnect = useCallback(() => {
     setShowDisconnectModal(true);
@@ -114,7 +116,7 @@ export default function MobileNav() {
               <Button
                 variant="primaryMedium"
                 onClick={() => {
-                  router.push("/apis/create?activeTab=create");
+                  setShowSwitchToDesktopModal(true);
                 }}
               >
                 Publish Wrapper
@@ -141,6 +143,17 @@ export default function MobileNav() {
             noLeftShift
             close={() => {
               setShowSignInModal(false);
+            }}
+          />
+        </div>
+      )}
+      {showSwitchToDesktopModal && (
+        <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>
+          <Modal
+            screen={"switch"}
+            noLeftShift
+            close={() => {
+              setShowSwitchToDesktopModal(false);
             }}
           />
         </div>
