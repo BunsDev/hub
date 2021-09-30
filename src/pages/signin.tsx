@@ -1,9 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { useStateValue } from "../state/state";
-import Layout from "../components/Layout";
-import Navbar from "../components/Navbar";
-import BGWave from "../components/BGWave";
-import Header from "../components/Header";
+import Layout from "../components/Layout/Layout";
 import { domain } from "../constants";
 
 import axios from "axios";
@@ -37,10 +34,9 @@ const SignIn = (): unknown => {
   return (
     <Layout>
       <Flex>
-        <Navbar />
         <main>
           <div className="contents">
-            <Header title="Browse APIs" />
+            <Themed.h1>Browse APIs</Themed.h1>
             <section
               className="content"
               sx={{ display: "grid", placeItems: "center", height: "50%" }}
@@ -50,7 +46,6 @@ const SignIn = (): unknown => {
           </div>
         </main>
       </Flex>
-      <BGWave light />
     </Layout>
   );
 };

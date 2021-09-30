@@ -25,7 +25,7 @@ export const useGetAPIfromENSParamInURL = () => {
   const fetchApiDetails = useCallback(async () => {
     setIsLoading(true);
     try {
-      if (router.query.view !== undefined) {
+      if (router.query.uri !== undefined) {
         const { data: apiData } = await axios.get<{ api: APIData }>(
           domain + `/api/apis/ens/${router.asPath.split("ens/")[1]}`
         );
@@ -35,12 +35,14 @@ export const useGetAPIfromENSParamInURL = () => {
       setError(e);
     }
     setIsLoading(false);
-  }, [router.query.view]);
+  }, [router.query.uri]);
 
   useEffect(() => {
     if (router.isReady) {
       void fetchApiDetails();
     }
-  }, [router.isReady]);
+  }, [router.isReady, router.query.uri]);
   return { error, isLoading, data, fetchApiDetails };
 };
+
+export default useGetAPIfromENSParamInURL;

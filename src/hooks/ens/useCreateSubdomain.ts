@@ -85,3 +85,5 @@ export const useCreateSubdomain = () => {
 
   return [execute, { error, isLoading, status, data }] as const;
 };
+
+export default useCreateSubdomain;

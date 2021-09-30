@@ -3,7 +3,7 @@ import { cloudFlareGateway } from "../constants";
 import axios from "axios";
 import cheerio from "cheerio";
 
-const cleaner = require("clean-html");  // eslint-disable-line
+const cleaner = require("clean-html"); // eslint-disable-line
 
 export default async function get_CFG_UI_DOM(api: any, path: string) { // eslint-disable-line
   const response = await axios.get(

@@ -42,7 +42,8 @@ export function web3apiReducer(
           plugins,
         };
       }
-    default: // eslint-disable-line
+    // eslint-disable-next-line no-fallthrough
+    default:
       return state.web3api;
   }
 }

@@ -9,7 +9,7 @@ import axios from "axios";
 import { useCallback, useEffect } from "react";
 import { JWE } from "did-jwt";
 
-export const useAuth = (dapp: State["dapp"]) => {
+const useAuth = (dapp: State["dapp"]) => {
   const [state, dispatch] = useStateValue();
   const { github: cachedToken, did } = state.dapp;
   const [cachedDid, setCachedDid] = useLocalStorage("did", did);
@@ -84,3 +84,5 @@ export const useAuth = (dapp: State["dapp"]) => {
 
   return { set, get, authenticate, isAuthenticated };
 };
+
+export default useAuth;

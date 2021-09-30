@@ -22,6 +22,31 @@
     "jsx": "preserve",
     "downlevelIteration": true,
     "emitDecoratorMetadata": true,
+    "baseUrl": "./",
+    "rootDir": "./",
+    "paths": {
+      "context": [
+        "src/context"
+      ],
+      "components": [
+        "src/components"
+      ],
+      "components/*": [
+        "src/components/*"
+      ],
+      "hooks": [
+        "src/hooks"
+      ],
+      "hooks/*": [
+        "src/hooks/*"
+      ],
+      "utils/*": [
+        "src/utils/*"
+      ],
+      "services/*": [
+        "src/services/*"
+      ],
+    }
   },
   "include": [
     ".eslintrc.js",
