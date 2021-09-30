@@ -1,13 +1,12 @@
 /** @jsxImportSource theme-ui **/
-import { domain, networkID } from "../../constants";
-import { APIData } from "../../hooks/ens/useGetAPIfromENS";
+import { networkName } from "../../constants";
 import styles from "./styles";
 
-import React, { useEffect, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import { Flex, Button, Themed } from "theme-ui";
 import { QueryApiResult } from "@web3api/client-js";
-import { useWeb3ApiQuery } from "@web3api/react";
-import { useRouter, useStateValue } from "hooks";
+import { useWeb3ApiQuery, useWeb3ApiClient } from "@web3api/react";
+import { useRouter, useStateValue, useGetAPIfromENSParamInURL } from "hooks";
 import {
   Badge,
   Stars,
@@ -25,23 +24,27 @@ import getPackageQueriesFromAPIObject, {
 import cleanSchema, { StructuredSchema } from "utils/cleanSchema";
 import { networks } from "utils/networks";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
-
-type PlaygroundProps = {
-  api?: APIData;
-};
+import getPackageQueriesFromUri from "services/ipfs/getPackageQueriesFromUri";
+import { APIData } from "hooks/ens/useGetAPIfromENS";
 
 interface APIContents {
   schema?: string;
   queries?: QueryAttributes[];
 }
 
-const Playground = ({ api }: PlaygroundProps) => {
+const Playground = () => {
   const [{ dapp }] = useStateValue();
   const router = useRouter();
+  const client = useWeb3ApiClient();
+
+  const { data: api } = useGetAPIfromENSParamInURL();
 
   const [schemaVisible, setSchemaVisible] = useState(false);
 
   const [searchboxvalues, setsearchboxvalues] = useState([]);
+  const [customUri, setCustomUri] = useState(
+    router?.query?.customUri.toString() || ""
+  );
 
   const [apiContents, setapiContents] = useState<APIContents>();
   const [loadingPackageContents, setloadingPackageContents] = useState(false);
@@ -56,7 +59,6 @@ const Playground = ({ api }: PlaygroundProps) => {
     useState<QueryApiResult<Record<string, unknown>>>();
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({});
-  const { name: networkName } = networks[networkID];
 
   const { loading, execute } = useWeb3ApiQuery({
     uri: `ens/${networkName}/${router.asPath.split("/playground/ens/")[1]}`,
@@ -89,6 +91,12 @@ const Playground = ({ api }: PlaygroundProps) => {
   function handleClearBtnClick() {
     setclientresponed(undefined);
   }
+  const handleCustomUriApply: MouseEventHandler = (e) => {
+    e.preventDefault();
+    if (customUri) {
+      router.push(router.pathname + `?customUri=${customUri}`);
+    }
+  };
 
   async function exec() {
     const response = await execute(formVarsToSubmit);
@@ -96,14 +104,18 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   useEffect(() => {
-    setloadingPackageContents(true);
+    api && setloadingPackageContents(true);
     async function go() {
-      const schemaData = await getPackageSchemaFromAPIObject(api);
-      const queriesData = await getPackageQueriesFromAPIObject(api);
-      queriesData.push({
-        id: "custom",
-        value: "\n\n\n\n\n\n\n\n\n\n",
-      });
+      //const schemaData = await getPackageSchemaFromAPIObject(api);
+      const apiUri = api?.pointerUris[0];
+      const schemaData = await client.getSchema(
+        `ens/${networkName}/${api.pointerUris[0]}`
+      );
+      const queriesData = await getPackageQueriesFromUri(
+        client,
+        api as APIData
+      );
+
       setapiContents({
         schema: schemaData,
         queries: queriesData,
@@ -124,9 +136,7 @@ const Playground = ({ api }: PlaygroundProps) => {
       });
       setloadingPackageContents(false);
     }
-    if (loadingPackageContents && api) {
-      void go();
-    }
+    api && void go();
   }, [api]);
 
   useEffect(() => {
@@ -187,8 +197,16 @@ const Playground = ({ api }: PlaygroundProps) => {
           <Input
             className="input-wrap"
             placeholder="Enter wrapper URL"
+            value={customUri}
+            onChange={(e) => {
+              setCustomUri(e.target.value);
+            }}
             suffix={
-              <Button className="btn-suffix" variant="suffixSmall">
+              <Button
+                onClick={handleCustomUriApply}
+                className="btn-suffix"
+                variant="suffixSmall"
+              >
                 Apply
               </Button>
             }
@@ -200,10 +218,12 @@ const Playground = ({ api }: PlaygroundProps) => {
           <Flex>
             <Themed.h3>{api?.name || "Placeholder"}</Themed.h3>
             <Flex className="labels">
-              <Stars count={api?.favorites || 0} onDark large />
-              {api?.locationUri && (
+              {"favorites" in api && (
+                <Stars count={api?.favorites || 0} onDark large />
+              )}
+              {"locationUri" in api && (
                 <div className="category-Badges">
-                  <Badge label="IPFS" onDark ipfsHash={api.locationUri} />
+                  <Badge label="IPFS" onDark ipfsHash={api?.locationUri} />
                 </div>
               )}
             </Flex>

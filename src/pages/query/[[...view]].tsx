@@ -13,7 +13,6 @@ const PlaygroundPage = () => {
     },
     dispatch,
   ] = useStateValue();
-  const { data } = useGetAPIfromENSParamInURL();
 
   useEffect(() => {
     const previouslySelectedWallet = localStorage.getItem("selectedWallet");
@@ -35,9 +34,9 @@ const PlaygroundPage = () => {
           />{" "}
         </div>
       )}
-      {data !== null && web3api.plugins && (
+      {web3api.plugins && (
         <Web3ApiProvider plugins={web3api.plugins}>
-          <Playground api={data} />
+          <Playground />
         </Web3ApiProvider>
       )}
     </Layout>

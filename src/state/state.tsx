@@ -6,7 +6,7 @@ import React, { createContext, Dispatch, useContext, useReducer } from "react";
 
 export const StateContext = createContext<[State, Dispatch<StateAction>]>(null); // eslint-disable-line
 
-export const StateProvider = ({ children }: { children: React.ReactNode }) => {
+export const  StateProvider = ({ children }: { children: React.ReactNode }) => {
   // eslint-disable-line
   const [state, dispatch] = useReducer(reducer, initialState);
 
