@@ -27,6 +27,36 @@ export const useGetAPIfromENSParamInURL = () => {
   const router = useRouter();
   const [error, setError] = useState<any>(); // eslint-disable-line
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<APIData>();
+
+  const fetchApiDetails = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      if (router.query.uri) {
+        const { data: apiData } = await axios.get<{ api: APIData }>(
+          domain + `/api/apis/ens/${router.asPath.split("ens/")[1]}`
+        );
+        setData(apiData.api);
+      }
+    } catch (e) {
+      setError(e);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [router.query.uri, router.query.customUri]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      void fetchApiDetails();
+    }
+  }, [router.isReady, router.query.uri, router.query.customUri]);
+  return { error, isLoading, data, fetchApiDetails };
+};
+
+export const useGetAPIfromParamInURL = () => {
+  const router = useRouter();
+  const [error, setError] = useState<any>(); // eslint-disable-line
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<APIData | APIDataFromManifest>();
   const client = useWeb3ApiClient();
 
@@ -69,5 +99,6 @@ export const useGetAPIfromENSParamInURL = () => {
   }, [router.isReady, router.query.uri, router.query.customUri]);
   return { error, isLoading, data, fetchApiDetails };
 };
+
 
 export default useGetAPIfromENSParamInURL;

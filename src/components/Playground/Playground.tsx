@@ -6,7 +6,7 @@ import React, { MouseEventHandler, useEffect, useState } from "react";
 import { Flex, Button, Themed } from "theme-ui";
 import { QueryApiResult } from "@web3api/client-js";
 import { useWeb3ApiQuery, useWeb3ApiClient } from "@web3api/react";
-import { useRouter, useStateValue, useGetAPIfromENSParamInURL } from "hooks";
+import { useRouter, useStateValue } from "hooks";
 import {
   Badge,
   Stars,
@@ -17,15 +17,11 @@ import {
   JSONEditor,
   Input,
 } from "components";
-import getPackageSchemaFromAPIObject from "services/ipfs/getPackageSchemaFromAPIObject";
-import getPackageQueriesFromAPIObject, {
-  QueryAttributes,
-} from "services/ipfs/getPackageQueriesFromAPIObject";
+import { QueryAttributes } from "services/ipfs/getPackageQueriesFromAPIObject";
 import cleanSchema, { StructuredSchema } from "utils/cleanSchema";
-import { networks } from "utils/networks";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
 import getPackageQueriesFromUri from "services/ipfs/getPackageQueriesFromUri";
-import { APIData } from "hooks/ens/useGetAPIfromENS";
+import { APIData, useGetAPIfromParamInURL } from "hooks/ens/useGetAPIfromENS";
 
 interface APIContents {
   schema?: string;
@@ -37,7 +33,7 @@ const Playground = () => {
   const router = useRouter();
   const client = useWeb3ApiClient();
 
-  const { data: api } = useGetAPIfromENSParamInURL();
+  const { data: api } = useGetAPIfromParamInURL();
 
   const [schemaVisible, setSchemaVisible] = useState(false);
 
