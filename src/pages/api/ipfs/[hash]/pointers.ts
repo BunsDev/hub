@@ -33,16 +33,26 @@ export default async (request: VercelRequest, response: VercelResponse) => {
           }
         );
 
-        // TODO: ignore some cases?
-        const newApi = await apiRepository.add(
-          manifest.name,
-          manifest.subtext,
-          manifest.description,
-          manifest.icon,
-          null
-        );
+        const existsUri = await apiUrisRepository.findByUri(uri.uri);
+        if (existsUri) {
+          await apiRepository.updateById(
+            existsUri.id,
+            manifest.name,
+            manifest.subtext,
+            manifest.description,
+            manifest.icon
+          );
+        } else {
+          const newApi = await apiRepository.add(
+            manifest.name,
+            manifest.subtext,
+            manifest.description,
+            manifest.icon,
+            null
+          );
 
-        await apiUrisRepository.add(uri.uri, newApi.id, Authorities.IPFS);
+          await apiUrisRepository.add(uri.uri, newApi.id, Authorities.IPFS);
+        }
       }
 
       return response.json({

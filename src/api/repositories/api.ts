@@ -22,6 +22,23 @@ export default class ApiRepository extends Repository<Apis> {
     });
   }
 
+  public async updateById(
+    id: string,
+    name: string,
+    subtext: string,
+    description: string,
+    icon: string,
+    ownerId?: string
+  ) {
+    return this.update(id, {
+      name,
+      subtext,
+      description,
+      icon,
+      ownerId,
+    });
+  }
+
   public findByName(name: string): Promise<Apis | undefined> {
     return this.findOne({
       where: {
