@@ -38,9 +38,12 @@ export default class Apis {
   @JoinColumn([{ name: "fk_organization_id", referencedColumnName: "id" }])
   public organization: Partial<Organizations>;
 
+  @Column("character varying", { name: "fk_owner_id", nullable: true })
+  public ownerId: string | null;
+
   @ManyToOne(() => Users, (user) => user.apis)
   @JoinColumn([{ name: "fk_owner_id", referencedColumnName: "id" }])
-  public owner: Partial<Users>;
+  public owner: Partial<Users> | null;
 
   @OneToMany(() => StarredApis, (starredApi) => starredApi.api)
   public starredApis: Partial<StarredApis>[];

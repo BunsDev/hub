@@ -1,5 +1,8 @@
 import Database from "../../db";
 import UriCacheRepository from "../../../../api/repositories/uriCacheRepository";
+import { Authorities } from "../../../../api/models/Api";
+import ApiRepository from "../../../../api/repositories/api";
+import ApiUrisRepository from "../../../../api/repositories/apiUrisRepository";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getCustomRepository } from "typeorm";
@@ -13,30 +16,38 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       const database = new Database();
       await database.connect();
 
-      const client = new Web3ApiClient();
-
-      const metadata = await client.getManifest(
-        "ens/ropsten/yay2.open.web3api.eth",
-        {
-          type: "meta",
-        }
-      );
-
-      // TODO: get file
-      const t = await client.getFile("ens/ropsten/yay2.open.web3api.eth", {
-        path: metadata.queries[0].query,
-      });
-
-      console.log({ t });
-
       const uriCaches = await getCustomRepository(
         UriCacheRepository
       ).findUrisByIpfsHash(hash as string);
 
+      const apiRepository = await getCustomRepository(ApiRepository);
+      const apiUrisRepository = await getCustomRepository(ApiUrisRepository);
+
+      const client = new Web3ApiClient();
+
+      for (const uri of uriCaches) {
+        const manifest = await client.getManifest(
+          uri.uri.replace("ens/", "ens/ropsten/"),
+          {
+            type: "meta",
+          }
+        );
+
+        // TODO: ignore some cases?
+        const newApi = await apiRepository.add(
+          manifest.name,
+          manifest.subtext,
+          manifest.description,
+          manifest.icon,
+          null
+        );
+
+        await apiUrisRepository.add(uri.uri, newApi.id, Authorities.IPFS);
+      }
+
       return response.json({
         status: 200,
         pointers: uriCaches.map((uriCache) => uriCache.uri),
-        metadata,
       });
     } catch (error) {
       return response.json({

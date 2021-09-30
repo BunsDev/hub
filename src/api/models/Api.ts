@@ -4,51 +4,10 @@ import { getConnection } from "typeorm";
 
 export enum Authorities {
   ENS = 1,
-  IPFS,
+  IPFS = 2,
 }
 
 export class Api {
-  public static async create(apiInfo: ApiData) {
-    const {
-      name,
-      subtext,
-      description,
-      icon,
-      locationUri,
-      pointerUris,
-      ownerId,
-    } = apiInfo;
-
-    const api = await getConnection()
-      .createQueryRunner()
-      .query(
-        `INSERT INTO apis (name, subtext, description, icon, fk_owner_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-        [name, subtext, description, icon, ownerId]
-      );
-
-    console.log({ api });
-
-    const insertPointers = async (locationUri: string) => {
-      return await getConnection()
-        .createQueryRunner()
-        .query(
-          `INSERT INTO api_uris (uri, fk_api_id, fk_uri_type_id) VALUES ($1, $2, $3)`,
-          [locationUri, api.id, Authorities.IPFS]
-        );
-    };
-
-    pointerUris.map(insertPointers);
-
-    return {
-      name,
-      subtext,
-      description,
-      icon,
-      locationUri,
-      pointerUris,
-    };
-  }
-
   public static async getByLocation(location: string, name: string) {
     const api = await getConnection()
       .createQueryRunner()

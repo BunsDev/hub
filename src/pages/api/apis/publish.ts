@@ -1,8 +1,12 @@
 import { checkContentIsValid } from "../../../api/services/ens";
 import { withValidatePublishBody } from "../../../api/helpers";
-import { Api } from "../../../api/models/Api";
+import { Authorities } from "../../../api/models/Api";
 import { ApiData } from "../../../api/models/types";
+import Database from "../db";
+import ApiRepository from "../../../api/repositories/api";
+import ApiUrisRepository from "../../../api/repositories/apiUrisRepository";
 
+import { getCustomRepository } from "typeorm";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
 const md5 = require("md5"); // eslint-disable-line
@@ -29,7 +33,26 @@ export default withValidatePublishBody(
         );
 
         if (valid) {
-          const api = await Api.create(apiInfo);
+          const database = new Database();
+          await database.connect();
+
+          const apiRepository = await getCustomRepository(ApiRepository);
+          const apiUrisRepository = await getCustomRepository(
+            ApiUrisRepository
+          );
+
+          const api = await apiRepository.add(
+            apiInfo.name,
+            apiInfo.subtext,
+            apiInfo.description,
+            apiInfo.icon,
+            apiInfo.ownerId
+          );
+
+          for (const uri of apiInfo.locationUri) {
+            await apiUrisRepository.add(uri, api.id, Authorities.IPFS);
+          }
+
           return response.json({ status: 200, api });
         }
 
