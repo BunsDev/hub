@@ -39,7 +39,7 @@ const Playground = () => {
 
   const [searchboxvalues, setsearchboxvalues] = useState([]);
   const [customUri, setCustomUri] = useState(
-    router?.query?.customUri.toString() || ""
+    (router?.query?.customUri && router?.query?.customUri.toString()) || ""
   );
 
   const [apiContents, setapiContents] = useState<APIContents>();
