@@ -1,8 +1,8 @@
 import StarredApiRepository from "../../../../../api/repositories/starredApi";
-import { Api } from "../../../../../api/models/Api";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getConnection } from "typeorm";
+import ApiRepository from "src/api/repositories/api";
 
 const md5 = require("md5"); // eslint-disable-line
 
@@ -19,10 +19,11 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
       const starredApiRepository =
         getConnection().getCustomRepository(StarredApiRepository);
+      const apiRepository = getConnection().getCustomRepository(ApiRepository);
 
       const id = md5(userDid);
 
-      const data = await Api.getFavoritesByUserId(id);
+      const data = await apiRepository.getFavoritesByUserId(id);
       const count = await starredApiRepository.getFavoritesCountByUserId(id);
 
       return response.json({

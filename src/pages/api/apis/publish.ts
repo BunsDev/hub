@@ -1,9 +1,10 @@
 import { checkContentIsValid } from "../../../api/services/ens";
 import { withValidatePublishBody } from "../../../api/helpers";
-import { Api } from "../../../api/models/Api";
 import { ApiData } from "../../../api/models/types";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import { getConnection } from "typeorm";
+import ApiRepository from "src/api/repositories/api";
 
 const md5 = require("md5"); // eslint-disable-line
 
@@ -29,7 +30,10 @@ export default withValidatePublishBody(
         );
 
         if (valid) {
-          const api = await Api.create(apiInfo);
+          const apiRepository =
+            getConnection().getCustomRepository(ApiRepository);
+
+          const api = await apiRepository.add(apiInfo);
           return response.json({ status: 200, api });
         }
 

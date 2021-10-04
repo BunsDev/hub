@@ -1,11 +1,16 @@
 import Apis from "../entities/apis";
 import { ApiData } from "../models/types";
-import { Api } from "../models/Api";
 
 import { EntityRepository, Repository } from "typeorm";
+import sanitizeApis from "utils/sanitizeApis";
 
 @EntityRepository(Apis)
 export default class ApiRepository extends Repository<Apis> {
+  public async add(obj: any): Promise<any> { // eslint-disable-line
+    // TODO
+    return null;
+  }
+
   public findByName(name: string): Promise<Apis | undefined> {
     return this.findOne({
       where: {
@@ -72,12 +77,106 @@ export default class ApiRepository extends Repository<Apis> {
 			GROUP BY apis.id, uri_types.type, api_uris.uri`
     );
 
-    return data.reduce(Api.sanitizeApis, []);
+    return data.reduce(sanitizeApis, []);
   }
 
   public async deactivate(id: number) {
     return this.update(id, {
       visible: false,
     });
+  }
+
+  public async getByLocation(location: string, name: string) {
+    const api = await this.query(
+      `SELECT apis.id FROM apis
+        INNER JOIN api_uris ON apis.id = api_uris.fk_api_id
+        INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id
+        WHERE api_uris.uri = $1 AND LOWER(uri_types.name) = $2`,
+      [name, location]
+    );
+
+    if (!api) {
+      return null;
+    }
+
+    return await this.query(
+      `SELECT
+          apis.id,
+          apis.description,
+          apis.name,
+          apis.subtext,
+          apis.icon,
+          uri_types.type as type,
+          api_uris.uri,
+          COUNT(starred_apis.fk_api_id) as favorites
+        FROM apis
+        INNER JOIN api_uris ON apis.id = api_uris.fk_api_id 
+        INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id 
+        FULL OUTER JOIN starred_apis ON apis.id = starred_apis.fk_api_id
+        WHERE api_uris.fk_api_id = $1
+        GROUP BY apis.id, uri_types.type, api_uris.uri`,
+      [api[0].id]
+    );
+  }
+
+  public async getFavorites(apiId: string) {
+    return await this.query(
+      `SELECT apis.id, 
+        apis.description, 
+        apis.name, 
+        apis.subtext,
+        apis.icon, 
+        uri_types.type as type, 
+        api_uris.uri FROM apis 
+        INNER JOIN api_uris ON apis.id = api_uris.fk_api_id 
+        INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id 
+        INNER JOIN starred_apis ON apis.id = starred_apis.fk_api_id
+        WHERE starred_apis.fk_api_id = $1`,
+      [apiId]
+    );
+  }
+
+  public async getFavoritesByUserId(userId: string) {
+    const data = await this.query(
+      `SELECT apis.id,
+      apis.description,
+      apis.name,
+      apis.subtext,
+      apis.icon,
+      uri_types.type as type,
+      api_uris.uri,
+      COUNT(starred_apis.fk_api_id) as favorites
+      FROM apis
+      FULL OUTER JOIN starred_apis on apis.id = starred_apis.fk_api_id
+      INNER JOIN api_uris ON apis.id = api_uris.fk_api_id
+      INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id
+      WHERE starred_apis.fk_user_id = $1
+      GROUP BY apis.id, uri_types.type, api_uris.uri`,
+      [userId]
+    );
+
+    return data.reduce(sanitizeApis, []);
+  }
+
+  public async getPublishedApis(userId: string) {
+    const data = await this.query(
+      `SELECT apis.id,
+        apis.description,
+        apis.name,
+        apis.subtext,
+        apis.icon,
+        uri_types.type as type,
+        api_uris.uri,
+        COUNT(starred_apis.fk_api_id) as favorites
+      FROM apis
+      INNER JOIN api_uris ON apis.id = api_uris.fk_api_id
+      INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id
+      FULL OUTER JOIN starred_apis ON apis.id = starred_apis.fk_api_id
+      WHERE apis.fk_owner_id = $1
+      GROUP BY apis.id, uri_types.type, api_uris.uri`,
+      [userId]
+    );
+
+    return data.reduce(sanitizeApis, []);
   }
 }

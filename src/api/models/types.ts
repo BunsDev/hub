@@ -16,3 +16,8 @@ export interface PaginationMeta {
   max_page: number;
   total_count: number;
 }
+
+export enum Authorities {
+  ENS = 1,
+  IPFS = 2,
+}
