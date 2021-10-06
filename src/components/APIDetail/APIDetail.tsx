@@ -86,10 +86,8 @@ const api = new Web3API({
         </Flex>
       </Flex>
       <Flex className="right">
-        <div className="info-card">
-          <Flex>
-            <Themed.h3 className="title">{api.name}</Themed.h3>
-          </Flex>
+        <Flex className="info-card">
+          <Themed.h3 className="title">{api.name}</Themed.h3>
           <ul className="links">
             {"pointerUris" in api &&
               api.pointerUris.map((pointer, idx) => {
@@ -115,15 +113,15 @@ const api = new Web3API({
               </li>
             )}
           </ul>
-          <Button
-            variant="secondaryMedium"
-            onClick={() => {
-              void router.push(`/query?uri=/ens/${api.pointerUris[0]}`);
-            }}
-          >
-            Open Playground
-          </Button>
-        </div>
+        </Flex>
+        <Button
+          variant="secondaryMedium"
+          onClick={() => {
+            void router.push(`/query?uri=/ens/${api.pointerUris[0]}`);
+          }}
+        >
+          Open Playground
+        </Button>
       </Flex>
     </div>
   );

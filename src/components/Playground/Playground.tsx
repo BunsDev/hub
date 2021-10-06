@@ -1,12 +1,11 @@
 /** @jsxImportSource theme-ui **/
-import { networkID } from "../../constants";
-import { APIData } from "../../hooks/ens/useGetAPIfromENS";
+import { networkName } from "../../constants";
 import styles from "./styles";
 
-import React, { useEffect, useState } from "react";
-import { Flex, Button, Themed, Grid } from "theme-ui";
+import React, { MouseEventHandler, useEffect, useState } from "react";
+import { Flex, Button, Themed } from "theme-ui";
 import { QueryApiResult } from "@web3api/client-js";
-import { useWeb3ApiQuery } from "@web3api/react";
+import { useWeb3ApiQuery, useWeb3ApiClient } from "@web3api/react";
 import { useRouter, useStateValue } from "hooks";
 import {
   Badge,
@@ -18,31 +17,30 @@ import {
   JSONEditor,
   Input,
 } from "components";
-import getPackageSchemaFromAPIObject from "services/ipfs/getPackageSchemaFromAPIObject";
-import getPackageQueriesFromAPIObject, {
-  QueryAttributes,
-} from "services/ipfs/getPackageQueriesFromAPIObject";
+import { QueryAttributes } from "services/ipfs/getPackageQueriesFromAPIObject";
 import cleanSchema, { StructuredSchema } from "utils/cleanSchema";
-import { networks } from "utils/networks";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
-
-type PlaygroundProps = {
-  api?: APIData;
-};
+import getPackageQueriesFromUri from "services/ipfs/getPackageQueriesFromUri";
+import { APIData, useGetAPIfromParamInURL } from "hooks/ens/useGetAPIfromENS";
 
 interface APIContents {
   schema?: string;
   queries?: QueryAttributes[];
 }
 
-const Playground = ({ api }: PlaygroundProps) => {
+const Playground = () => {
   const [{ dapp }] = useStateValue();
   const router = useRouter();
+  const client = useWeb3ApiClient();
+
+  const { data: api } = useGetAPIfromParamInURL();
 
   const [schemaVisible, setSchemaVisible] = useState(false);
-  const [apiOptions, setApiOptions] = useState(dapp.apis);
 
   const [searchboxvalues, setsearchboxvalues] = useState([]);
+  const [customUri, setCustomUri] = useState(
+    (router?.query?.customUri && router?.query?.customUri.toString()) || ""
+  );
 
   const [apiContents, setapiContents] = useState<APIContents>();
   const [loadingPackageContents, setloadingPackageContents] = useState(false);
@@ -57,7 +55,6 @@ const Playground = ({ api }: PlaygroundProps) => {
     useState<QueryApiResult<Record<string, unknown>>>();
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({});
-  const { name: networkName } = networks[networkID];
 
   const { loading, execute } = useWeb3ApiQuery({
     uri: `ens/${networkName}/${router.asPath.split("/playground/ens/")[1]}`,
@@ -90,6 +87,12 @@ const Playground = ({ api }: PlaygroundProps) => {
   function handleClearBtnClick() {
     setclientresponed(undefined);
   }
+  const handleCustomUriApply: MouseEventHandler = (e) => {
+    e.preventDefault();
+    if (customUri) {
+      router.push(router.pathname + `?customUri=${customUri}`);
+    }
+  };
 
   async function exec() {
     const response = await execute(formVarsToSubmit);
@@ -97,18 +100,18 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   useEffect(() => {
-    setApiOptions(dapp.apis);
-  }, [dapp.apis]);
-
-  useEffect(() => {
-    setloadingPackageContents(true);
+    api && setloadingPackageContents(true);
     async function go() {
-      const schemaData = await getPackageSchemaFromAPIObject(api);
-      const queriesData = await getPackageQueriesFromAPIObject(api);
-      queriesData.push({
-        id: "custom",
-        value: "\n\n\n\n\n\n\n\n\n\n",
-      });
+      //const schemaData = await getPackageSchemaFromAPIObject(api);
+      const apiUri = api?.pointerUris[0];
+      const schemaData = await client.getSchema(
+        `ens/${networkName}/${api.pointerUris[0]}`
+      );
+      const queriesData = await getPackageQueriesFromUri(
+        client,
+        api as APIData
+      );
+
       setapiContents({
         schema: schemaData,
         queries: queriesData,
@@ -129,9 +132,7 @@ const Playground = ({ api }: PlaygroundProps) => {
       });
       setloadingPackageContents(false);
     }
-    if (loadingPackageContents && api) {
-      void go();
-    }
+    api && void go();
   }, [api]);
 
   useEffect(() => {
@@ -170,9 +171,8 @@ const Playground = ({ api }: PlaygroundProps) => {
             placeholder={"Search API’s"}
             labelField="name"
             valueField="name"
-            options={apiOptions}
+            options={dapp.apis}
             values={searchboxvalues}
-            searchable={false}
             onChange={(values) => {
               setSchemaVisible(false);
               setsearchboxvalues(values);
@@ -193,8 +193,16 @@ const Playground = ({ api }: PlaygroundProps) => {
           <Input
             className="input-wrap"
             placeholder="Enter wrapper URL"
+            value={customUri}
+            onChange={(e) => {
+              setCustomUri(e.target.value);
+            }}
             suffix={
-              <Button className="btn-suffix" variant="suffixSmall">
+              <Button
+                onClick={handleCustomUriApply}
+                className="btn-suffix"
+                variant="suffixSmall"
+              >
                 Apply
               </Button>
             }
@@ -206,10 +214,12 @@ const Playground = ({ api }: PlaygroundProps) => {
           <Flex>
             <Themed.h3>{api?.name || "Placeholder"}</Themed.h3>
             <Flex className="labels">
-              <Stars count={api?.favorites || 0} onDark large />
-              {api?.locationUri && (
+              {"favorites" in api && (
+                <Stars count={api?.favorites || 0} onDark large />
+              )}
+              {"locationUri" in api && (
                 <div className="category-Badges">
-                  <Badge label="IPFS" onDark ipfsHash={api.locationUri} />
+                  <Badge label="IPFS" onDark ipfsHash={api?.locationUri} />
                 </div>
               )}
             </Flex>
@@ -217,21 +227,9 @@ const Playground = ({ api }: PlaygroundProps) => {
           <a href={router.asPath.replace("query", "info")}>Open Wrapper Page</a>
         </Flex>
       )}
-      <Grid
-        className="grid"
-        gap="1rem"
-        columns={["1fr", "1fr", "min-content min-content min-content"]}
-        sx={{
-          ">div": {
-            maxWidth: schemaVisible ? "398px" : "577px",
-            width: schemaVisible
-              ? ["100%", null, "calc((100vw - 4.6875rem)/3 - 2.5rem)"]
-              : ["100%", null, "calc((100vw - 4.6875rem)/2 - 3rem)"],
-          },
-        }}
-      >
+      <Flex className={`grid ${schemaVisible ? "withSchema" : ""}`}>
         <Flex className="query">
-          <section className="templates">
+          <section className="templates scrollable">
             {apiContents?.queries && (
               <SelectBox
                 key={"queries-box"}
@@ -252,7 +250,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               />
             )}
           </section>
-          <section className="vars">
+          <section className="vars scrollable">
             <div className="subtitle-1">Vars</div>
             <JSONEditor
               value={formVarsToSubmit}
@@ -260,114 +258,118 @@ const Playground = ({ api }: PlaygroundProps) => {
             />
           </section>
         </Flex>
-        <div className="result">
-          <section>
-            <Flex className="controls">
-              <Flex>
-                {apiContents?.queries && (
-                  <Button variant="primaryMedium" onClick={exec}>
-                    Run
-                  </Button>
-                )}
-                {clientresponded !== undefined && (
-                  <React.Fragment>
-                    <Button
-                      variant="secondarySmall"
-                      onClick={handleSaveBtnClick}
-                    >
-                      Save
+        <Flex className="dynamic">
+          <div className="result">
+            <section>
+              <Flex className="controls">
+                <Flex>
+                  {apiContents?.queries && (
+                    <Button variant="primaryMedium" onClick={exec}>
+                      Run
                     </Button>
-                    <Button
-                      variant="secondarySmall"
-                      onClick={handleClearBtnClick}
-                    >
-                      Clear
-                    </Button>
-                  </React.Fragment>
-                )}
+                  )}
+                  {clientresponded !== undefined && (
+                    <React.Fragment>
+                      <Button
+                        variant="secondarySmall"
+                        onClick={handleSaveBtnClick}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="secondarySmall"
+                        onClick={handleClearBtnClick}
+                      >
+                        Clear
+                      </Button>
+                    </React.Fragment>
+                  )}
+                </Flex>
+                {loadingPackageContents
+                  ? "Loading Schema..."
+                  : apiContents?.schema &&
+                    !schemaVisible && (
+                      <span
+                        onClick={() => {
+                          setSchemaVisible(true);
+                        }}
+                      >
+                        {`${"<"}`} Show Schema
+                      </span>
+                    )}
               </Flex>
-              {loadingPackageContents
-                ? "Loading Schema..."
-                : apiContents?.schema &&
-                  !schemaVisible && (
+              <div className="body">
+                <Themed.pre>
+                  {loading ? (
+                    <div>
+                      <LoadingSpinner />
+                    </div>
+                  ) : (
+                    <React.Fragment>
+                      {clientresponded !== undefined &&
+                        JSON.stringify(clientresponded.data, undefined, 2)}
+                      {clientresponded !== undefined &&
+                        clientresponded.errors !== undefined &&
+                        clientresponded.errors.toString()}
+                    </React.Fragment>
+                  )}
+                </Themed.pre>
+              </div>
+            </section>
+          </div>
+          <div
+            className="schema scrollable"
+            sx={{
+              width: schemaVisible ? "30vw" : "0 !important",
+            }}
+          >
+            <section>
+              {structuredschema && (
+                <>
+                  <Flex className="subtitle-1">
+                    <span>Schema</span>
                     <span
+                      className="btn"
                       onClick={() => {
-                        setSchemaVisible(true);
+                        setSchemaVisible(false);
                       }}
                     >
-                      {`${"<"}`} Show Schema
+                      {`${">"}`} Hide Schema
                     </span>
-                  )}
-            </Flex>
-            <Themed.pre>
-              {loading ? (
-                <div>
-                  <LoadingSpinner />
-                </div>
-              ) : (
-                <React.Fragment>
-                  {clientresponded !== undefined &&
-                    JSON.stringify(clientresponded.data, undefined, 2)}
-                  {clientresponded !== undefined &&
-                    clientresponded.errors !== undefined &&
-                    clientresponded.errors.toString()}
-                </React.Fragment>
+                  </Flex>
+                  <div>
+                    <GQLCodeBlock
+                      readOnly
+                      title="Queries"
+                      value={structuredschema.localqueries}
+                    />
+                    <GQLCodeBlock
+                      readOnly
+                      title="Mutations"
+                      value={structuredschema.localmutations}
+                    />
+                    <GQLCodeBlock
+                      readOnly
+                      title="Custom Types"
+                      value={structuredschema.localcustom}
+                    />
+                    <GQLCodeBlock
+                      readOnly
+                      title="Imported Queries"
+                      value={structuredschema.importedqueries}
+                    />
+                    <GQLCodeBlock
+                      readOnly
+                      title="Imported Mutations"
+                      value={structuredschema.importedmutations}
+                    />
+                  </div>
+                </>
               )}
-            </Themed.pre>
-          </section>
-        </div>
-        <div
-          className="schema scrollable"
-          sx={{
-            width: schemaVisible ? "30vw" : "0 !important",
-          }}
-        >
-          <section>
-            {structuredschema && (
-              <>
-                <Flex className="subtitle-1">
-                  <span>Schema</span>
-                  <span
-                    className="btn"
-                    onClick={() => {
-                      setSchemaVisible(false);
-                    }}
-                  >
-                    {`${">"}`} Hide Schema
-                  </span>
-                </Flex>
-                <div>
-                  <GQLCodeBlock
-                    readOnly
-                    title="Queries"
-                    value={structuredschema.localqueries}
-                  />
-                  <GQLCodeBlock
-                    readOnly
-                    title="Mutations"
-                    value={structuredschema.localmutations}
-                  />
-                  <GQLCodeBlock
-                    readOnly
-                    title="Custom Types"
-                    value={structuredschema.localcustom}
-                  />
-                  <GQLCodeBlock
-                    readOnly
-                    title="Imported Queries"
-                    value={structuredschema.importedqueries}
-                  />
-                  <GQLCodeBlock
-                    readOnly
-                    title="Imported Mutations"
-                    value={structuredschema.importedmutations}
-                  />
-                </div>
-              </>
-            )}
-          </section>
-        </div>
-      </Grid>
+            </section>
+          </div>
+        </Flex>
+      </Flex>
     </div>
   );
 };

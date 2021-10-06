@@ -1,14 +1,15 @@
 /** @jsxImportSource theme-ui **/
-import { ipfsGateway } from "../../../constants";
-import Dots from "../../../../public/images/dots-vertical.svg";
-import styles from "./styles";
-
 import { useMemo } from "react";
 import { Flex, Themed } from "theme-ui";
+
 import { Badge, Stars } from "components";
+import { ipfsGateway } from "../../../constants";
 import { useRouter } from "hooks";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
+import Dots from "../../../../public/images/dots-vertical.svg";
+
+import styles from "./styles";
 
 type CardProps = {
   api?: APIData;
@@ -19,13 +20,15 @@ type CardProps = {
 const Card = ({ api, ipfsHash, redirectUrl }: CardProps) => {
   const router = useRouter();
   const redirect = useMemo(
-    () =>
-      "info?uri=" + (ipfsHash || redirectUrl || "/ens/" + api?.pointerUris[0]),
+    () => 'info?uri=' + (ipfsHash || redirectUrl || "/ens/" + api?.pointerUris[0]),
     [ipfsHash, redirectUrl, api?.pointerUris]
   );
 
   return (
-    <div className="Card" sx={styles.card}>
+    <div
+      className="Card"
+      sx={styles.card}
+    >
       {api && api.pointerUris && api.pointerUris.length > 0 ? (
         <a href="#" onClick={() => router.replace(redirect)}>
           <div className="wrap-contents">

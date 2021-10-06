@@ -12,6 +12,7 @@ const GlobalTheme: Theme = {
   breakpoints: [
     `@media (max-width: ${RESPONSOVE_BREAKPOINTS.XSMALL}px)`,
     `@media (min-width: ${RESPONSOVE_BREAKPOINTS.MEDIUM}px)`,
+    `@media (max-width: ${RESPONSOVE_BREAKPOINTS.SMALL}px)`,
   ],
   fonts: {
     body: '"Nunito Sans", sans-serif',

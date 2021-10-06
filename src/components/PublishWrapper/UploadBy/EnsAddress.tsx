@@ -1,7 +1,4 @@
 /** @jsxImportSource theme-ui **/
-import { MAIN_DOMAIN, ZERO_ADDRESS } from "../../../constants";
-import styles from "./styles";
-
 import {
   ChangeEventHandler,
   MouseEventHandler,
@@ -13,6 +10,9 @@ import { getOwner } from "services/ens/getOwner";
 import { useStateValue } from "hooks";
 import { Spinner, Input } from "components";
 import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
+import { MAIN_DOMAIN, ZERO_ADDRESS } from "../../../constants";
+
+import styles from "./styles";
 
 export const EnsAddress = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();

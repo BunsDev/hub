@@ -1,7 +1,4 @@
 /** @jsxImportSource theme-ui **/
-import { ipfsGateway, domain, MAIN_DOMAIN } from "../../constants";
-import styles from "./styles";
-
 import { FormEventHandler, useEffect } from "react";
 import { Flex, Button, Themed, Image } from "theme-ui";
 import {
@@ -15,6 +12,9 @@ import {
 import { Wrapper } from "components/PublishWrapper";
 import { Input } from "components";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
+import { ipfsGateway, domain, MAIN_DOMAIN } from "../../constants";
+
+import styles from "./styles";
 
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();

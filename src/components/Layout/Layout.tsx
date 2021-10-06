@@ -1,15 +1,15 @@
 /** @jsxImportSource theme-ui **/
-import { domain, RESPONSOVE_BREAKPOINTS } from "../../constants";
-import styles from "./styles";
-import getGlobalStyles from "./styles-global";
-
 import { useEffect, useState } from "react";
 import { Global } from "@emotion/react";
 import useSWR from "swr";
 import { useStateValue, useWindowSize } from "hooks";
 import { Header, BGCircles } from "components";
 import { MobileNav } from "components/Layout/Navigation";
-import { ResponsiveContext, ResponsiveProvider } from "hooks/useResponsive";
+import { ResponsiveProvider } from "hooks/useResponsive";
+import { domain, RESPONSOVE_BREAKPOINTS } from "../../constants";
+
+import getGlobalStyles from "./styles-global";
+import styles from "./styles";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -23,17 +23,6 @@ const Layout = ({ children }: LayoutProps) => {
     windowSize?.width <= RESPONSOVE_BREAKPOINTS.XSMALL || false
   );
   const [isMobileNavActive, setMobileNavActive] = useState(false);
-  const { data: apis } = useSWR(domain + "/api/apis/active");
-  // https://github.com/system-ui/theme-ui/issues/834#issuecomment-625865772
-
-  useEffect(() => {
-    if (apis && apis.apis) {
-      dispatch({
-        type: "SET_AVAILABLE_APIS",
-        payload: apis.apis,
-      });
-    }
-  }, [apis]);
 
   useEffect(() => {
     if (windowSize.width <= RESPONSOVE_BREAKPOINTS.XSMALL) {

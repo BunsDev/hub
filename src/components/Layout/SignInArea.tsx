@@ -39,10 +39,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
   return (
     <Flex
       className="sign-in-wrap"
-      sx={{
-        ...styles.signInArea,
-        ul: { color: onDark ? "white !important" : "" },
-      }}
+      sx={{ ...styles.signInArea, ul: { color: onDark ? "white !important" : "" } }}
     >
       {showGithubSignInModal && (
         <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>

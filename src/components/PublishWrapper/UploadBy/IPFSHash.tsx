@@ -1,11 +1,12 @@
-import styles from "./styles";
-
+/** @jsxImportSource theme-ui **/
 import React, { ChangeEventHandler, MouseEventHandler } from "react";
 import { Flex, Image, Button } from "theme-ui";
 import getMetaDataFromPackageHash from "services/ipfs/getMetaDataFromPackageHash";
 import { useStateValue } from "hooks";
 import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
 import { Spinner, Input } from "components";
+
+import styles from "./styles";
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();

@@ -1,11 +1,12 @@
 /** @jsxImportSource theme-ui **/
-import { NavItem as NavItemType } from "./navItemsData";
-import styles from "./styles";
-
 import { MouseEventHandler, useMemo } from "react";
 import { Link } from "@theme-ui/components";
 import { ThemeUIStyleObject } from "@theme-ui/css";
+
 import { useRouter } from "hooks";
+import { NavItem as NavItemType } from "./navItemsData";
+
+import styles from "./styles";
 
 const NavItem = ({
   item,
@@ -45,8 +46,15 @@ const NavItem = ({
       onClick={onClick}
     >
       <Link href={item?.href}>
-        {item.imgSrc && <img src={item.imgSrc} alt={item.title + "icon"} />}
-        <span className="text-nav">{item.title}</span>
+        {item.imgSrc && (
+          <img
+            src={item.imgSrc}
+            alt={item.title + "icon"}
+          />
+        )}
+        <span className="text-nav">
+          {item.title}
+        </span>
       </Link>
       {item?.children && (
         <div className="dropdown-content">

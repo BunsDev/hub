@@ -1,9 +1,9 @@
 /** @jsxImportSource theme-ui **/
-import { navItems } from "./navItemsData";
-import styles from "./styles";
-
 import { NavItem } from "components/Layout/Navigation";
+import { navItems } from "./navItemsData";
 import { useStateValue } from "hooks";
+
+import styles from "./styles";
 
 const Navbar = () => {
   const [{ dapp }] = useStateValue();

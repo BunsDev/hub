@@ -5,12 +5,12 @@ import React, {
   useContext,
 } from "react";
 
-type UseCreteApiContextValue = {
+type CreateApiContextValue = {
   uploadMethod: string;
   setUploadMethod: Dispatch<SetStateAction<string>>;
 };
 
-export const CreateApiContext = createContext<UseCreteApiContextValue>({
+export const CreateApiContext = createContext<CreateApiContextValue>({
   uploadMethod: "",
   setUploadMethod: () => undefined,
 });
@@ -19,7 +19,7 @@ export const CreateApiProvider = ({
   value,
   children,
 }: {
-  value: UseCreteApiContextValue;
+  value: CreateApiContextValue;
   children: React.ReactNode;
 }) => {
   return (

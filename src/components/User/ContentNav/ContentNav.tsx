@@ -1,8 +1,8 @@
 /** @jsxImportSource theme-ui **/
 import { ApiData } from "../../../api/models/types";
-import styles from "./styles";
-
 import { Flex, Themed } from "theme-ui";
+
+import styles from "./styles";
 
 type Tab = {
   label: string;

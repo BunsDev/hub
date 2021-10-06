@@ -1,9 +1,9 @@
 /** @jsxImportSource theme-ui **/
-import styles from "./styles";
-
 import { Button, Flex } from "theme-ui";
 import { useRouter } from "hooks";
 import { createApiSteps } from "utils/createWrapper";
+
+import styles from "./styles";
 
 interface NavButtonProps {
   label: string;

@@ -38,14 +38,15 @@ const styles: Styles = {
       top: "2.5rem",
       bg: "black",
       color: "white",
-      p: "14px 0 20px",
+      p: "9px 0 20px",
       mt: ".5rem !important",
       borderRadius: "1.25rem",
       border: "1px solid rgba(255, 255, 255, 0.2)",
       boxShadow: "12px 20px 54px -6px #141316",
     },
-    ".react-dropdown-select-item": {
+    "span.react-dropdown-select-item": {
       border: "none !important",
+      borderBottom: "none !important",
       fontFamily: "Nunito Sans !important",
       fontWeight: "600",
       fontSize: "16px",
@@ -54,11 +55,11 @@ const styles: Styles = {
       display: "flex !important",
       alignItems: "center !important",
       justifyContent: "left !important",
-      "&.react-dropdown-select-item-selected": {
-        bg: "polyGrey3",
-      },
       "&:hover": {
         bg: "polyGrey3",
+      },
+      "span.react-dropdown-select-item.react-dropdown-select-item-selected": {
+        bg: "polyGrey3 !important",
       },
     },
     ".react-dropdown-select-content": {

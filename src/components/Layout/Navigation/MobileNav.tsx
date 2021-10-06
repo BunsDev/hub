@@ -1,8 +1,4 @@
 /** @jsxImportSource theme-ui **/
-import { navItems, conditionalNavItems } from "./navItemsData";
-import User from "../../../../public/images/user.svg";
-import styles from "./styles";
-
 import {
   MouseEventHandler,
   useCallback,
@@ -12,10 +8,16 @@ import {
 } from "react";
 import { Button, Flex } from "@theme-ui/components";
 import { Themed } from "@theme-ui/mdx";
+
 import { NavItem } from "components/Layout/Navigation";
 import { Modal } from "components";
+import { navItems, conditionalNavItems } from "./navItemsData";
 import addrShortener from "utils/addrShortener";
 import { useRouter, useStateValue, useResponsive } from "hooks";
+import User from "../../../../public/images/user-large.svg";
+import Close from "../../../../public/images/close-white.svg";
+
+import styles from "./styles";
 
 export default function MobileNav() {
   const [{ dapp }] = useStateValue();
@@ -26,6 +28,8 @@ export default function MobileNav() {
 
   const [showDisconnectModal, setShowDisconnectModal] = useState(false);
   const [showSignInModal, setShowSignInModal] = useState(false);
+  const [showSwitchToDesktopModal, setShowSwitchToDesktopModal] =
+    useState(false);
 
   const handleDisconnect = useCallback(() => {
     setShowDisconnectModal(true);
@@ -78,11 +82,7 @@ export default function MobileNav() {
         >
           <Flex className="head">
             <Themed.h2>Menu</Themed.h2>
-            <img
-              src="/images/close.svg"
-              alt="close-button"
-              onClick={handleCloseNavMenu}
-            />
+            <Close onClick={handleCloseNavMenu} />
           </Flex>
           <Flex className="user">
             {dapp.address ? (
@@ -116,7 +116,7 @@ export default function MobileNav() {
               <Button
                 variant="primaryMedium"
                 onClick={() => {
-                  router.push("/apis/create?activeTab=create");
+                  setShowSwitchToDesktopModal(true);
                 }}
               >
                 Publish Wrapper
@@ -143,6 +143,17 @@ export default function MobileNav() {
             noLeftShift
             close={() => {
               setShowSignInModal(false);
+            }}
+          />
+        </div>
+      )}
+      {showSwitchToDesktopModal && (
+        <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>
+          <Modal
+            screen={"switch"}
+            noLeftShift
+            close={() => {
+              setShowSwitchToDesktopModal(false);
             }}
           />
         </div>

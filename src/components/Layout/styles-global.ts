@@ -1,7 +1,6 @@
-import { timing } from "../../theme";
-
 import { Interpolation } from "@emotion/react";
 import { Theme } from "@theme-ui/css";
+import { timing } from "../../theme";
 
 const pageLevelAnimationTiming = timing[3] + "s";
 
@@ -80,6 +79,9 @@ const getGlobalStyles = (theme: Theme): Interpolation<Theme> => ({
     justifyContent: "center",
     "@media screen and (max-width: 400px)": {
       minHeight: "calc(100vh - 140px)",
+    },
+    "@media screen and (min-width:577px) and (max-width:991px)": {
+      padding: "0 2rem",
     },
   },
   fieldset: {
@@ -183,6 +185,9 @@ const getGlobalStyles = (theme: Theme): Interpolation<Theme> => ({
   },
   ":-webkit-autofill, :-webkit-autofill:hover, :-webkit-autofill:focus": {
     //TODO styles for input autocomplete
+  },
+  ".scrollable": {
+    overflow: "auto",
   },
   ".scrollable::-webkit-scrollbar": {
     width: ".75vw",

@@ -1,6 +1,5 @@
-import { WindowSize } from "./useWindowSize";
-
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
+import { WindowSize } from "./useWindowSize";
 
 type ResponsiveContextValue = {
   windowSize: WindowSize;
@@ -34,6 +33,6 @@ export const ResponsiveProvider = ({
   );
 };
 
-export const useResponsive = () => useContext(ResponsiveContext);
+const useResponsive = () => useContext(ResponsiveContext); // eslint-disable-line
 
 export default useResponsive;

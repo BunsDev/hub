@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui **/
 import { Layout, APIDetail } from "components";
 import { useGetAPIfromENSParamInURL } from "hooks";
+import { APIData } from "hooks/ens/useGetAPIfromENS";
 
 const ApiView = () => {
   const { data, fetchApiDetails } = useGetAPIfromENSParamInURL();
