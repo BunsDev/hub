@@ -1,6 +1,6 @@
 import Database from "../db";
 import { ApiData } from "../../../api/models/types";
-import ApiRepository from "../../../api/repositories/apiRepository";
+import ApiRepository from "../../../api/repositories/api";
 import { checkContentIsValid } from "../../../api/services/ens";
 
 import { VercelRequest } from "@vercel/node";
@@ -17,7 +17,7 @@ export default async (request: VercelRequest) => {
 
       apis.forEach(async (api: ApiData) => {
         const { valid } = await checkContentIsValid(
-          api.pointerUris,
+          api.apiUris,
           api.locationUri
         );
         if (!valid) {

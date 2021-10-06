@@ -1,4 +1,5 @@
 import { domain } from "../../constants";
+import ApiUris from "../../api/entities/apiUris";
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
@@ -12,7 +13,7 @@ export interface APIData {
   icon: string;
   locationUri: string;
   favorites: number;
-  pointerUris: string[];
+  apiUris: ApiUris[];
 }
 
 export const useGetAPIfromENSParamInURL = () => {

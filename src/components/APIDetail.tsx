@@ -59,7 +59,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
         <Flex sx={{ alignItems: "flex-start", gap: "40px" }}>
           <img
             className="api-logo"
-            src={`${cloudFlareGateway}${api.locationUri}${api.icon.replace(
+            src={`${cloudFlareGateway}${api.apiUris[0]?.uri}${api.icon.replace(
               "./",
               "/"
             )}`}
@@ -159,8 +159,8 @@ const api = new Web3API({
               },
             }}
           >
-            {"pointerUris" in api &&
-              api.pointerUris.map((pointer, idx) => {
+            {"apiUris" in api &&
+              api.apiUris.map((pointer, idx) => {
                 return (
                   <li sx={{ display: "flex" }} key={idx + "pointerURI"}>
                     <img
@@ -168,8 +168,8 @@ const api = new Web3API({
                       src="/images/link.svg"
                       alt="icon"
                     />
-                    <a href={pointer} target="_BLANK" rel="noreferrer">
-                      {pointer}
+                    <a href={pointer.uri} target="_BLANK" rel="noreferrer">
+                      {pointer.uri}
                     </a>
                   </li>
                 );
@@ -226,7 +226,7 @@ const api = new Web3API({
             variant="secondaryMedium"
             sx={{ backgroundColor: "white", color: "black", ml: "auto" }}
             onClick={() => {
-              void router.push(`/playground/ens/${api.pointerUris[0]}`);
+              void router.push(`/playground/ens/${api.apiUris[0]?.uri}`);
             }}
           >
             Open Playground

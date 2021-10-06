@@ -1,4 +1,4 @@
-import UserRepository from "../../../api/repositories/userRepository";
+import UserRepository from "../../../api/repositories/user";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getConnection } from "typeorm";

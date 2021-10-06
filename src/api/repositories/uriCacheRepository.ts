@@ -18,4 +18,12 @@ export default class UriCacheRepository extends Repository<UriCache> {
       ipfs,
     });
   }
+
+  public findByUri(uri: string): Promise<UriCache> {
+    return this.findOne({
+      where: {
+        uri: ILike(uri),
+      },
+    });
+  }
 }

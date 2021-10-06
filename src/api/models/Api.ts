@@ -4,49 +4,10 @@ import { getConnection } from "typeorm";
 
 export enum Authorities {
   ENS = 1,
-  IPFS,
+  IPFS = 2,
 }
 
 export class Api {
-  public static async create(_: ApiData) {
-    // const {
-    //   name,
-    //   subtext,
-    //   description,
-    //   icon,
-    //   locationUri,
-    //   pointerUris,
-    //   ownerId,
-    // } = apiInfo
-    // const insertApi = async (tx: any) => {
-    //   const api = await tx.one(
-    //     'INSERT INTO apis (name, subtext, description, icon, fk_owner_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-    //     [name, subtext, description, icon, ownerId],
-    //   )
-    //   //@TODO: Retrieve authId dynamically
-    //   await tx.none(
-    //     'INSERT INTO api_uris (uri, fk_api_id, fk_uri_type_id) VALUES ($1, $2, $3)',
-    //     [locationUri, api.id, Authorities.IPFS],
-    //   )
-    //   const insertPointers = async (locationUri: string) => {
-    //     await tx.none(
-    //       'INSERT INTO api_uris (uri, fk_api_id, fk_uri_type_id) VALUES ($1, $2, $3)',
-    //       [locationUri, api.id, Authorities.ENS],
-    //     )
-    //   }
-    //   pointerUris.map(insertPointers)
-    // }
-    // await connection.tx(insertApi)
-    // return {
-    //   name,
-    //   subtext,
-    //   description,
-    //   icon,
-    //   locationUri,
-    //   pointerUris,
-    // }
-  }
-
   public static async getByLocation(location: string, name: string) {
     const api = await getConnection()
       .createQueryRunner()
@@ -159,14 +120,14 @@ export class Api {
     const apiSanitized = {
       ...metadata,
       name,
-      pointerUris: [],
+      apiUris: [],
       ...(acc[apiIndex] || {}),
     };
 
     if (api.type === "storage") {
       apiSanitized.locationUri = api.uri;
     } else {
-      apiSanitized.pointerUris.push(api.uri);
+      apiSanitized.apiUris.push(api.uri);
     }
 
     if (apiIndex === -1) return [...acc, apiSanitized];
