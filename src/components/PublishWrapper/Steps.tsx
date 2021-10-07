@@ -6,7 +6,7 @@ import { Flex } from "theme-ui";
 interface Step {
   value: string;
   label: string;
-  onClick: () => any;
+  onClick: () => any; // eslint-disable-line
 }
 interface Steps {
   stepsData?: Step[];

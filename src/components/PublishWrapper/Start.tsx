@@ -1,11 +1,11 @@
 /** @jsxImportSource theme-ui **/
-import { useCallback, useContext } from "react";
+import styles from "./UploadBy/styles";
+
+import { useCallback } from "react";
 import { Button, Flex, Themed } from "theme-ui";
 
 import { createApiSteps, UPLOAD_METHODS } from "utils/createWrapper";
 import { useCreateApi, useRouter } from "hooks";
-
-import styles from "./UploadBy/styles";
 
 const Start = () => {
   const router = useRouter();

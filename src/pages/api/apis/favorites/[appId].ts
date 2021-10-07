@@ -1,6 +1,8 @@
-import { Api } from "../../../../api/models/Api";
-
+import StarredApiRepository from "../../../../api/repositories/starredApi";
+import { getConnection } from "typeorm";
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import ApiRepository from "src/api/repositories/api";
+import Database from "../../db";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "GET") {
@@ -14,8 +16,15 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         });
       }
 
-      const data = await Api.getFavorites(appId);
-      const count = await Api.getFavoritesCount(appId);
+      const database = new Database();
+      await database.connect();
+
+      const starredApiRepository =
+        getConnection().getCustomRepository(StarredApiRepository);
+      const apiRepository = getConnection().getCustomRepository(ApiRepository);
+
+      const data = await apiRepository.getFavorites(appId);
+      const count = await starredApiRepository.getFavoritesCountByApiId(appId);
 
       return response.json({
         status: 200,

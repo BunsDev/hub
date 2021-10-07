@@ -21,11 +21,13 @@ export const validMethod = (methodInput: string) =>
   Object.values(UPLOAD_METHODS).some((method) => methodInput === method);
 
 export const pushToStep = (router: NextRouter, stepIndex: number) => {
-  router.push(router.pathname + `?activeTab=${createApiSteps[stepIndex]}`);
+  void router.push(router.pathname + `?activeTab=${createApiSteps[stepIndex]}`);
 };
 
-export const apiDataInState = (activeTab: string, apiData: any) =>
-  activeTab === createApiSteps[2] && apiData;
+export const apiDataInState = (
+  activeTab: string,
+  apiData: any // eslint-disable-line
+) => activeTab === createApiSteps[2] && apiData;
 
 interface WrapperReqFiles {
   [key: string]: File;
@@ -38,7 +40,7 @@ interface WrapperReqFiles {
 }
 
 export const validateUploadedWrapper = (
-  files: any[]
+  files: any[] // eslint-disable-line
 ): [boolean, WrapperReqFiles] => {
   const validated: WrapperReqFiles = {
     config: files?.find((file) => file.name === "web3api.yaml"),
@@ -69,6 +71,7 @@ export const uploadToIPFS = async (files: File[]) => {
   }));
 
   const uploadedFiles: { name: string; hash: string }[] =
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     await ipfsPlugin._ipfs.add(filesFormatted, {
       wrapWithDirectory: true,

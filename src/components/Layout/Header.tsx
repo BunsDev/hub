@@ -59,7 +59,7 @@ const Header = () => {
             <Button
               variant="primaryMedium"
               onClick={() => {
-                router.push("/apis/create?activeTab=create");
+                void router.push("/apis/create?activeTab=create");
               }}
             >
               Publish Wrapper

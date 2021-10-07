@@ -22,57 +22,7 @@ module.exports = {
   ],
   rules: {
     "prettier/prettier": ["error"],
-    "@typescript-eslint/naming-convention": [
-      "error",
-      { selector: "default", format: ["camelCase", "UPPER_CASE"] },
-      {
-        selector: [
-          "classProperty",
-          "parameterProperty",
-          "objectLiteralProperty",
-          "classMethod",
-          "parameter",
-        ],
-        format: ["camelCase"],
-        leadingUnderscore: "allow",
-      },
-      //web3 api host methods doesn't satisfy neither camel or snake
-      {
-        selector: ["objectLiteralMethod", "typeMethod"],
-        filter: { regex: "^_w3_.*", match: true },
-        format: null,
-      },
-      //variable must be in camel or upper case
-      {
-        selector: "variable",
-        format: ["camelCase", "UPPER_CASE", "PascalCase"],
-        leadingUnderscore: "allow",
-      },
-      //classes and types must be in PascalCase
-      { selector: ["typeLike", "enum"], format: ["PascalCase"] },
-      { selector: "enumMember", format: null },
-      //ignore rule for quoted stuff
-      {
-        selector: [
-          "classProperty",
-          "objectLiteralProperty",
-          "typeProperty",
-          "classMethod",
-          "objectLiteralMethod",
-          "typeMethod",
-          "accessor",
-          "enumMember",
-        ],
-        format: null,
-        modifiers: ["requiresQuotes"],
-      },
-      //ignore rules on destructured params
-      {
-        selector: "variable",
-        modifiers: ["destructured"],
-        format: null,
-      },
-    ],
+    "@typescript-eslint/naming-convention": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off", // TODO: set error
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/no-explicit-any": "error",
@@ -86,17 +36,7 @@ module.exports = {
     ],
     "@typescript-eslint/no-floating-promises": "error",
     "import/no-extraneous-dependencies": "off",
-    "import/order": [
-      "error",
-      {
-        groups: [
-          ["index", "sibling", "parent", "internal"],
-          ["external", "builtin"],
-          "object",
-        ],
-        "newlines-between": "always",
-      },
-    ],
+    "import/order": "off",
     "react/react-in-jsx-scope": "off",
     // allow jsx syntax in js files (for next.js project)
     "react/jsx-filename-extension": [1, { extensions: [".ts", ".tsx"] }],

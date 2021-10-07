@@ -103,9 +103,9 @@ const Playground = () => {
     api && setloadingPackageContents(true);
     async function go() {
       //const schemaData = await getPackageSchemaFromAPIObject(api);
-      const apiUri = api?.pointerUris[0];
+      const apiUri = api?.apiUris[0];
       const schemaData = await client.getSchema(
-        `ens/${networkName}/${api.pointerUris[0]}`
+        `ens/${networkName}/${api.apiUris[0]}`
       );
       const queriesData = await getPackageQueriesFromUri(
         client,
@@ -151,7 +151,7 @@ const Playground = () => {
   useEffect(() => {
     if (router.query.uri !== undefined) {
       const apiInQuery = dapp.apis?.find((api) =>
-        router?.query.uri.includes(api.pointerUris[0])
+        router?.query.uri.includes(api.apiUris[0].uri)
       );
       if (apiInQuery) {
         setsearchboxvalues([apiInQuery]);
@@ -177,9 +177,9 @@ const Playground = () => {
               setSchemaVisible(false);
               setsearchboxvalues(values);
               if (values.length > 0) {
-                if (values[0]?.pointerUris.length > 0) {
+                if (values[0]?.apiUris.length > 0) {
                   void router.push(
-                    "/query?uri=/ens/" + values[0].pointerUris[0]
+                    "/query?uri=/ens/" + values[0].apiUris[0].uri
                   );
                 } else {
                   void router.push(

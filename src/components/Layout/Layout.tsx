@@ -16,8 +16,6 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
-  const [_, dispatch] = useStateValue();
-
   const windowSize = useWindowSize();
   const [isMobile, setIsMobile] = useState(
     windowSize?.width <= RESPONSOVE_BREAKPOINTS.XSMALL || false

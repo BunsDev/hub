@@ -106,7 +106,7 @@ const CreateApi = () => {
                     pushToStep(router, 1);
                   },
                 },
-                { value: "publish", label: "Publish", onClick: () => {} },
+                { value: "publish", label: "Publish", onClick: () => {} }, // eslint-disable-line
               ]}
             />
           </Flex>

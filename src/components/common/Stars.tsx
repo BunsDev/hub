@@ -10,7 +10,7 @@ type BadgeProps = {
   onClick?: () => void;
 };
 
-const Stars = ({ count, onDark, large, onClick }: BadgeProps) => {
+const Stars = ({ count, large, onClick }: BadgeProps) => {
   return (
     <Flex
       onClick={onClick}

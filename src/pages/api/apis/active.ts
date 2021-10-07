@@ -1,11 +1,17 @@
-import { Api } from "../../../api/models/Api";
+import Database from "../db";
+import ApiRepository from "../../../api/repositories/api";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import { getCustomRepository } from "typeorm";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "GET") {
     try {
-      const apis = await Api.getAllActive();
+      const database = new Database();
+      await database.connect();
+
+      const apis = await getCustomRepository(ApiRepository).getAllActive();
+
       return response.json({
         status: 200,
         apis,

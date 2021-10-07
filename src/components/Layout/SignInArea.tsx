@@ -15,7 +15,7 @@ type SignInAreaProps = {
 const SignInArea = ({ onDark }: SignInAreaProps) => {
   const [{ dapp }] = useStateValue();
   const { theme } = useThemeUI();
-  const router = useRouter();
+  const router = useRouter(); // eslint-disable-line
   const { isAuthenticated } = useAuth(dapp);
   const [showGithubSignInModal, setShowGithubSignInModal] = useState(false);
   const [showDisconnectModal, setShowDisconnectModal] = useState(false);
@@ -39,7 +39,10 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
   return (
     <Flex
       className="sign-in-wrap"
-      sx={{ ...styles.signInArea, ul: { color: onDark ? "white !important" : "" } }}
+      sx={{
+        ...styles.signInArea,
+        ul: { color: onDark ? "white !important" : "" },
+      }}
     >
       {showGithubSignInModal && (
         <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>

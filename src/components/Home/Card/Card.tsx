@@ -19,17 +19,15 @@ type CardProps = {
 
 const Card = ({ api, ipfsHash, redirectUrl }: CardProps) => {
   const router = useRouter();
+  console.log({ api });
   const redirect = useMemo(
-    () => 'info?uri=' + (ipfsHash || redirectUrl || "/ens/" + api?.pointerUris[0]),
-    [ipfsHash, redirectUrl, api?.pointerUris]
+    () => "info?uri=" + (ipfsHash || redirectUrl || "/ens/" + api?.locationUri),
+    [ipfsHash, redirectUrl, api?.apiUris]
   );
 
   return (
-    <div
-      className="Card"
-      sx={styles.card}
-    >
-      {api && api.pointerUris && api.pointerUris.length > 0 ? (
+    <div className="Card" sx={styles.card}>
+      {api && api.apiUris && api.apiUris.length > 0 ? (
         <a href="#" onClick={() => router.replace(redirect)}>
           <div className="wrap-contents">
             <div className="head">

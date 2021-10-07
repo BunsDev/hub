@@ -25,7 +25,6 @@ const SelectBox = ({
   options,
   values = [],
   onChange,
-  sx,
 }: RDSProps) => {
   return (
     <RDS

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface ApiData {
   id: number;
   name: string;
@@ -5,22 +6,18 @@ export interface ApiData {
   description: string;
   icon: string;
   locationUri: string;
-  pointerUris: string[];
+  apiUris: string[];
   ownerId?: string;
 }
 
-export interface UserData {
-  id: number;
-  username?: string;
-  address?: string;
-  accessToken?: string;
-  authType?: number;
-  githubId?: string;
+export interface PaginationMeta {
+  limit: number;
+  page: number;
+  max_page: number;
+  total_count: number;
 }
-export interface Authentication {
-  github?: {
-    accessToken?: string;
-    [k: string]: unknown; // eslint-disable-line
-  };
-  [k: string]: unknown; // eslint-disable-line
+
+export enum Authorities {
+  ENS = 1,
+  IPFS = 2,
 }

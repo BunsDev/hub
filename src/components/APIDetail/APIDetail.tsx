@@ -2,7 +2,7 @@
 import { ipfsGateway, domain } from "../../constants";
 import styles from "./styles";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Flex, Themed, Button, Grid } from "theme-ui";
 import { useAuth, useStateValue, useRouter } from "hooks";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
@@ -17,6 +17,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
   const [{ dapp }] = useStateValue();
   const { authenticate } = useAuth(dapp);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleFavorite = async () => {
     if (!dapp.did) return authenticate();
 
@@ -40,21 +41,24 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
     }
   }, [dapp.did]);
 
+  const apiIcon = useMemo(() => {
+    if (api && api.icon) {
+      return `${ipfsGateway}${api.locationUri}${api.icon.replace("./", "/")}`;
+    }
+
+    return "";
+  }, [ipfsGateway, api]);
+
+  console.log({ api });
   return (
     <div className="wrap" sx={styles.wrap}>
       <Flex className="left">
         <Grid className="head">
-          <img
-            className="api-logo"
-            src={`${ipfsGateway}${api.locationUri}${api.icon.replace(
-              "./",
-              "/"
-            )}`}
-          />
-          <Themed.h2 className="title">{api.name}</Themed.h2>
+          <img className="api-logo" src={apiIcon} />
+          <Themed.h2 className="title">{api?.name}</Themed.h2>
           <div className="description-wrap">
-            <div className="subtitle">{api.subtext}</div>
-            <p className="description">{api.description}</p>
+            <div className="subtitle">{api?.subtext}</div>
+            <p className="description">{api?.description}</p>
           </div>
         </Grid>
         <Flex className="body">
@@ -87,20 +91,21 @@ const api = new Web3API({
       </Flex>
       <Flex className="right">
         <Flex className="info-card">
-          <Themed.h3 className="title">{api.name}</Themed.h3>
+          <Themed.h3 className="title">{api?.name}</Themed.h3>
           <ul className="links">
-            {"pointerUris" in api &&
-              api.pointerUris.map((pointer, idx) => {
+            {api &&
+              "apiUris" in api &&
+              api.apiUris.map((pointer, idx) => {
                 return (
                   <li key={idx + "pointerURI"}>
                     <img src="/images/link.svg" alt="icon" />
-                    <a href={pointer} target="_BLANK" rel="noreferrer">
+                    <a href={pointer.uri} target="_BLANK" rel="noreferrer">
                       {pointer}
                     </a>
                   </li>
                 );
               })}
-            {"locationUri" in api && (
+            {api && "locationUri" in api && (
               <li>
                 <img src="/images/link.svg" alt="icon" />
                 <a
@@ -117,7 +122,7 @@ const api = new Web3API({
         <Button
           variant="secondaryMedium"
           onClick={() => {
-            void router.push(`/query?uri=/ens/${api.pointerUris[0]}`);
+            void router.push(`/query?uri=/ens/${api.apiUris[0]}`);
           }}
         >
           Open Playground

@@ -34,7 +34,7 @@ export const DirectUpload = () => {
       try {
         const hash = await uploadToIPFS(acceptedFiles);
         dispatch({ type: "setipfs", payload: hash });
-        uploadSuccess = true;
+        uploadSuccess = true; // eslint-disable-line
       } catch (error) {
         console.log("Error uploading files: ", error);
       }
@@ -45,9 +45,11 @@ export const DirectUpload = () => {
             const metaData = yaml.load(String(reader.result)) as APIData;
             dispatch({ type: "setApiData", payload: metaData });
             setLoading(false);
-            router.push(router.pathname + `?activeTab=${createApiSteps[2]}`);
+            void router.push(
+              router.pathname + `?activeTab=${createApiSteps[2]}`
+            );
           };
-          reader.readAsText(filesObj?.buildMeta as any);
+          reader.readAsText(filesObj?.buildMeta as any); // eslint-disable-line
         } catch (error) {
           console.error("Error reading metadata: ", error);
         }

@@ -46,15 +46,8 @@ const NavItem = ({
       onClick={onClick}
     >
       <Link href={item?.href}>
-        {item.imgSrc && (
-          <img
-            src={item.imgSrc}
-            alt={item.title + "icon"}
-          />
-        )}
-        <span className="text-nav">
-          {item.title}
-        </span>
+        {item.imgSrc && <img src={item.imgSrc} alt={item.title + "icon"} />}
+        <span className="text-nav">{item.title}</span>
       </Link>
       {item?.children && (
         <div className="dropdown-content">

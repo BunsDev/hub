@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /** @jsxImportSource theme-ui **/
 import React, { useCallback } from "react";
 import { Flex, Button, Themed } from "theme-ui";
@@ -50,7 +51,7 @@ const Modal = ({
     (
       title: string,
       description: string | JSX.Element,
-      button: { title: string; onClick: () => any } | JSX.Element
+      button: { title: string; onClick: () => any } | JSX.Element // eslint-disable-line
     ) => (
       <React.Fragment>
         {close ? CloseButton : null}

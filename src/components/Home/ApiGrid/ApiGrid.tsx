@@ -5,15 +5,12 @@ import { useRouter } from "next/router";
 import { Grid, Button } from "theme-ui";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
 import { Card } from "components";
-import { useStateValue } from "hooks";
 
 type ApiGridProps = {
   apis: APIData[];
 };
 
 const ApiGrid = ({ apis }: ApiGridProps) => {
-  const [{ search }] = useStateValue();
-
   const router = useRouter();
   return (
     <div className="apiGrid" sx={styles.apiGrid}>
@@ -21,7 +18,11 @@ const ApiGrid = ({ apis }: ApiGridProps) => {
         {apis && (
           <Grid className="grid-main" gap="1rem">
             {apis?.map((api, idx) => (
-              <Card api={api} key={idx + "-api"} />
+              <Card
+                api={api}
+                redirectUrl={"ens/" + api.apiUris[0]}
+                key={idx + "-api"}
+              />
             ))}
           </Grid>
         )}

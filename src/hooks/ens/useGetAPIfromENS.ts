@@ -1,16 +1,16 @@
-import { domain, networkID, networkName } from "../../constants";
+import { domain, networkName } from "../../constants";
+import ApiUris from "../../api/entities/apiUris";
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useWeb3ApiClient } from "@web3api/react";
-import { networks } from "utils/networks";
 
 export interface APIDataFromManifest {
   name: string;
   description: string;
   icon: string;
-  pointerUris: string[];
+  apiUris: string[];
 }
 export interface APIData {
   id: number;
@@ -20,7 +20,7 @@ export interface APIData {
   icon: string;
   locationUri: string;
   favorites: number;
-  pointerUris: string[];
+  apiUris: ApiUris[];
 }
 
 export const useGetAPIfromENSParamInURL = () => {
@@ -36,6 +36,9 @@ export const useGetAPIfromENSParamInURL = () => {
         const { data: apiData } = await axios.get<{ api: APIData }>(
           domain + `/api/apis/ens/${router.asPath.split("ens/")[1]}`
         );
+
+        //@ts-ignore
+        console.log({ apiData });
         setData(apiData.api);
       }
     } catch (e) {
@@ -67,7 +70,8 @@ export const useGetAPIfromParamInURL = () => {
         const { data: apiData } = await axios.get<{ api: APIData }>(
           domain + `/api/apis/ens/${router.asPath.split("ens/")[1]}`
         );
-        setData(apiData.api);
+        //@ts-ignore
+        setData(apiData.api[0]);
       }
 
       if (router.query.customUri) {
@@ -81,7 +85,7 @@ export const useGetAPIfromParamInURL = () => {
           description,
           icon,
           name,
-          pointerUris: [uri],
+          apiUris: [uri],
         };
         setData(obj);
       }
@@ -99,6 +103,5 @@ export const useGetAPIfromParamInURL = () => {
   }, [router.isReady, router.query.uri, router.query.customUri]);
   return { error, isLoading, data, fetchApiDetails };
 };
-
 
 export default useGetAPIfromENSParamInURL;

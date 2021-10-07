@@ -4,6 +4,7 @@ import { timing } from "../../theme";
 
 const pageLevelAnimationTiming = timing[3] + "s";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 const getGlobalStyles = (theme: Theme): Interpolation<Theme> => ({
   // eslint-disable-line

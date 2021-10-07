@@ -15,7 +15,7 @@ export const ResponsiveContext = createContext<ResponsiveContextValue>({
   mobile: { isMobile: false },
   mobileNav: {
     isMobileNavActive: false,
-    setMobileNavActive: () => {},
+    setMobileNavActive: () => {}, // eslint-disable-line
   },
 });
 
