@@ -148,7 +148,7 @@ const Modal = ({
         return generateModalContent(
           "Switch To Desktop Version",
           "This feature is not available on a mobile, please switch to a desktop version",
-          { title: "Ok", onClick: close }
+          { title: "Ok", onClick: () => router.push(`/`), }
         );
     }
   };
