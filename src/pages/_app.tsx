@@ -8,6 +8,7 @@ import { StateProvider, useStateValue } from "../state/state";
 import { fetcherREST } from "../utils/fetcher";
 
 import { useAuth } from "hooks";
+import { ResponsiveProvider } from "hooks/useResponsive";
 
 const swrOptions = {
   // refreshInterval: 10000,
@@ -32,7 +33,9 @@ function StatefulApp({ pageProps, Component }: Props<any>) { // eslint-disable-l
         ></link>
       </Head>
       <SWRConfig value={swrOptions}>
-        <Component {...pageProps} />
+        <ResponsiveProvider>
+          <Component {...pageProps} />
+        </ResponsiveProvider>
       </SWRConfig>
     </ThemeProvider>
   );

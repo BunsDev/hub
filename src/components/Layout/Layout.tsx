@@ -17,35 +17,14 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const windowSize = useWindowSize();
-  const [isMobile, setIsMobile] = useState(
-    windowSize?.width <= RESPONSOVE_BREAKPOINTS.XSMALL || false
-  );
-  const [isMobileNavActive, setMobileNavActive] = useState(false);
-
-  useEffect(() => {
-    if (windowSize.width <= RESPONSOVE_BREAKPOINTS.XSMALL) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
-  }, [windowSize.width]);
-
   return (
-    <ResponsiveProvider
-      value={{
-        windowSize,
-        mobile: { isMobile },
-        mobileNav: { isMobileNavActive, setMobileNavActive },
-      }}
-    >
-      <div className="layout" sx={styles.layout}>
-        <Header />
-        <main>{children}</main>
-        <BGCircles />
-        {windowSize.width <= RESPONSOVE_BREAKPOINTS.MEDIUM && <MobileNav />}
-        <Global styles={(theme) => getGlobalStyles(theme)} />
-      </div>
-    </ResponsiveProvider>
+    <div className="layout" sx={styles.layout}>
+      <Header />
+      <main>{children}</main>
+      <BGCircles />
+      {windowSize.width <= RESPONSOVE_BREAKPOINTS.MEDIUM && <MobileNav />}
+      <Global styles={(theme) => getGlobalStyles(theme)} />
+    </div>
   );
 };
 export default Layout;
