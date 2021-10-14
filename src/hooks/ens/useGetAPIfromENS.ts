@@ -66,20 +66,13 @@ export const useGetAPIfromParamInURL = () => {
   const fetchApiDetails = useCallback(async () => {
     setIsLoading(true);
     try {
-      if (router.query.uri) {
-        const { data: apiData } = await axios.get<{ api: APIData }>(
-          domain + `/api/apis/ens/${router.asPath.split("ens/")[1]}`
-        );
-        //@ts-ignore
-        setData(apiData.api[0]);
-      }
-
-      if (router.query.customUri) {
-        const uri = String(router.query.customUri).split("ens/")[1];
+      if (router.query.uri || router.query.customUri) {
+        const uri = String(router.query.uri || router.query.customUri).split(
+          "ens/"
+        )[1];
         const meta = await client.getManifest(`ens/${networkName}/${uri}`, {
           type: "meta",
         });
-
         const { name, description, icon } = meta;
         const obj: APIDataFromManifest = {
           description,

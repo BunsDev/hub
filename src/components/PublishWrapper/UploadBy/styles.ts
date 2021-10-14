@@ -30,7 +30,7 @@ const styles: Styles = {
     flexWrap: "wrap",
     gap: ["1.875rem", "1.25rem"],
     p: ["0 84px 26px 49px", "12px 46px 40px"],
-    ">div:first-child": { width: "fit-content" },
+    ">div:first-of-type": { width: "fit-content" },
     div: {
       display: "flex",
       flexDirection: "column",

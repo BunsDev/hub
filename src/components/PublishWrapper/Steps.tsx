@@ -35,7 +35,7 @@ const Steps = ({ stepsData = defaultSteps, activeStep = "" }: Steps) => {
               cursor: isHighlighted ? "pointer" : "default",
             }}
             className={isHighlighted ? "active" : ""}
-            onClick={isHighlighted && stepsData[index].onClick}
+            onClick={isHighlighted ? stepsData[index].onClick : null}
           >
             {index + 1}. {step.label}
           </span>

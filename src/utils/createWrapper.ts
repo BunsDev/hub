@@ -63,7 +63,7 @@ export const validateUploadedWrapper = (
 
 export const uploadToIPFS = async (files: File[]) => {
   const ipfsPlugin = new IpfsPlugin({
-    provider: process.env.IPFS_PROVIDER,
+    provider: process.env.IPFS_UPLOAD_ENDPOINT,
   });
   const filesFormatted = files.map((file) => ({
     path: file.name,

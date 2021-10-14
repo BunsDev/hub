@@ -9,3 +9,4 @@ export { useStateValue } from "../state/state";
 export { default as useCreateSubdomain } from "./ens/useCreateSubdomain";
 export { default as useGetAPIfromENSParamInURL } from "./ens/useGetAPIfromENS";
 export { default as useCreateApi } from "./useCreateApi";
+export { default as useRegisterEns } from "./ens/useRegisterEns";

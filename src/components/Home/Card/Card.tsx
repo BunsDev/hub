@@ -19,7 +19,6 @@ type CardProps = {
 
 const Card = ({ api, ipfsHash, redirectUrl }: CardProps) => {
   const router = useRouter();
-  console.log({ api });
   const redirect = useMemo(
     () => "info?uri=" + (ipfsHash || redirectUrl || "/ens/" + api?.locationUri),
     [ipfsHash, redirectUrl, api?.apiUris]

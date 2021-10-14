@@ -57,7 +57,7 @@ const Playground = () => {
   const [formVarsToSubmit, setformVarsToSubmit] = useState({});
 
   const { loading, execute } = useWeb3ApiQuery({
-    uri: `ens/${networkName}/${router.asPath.split("/playground/ens/")[1]}`,
+    uri: `ens/${networkName}/${router.asPath.split("/ens/")[1]}`,
     query: selectedMethod,
   });
 
@@ -151,7 +151,8 @@ const Playground = () => {
   useEffect(() => {
     if (router.query.uri !== undefined) {
       const apiInQuery = dapp.apis?.find((api) =>
-        router?.query.uri.includes(api.apiUris[0].uri)
+        //@ts-ignore //TODO type changed ?
+        router?.query.uri.includes(api.apiUris[0])
       );
       if (apiInQuery) {
         setsearchboxvalues([apiInQuery]);
@@ -178,13 +179,10 @@ const Playground = () => {
               setsearchboxvalues(values);
               if (values.length > 0) {
                 if (values[0]?.apiUris.length > 0) {
-                  void router.push(
-                    "/query?uri=/ens/" + values[0].apiUris[0].uri
-                  );
+                  void router.push("/query?uri=/ens/" + values[0].apiUris[0]);
                 } else {
                   void router.push(
-                    "/query?uri=/ipfs/" +
-                      stripIPFSPrefix(values[0].locationUri[0])
+                    "/query?uri=/ipfs/" + stripIPFSPrefix(values[0].locationUri)
                   );
                 }
               }

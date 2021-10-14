@@ -99,7 +99,7 @@ export const DirectUpload = () => {
         </Flex>
       )}
 
-      <NavButtons continueEnabled={true} nextBtn={{ label: "Browse Files" }} />
+      <NavButtons nextBtn={{ label: "Browse Files", onClick: () => {} }} />
     </Wrapper>
   );
 };

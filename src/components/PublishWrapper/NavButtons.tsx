@@ -39,7 +39,7 @@ const NavButtons = ({ backBtn, nextBtn, continueEnabled }: Props) => {
         }}
         onClick={(e) => {
           e.preventDefault();
-          nextBtn?.onClick() ||
+          ("onClick" in nextBtn && nextBtn.onClick()) ||
             router.push(router.pathname + `?activeTab=${createApiSteps[2]}`);
         }}
       >

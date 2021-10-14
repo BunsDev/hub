@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui **/
 import { useState, useEffect } from "react";
 import { Box, Flex, Themed, ThemeUIStyleObject } from "theme-ui";
-import { Steps, Layout } from "components";
+import { Steps, Layout, Modal } from "components";
 import { Start, Publish } from "components/PublishWrapper";
 import {
   DirectUpload,
@@ -15,7 +15,7 @@ import {
   validMethod,
   validStep,
 } from "utils/createWrapper";
-import { useRouter, useStateValue } from "hooks";
+import { useResponsive, useRouter, useStateValue } from "hooks";
 import { CreateApiProvider } from "hooks/useCreateApi";
 
 const styles: ThemeUIStyleObject = {
@@ -40,6 +40,18 @@ const CreateApi = () => {
   const [{ publish }] = useStateValue();
   const [activeStep, setActiveStep] = useState<string>();
   const [uploadMethod, setUploadMethod] = useState<string>("");
+  const {
+    mobile: { isMobile },
+  } = useResponsive();
+
+  const [showSwitchToDesktopModal, setShowSwitchToDesktopModal] =
+    useState(false);
+
+  useEffect(() => {
+    if (isMobile) {
+      setShowSwitchToDesktopModal(true);
+    }
+  }, [isMobile]);
 
   useEffect(() => {
     if (router.query.activeTab) {
@@ -117,6 +129,17 @@ const CreateApi = () => {
           </Box>
         </Flex>
       </CreateApiProvider>
+      {isMobile && showSwitchToDesktopModal && (
+        <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>
+          <Modal
+            screen={"switch"}
+            noLeftShift
+            close={() => {
+              router.push(`/`);
+            }}
+          />
+        </div>
+      )}
     </Layout>
   );
 };

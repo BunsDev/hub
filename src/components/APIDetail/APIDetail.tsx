@@ -49,7 +49,6 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
     return "";
   }, [ipfsGateway, api]);
 
-  console.log({ api });
   return (
     <div className="wrap" sx={styles.wrap}>
       <Flex className="left">
