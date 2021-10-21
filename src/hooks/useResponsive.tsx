@@ -1,4 +1,13 @@
-import { createContext, Dispatch, SetStateAction, useContext } from "react";
+import { useWindowSize } from "hooks";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { RESPONSOVE_BREAKPOINTS } from "src/constants";
 import { WindowSize } from "./useWindowSize";
 
 type ResponsiveContextValue = {
@@ -23,11 +32,28 @@ export const ResponsiveProvider = ({
   value,
   children,
 }: {
-  value: ResponsiveContextValue;
+  value?: ResponsiveContextValue;
   children: React.ReactNode;
 }) => {
+  const windowSize = useWindowSize();
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileNavActive, setMobileNavActive] = useState(false);
+
+  useEffect(() => {
+    if (windowSize.width <= RESPONSOVE_BREAKPOINTS.MEDIUM) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  }, [windowSize.width]);
+
+  const defaultValue: ResponsiveContextValue = {
+    mobile: { isMobile },
+    mobileNav: { isMobileNavActive, setMobileNavActive },
+    windowSize,
+  };
   return (
-    <ResponsiveContext.Provider value={value}>
+    <ResponsiveContext.Provider value={{ ...defaultValue, ...value }}>
       {children}
     </ResponsiveContext.Provider>
   );
