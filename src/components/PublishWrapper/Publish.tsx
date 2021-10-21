@@ -14,7 +14,7 @@ import {
   useRegisterEns,
 } from "hooks";
 import { Wrapper } from "components/PublishWrapper";
-import { Input } from "components";
+import { Input, LoadingSpinner } from "components";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
 import { ipfsGateway, domain, MAIN_DOMAIN } from "../../constants";
 
@@ -26,7 +26,10 @@ const PublishAPI = () => {
     Boolean(publish.subdomain)
   );
 
-  const [executeRegisterENS, { data, errors, loading }] = useRegisterEns();
+  const [
+    executeRegisterENS,
+    { data: ensRegData, errors: ensRegErrors, loading: ensRegLoading },
+  ] = useRegisterEns();
 
   const { authenticate } = useAuth(dapp);
   const router = useRouter();
@@ -138,13 +141,21 @@ const PublishAPI = () => {
                     value={publish?.subdomain}
                     onChange={handleEnsInputChange}
                     suffix={
-                      <Button
-                        variant="suffixSmall"
-                        className="btn-save-ens"
-                        onClick={handleENSRegistration}
-                      >
-                        Save
-                      </Button>
+                      ensRegLoading ? (
+                        <LoadingSpinner /> /* : ensRegData ? (
+                        <Flex className="succes-icon-wrap">
+                          <Image src="/images/success.svg" alt="success" />
+                        </Flex>
+                      )  */
+                      ) : (
+                        <Button
+                          variant="suffixSmall"
+                          className="btn-save-ens"
+                          onClick={handleENSRegistration}
+                        >
+                          Save
+                        </Button>
+                      )
                     }
                   />
                 </>
@@ -163,6 +174,7 @@ const PublishAPI = () => {
         <Flex className="buttons">
           <Button
             variant="secondaryMedium"
+            sx={{ mr: "16px" }}
             onClick={(e) => {
               e.preventDefault();
               router.back();

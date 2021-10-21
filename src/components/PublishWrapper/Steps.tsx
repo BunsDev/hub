@@ -34,7 +34,7 @@ const Steps = ({ stepsData = defaultSteps, activeStep = "" }: Steps) => {
             sx={{
               cursor: isHighlighted ? "pointer" : "default",
             }}
-            className={isHighlighted ? "active" : ""}
+            className={isHighlighted ? "active" : null}
             onClick={isHighlighted ? stepsData[index].onClick : null}
           >
             {index + 1}. {step.label}

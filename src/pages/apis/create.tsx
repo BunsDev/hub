@@ -17,6 +17,7 @@ import {
 } from "utils/createWrapper";
 import { useResponsive, useRouter, useStateValue } from "hooks";
 import { CreateApiProvider } from "hooks/useCreateApi";
+import { Web3ApiProvider } from "@web3api/react";
 
 const styles: ThemeUIStyleObject = {
   flexDirection: "column",
@@ -37,7 +38,7 @@ export const uploadComponents = {
 
 const CreateApi = () => {
   const router = useRouter();
-  const [{ publish }] = useStateValue();
+  const [{ publish, web3api }] = useStateValue();
   const [activeStep, setActiveStep] = useState<string>();
   const [uploadMethod, setUploadMethod] = useState<string>("");
   const {
@@ -122,11 +123,14 @@ const CreateApi = () => {
               ]}
             />
           </Flex>
-          <Box className="content" sx={{ height: "100%" }}>
-            {activeStep === createApiSteps[0] && <Start />}
-            {activeStep === createApiSteps[1] && uploadComponents[uploadMethod]}
-            {activeStep === createApiSteps[2] && <Publish />}
-          </Box>
+          <Web3ApiProvider plugins={web3api.plugins}>
+            <Box className="content" sx={{ height: "100%" }}>
+              {activeStep === createApiSteps[0] && <Start />}
+              {activeStep === createApiSteps[1] &&
+                uploadComponents[uploadMethod]}
+              {activeStep === createApiSteps[2] && <Publish />}
+            </Box>
+          </Web3ApiProvider>
         </Flex>
       </CreateApiProvider>
       {isMobile && showSwitchToDesktopModal && (

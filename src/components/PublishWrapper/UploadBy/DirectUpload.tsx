@@ -32,9 +32,11 @@ export const DirectUpload = () => {
       let uploadSuccess: boolean;
 
       try {
-        const hash = await uploadToIPFS(acceptedFiles);
-        dispatch({ type: "setipfs", payload: hash });
-        uploadSuccess = true; // eslint-disable-line
+        const hash = await uploadToIPFS(filesObj);
+        if (hash) {
+          dispatch({ type: "setipfs", payload: hash });
+          uploadSuccess = true; // eslint-disable-line
+        }
       } catch (error) {
         console.log("Error uploading files: ", error);
       }

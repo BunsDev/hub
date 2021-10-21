@@ -1,6 +1,5 @@
 import { NextRouter } from "next/router";
-/* eslint-disable @typescript-eslint/naming-convention */
-import { IpfsPlugin } from "@web3api/ipfs-plugin-js";
+import axios from "axios";
 
 export const UPLOAD_METHODS: {
   DIRECT_UPLOAD: string;
@@ -40,7 +39,7 @@ interface WrapperReqFiles {
 }
 
 export const validateUploadedWrapper = (
-  files: any[] // eslint-disable-line
+  files: File[]
 ): [boolean, WrapperReqFiles] => {
   const validated: WrapperReqFiles = {
     config: files?.find((file) => file.name === "web3api.yaml"),
@@ -61,22 +60,24 @@ export const validateUploadedWrapper = (
   return [true, validated];
 };
 
-export const uploadToIPFS = async (files: File[]) => {
-  const ipfsPlugin = new IpfsPlugin({
-    provider: process.env.IPFS_UPLOAD_ENDPOINT,
-  });
-  const filesFormatted = files.map((file) => ({
-    path: file.name,
-    content: file,
-  }));
+export const uploadToIPFS = async (validatedFilesObj: WrapperReqFiles) => {
+  const data = new FormData();
 
-  const uploadedFiles: { name: string; hash: string }[] =
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  for (const key in validatedFilesObj) {
     //@ts-ignore
-    await ipfsPlugin._ipfs.add(filesFormatted, {
-      wrapWithDirectory: true,
-    });
-  const rootHash = uploadedFiles?.find((file) => file.name === "")?.hash;
+    data.append("file", validatedFilesObj[key], validatedFilesObj[key].path);
+  }
 
-  return rootHash || "";
+  const {
+    data: { IpfsHash },
+  } = await axios.post(process.env.IPFS_UPLOAD_ENDPOINT, data, {
+    headers: {
+      //@ts-ignore
+      "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
+      pinata_api_key: process.env.IPFS_API_KEY,
+      pinata_secret_api_key: process.env.IPFS_SECRET_API_KEY,
+    },
+  });
+
+  return IpfsHash || "";
 };

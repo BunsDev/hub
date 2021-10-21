@@ -18,8 +18,13 @@ export const useRegisterEns = () => {
     errors: [],
     loading: false,
   });
+
+  //registerDomain
+  //setContentHash
+  //createSubdomain
+
   const { execute: executeRegisterENS } = useWeb3ApiQuery({
-    uri: "yay2.open.web3api.eth",
+    uri: "ens/yay2.open.web3api.eth",
     query: `mutation {
     registerDomain(
       domain: $domain
@@ -30,7 +35,21 @@ export const useRegisterEns = () => {
     )
   }`,
   });
-
+  /* 
+  const { execute: executeSetContentHash } = useWeb3ApiQuery({
+    uri: "ens/yay2.open.web3api.eth",
+    query: `mutation {
+      setContentHash(
+        domain: $domain
+        cid: $cid
+        resolverAddress: $resolverAddress
+        connection: {
+          networkNameOrChainId: $network
+        }
+      )
+    }`,
+  });
+ */
   const execute = useCallback(async () => {
     try {
       if (!dapp.web3) {
@@ -39,16 +58,31 @@ export const useRegisterEns = () => {
       setState((state) => ({ ...state, loading: true }));
 
       const signerAddress = await dapp.web3.getSigner().getAddress();
-
+      const domain = `${publish.subdomain}.${MAIN_DOMAIN}`;
+      const network = dapp.network;
       const registrationResult = await executeRegisterENS({
-        domain: `${publish.subdomain}.${MAIN_DOMAIN}`,
+        domain,
         registrarAddress: "0x99BeF0ec344a354303Bc5F3BB2E7e0a104B1E9f2",
         registryAddress: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
         owner: signerAddress,
-        network: dapp.network,
+        network,
       });
+/* 
+      const resolverAddress = await dapp.web3
+        .getSigner()
+        .resolveName("resolver.eth");
+
+      const cHash = await executeSetContentHash({
+        domain,
+        cid: publish.ipfs,
+        resolverAddress,
+        network,
+      });
+      console.log(cHash);
+ */
       setState((state) => ({ ...state, ...registrationResult }));
     } catch (e) {
+      console.log("error", e);
       setState((state) => ({ ...state, errors: [e] }));
     } finally {
       setState((state) => ({ ...state, loading: false }));
