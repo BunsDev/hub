@@ -12,9 +12,10 @@ import {
   useToggle,
   useStateValue,
   useRegisterEns,
+  useCreateSubdomain,
 } from "hooks";
 import { Wrapper } from "components/PublishWrapper";
-import { Input, LoadingSpinner } from "components";
+import { Input, LoadingSpinner, Spinner } from "components";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
 import { ipfsGateway, domain, MAIN_DOMAIN } from "../../constants";
 
@@ -34,6 +35,11 @@ const PublishAPI = () => {
   const { authenticate } = useAuth(dapp);
   const router = useRouter();
 
+  const [execute, rest] = useCreateSubdomain();
+
+  useEffect(() => {
+    console.log(rest);
+  }, [rest]);
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (publish.apiData && publish.subdomain.length > 0) {
@@ -82,7 +88,8 @@ const PublishAPI = () => {
     e
   ) => {
     e.preventDefault();
-    executeRegisterENS();
+    await executeRegisterENS();
+    await execute(publish.subdomain, publish.ipfs);
   };
 
   /* useEffect(() => {
@@ -94,6 +101,37 @@ const PublishAPI = () => {
   useEffect(() => {
     if (!dapp.did) void authenticate();
   }, [dapp.did]);
+
+  const ensRegStatus = ensRegLoading
+    ? "loading"
+    : ensRegErrors?.length
+    ? "error"
+    : ensRegData.data
+    ? "success"
+    : "none";
+
+  const ensRegInputSuffix = {
+    none: (
+      <Button
+        variant="suffixSmall"
+        className="btn-save-ens"
+        onClick={handleENSRegistration}
+      >
+        Save
+      </Button>
+    ),
+    success: (
+      <Flex sx={styles.successIcon}>
+        <Image src="/images/success.svg" alt="success" />
+      </Flex>
+    ),
+    loading: (
+      <Flex sx={styles.loadingIcon}>
+        <Spinner />
+      </Flex>
+    ),
+    error: <div style={{ width: "65px" }} />,
+  };
 
   return (
     <Wrapper>
@@ -140,23 +178,7 @@ const PublishAPI = () => {
                   <Input
                     value={publish?.subdomain}
                     onChange={handleEnsInputChange}
-                    suffix={
-                      ensRegLoading ? (
-                        <LoadingSpinner /> /* : ensRegData ? (
-                        <Flex className="succes-icon-wrap">
-                          <Image src="/images/success.svg" alt="success" />
-                        </Flex>
-                      )  */
-                      ) : (
-                        <Button
-                          variant="suffixSmall"
-                          className="btn-save-ens"
-                          onClick={handleENSRegistration}
-                        >
-                          Save
-                        </Button>
-                      )
-                    }
+                    suffix={ensRegInputSuffix[ensRegStatus]}
                   />
                 </>
               )}

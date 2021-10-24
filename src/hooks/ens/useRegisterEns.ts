@@ -24,7 +24,7 @@ export const useRegisterEns = () => {
   //createSubdomain
 
   const { execute: executeRegisterENS } = useWeb3ApiQuery({
-    uri: "ens/yay2.open.web3api.eth",
+    uri: "ens/ropsten/yay2.open.web3api.eth",
     query: `mutation {
     registerDomain(
       domain: $domain
@@ -35,9 +35,9 @@ export const useRegisterEns = () => {
     )
   }`,
   });
-  /* 
+
   const { execute: executeSetContentHash } = useWeb3ApiQuery({
-    uri: "ens/yay2.open.web3api.eth",
+    uri: "ens/ropsten/yay2.open.web3api.eth",
     query: `mutation {
       setContentHash(
         domain: $domain
@@ -49,7 +49,7 @@ export const useRegisterEns = () => {
       )
     }`,
   });
- */
+
   const execute = useCallback(async () => {
     try {
       if (!dapp.web3) {
@@ -65,10 +65,11 @@ export const useRegisterEns = () => {
         registrarAddress: "0x99BeF0ec344a354303Bc5F3BB2E7e0a104B1E9f2",
         registryAddress: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
         owner: signerAddress,
-        network,
+        network: "ropsten",
       });
-/* 
-      const resolverAddress = await dapp.web3
+      console.log("regResult", registrationResult);
+
+/*       const resolverAddress = await dapp.web3
         .getSigner()
         .resolveName("resolver.eth");
 
@@ -76,10 +77,10 @@ export const useRegisterEns = () => {
         domain,
         cid: publish.ipfs,
         resolverAddress,
-        network,
+        network: "ropsten",
       });
-      console.log(cHash);
- */
+      console.log("cHash", cHash); */
+
       setState((state) => ({ ...state, ...registrationResult }));
     } catch (e) {
       console.log("error", e);
