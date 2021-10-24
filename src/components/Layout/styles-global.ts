@@ -68,7 +68,6 @@ const getGlobalStyles = (theme: Theme): Interpolation<Theme> => ({
     backgroundAttachment: "scroll",
   },
   main: {
-    overflowX: "hidden",
     padding: "0 1rem",
     width: "1202px",
     maxWidth: "100%",

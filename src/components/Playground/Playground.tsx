@@ -227,7 +227,7 @@ const Playground = () => {
       )}
       <Flex className={`grid ${schemaVisible ? "withSchema" : ""}`}>
         <Flex className="query">
-          <section className="templates scrollable">
+          <section className="templates">
             {apiContents?.queries && (
               <SelectBox
                 key={"queries-box"}
@@ -248,7 +248,7 @@ const Playground = () => {
               />
             )}
           </section>
-          <section className="vars scrollable">
+          <section className="vars">
             <div className="subtitle-1">Vars</div>
             <JSONEditor
               value={formVarsToSubmit}
@@ -316,7 +316,7 @@ const Playground = () => {
             </section>
           </div>
           <div
-            className="schema scrollable"
+            className="schema"
             sx={{
               width: schemaVisible ? "30vw" : "0 !important",
             }}
@@ -335,7 +335,7 @@ const Playground = () => {
                       {`${">"}`} Hide Schema
                     </span>
                   </Flex>
-                  <div>
+                  <div className="scrollable">
                     <GQLCodeBlock
                       readOnly
                       title="Queries"

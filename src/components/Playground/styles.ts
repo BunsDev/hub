@@ -73,6 +73,9 @@ const styles: Styles = {
         ".result, .schema": {
           width: ["50%", "100%", null],
         },
+        ".schema": {
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+        },
       },
     },
     ".grid": {
@@ -80,7 +83,8 @@ const styles: Styles = {
       flexDirection: ["column", "column", "row"],
       ".query, .result, .schema": {
         transition: ".2s all",
-        section: {
+        section: {},
+        ">section": {
           minHeight: "17.5rem",
           backgroundColor: "black",
           border: "1px solid rgba(255, 255, 255, 0.2)",
@@ -100,16 +104,30 @@ const styles: Styles = {
           height: [null, "50%", null],
           maxHeight: "280px",
         },
-        "section.templates": { p: "20px" },
+        "section.templates": {
+          ">div:first-of-type": {
+            p: "20px",
+          },
+          ".GQLCodeBlock-wrap": {
+            maxHeight: "60%",
+            overflow: "auto",
+          },
+        },
         "section.vars": {
+          overflow: "hidden",
           ">div.subtitle-1": {
             p: "12px 16px",
             borderBottom: "1px solid rgba(255, 255, 255, .2)",
           },
+          ".GQLCodeBlock-wrap": {
+            section: {
+              minHeight: "280px",
+            },
+          },
         },
       },
       ".dynamic": {
-        gap: ["0", "1.25rem", "1rem"],
+        gap: "0",
         flexGrow: 1,
         flexWrap: [null, "wrap", "nowrap"],
         ".result": {
@@ -142,18 +160,20 @@ const styles: Styles = {
           },
         },
         ".schema": {
+          border: "none",
           position: "relative",
           bg: "black",
+          overflow: "hidden",
           minWidth: "0 !important",
           maxWidth: [null, null, "339px !important"],
           transition: ".2s all ease",
           height: ["270px", "0", "auto"],
           borderRadius: "1.25rem",
-          section: {
-            position: "absolute",
-            top: 0,
-            right: [null, 0],
-            width: "100%",
+          ">section": {
+            display: "flex",
+            flexDirection: "column",
+            maxHeight: "576px",
+            pb: "1rem",
             "div.subtitle-1": {
               position: "sticky",
               top: "0",
@@ -164,6 +184,16 @@ const styles: Styles = {
               borderBottom: "1px solid rgba(255, 255, 255, .2)",
               "span.btn": { cursor: "pointer" },
             },
+            ".GQLCodeBlock-wrap:first-of-type": {
+              ".title": { borderTop: "none" },
+            },
+          },
+          section: {
+            border: "none",
+            position: "absolute",
+            top: 0,
+            right: [null, 0],
+            width: "100%",
           },
         },
       },

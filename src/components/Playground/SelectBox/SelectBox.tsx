@@ -34,13 +34,8 @@ const SelectBox = ({
           color: dark ? "white !important" : "text",
           height: skinny ? "2.25rem !important" : "3 !important.5rem",
         },
-        ".react-dropdown-select-content": {
-          span: {
-            color: dark ? "white !important" : "text",
-          },
-        },
       }}
-      keepSelectedInList
+      multi={false}
       placeholder={placeholder}
       dropdownHandle={true}
       labelField={labelField}

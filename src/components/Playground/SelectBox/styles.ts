@@ -12,11 +12,17 @@ const styles: Styles = {
     lineHeight: "150%",
     p: ".5rem 1rem !important",
     pr: "10px !important",
-    mb: "1rem",
     '& [aria-expanded="true"]': {
       ".react-dropdown-select-dropdown-handle": {
         transform: "rotate(90deg)",
       },
+    },
+    ".react-dropdown-select-input, .react-dropdown-select-input::placeholder": {
+      color: "text",
+      fontFamily: "Nunito Sans",
+      fontWeight: "600",
+      fontSize: "16px",
+      width: "100% !important",
     },
     ".react-dropdown-select-dropdown-handle": {
       transition: ".2s transform",
@@ -63,6 +69,8 @@ const styles: Styles = {
       },
     },
     ".react-dropdown-select-content": {
+      flexWrap: "nowrap",
+      overflow: "hidden",
       span: {
         height: "1.5rem !important",
         display: "flex !important",
