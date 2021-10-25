@@ -22,8 +22,10 @@ const Header = () => {
   const [onboard, setOnboard] = useState<API>();
 
   useEffect(() => {
+    /*   
+    Preventing metamask modal to show up onload
     const onboard = onboardInit(dispatch);
-    setOnboard(onboard);
+    setOnboard(onboard); */
   }, []);
 
   useEffect(() => {
