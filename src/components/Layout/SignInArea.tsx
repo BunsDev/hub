@@ -89,7 +89,18 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
         </div>
       )}
       <ul sx={{ display: "flex", alignItems: "center" }}>
-        {!dapp.address ? (
+        {dapp.address ? (
+          <li
+            onClick={handleDisconnect}
+            className="wallet-addr"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <User sx={{ cursor: "pointer" }} />
+          </li>
+        ) : !dapp.address ? (
           <li
             onClick={handleSignIn}
             onKeyUp={handleSignIn}
@@ -128,18 +139,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             </li>
           )
         )}
-        {dapp.address && (
-          <li
-            onClick={handleDisconnect}
-            className="wallet-addr"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <User sx={{ cursor: "pointer" }} />
-          </li>
-        )}
+        {}
       </ul>
     </Flex>
   );
