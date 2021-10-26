@@ -3,7 +3,7 @@ import User from "../../../public/images/user.svg";
 import Github from "../../../public/images/github-icon-large.svg";
 import styles from "./styles";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Flex, Button, useThemeUI } from "theme-ui";
 import { Modal } from "components";
 import { useAuth, useStateValue, useRouter } from "hooks";
@@ -35,6 +35,11 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
   // const handleSignOut = () => {
   //   setShowSignOutModal(true)
   // }
+
+  const userAuthenticated = useMemo(() => {
+    const previouslySelectedWallet = localStorage.getItem("selectedWallet");
+    return previouslySelectedWallet && previouslySelectedWallet !== "undefined";
+  }, [localStorage.getItem("selectedWallet")]);
 
   return (
     <Flex
@@ -100,7 +105,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
           >
             <User sx={{ cursor: "pointer" }} />
           </li>
-        ) : dapp.address !== null && !dapp.address ? (
+        ) : !userAuthenticated ? (
           <li
             onClick={handleSignIn}
             onKeyUp={handleSignIn}

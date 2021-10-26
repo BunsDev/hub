@@ -22,7 +22,6 @@ const Header = () => {
   const [onboard, setOnboard] = useState<API>();
 
   useEffect(() => {
-    //Preventing metamask modal to show up onload
     const onboard = onboardInit(dispatch);
     setOnboard(onboard);
   }, []);
@@ -30,7 +29,11 @@ const Header = () => {
   useEffect(() => {
     const previouslySelectedWallet = localStorage.getItem("selectedWallet");
 
-    if (previouslySelectedWallet && onboard) {
+    if (
+      previouslySelectedWallet &&
+      previouslySelectedWallet !== "undefined" &&
+      onboard
+    ) {
       onboard?.walletSelect(previouslySelectedWallet);
     }
   }, [onboard]);

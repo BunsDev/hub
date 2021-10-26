@@ -17,7 +17,7 @@ export interface State {
 export const initialState: State = {
   dapp: {
     balance: "-1",
-    address: null,
+    address: undefined,
     wallet: {
       name: "TEST",
     },
