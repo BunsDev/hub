@@ -37,6 +37,7 @@ export const useCreateSubdomain = () => {
           
         setStatus(0);
 
+        //@Cesar
         await sendTransaction(
           FIFS_REGISTRAR,
           "function register(bytes32 label, address owner) external",

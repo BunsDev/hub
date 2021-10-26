@@ -35,11 +35,6 @@ const PublishAPI = () => {
   const { authenticate } = useAuth(dapp);
   const router = useRouter();
 
-  const [execute, rest] = useCreateSubdomain();
-
-  useEffect(() => {
-    console.log(rest);
-  }, [rest]);
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (publish.apiData && publish.subdomain.length > 0) {
@@ -89,7 +84,7 @@ const PublishAPI = () => {
   ) => {
     e.preventDefault();
     await executeRegisterENS();
-    await execute(publish.subdomain, publish.ipfs);
+    //await execute(publish.subdomain, publish.ipfs);
   };
 
   /* useEffect(() => {
