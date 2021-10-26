@@ -100,7 +100,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
           >
             <User sx={{ cursor: "pointer" }} />
           </li>
-        ) : !dapp.address ? (
+        ) : dapp.address !== null && !dapp.address ? (
           <li
             onClick={handleSignIn}
             onKeyUp={handleSignIn}
