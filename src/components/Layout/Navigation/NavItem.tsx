@@ -44,19 +44,30 @@ const NavItem = ({
       }}
       onClick={onClick}
     >
-      <Link href={item?.href || ""}>
+      {"href" in item ? (
+        <Link href={item.href}>
+          <a>
+            {item.imgSrc && <img src={item.imgSrc} alt={item.title + "icon"} />}
+            <span className="text-nav">{item.title}</span>
+          </a>
+        </Link>
+      ) : (
         <a>
           {item.imgSrc && <img src={item.imgSrc} alt={item.title + "icon"} />}
           <span className="text-nav">{item.title}</span>
         </a>
-      </Link>
+      )}
       {item?.children && (
         <div className="dropdown-content">
-          {item.children.map((child) => (
-            <Link key={child.title} href={child?.href || ""}>
-              <a>{child.title}</a>
-            </Link>
-          ))}
+          {item.children.map((child) =>
+            "href" in child ? (
+              <Link key={child.title} href={child?.href}>
+                <a>{child.title}</a>
+              </Link>
+            ) : (
+              <a key={child.title}>{child?.title}</a>
+            )
+          )}
         </div>
       )}
     </li>
