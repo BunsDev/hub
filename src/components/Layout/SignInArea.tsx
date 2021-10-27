@@ -94,7 +94,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
         </div>
       )}
       <ul sx={{ display: "flex", alignItems: "center" }}>
-        {dapp.address ? (
+        {userAuthenticated || dapp.address ? (
           <li
             onClick={handleDisconnect}
             className="wallet-addr"
