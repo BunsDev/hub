@@ -4,6 +4,7 @@ import {
   FormEventHandler,
   MouseEventHandler,
   useEffect,
+  useState,
 } from "react";
 import { Flex, Button, Themed, Image } from "theme-ui";
 import {
@@ -12,10 +13,9 @@ import {
   useToggle,
   useStateValue,
   useRegisterEns,
-  useCreateSubdomain,
 } from "hooks";
 import { Wrapper } from "components/PublishWrapper";
-import { Input, LoadingSpinner, Spinner } from "components";
+import { Input, Modal, Spinner } from "components";
 import stripIPFSPrefix from "utils/stripIPFSPrefix";
 import { ipfsGateway, domain, MAIN_DOMAIN } from "../../constants";
 
@@ -23,6 +23,7 @@ import styles from "./styles";
 
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
+  const [showSignInModal, setShowSignInModal] = useState(false);
   const [ensInputVisible, toggleEnsInput] = useToggle(
     Boolean(publish.subdomain)
   );
@@ -37,18 +38,23 @@ const PublishAPI = () => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    if (publish.apiData && publish.subdomain.length > 0) {
+    console.log(publish);
+    if (publish.apiData) {
+      const body = {
+        name: publish.apiData.name,
+        description: publish.apiData.description,
+        subtext: publish.apiData.subtext,
+        icon: publish.apiData.icon,
+        locationUri: publish.ipfs,
+        did: dapp.did,
+        apiUris: [] as string[],
+      };
+      if (publish.subdomain) {
+        body.apiUris = [`${publish?.subdomain}.${MAIN_DOMAIN}`];
+      }
       await fetch(domain + "/api/apis/publish", {
         method: "POST",
-        body: JSON.stringify({
-          name: publish.apiData.name,
-          description: publish.apiData.description,
-          subtext: publish.apiData.subtext,
-          icon: publish.apiData.icon,
-          locationUri: publish.ipfs,
-          apiUris: [`${publish.subdomain}.${MAIN_DOMAIN}`],
-          did: dapp.did,
-        }),
+        body: JSON.stringify(body),
         headers: {
           "Content-Type": "application/json",
         },
@@ -70,6 +76,14 @@ const PublishAPI = () => {
         type: "setsubdomainError",
         payload: "Please enter a valid ENS sub-domain",
       });
+    }
+  };
+  const handleOnAddEns: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+    if (dapp.address) {
+      toggleEnsInput(true);
+    } else {
+      setShowSignInModal(true);
     }
   };
 
@@ -96,6 +110,12 @@ const PublishAPI = () => {
   useEffect(() => {
     if (!dapp.did) void authenticate();
   }, [dapp.did]);
+
+  useEffect(() => {
+    if (!dapp.address) {
+      toggleEnsInput(false);
+    }
+  }, [dapp.address]);
 
   const ensRegStatus = ensRegLoading
     ? "loading"
@@ -159,10 +179,7 @@ const PublishAPI = () => {
                 <Button
                   variant="primaryMedium"
                   className="btn-add-ens"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleEnsInput(true);
-                  }}
+                  onClick={handleOnAddEns}
                 >
                   Add ENS Name
                 </Button>
@@ -202,14 +219,24 @@ const PublishAPI = () => {
           <Button
             variant="primaryMedium"
             type="submit"
-            disabled={
-              publish.subdomain.length === 0 || publish.ipfs.length === 0
-            }
+            disabled={publish.ipfs.length === 0}
           >
             Publish
           </Button>
         </Flex>
       </form>
+      {showSignInModal && (
+        <div sx={{ position: "fixed", top: 0, left: 0, zIndex: 100000 }}>
+          <Modal
+            screen={"connect"}
+            noLeftShift
+            close={() => {
+              setShowSignInModal(false);
+              toggleEnsInput(true);
+            }}
+          />
+        </div>
+      )}
     </Wrapper>
   );
 };

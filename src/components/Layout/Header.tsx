@@ -10,7 +10,6 @@ import { RESPONSOVE_BREAKPOINTS } from "../../constants";
 import styles from "./styles";
 
 const Header = () => {
-  const [{ dapp }, dispatch] = useStateValue();
   const {
     windowSize,
     mobileNav: { setMobileNavActive },
@@ -38,7 +37,7 @@ const Header = () => {
         />
       ) : (
         <Flex className="user-authorized">
-          {dapp.address && router.pathname !== "/apis/create" && (
+          {router.pathname !== "/apis/create" && (
             <Button
               variant="primaryMedium"
               onClick={() => {
