@@ -1,8 +1,7 @@
 /** @jsxImportSource theme-ui **/
 import { MouseEventHandler, useMemo } from "react";
-import { Link } from "@theme-ui/components";
 import { ThemeUIStyleObject } from "@theme-ui/css";
-
+import Link from "next/link";
 import { useRouter } from "hooks";
 import { NavItem as NavItemType } from "./navItemsData";
 
@@ -45,15 +44,17 @@ const NavItem = ({
       }}
       onClick={onClick}
     >
-      <Link href={item?.href}>
-        {item.imgSrc && <img src={item.imgSrc} alt={item.title + "icon"} />}
-        <span className="text-nav">{item.title}</span>
+      <Link href={item?.href || ""}>
+        <a>
+          {item.imgSrc && <img src={item.imgSrc} alt={item.title + "icon"} />}
+          <span className="text-nav">{item.title}</span>
+        </a>
       </Link>
       {item?.children && (
         <div className="dropdown-content">
           {item.children.map((child) => (
-            <Link key={child.title} href={child?.href}>
-              {child.title}
+            <Link key={child.title} href={child?.href || ""}>
+              <a>{child.title}</a>
             </Link>
           ))}
         </div>

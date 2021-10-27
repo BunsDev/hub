@@ -147,6 +147,7 @@ const styles: Styles = {
       },
       ">a": {
         mb: "1rem",
+        color: "white",
       },
     },
   },

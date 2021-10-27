@@ -3,24 +3,44 @@ import User from "../../../public/images/user.svg";
 import Github from "../../../public/images/github-icon-large.svg";
 import styles from "./styles";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Flex, Button, useThemeUI } from "theme-ui";
 import { Modal } from "components";
 import { useAuth, useStateValue, useRouter } from "hooks";
+import onboardInit from "utils/onboardInit";
+import { API } from "bnc-onboard/dist/src/interfaces";
 
 type SignInAreaProps = {
   onDark?: boolean;
 };
 
 const SignInArea = ({ onDark }: SignInAreaProps) => {
-  const [{ dapp }] = useStateValue();
+  const [{ dapp }, dispatch] = useStateValue();
   const { theme } = useThemeUI();
   const router = useRouter(); // eslint-disable-line
   const { isAuthenticated } = useAuth(dapp);
+  const [onboard, setOnboard] = useState<API>();
   const [showGithubSignInModal, setShowGithubSignInModal] = useState(false);
   const [showDisconnectModal, setShowDisconnectModal] = useState(false);
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignOutModal, setShowSignOutModal] = useState(false);
+
+  useEffect(() => {
+    const onboard = onboardInit(dispatch);
+    setOnboard(onboard);
+  }, []);
+
+  useEffect(() => {
+    const previouslySelectedWallet = localStorage.getItem("selectedWallet");
+
+    if (
+      previouslySelectedWallet &&
+      previouslySelectedWallet !== "undefined" &&
+      onboard
+    ) {
+      onboard?.walletSelect(previouslySelectedWallet);
+    }
+  }, [onboard]);
 
   const handleDisconnect = () => {
     setShowDisconnectModal(true);
@@ -94,7 +114,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
         </div>
       )}
       <ul sx={{ display: "flex", alignItems: "center" }}>
-        {userAuthenticated || dapp.address ? (
+        {dapp.address ? (
           <li
             onClick={handleDisconnect}
             className="wallet-addr"
@@ -105,7 +125,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
           >
             <User sx={{ cursor: "pointer" }} />
           </li>
-        ) : !userAuthenticated ? (
+        ) : !dapp.address ? (
           <li
             onClick={handleSignIn}
             onKeyUp={handleSignIn}
