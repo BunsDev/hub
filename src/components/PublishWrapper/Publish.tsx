@@ -49,7 +49,7 @@ const PublishAPI = () => {
         apiUris: [] as string[],
       };
       if (publish.subdomain) {
-        body.apiUris = [`${publish?.subdomain}.${MAIN_DOMAIN}`];
+        body.apiUris = [publish?.subdomain];
       }
       await fetch(domain + "/api/apis/publish", {
         method: "POST",
