@@ -107,5 +107,19 @@ const styles: Styles = {
       width: ["30.6875rem", null],
     },
   },
+  suffixButton: {
+    width: "65px",
+    boxSizing: "content-box",
+    alignSelf: "stretch",
+    borderRadius: "6px",
+    border: "none",
+    margin: "2px",
+    justifyContent: "center",
+    fontSize: "14px",
+    lineHeight: "120%",
+    fontWeight: "normal",
+  },
+  successIcon: { width: "65px", justifyContent: "center" },
+  loadingIcon: { width: "65px", height: "100%", justifyContent: "center" },
 };
 export default styles;

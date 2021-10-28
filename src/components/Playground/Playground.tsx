@@ -4,7 +4,7 @@ import styles from "./styles";
 
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import { Flex, Button, Themed } from "theme-ui";
-import { QueryApiResult } from "@web3api/client-js";
+import { QueryApiResult } from "@web3api/core-js";
 import { useWeb3ApiQuery, useWeb3ApiClient } from "@web3api/react";
 import { useRouter, useStateValue } from "hooks";
 import {
@@ -57,6 +57,7 @@ const Playground = () => {
   const [formVarsToSubmit, setformVarsToSubmit] = useState({});
 
   const { loading, execute } = useWeb3ApiQuery({
+    //@ts-ignore
     uri: `ens/${networkName}/${router.asPath.split("/ens/")[1]}`,
     query: selectedMethod,
   });

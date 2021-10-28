@@ -98,14 +98,8 @@ const PublishAPI = () => {
   ) => {
     e.preventDefault();
     await executeRegisterENS();
-    //await execute(publish.subdomain, publish.ipfs);
   };
 
-  /* useEffect(() => {
-    if (status === 3) {
-      dispatch({ type: "setsubdomainRegisterSuccess", payload: true });
-    }
-  }, [status]); */
 
   useEffect(() => {
     if (!dapp.did) void authenticate();
@@ -121,7 +115,7 @@ const PublishAPI = () => {
     ? "loading"
     : ensRegErrors?.length
     ? "error"
-    : ensRegData.data
+    : publish.subdomainRegisterSuccess
     ? "success"
     : "none";
 
@@ -145,7 +139,11 @@ const PublishAPI = () => {
         <Spinner />
       </Flex>
     ),
-    error: <div style={{ width: "65px" }} />,
+    error: (
+      <Flex sx={styles.successIcon}>
+        <Image src="/images/fail.svg" alt="error" />
+      </Flex>
+    ),
   };
 
   return (

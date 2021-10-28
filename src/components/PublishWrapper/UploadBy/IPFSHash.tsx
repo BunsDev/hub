@@ -6,7 +6,7 @@ import { useStateValue } from "hooks";
 import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
 import { Spinner, Input } from "components";
 
-import styles from "./styles";
+import styles from "../styles";
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();

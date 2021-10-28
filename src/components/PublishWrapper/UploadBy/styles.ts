@@ -11,18 +11,6 @@ const styles: Styles = {
     borderRadius: "1.25rem",
     maxWidth: "32.125rem",
   },
-  suffixButton: {
-    width: "65px",
-    boxSizing: "content-box",
-    alignSelf: "stretch",
-    borderRadius: "6px",
-    border: "none",
-    margin: "2px",
-    justifyContent: "center",
-    fontSize: "14px",
-    lineHeight: "120%",
-    fontWeight: "normal",
-  },
   tutorial: {
     border: "1px solid rgba(255, 255, 255, 0.2)",
     borderRadius: "1.25rem",
@@ -107,8 +95,6 @@ const styles: Styles = {
       borderRadius: [null, "100px"],
     },
   },
-  successIcon: { width: "65px", justifyContent: "center" },
-  loadingIcon: { width: "65px", height: "100%", justifyContent: "center" },
 };
 
 export default styles;
