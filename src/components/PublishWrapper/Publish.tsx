@@ -38,7 +38,6 @@ const PublishAPI = () => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    console.log(publish);
     if (publish.apiData) {
       const body = {
         name: publish.apiData.name,
