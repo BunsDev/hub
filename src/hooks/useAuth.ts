@@ -1,5 +1,5 @@
 import Auth from "../services/ceramic/auth";
-import { githubHandler } from "../services/ceramic/handlers";
+import { Favorites, githubHandler } from "../services/ceramic/handlers";
 import { State } from "../state/initialState";
 import { useStateValue } from "../state/state";
 import { domain } from "../constants";
@@ -7,30 +7,13 @@ import useLocalStorage from "./useLocalStorage";
 
 import axios from "axios";
 import { useCallback, useEffect } from "react";
-import { JWE } from "did-jwt";
 
-export const useAuth = (dapp: State["dapp"]) => {
-  const [state, dispatch] = useStateValue();
-  const { github: cachedToken, did } = state.dapp;
+const useAuth = (dapp: State["dapp"]) => {
+  const [_, dispatch] = useStateValue();
+  const { github: cachedToken, did } = dapp;
   const [cachedDid, setCachedDid] = useLocalStorage("did", did);
 
   const isAuthenticated = Auth.ceramic.did?.authenticated;
-
-  useEffect(() => {
-    const checkToken = async () => {
-      const auth: {
-        github?: {
-          accessToken: JWE;
-        };
-      } = await Auth.get("authentication");
-      const ghAccessToken = auth?.github?.accessToken;
-      await githubHandler(ghAccessToken, cachedToken, dispatch);
-    };
-
-    if (state.dapp.did && isAuthenticated) {
-      void checkToken();
-    }
-  }, [state.dapp.did, cachedToken, isAuthenticated]);
 
   useEffect(() => {
     if (cachedDid) {
@@ -43,12 +26,13 @@ export const useAuth = (dapp: State["dapp"]) => {
 
   const set = useCallback(
     async (key, values) => {
+      await Auth.getInstance(dapp.web3);
       if (Auth.idx.authenticated) {
         if (dapp.web3) return await Auth.set(key, values);
         // open connect modal
         return;
       }
-      await Auth.getInstance(dapp.web3);
+      //await Auth.getInstance(dapp.web3);
     },
     [Auth, dapp]
   );
@@ -64,7 +48,7 @@ export const useAuth = (dapp: State["dapp"]) => {
   );
 
   const authenticate = useCallback(async () => {
-    await Auth.getInstance(state.dapp.web3);
+    await Auth.getInstance(dapp.web3);
 
     if (Auth.ceramic.did?.authenticated) {
       // do a request to backend sending the DID
@@ -80,7 +64,9 @@ export const useAuth = (dapp: State["dapp"]) => {
         payload: id,
       });
     }
-  }, [Auth, dispatch]);
+  }, [Auth, dispatch, dapp.web3]);
 
   return { set, get, authenticate, isAuthenticated };
 };
+
+export default useAuth;

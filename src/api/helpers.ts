@@ -37,7 +37,7 @@ export const withValidatePublishBody = (
       name: Joi.string().required(),
       icon: Joi.string().required(),
       locationUri: Joi.string().required(),
-      pointerUris: Joi.array().items(Joi.string()),
+      apiUris: Joi.array().items(Joi.string()),
       did: Joi.string(),
     });
 

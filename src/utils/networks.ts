@@ -1,7 +1,14 @@
 interface Network {
-  name: string;
+  name: keyof typeof SupportedNetworks;
   node: string;
   explorer: string;
+}
+//export type SupportedNetworks = "mainnet" | "ropsten" | "rinkeby";
+
+export enum SupportedNetworks {
+  "mainnet",
+  "ropsten",
+  "rinkeby",
 }
 
 const INFURA_KEY =

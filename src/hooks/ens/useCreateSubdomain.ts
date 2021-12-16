@@ -34,9 +34,10 @@ export const useCreateSubdomain = () => {
         const publicResolverAddress = await web3
           .getSigner()
           .resolveName("resolver.eth");
-
+          
         setStatus(0);
 
+        //@Cesar
         await sendTransaction(
           FIFS_REGISTRAR,
           "function register(bytes32 label, address owner) external",
@@ -85,3 +86,5 @@ export const useCreateSubdomain = () => {
 
   return [execute, { error, isLoading, status, data }] as const;
 };
+
+export default useCreateSubdomain;

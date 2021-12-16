@@ -1,8 +1,10 @@
-import { DAppAction } from "../../state/action";
+import { DAppAction, StateAction } from "../../state/action";
 import Auth from "./auth";
 
 import { Dispatch } from "react";
 import { JWE } from "did-jwt";
+import { APIData } from "hooks/ens/useGetAPIfromENS";
+import { API_URI_TYPE_ID } from "src/constants";
 
 // We can add custom logic for each web2
 // service that we want to
@@ -44,4 +46,57 @@ export const githubHandler = async (
       payload: decoded,
     });
   }
+};
+
+export interface Favorites {
+  [key: string]: string[];
+  ens: string[];
+  ipfs: string[];
+}
+
+export const toggleFavorite = async (
+  api: APIData,
+  currentFavorites: Favorites,
+  dispatch: Dispatch<StateAction>
+) => {
+  const favList = [...currentFavorites.ens, ...currentFavorites.ipfs];
+  const newFavorites: Favorites = {
+    ens: currentFavorites.ens ?? [],
+    ipfs: currentFavorites.ipfs ?? [],
+  };
+
+  const apiUris = [
+    { uri: api.locationUri, uriTypeId: API_URI_TYPE_ID.ipfs },
+    ...api.apiUris,
+  ];
+  const favUriDict: [string, string][] = [];
+  const alreadyFavorite = apiUris
+    .map((apiUri) => {
+      const boolArr = favList.filter((favUri) => {
+        if (favUri === apiUri.uri) {
+          favUriDict.push([apiUri.uri, apiUri.uriTypeId]);
+          return true;
+        }
+        return false;
+      });
+      return !!boolArr.length;
+    })
+    .filter(Boolean);
+  if (alreadyFavorite.length) {
+    favUriDict.map((fav) => {
+      const type = API_URI_TYPE_ID[fav[1]];
+      const index = newFavorites[type].findIndex((uri) => fav[0] === uri);
+      if (index !== -1) {
+        newFavorites[type] = newFavorites[type]
+          .slice(0, index)
+          .concat(newFavorites[type].slice(index + 1));
+      }
+    });
+  } else {
+    for (const uri of apiUris) {
+      const type = API_URI_TYPE_ID[uri.uriTypeId];
+      newFavorites[type].push(uri.uri);
+    }
+  }
+  dispatch({ type: "SET_FAVORITE_APIS", payload: newFavorites });
 };

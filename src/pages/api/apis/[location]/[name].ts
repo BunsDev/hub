@@ -1,15 +1,41 @@
-import { Api } from "../../../../api/models/Api";
-
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import { APIData } from "hooks/ens/useGetAPIfromENS";
+import ApiUrisRepository from "src/api/repositories/apiUrisRepository";
+import { API_URI_TYPE_ID } from "src/constants";
+import { getConnection } from "typeorm";
+import { attachLocationUri } from "utils/sanitizeApis";
+import Database from "../../db";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "GET") {
     try {
       const { location, name } = request.query;
-      const api = await Api.getByLocation(location as string, name as string);
+
+      const database = new Database();
+      await database.connect();
+
+      const apiUrisRepository =
+        getConnection().getCustomRepository(ApiUrisRepository);
+
+      const apiUri = await apiUrisRepository.findOne({
+        where: { uri: name },
+        relations: ["api"],
+      });
+
+      if (!apiUri) {
+        throw Error("Not Found");
+      }
+
+      const apiUris = await apiUrisRepository.find({
+        where: { apiId: apiUri.apiId },
+      });
+
       return response.json({
         status: 200,
-        api,
+        api: attachLocationUri({
+          ...apiUri.api,
+          apiUris,
+        } as unknown as APIData),
       });
     } catch (error) {
       return response.json({

@@ -7,15 +7,14 @@ export interface StructuredSchema {
 }
 
 export default function cleanSchema(suppliedSchema: string): StructuredSchema {
-  const removeWb3Header = suppliedSchema.split(
-    "### Web3API Header END ###\n\n"
-  )[1];
-  const removeObjects = removeWb3Header.split(
-    "\n\n### Imported Queries END ###"
-  )[0];
-  const localandimported = removeObjects.split(
-    "\n### Imported Queries START ###\n\n"
-  );
+  const removeWb3Header =
+    suppliedSchema.split("### Web3API Header END ###\n\n")[1] || suppliedSchema;
+  const removeObjects =
+    removeWb3Header.split("\n\n### Imported Queries END ###")[0] ||
+    removeWb3Header;
+  const localandimported =
+    removeObjects.split("\n### Imported Queries START ###\n\n")[0] ||
+    removeObjects;
 
   const local = localandimported[0].split("\n\n");
   const imported = localandimported[1].split("\n\n");

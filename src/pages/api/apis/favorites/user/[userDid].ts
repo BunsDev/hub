@@ -1,6 +1,8 @@
-import { User } from "../../../../../api/models/User";
-
+import StarredApiRepository from "../../../../../api/repositories/starredApi";
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import { getConnection } from "typeorm";
+import ApiRepository from "src/api/repositories/api";
+import Database from "src/pages/api/db";
 
 const md5 = require("md5"); // eslint-disable-line
 
@@ -15,10 +17,17 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         });
       }
 
+      const database = new Database();
+      await database.connect();
+
+      const starredApiRepository =
+        getConnection().getCustomRepository(StarredApiRepository);
+      const apiRepository = getConnection().getCustomRepository(ApiRepository);
+
       const id = md5(userDid);
 
-      const data = await User.getFavorites(id);
-      const { count } = await User.getFavoritesCount(id);
+      const data = await apiRepository.getFavoritesByUserId(id);
+      const count = await starredApiRepository.getFavoritesCountByUserId(id);
 
       return response.json({
         status: 200,
@@ -26,7 +35,6 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         count,
       });
     } catch (error) {
-      console.log({ error });
       return response.json({ status: 500, error: error.message });
     }
   }

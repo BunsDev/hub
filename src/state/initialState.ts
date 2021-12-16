@@ -4,6 +4,7 @@ import { APIData } from "../hooks/ens/useGetAPIfromENS";
 import ethers from "ethers";
 import { PluginRegistration, UriRedirect } from "@web3api/client-js";
 import { ethereumPlugin } from "@web3api/ethereum-plugin-js";
+import { Favorites } from "services/ceramic/handlers";
 
 export interface State {
   dapp: DappType;
@@ -26,6 +27,8 @@ export const initialState: State = {
     apis: [],
     github: "",
     did: undefined,
+    favorites: { ens: [], ipfs: [] },
+    favoritesList: {},
   },
   web3api: {
     plugins: [
@@ -72,6 +75,8 @@ type DappType = {
   apis: APIData[];
   github?: string;
   did?: string;
+  favorites?: Favorites;
+  favoritesList?: { [key: string]: boolean };
 };
 
 type Web3apiType = {

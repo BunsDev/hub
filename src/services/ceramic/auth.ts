@@ -12,12 +12,12 @@ const CERAMIC_NODE =
 const aliases = {
   authentication:
     "kjzl6cwe1jw148u82hnzcxx40jmyv4rkssid4rlhz7mku1rpxtnvf4nu9z2loup",
+  favorites: "kjzl6cwe1jw14a0t4tt61bsk9a0nt07txma6ra5bkccacfmcpvi9weiuprp7n8r",
 };
 
 export default class Auth {
   public static ceramic: Ceramic = new Ceramic(CERAMIC_NODE);
   public static idx: IDX = new IDX({ ceramic: Auth.ceramic, aliases });
-
   private static _instance: Auth;
 
   public static async getInstance(provider?: JsonRpcProvider): Promise<void> {
@@ -41,9 +41,9 @@ export default class Auth {
 
   private async initialize(provider: JsonRpcProvider): Promise<void> {
     try {
-      const did = this.createDID();
+      const did = Auth.createDID();
       await Auth.ceramic.setDID(did);
-      const didProvider = await this.createBlockchainConnection(provider);
+      const didProvider = await Auth.createBlockchainConnection(provider);
       await Auth.ceramic.did.setProvider(didProvider);
       await Auth.ceramic.did.authenticate();
     } catch (e) {
@@ -51,7 +51,7 @@ export default class Auth {
     }
   }
 
-  private createDID() {
+  private static createDID() {
     const resolver = {
       ...KeyDidResolver.getResolver(),
       ...ThreeIdResolver.getResolver(Auth.ceramic),
@@ -60,7 +60,9 @@ export default class Auth {
     return did;
   }
 
-  private async createBlockchainConnection({ provider }: JsonRpcProvider) {
+  private static async createBlockchainConnection({
+    provider,
+  }: JsonRpcProvider) {
     const authProvider = new EthereumAuthProvider(
       provider,
       provider.selectedAddress

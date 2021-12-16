@@ -11,6 +11,7 @@ import { networkID } from "../constants";
 
 import { PluginRegistration } from "@web3api/client-js";
 import { ConnectionConfig, ethereumPlugin } from "@web3api/ethereum-plugin-js";
+import { listFavorites } from "utils/favorites";
 
 export function web3apiReducer(
   state: State,
@@ -42,7 +43,8 @@ export function web3apiReducer(
           plugins,
         };
       }
-    default: // eslint-disable-line
+    // eslint-disable-next-line no-fallthrough
+    default:
       return state.web3api;
   }
 }
@@ -136,6 +138,10 @@ export function dappReducer(state: State, action: DAppAction): State["dapp"] {
       return newStateObj;
     case "SET_DID":
       newStateObj.did = action.payload;
+      return newStateObj;
+    case "SET_FAVORITE_APIS":
+      newStateObj.favorites = action.payload;
+      newStateObj.favoritesList = listFavorites(action.payload);
       return newStateObj;
     default:
       return state.dapp;

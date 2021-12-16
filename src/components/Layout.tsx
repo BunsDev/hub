@@ -13,7 +13,9 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const [, dispatch] = useStateValue();
-  const { data: apis } = useSWR(domain + "/api/apis/active");
+  const { data: apis } = useSWR(
+    domain + "/api/apis/search?limit=10&page=1&query="
+  );
   // https://github.com/system-ui/theme-ui/issues/834#issuecomment-625865772
   const pageLevelAnimationTiming = timing[3] + "s";
 

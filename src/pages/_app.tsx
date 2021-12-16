@@ -1,12 +1,18 @@
+import Head from "next/head";
+import { ThemeProvider } from "theme-ui";
+import { SWRConfig } from "swr";
+
 import "animate.css/animate.css";
 import theme from "../theme";
 import { StateProvider, useStateValue } from "../state/state";
 import { fetcherREST } from "../utils/fetcher";
-import { useAuth } from "../hooks/useAuth";
 
-import Head from "next/head";
-import { ThemeProvider } from "theme-ui";
-import { SWRConfig } from "swr";
+import { useAuth } from "hooks";
+import { ResponsiveProvider } from "hooks/useResponsive";
+import useOnboarding from "hooks/useOnboarding";
+import { useEffect } from "react";
+import useFavorites from "hooks/useFavorites";
+import { ModalProvider } from "hooks/useModal";
 
 const swrOptions = {
   // refreshInterval: 10000,
@@ -18,11 +24,21 @@ interface Props<T> {
   Component: React.FC<T>; // eslint-disable-line
 }
 
-function StatefulApp({ pageProps, Component }: Props<any>) { // eslint-disable-line
+function StatefulApp({ pageProps, Component }: Props<any>) {
+  // eslint-disable-line
   const [{ dapp }] = useStateValue();
-  useAuth(dapp);
+  useOnboarding();
+  const { authenticate } = useAuth(dapp);
+  useFavorites();
+
+  useEffect(() => {
+    if (dapp.web3 && dapp.address) {
+      authenticate();
+    }
+  }, [dapp.web3, dapp.address]);
+
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
@@ -31,16 +47,23 @@ function StatefulApp({ pageProps, Component }: Props<any>) { // eslint-disable-l
         ></link>
       </Head>
       <SWRConfig value={swrOptions}>
-        <Component {...pageProps} />
+        <ResponsiveProvider>
+          <Component {...pageProps} />
+        </ResponsiveProvider>
       </SWRConfig>
-    </ThemeProvider>
+    </>
   );
 }
 
-function MyApp({ Component, pageProps }: Props<any>) { // eslint-disable-line
+function MyApp({ Component, pageProps }: Props<any>) {
+  // eslint-disable-line
   return (
     <StateProvider>
-      <StatefulApp pageProps={pageProps} Component={Component} />
+      <ThemeProvider theme={theme}>
+        <ModalProvider>
+          <StatefulApp pageProps={pageProps} Component={Component} />
+        </ModalProvider>
+      </ThemeProvider>
     </StateProvider>
   );
 }

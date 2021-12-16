@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+import { networks } from "utils/networks";
+
 export const cloudFlareGateway = "https://cloudflare-ipfs.com/ipfs/";
-export const networkID = Number(process.env.NETWORK_ID);
+export const ipfsGateway = process.env.IPFS_GATEWAY || cloudFlareGateway;
+export const networkID = 1 || Number(process.env.NETWORK_ID);
+export const networkName = networks[networkID].name;
 export const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 export const MAIN_DOMAIN = "open.web3api.eth";
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -151,3 +156,26 @@ export const responseData = [
     isActive: true,
   },
 ];
+
+export const RESPONSOVE_BREAKPOINTS = {
+  XSMALL: 576,
+  SMALL: 768,
+  MEDIUM: 992,
+  LARGE: 1200,
+  XLARGE: 1400,
+};
+
+export interface API_URI_TYPE_ID {
+  [key: string]: string;
+  "1": "ens";
+  "2": "ipfs";
+  ens: "1";
+  ipfs: "2";
+}
+
+export const API_URI_TYPE_ID: API_URI_TYPE_ID = {
+  "1": "ens",
+  "2": "ipfs",
+  ens: "1",
+  ipfs: "2",
+};

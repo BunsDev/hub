@@ -1,6 +1,6 @@
-import { User } from "../../../api/models/User";
-
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import { getConnection } from "typeorm";
+import ApiRepository from "src/api/repositories/api";
 
 const md5 = require("md5"); // eslint-disable-line
 
@@ -15,8 +15,10 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         });
       }
 
+      const apiRepository = getConnection().getCustomRepository(ApiRepository);
+
       const id = md5(userDid);
-      const apis = await User.getPublishedApis(id);
+      const apis = await apiRepository.getPublishedApis(id);
       return response.json({
         status: 200,
         apis,

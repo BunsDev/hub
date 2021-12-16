@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default async function getPackageSchema(api: APIData): Promise<string> {
   const schemaResponse = await axios.get(
-    `${cloudFlareGateway}${api.locationUri}/schema.graphql`
+    `${cloudFlareGateway}${api.apiUris[0].uri}/schema.graphql`
   );
   return schemaResponse.data;
 }

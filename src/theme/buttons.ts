@@ -1,6 +1,8 @@
+import { ThemeUIStyleObject } from "@theme-ui/css";
+
 const buttons: Record<string, any> = {}; // eslint-disable-line
 
-const buttonBase = {
+const buttonBase: ThemeUIStyleObject = {
   fontFamily: "Nunito Sans",
   fontStyle: "normal",
   fontWeight: "bold",
@@ -8,19 +10,21 @@ const buttonBase = {
   lineHeight: "14px",
   display: "flex",
   alignItems: "center",
+  justifyContent: "center",
   textAlign: "center",
   letterSpacing: "-0.6px",
   borderRadius: "20px",
   bg: "transparent",
   border: "2px solid transparent",
   color: "white",
+  whiteSpace: "nowrap",
   transition: "all .2s",
 };
 
 const buttonPaddingSizes = {
   small: {
-    px: "2rem",
-    py: "0.75rem",
+    px: ".75rem",
+    py: "0.625rem",
   },
   medium: {
     px: "1.125rem",
@@ -29,33 +33,37 @@ const buttonPaddingSizes = {
   large: {
     px: "4rem",
     py: "1.25rem",
+    borderRadius: "3.75rem",
   },
 };
 
 const buttonColorStates = {
   primary: {
-    backgroundColor: "w3ButtonPrimary",
-    borderColor: "w3ButtonPrimary",
+    backgroundColor: "polyButtonPrimary",
+    borderColor: "polyButtonPrimary",
     "&:hover": {
-      bg: "w3ButtonPrimaryHover",
-      borderColor: "w3ButtonPrimaryHover",
+      bg: "polyButtonPrimaryHover",
+      borderColor: "polyButtonPrimaryHover",
     },
     "&:active": {
       bg: "#255661",
       borderColor: "#255661",
     },
     "&[disabled]": {
-      bg: "w3TextNavTeal",
-      borderColor: "w3TextNavTeal",
+      bg: "gradient(270.27deg, #1B5FED 0.46%, #1B5FED 39.12%, #1B87ED 72.6%, #1B87ED 99.55%)",
+      opacity: ".3",
       cursor: "not-allowed",
     },
   },
   secondary: {
-    bg: "w3ButtonSecondary",
-    borderColor: "w3ButtonSecondary",
+    bg: "#141D32",
+    borderColor: "transparent",
     color: "white",
     "&:active": {
       bg: "rgba(104, 129, 132, 0.2)",
+    },
+    "&[disabled]": {
+      cursor: "not-allowed",
     },
   },
   hollow: {
@@ -65,6 +73,10 @@ const buttonColorStates = {
   callout: {
     color: "white",
     background: "linear-gradient(0deg, #529DAD 1.85%, #60C092 97.11%)",
+  },
+  suffix: {
+    color: "white",
+    bg: "polyGrey2",
   },
 };
 
