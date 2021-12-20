@@ -38,7 +38,7 @@ const PublishAPI = () => {
         subtext: publish.apiData.subtext,
         icon: publish.apiData.icon,
         locationUri: publish.ipfs,
-        did: dapp?.did || "",
+        did: dapp?.did,
         apiUris: [] as string[],
       };
       if (publish.subdomain) {
