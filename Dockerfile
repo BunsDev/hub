@@ -9,6 +9,7 @@ RUN apk --no-cache --virtual build-dependencies add \
 WORKDIR /app
 
 COPY package.json .
+COPY yarn.lock .
 RUN yarn
 COPY . .
 RUN yarn build

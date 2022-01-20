@@ -1,0 +1,26 @@
+name: Build & Push Docker Image
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Run docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get the version
+        id: vars
+        run: echo ::set-output name=tag::$(echo ${GITHUB_REF#refs/tags/})
+      - name: Build the Docker image
+        run: docker build -t prod-hub:${{steps.vars.outputs.tag}} .
+      - name: Push to ECR
+        id: ecr
+        uses: jwalton/gh-ecr-push@v1
+        with:
+          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: us-east-1
+          image: prod-hub:${{steps.vars.outputs.tag}}
+  
