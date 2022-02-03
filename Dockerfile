@@ -1,9 +1,9 @@
-FROM node:14.17-alpine AS alpine
+FROM node:16.13-alpine3.14 AS alpine
 RUN apk --no-cache --virtual build-dependencies add \
     bash \
     git \
     openssh \
-    python \
+    python3 \
     make \
     g++
 WORKDIR /app
