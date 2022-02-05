@@ -77,12 +77,12 @@ export const uploadToIPFS = async (validatedFilesObj: File[]) => {
 
   const {
     data: { IpfsHash },
-  } = await axios.post(process.env.IPFS_UPLOAD_ENDPOINT, data, {
+  } = await axios.post(process.env.NEXT_PUBLIC_IPFS_UPLOAD_ENDPOINT, data, {
     headers: {
       //@ts-ignore
       "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
-      pinata_api_key: process.env.IPFS_API_KEY,
-      pinata_secret_api_key: process.env.IPFS_SECRET_API_KEY,
+      pinata_api_key: process.env.NEXT_PUBLIC_IPFS_API_KEY,
+      pinata_secret_api_key: process.env.NEXT_PUBLIC_IPFS_SECRET_API_KEY,
     },
   });
 
