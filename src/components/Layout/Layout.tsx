@@ -7,6 +7,7 @@ import { RESPONSOVE_BREAKPOINTS } from "../../constants";
 
 import getGlobalStyles from "./styles-global";
 import styles from "./styles";
+import { useEffect } from "react";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -14,6 +15,13 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const windowSize = useWindowSize();
+  useEffect(()=>{
+    console.log('NEXT_PUBLIC_NETWORK_ID:', process.env.NEXT_PUBLIC_NETWORK_ID)
+    console.log('NEXT_PUBLIC_IPFS_UPLOAD_ENDPOINT:', process.env.NEXT_PUBLIC_IPFS_UPLOAD_ENDPOINT)
+    console.log('NEXT_PUBLIC_IPFS_API_KEY:', process.env.NEXT_PUBLIC_IPFS_API_KEY)
+    console.log('NEXT_PUBLIC_IPFS_SECRET_API_KEY:', process.env.NEXT_PUBLIC_IPFS_SECRET_API_KEY)
+    console.log('NEXT_PUBLIC_IPFS_GATEWAY:', process.env.NEXT_PUBLIC_IPFS_GATEWAY)
+  },[])
   return (
     <div className="layout" sx={styles.layout}>
       <Header />
