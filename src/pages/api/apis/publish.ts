@@ -16,11 +16,14 @@ export default withValidatePublishBody(
       try {
         // User will send id from ceramic
         // We will hash it and check that the user exists
-        const ownerId = md5(request.body.did);
+
         const apiInfo: ApiData = {
-          ownerId,
           ...request.body,
         };
+
+        if (request.body.did) {
+          apiInfo.ownerId = md5(request.body.did);
+        }
         console.log("apiInfo", apiInfo);
 
         //locationUri => ipfsHash
@@ -49,11 +52,20 @@ export default withValidatePublishBody(
         );
 
         console.log("api", api);
-        await apiUrisRepository.add(locationUri, api.id, API_URI_TYPE_ID.ipfs);
-        for (const uri of apiInfo?.apiUris) {
-          // @TODO: Authority #2 is IPFS - Change uri id type check logic
-          //const uriTypeId = uri.includes(".") ? 1 : 2;
-          await apiUrisRepository.add(uri, api.id, API_URI_TYPE_ID.ens);
+        const uri = await apiUrisRepository.add(
+          locationUri,
+          api.id,
+          API_URI_TYPE_ID.ipfs
+        );
+        console.log("uri", uri);
+
+        if (apiInfo.apiUris?.length) {
+          for (const uri of apiInfo.apiUris) {
+            console.log("for", uri);
+            // @TODO: Authority #2 is IPFS - Change uri id type check logic
+            //const uriTypeId = uri.includes(".") ? 1 : 2;
+            await apiUrisRepository.add(uri, api.id, API_URI_TYPE_ID.ens);
+          }
         }
 
         return response.json({ status: 200, api });
@@ -63,6 +75,7 @@ export default withValidatePublishBody(
           error: message,
         }); */
       } catch (error) {
+        console.log(error);
         response.json({ status: 500, error: error.message });
       }
     }
