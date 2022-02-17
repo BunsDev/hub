@@ -5,6 +5,7 @@ import ethers from "ethers";
 import { PluginRegistration, UriRedirect } from "@web3api/client-js";
 import { ethereumPlugin } from "@web3api/ethereum-plugin-js";
 import { Favorites } from "services/ceramic/handlers";
+import { API } from "bnc-onboard/dist/src/interfaces";
 
 export interface State {
   dapp: DappType;
@@ -24,6 +25,7 @@ export const initialState: State = {
     },
     network: networkID,
     web3: undefined,
+    onboard: undefined,
     apis: [],
     github: "",
     did: undefined,
@@ -72,6 +74,7 @@ type DappType = {
   wallet: { name: string };
   network: number;
   web3?: ethers.providers.JsonRpcProvider;
+  onboard?: API;
   apis: APIData[];
   github?: string;
   did?: string;

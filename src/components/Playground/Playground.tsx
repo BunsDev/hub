@@ -1,95 +1,55 @@
 /** @jsxImportSource theme-ui **/
-import styles from "./styles";
-
 import React, { MouseEventHandler, useEffect, useMemo, useState } from "react";
 import { Flex, Button, Themed } from "theme-ui";
 import { QueryApiResult } from "@web3api/core-js";
-import { useWeb3ApiQuery, useWeb3ApiClient } from "@web3api/react";
-import { useRouter, useStateValue } from "hooks";
+import { usePlayground, useRouter, useStateValue } from "hooks";
 import {
   Stars,
   SelectBox,
   SearchBox,
-  LoadingSpinner,
   GQLCodeBlock,
   JSONEditor,
   Input,
   Spinner,
+  LoadingSpinner,
 } from "components";
-import cleanSchema, { StructuredSchema } from "utils/cleanSchema";
-import getPackageQueriesFromUri from "services/ipfs/getPackageQueriesFromUri";
 import { useGetAPIfromParamInURL } from "hooks/ens/useGetAPIfromENS";
 import { resolveApiLocation } from "utils/pathResolvers";
 import useModal from "hooks/useModal";
-import { networks } from "utils/networks";
-
-export interface QueryAttributes {
-  id: string;
-  value: string;
-  recipe?: string;
-}
-
-interface APIContents {
-  schema?: string;
-  queries?: QueryAttributes[];
-}
+import styles from "./styles";
 
 const Playground = () => {
   const [{ dapp }] = useStateValue();
   const router = useRouter();
-  const client = useWeb3ApiClient();
   const { openModal } = useModal("connect");
 
-  const { data: api, isLoading } = useGetAPIfromParamInURL();
+  const { data: api } = useGetAPIfromParamInURL();
+  const [
+    {
+      apiContents: { queries, schema, schemaStructured },
+      loading: apiLoading,
+    },
+    { execute, loading: queryLoading, errors, method, setMethod },
+  ] = usePlayground(api);
+
+  const [formVarsToSubmit, setformVarsToSubmit] = useState({});
 
   const [schemaVisible, setSchemaVisible] = useState(false);
 
   const [searchboxvalues, setsearchboxvalues] = useState([]);
+
   const [customUri, setCustomUri] = useState(
     (router?.query?.customUri && router?.query?.customUri.toString()) || ""
   );
 
-  const [apiContents, setapiContents] = useState<APIContents>();
-  const [loadingPackageContents, setloadingPackageContents] = useState(false);
-
-  const [selectedMethod, setSelectedMethod] = useState("");
-  const [newSelectedMethod, setnewSelectedMethod] = useState("");
-  const [methodName, setMethodName] = useState("");
-
-  const [structuredschema, setstructuredschema] = useState<StructuredSchema>();
-
   const [clientresponded, setclientresponed] =
     useState<QueryApiResult<Record<string, unknown>>>();
 
-  const [formVarsToSubmit, setformVarsToSubmit] = useState({});
+  const handleQueryValuesChange = (method: { value: string; id: string }[]) => {
+    setMethod(method[0]);
+  };
 
-  const networkName = useMemo(() => {
-    return networks[dapp?.network]?.name || "mainnet";
-  }, [dapp?.network]);
-
-  const [location, uri] = useMemo(
-    () => (api ? (api.apiUris[0] as string)?.split("/") : ["", ""]),
-    [api]
-  );
-  const apiLocation = useMemo(
-    () =>
-      location === "ipfs"
-        ? `${location}/${uri}`
-        : `${location}/${networks[dapp?.network]?.name || "mainnet"}/${uri}`,
-    [location, uri]
-  );
-
-  const { loading, execute } = useWeb3ApiQuery({
-    uri: uri && apiLocation,
-    query: selectedMethod,
-  });
-
-  function handleQueryValuesChange(method: { value: string; id: string }[]) {
-    setMethodName(method[0].id);
-    setSelectedMethod(method[0].value);
-  }
-
-  function handleSaveBtnClick() {
+  const handleSaveBtnClick = () => {
     const fileData = JSON.stringify(clientresponded);
     const blob = new Blob([fileData], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -97,7 +57,7 @@ const Playground = () => {
     link.download = `response.json`;
     link.href = url;
     link.click();
-  }
+  };
 
   const handleVariableChanges = (e: string) => {
     try {
@@ -107,9 +67,9 @@ const Playground = () => {
     }
   };
 
-  function handleClearBtnClick() {
+  const handleClearBtnClick = () => {
     setclientresponed(undefined);
-  }
+  };
   const handleCustomUriApply: MouseEventHandler = (e) => {
     e.preventDefault();
     if (customUri) {
@@ -117,53 +77,17 @@ const Playground = () => {
     }
   };
 
-  async function exec() {
+  const exec = async () => {
     const response = await execute(formVarsToSubmit);
     setclientresponed(response);
-  }
+  };
 
   useEffect(() => {
-    async function go() {
-      setloadingPackageContents(true);
-      const schemaData = await client.getSchema(apiLocation);
-      const queriesData = await getPackageQueriesFromUri(client, apiLocation);
+    const queryInfo = queries.find((q) => q.id === method.id);
 
-      setapiContents({
-        schema: schemaData,
-        queries: queriesData,
-      });
-
-      const {
-        localqueries,
-        localmutations,
-        localcustom,
-        importedqueries,
-        importedmutations,
-      } = cleanSchema(schemaData);
-      setstructuredschema({
-        localqueries: localqueries,
-        localmutations: localmutations,
-        localcustom: localcustom,
-        importedqueries: importedqueries,
-        importedmutations: importedmutations,
-      });
-      setloadingPackageContents(false);
-    }
-    api && void go();
-  }, [api, uri, networkName]);
-
-  useEffect(() => {
-    if (selectedMethod !== newSelectedMethod) {
-      setnewSelectedMethod(selectedMethod);
-    }
-  }, [selectedMethod]);
-
-  useEffect(() => {
-    const queryInfo =
-      apiContents && apiContents.queries.find((q) => q.id === methodName);
     const newVars = queryInfo && queryInfo.recipe ? queryInfo.recipe : {};
     setformVarsToSubmit(newVars);
-  }, [newSelectedMethod]);
+  }, [method]);
 
   useEffect(() => {
     if (router.query.uri !== undefined) {
@@ -183,8 +107,8 @@ const Playground = () => {
   const controlBtns = useMemo(() => {
     return (
       <>
-        {apiContents?.queries &&
-          (dapp?.address || !selectedMethod.startsWith("mutation") ? (
+        {queries &&
+          (dapp?.address || !method.value.startsWith("mutation") ? (
             <>
               <Button variant="primaryMedium" onClick={exec}>
                 Run
@@ -210,7 +134,7 @@ const Playground = () => {
           ))}
       </>
     );
-  }, [apiContents?.queries, selectedMethod, dapp?.address]);
+  }, [queries, method, dapp?.address]);
 
   return (
     <div className="playground" sx={styles.playground}>
@@ -229,7 +153,8 @@ const Playground = () => {
             onChange={(values) => {
               setSchemaVisible(false);
               setsearchboxvalues(values);
-              void router.push(`/query?uri=${resolveApiLocation(values[0])}`);
+              values[0] &&
+                void router.push(`/query?uri=${resolveApiLocation(values[0])}`);
             }}
           />
           <Input
@@ -272,25 +197,25 @@ const Playground = () => {
       <Flex className={`grid ${schemaVisible ? "withSchema" : ""}`}>
         <Flex className="query">
           <section className="templates">
-            {loadingPackageContents ? (
+            {apiLoading ? (
               <span className="loading_span">Loading Queries...</span>
             ) : (
-              apiContents?.queries && (
+              queries.length > 0 && (
                 <SelectBox
                   key={"queries-box"}
                   skinny
                   labelField="id"
                   valueField="id"
                   placeholder={"Select Query"}
-                  options={apiContents.queries}
+                  options={queries}
                   onChange={handleQueryValuesChange}
                 />
               )
             )}
-            {selectedMethod !== "" && selectedMethod === newSelectedMethod && (
+            {method.value && (
               <GQLCodeBlock
-                key={newSelectedMethod}
-                value={selectedMethod}
+                key={method.value}
+                value={method.value}
                 height={"300px"}
                 sx={{ ml: "-16px" }}
               />
@@ -309,9 +234,9 @@ const Playground = () => {
             <section>
               <Flex className="controls">
                 <Flex>{controlBtns}</Flex>
-                {loadingPackageContents
+                {apiLoading
                   ? "Loading Schema..."
-                  : apiContents?.schema &&
+                  : schema &&
                     !schemaVisible && (
                       <span
                         onClick={() => {
@@ -324,7 +249,7 @@ const Playground = () => {
               </Flex>
               <div className="body">
                 <Themed.pre>
-                  {loading ? (
+                  {queryLoading ? (
                     <div>
                       <LoadingSpinner />
                     </div>
@@ -348,7 +273,7 @@ const Playground = () => {
             }}
           >
             <section>
-              {structuredschema && (
+              {schemaStructured && (
                 <>
                   <Flex className="subtitle-1">
                     <span>Schema</span>
@@ -365,27 +290,27 @@ const Playground = () => {
                     <GQLCodeBlock
                       readOnly
                       title="Queries"
-                      value={structuredschema.localqueries}
+                      value={schemaStructured.localqueries}
                     />
                     <GQLCodeBlock
                       readOnly
                       title="Mutations"
-                      value={structuredschema.localmutations}
+                      value={schemaStructured.localmutations}
                     />
                     <GQLCodeBlock
                       readOnly
                       title="Custom Types"
-                      value={structuredschema.localcustom}
+                      value={schemaStructured.localcustom}
                     />
                     <GQLCodeBlock
                       readOnly
                       title="Imported Queries"
-                      value={structuredschema.importedqueries}
+                      value={schemaStructured.importedqueries}
                     />
                     <GQLCodeBlock
                       readOnly
                       title="Imported Mutations"
-                      value={structuredschema.importedmutations}
+                      value={schemaStructured.importedmutations}
                     />
                   </div>
                 </>
@@ -393,7 +318,7 @@ const Playground = () => {
             </section>
           </div>
         </Flex>
-        {(isLoading || loadingPackageContents) && (
+        {apiLoading && (
           <div className="spinner_wrap">
             <Spinner />
           </div>

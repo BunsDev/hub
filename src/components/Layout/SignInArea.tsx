@@ -1,9 +1,9 @@
 /** @jsxImportSource theme-ui **/
 import User from "../../../public/images/user.svg";
 import styles from "./styles";
-
+import { keyframes } from "@emotion/react";
 import { Flex, Button } from "theme-ui";
-import { useStateValue } from "hooks";
+import { useLocalStorage, useStateValue } from "hooks";
 import useModal from "hooks/useModal";
 
 type SignInAreaProps = {
@@ -22,26 +22,45 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
     openModal();
   };
 
+  const [isLoggedIn] = useLocalStorage("selectedWallet", "");
+
   return (
     <Flex
       className="sign-in-wrap"
       sx={{
         ...styles.signInArea,
         ul: { color: onDark ? "white !important" : "" },
+        ".skeleton": {
+          width: "38px",
+          height: "38px",
+          borderRadius: "50%",
+          background:
+            "linear-gradient(198deg, rgba(224,224,224,1) 27%, rgba(144,144,144,1) 63%)",
+          backgroundSize: "200% 200%",
+          animation: `${keyframes({
+            from: { backgroundPosition: "0% 50%" },
+            "50%": { backgroundPosition: "100% 50%" },
+            to: { backgroundPosition: "0% 50%" },
+          })} 3s ease infinite`,
+        },
       }}
     >
       <ul sx={{ display: "flex", alignItems: "center" }}>
-        {dapp.address ? (
-          <li
-            onClick={handleDisconnect}
-            className="wallet-addr"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <User sx={{ cursor: "pointer" }} />
-          </li>
+        {!!isLoggedIn ? (
+          dapp.address ? (
+            <li
+              onClick={handleDisconnect}
+              className="wallet-addr"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <User sx={{ cursor: "pointer" }} />
+            </li>
+          ) : (
+            <div className="skeleton" />
+          )
         ) : (
           <li
             onClick={handleSignIn}

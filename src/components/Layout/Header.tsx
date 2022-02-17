@@ -3,7 +3,8 @@ import { Flex, Button } from "theme-ui";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Navbar } from "components/Layout/Navigation";
-const SignInArea = dynamic(() => import("./SignInArea"), { ssr: false });
+import SignInArea from "./SignInArea";
+//const SignInArea = dynamic(() => import("./SignInArea"), { ssr: false });
 import { useRouter, useResponsive } from "hooks";
 
 import { RESPONSOVE_BREAKPOINTS } from "../../constants";

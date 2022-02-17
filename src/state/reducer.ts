@@ -7,8 +7,7 @@ import {
 } from "./action";
 import { State, initialState } from "./initialState";
 import { networks } from "../utils/networks";
-import { networkID } from "../constants";
-
+import { networkID as defaultNetworkId } from "../constants";
 import { PluginRegistration } from "@web3api/client-js";
 import { ConnectionConfig, ethereumPlugin } from "@web3api/ethereum-plugin-js";
 import { listFavorites } from "utils/favorites";
@@ -20,7 +19,16 @@ export function web3apiReducer(
   switch (action.type) {
     case "recreateplugins":
       if (state.dapp.web3) {
-        const currentNetwork = networks[networkID];
+        const boardedNetwork = state?.dapp?.onboard?.getState()?.network;
+        const isNetworkSupported = Object.keys(networks).some(
+          (k) => Number(k) === boardedNetwork
+        );
+        const networkId = isNetworkSupported
+          ? boardedNetwork
+          : defaultNetworkId;
+
+        const currentNetwork = networks[networkId];
+
         const networksConfig: Record<string, ConnectionConfig> = {
           [currentNetwork.name]: {
             provider: state.dapp.web3,
@@ -129,6 +137,9 @@ export function dappReducer(state: State, action: DAppAction): State["dapp"] {
       return newStateObj;
     case "SET_WEB3":
       newStateObj.web3 = action.payload;
+      return newStateObj;
+    case "SET_ONBOARDING":
+      newStateObj.onboard = action.payload;
       return newStateObj;
     case "SET_AVAILABLE_APIS":
       newStateObj.apis = action.payload;

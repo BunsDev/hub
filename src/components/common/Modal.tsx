@@ -2,7 +2,6 @@
 /** @jsxImportSource theme-ui **/
 import React, { useCallback } from "react";
 import { Flex, Button, Themed } from "theme-ui";
-import onboardInit from "utils/onboardInit";
 import { useStateValue, useRouter } from "hooks";
 import Close from "../../../public/images/close.svg";
 import { useModalContext } from "hooks/useModal";
@@ -15,23 +14,22 @@ export type ModalProps = {
 };
 
 const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
-  const [{ dapp }, dispatch] = useStateValue();
+  const [{ dapp }] = useStateValue();
   const { setVisible } = useModalContext();
 
   const router = useRouter();
-  const onboard = onboardInit(dispatch);
 
   const handleConnect = async () => {
-    const selected = await onboard.walletSelect();
+    const selected = await dapp.onboard?.walletSelect();
     if (selected) {
-      await onboard.walletCheck();
+      await dapp.onboard?.walletCheck();
       setVisible(false);
       onClose();
     }
   };
 
   const handleDisconnect = async () => {
-    onboard.walletReset();
+    dapp.onboard?.walletReset();
     setVisible(false);
     onClose();
   };
@@ -40,16 +38,19 @@ const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
     (
       title: string,
       description: string | JSX.Element,
-      button: { title: string; onClick: () => any } | JSX.Element // eslint-disable-line
+      button: { title: string; onClick: () => any } | JSX.Element, // eslint-disable-line
+      noClose = false
     ) => (
       <React.Fragment>
-        <Close
-          className="modal-close-btn"
-          onClick={() => {
-            onClose();
-            setVisible(false);
-          }}
-        />
+        {!noClose && (
+          <Close
+            className="modal-close-btn"
+            onClick={() => {
+              onClose();
+              setVisible(false);
+            }}
+          />
+        )}
         <Themed.h2 className="title">{title}</Themed.h2>
         {typeof description === "string" ? (
           <h4
@@ -147,7 +148,7 @@ const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
         return generateModalContent(
           "Network change required",
           "This network isn't supported by Polywrap, please switch to supported network or relogin",
-          { title: "Disconnect", onClick: handleDisconnect }
+          { title: "Disconnect", onClick: handleDisconnect }, true
         );
     }
   };

@@ -10,3 +10,4 @@ export { default as useGetAPIfromENSParamInURL } from "./ens/useGetAPIfromENS";
 export { default as useCreateApi } from "./useCreateApi";
 export { default as useRegisterEns } from "./ens/useRegisterEns";
 export { default as useOnboarding } from "./useOnboarding";
+export { default as usePlayground } from "./usePlayground";

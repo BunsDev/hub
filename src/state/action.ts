@@ -3,6 +3,7 @@ import { APIData } from "../hooks/ens/useGetAPIfromENS";
 
 import { JsonRpcProvider } from "@web3api/client-js/build/pluginConfigs/Ethereum";
 import { Favorites } from "services/ceramic/handlers";
+import { API } from "bnc-onboard/dist/src/interfaces";
 
 export type StateAction =
   | Web3APIReducerAction
@@ -111,6 +112,7 @@ export type DAppAction =
   | SET_BALANCE_ACTION
   | SET_WALLET_ACTION
   | SET_WEB3_ACTION
+  | SET_ONBOARDING_ACTION
   | SET_AVAILABLE_APIS_ACTION
   | SET_AVAILABLE_APIS_ACTION
   | SET_GITHUB_USER_ACTION
@@ -142,6 +144,11 @@ type SET_WALLET_ACTION = {
 type SET_WEB3_ACTION = {
   type: "SET_WEB3";
   payload: JsonRpcProvider;
+};
+
+type SET_ONBOARDING_ACTION = {
+  type: "SET_ONBOARDING";
+  payload: API;
 };
 
 type SET_AVAILABLE_APIS_ACTION = {

@@ -6,80 +6,65 @@ import {
   useEffect,
 } from "react";
 import { Button, Image, Flex } from "@theme-ui/components";
-import { getOwner } from "services/ens/getOwner";
 import { useStateValue } from "hooks";
 import { Spinner, Input } from "components";
 import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
-import { MAIN_DOMAIN, ZERO_ADDRESS } from "../../../constants";
 
-import styles from "./styles";
+import styles from "../styles";
+import { useWeb3ApiClient } from "@web3api/react";
+import getMetaDataFromPackageHash from "services/ipfs/getMetaDataFromPackageHash";
+
 
 export const EnsAddress = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
-
-  useEffect(() => {
-    if (publish.subdomain !== "") {
-      void checkForENSAvailability(publish.subdomain);
-    }
-  }, [dapp.address]);
-
-  const checkForENSAvailability = useCallback(
-    async (label: string) => {
-      dispatch({ type: "setsubdomainLoading", payload: true });
-      try {
-        const owner = await getOwner(`${label}.${MAIN_DOMAIN}`, dapp.web3);
-        if (owner === ZERO_ADDRESS) {
-          dispatch({ type: "setsubdomainLookupSuccess", payload: true });
-          dispatch({ type: "setsubdomainError", payload: "" });
-          return true;
-        } else {
-          dispatch({ type: "setsubdomainLookupSuccess", payload: false });
-          dispatch({
-            type: "setsubdomainError",
-            payload: "Subdomain name is not available",
-          });
-          return false;
-        }
-      } catch (e) {
-        console.log(e);
-        return false;
-      } finally {
-        dispatch({ type: "setsubdomainLoading", payload: false });
-      }
-    },
-    [dapp.web3]
-  );
+  const client = useWeb3ApiClient();
 
   const handleSubdomainChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     dispatch({ type: "setsubdomain", payload: e.target.value });
     dispatch({ type: "setsubdomainError", payload: "" });
     dispatch({ type: "setsubdomainLookupSuccess", payload: false });
   };
+
   const handleApplyButton: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
-    const ensAvailable = await checkForENSAvailability(publish.subdomain);
-    if (ensAvailable) {
-      /* GET IPFS HASH AND INPUT IT HERE
-      const networkName = networks[dapp?.network]?.name || "mainnet";
-      const meta = await client.getManifest(
-        `ens/${networkName}/${publish.subdomain}`,
-        {
-          type: "meta",
+
+    try {
+      dispatch({ type: "setsubdomainLoading", payload: true });
+
+      const resolved = await client.resolveUri("ens/" + publish.subdomain);
+      if (!resolved.api) {
+        dispatch({ type: "setsubdomainLoading", payload: false });
+        dispatch({
+          type: "setsubdomainError",
+          payload: 'No Api found at provided ENS address',
+        });
+      }
+      if (resolved?.uri?.path) {
+        dispatch({ type: "setipfs", payload: resolved.uri.path });
+        console.log("resolved", resolved);
+
+        const metaData = await getMetaDataFromPackageHash(publish.ipfs);
+        console.log("metaData", metaData);
+
+        if (metaData === undefined || metaData === "NO METADATA FOUND") {
+          dispatch({ type: "setsubdomainLoading", payload: false });
+          dispatch({ type: "setApiData", payload: null });
+          dispatch({
+            type: "setsubdomainError",
+            payload: "No Package available",
+          });
+        } else {
+          dispatch({ type: "setsubdomainLoading", payload: false });
+          dispatch({ type: "setsubdomainLookupSuccess", payload: true });
+          dispatch({ type: "setApiData", payload: metaData });
         }
-      );
-      const { name, description, icon,  } = meta;
-      const obj: APIDataFromManifest = {
-        description,
-        icon,
-        name,
-        apiUris: [`${location}/${uri}`],
-      };
-      const metaData = await getMetaDataFromPackageHash(publish.ipfs);
-      dispatch({ type: "setApiData", payload: metaData });
-
-
-      dispatch({ type: "setApiData", payload: obj });
-      */
+      }
+    } catch (e) {
+      dispatch({ type: "setsubdomainLoading", payload: false });
+      dispatch({
+        type: "setsubdomainError",
+        payload: e?.message || e.toString(),
+      });
     }
   };
 

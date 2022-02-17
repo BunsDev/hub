@@ -1,6 +1,6 @@
 import { APIData } from "hooks/ens/useGetAPIfromENS";
 import { ApiData } from "src/api/models/types";
-import { API_URI_TYPE_ID } from "src/constants";
+import { API_URI_TYPE_ID } from "../constants";
 
 export default function sanitizeApis(acc: ApiData[], api: any): ApiData[] {
   // eslint-disable-line

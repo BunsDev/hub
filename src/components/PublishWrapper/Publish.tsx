@@ -23,7 +23,7 @@ const PublishAPI = () => {
     onClose: () => toggleEnsInput(true),
   });
 
-  const [executeRegisterENS, { errors: ensRegErrors, loading: ensRegLoading }] =
+  const [executeRegisterENS, { loading: ensRegLoading }] =
     useRegisterEns();
 
   const { authenticate } = useAuth(dapp);
@@ -99,13 +99,14 @@ const PublishAPI = () => {
     e
   ) => {
     dispatch({ type: "setsubdomain", payload: e.target.value });
+    dispatch({ type: "setsubdomainError", payload: null });
   };
 
   const handleENSRegistration: MouseEventHandler<HTMLButtonElement> = async (
     e
   ) => {
     e.preventDefault();
-    await executeRegisterENS();
+    publish.subdomain && await executeRegisterENS();
   };
 
   useEffect(() => {
@@ -118,7 +119,7 @@ const PublishAPI = () => {
 
   const ensRegStatus = ensRegLoading
     ? "loading"
-    : ensRegErrors?.length
+    : publish.subdomainError
     ? "error"
     : publish.subdomainRegisterSuccess
     ? "success"

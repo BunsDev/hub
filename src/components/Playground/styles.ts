@@ -148,6 +148,8 @@ const styles: Styles = {
               },
             },
             ".body": {
+              height: "100%",
+              maxHeight: "474px",
               pre: {
                 height: "100%",
                 backgroundColor: "black",

@@ -7,6 +7,7 @@ import { useStateValue } from "../../state/state";
 import { utf8ToKeccak256 } from "utils/hash";
 import { namehash } from "ethers/lib/utils";
 import { QueryApiResult } from "@web3api/core-js";
+import { networks } from "utils/networks";
 
 const contentHash = require("content-hash"); // eslint-disable-line
 
@@ -33,9 +34,9 @@ export const useRegisterEns = () => {
   //setContentHash
   //createSubdomain
 
+  const networkName = networks[dapp.network].name;
   const { execute: registerDomain } = useWeb3ApiQuery({
-    //@ts-ignore
-    uri: "ens/ropsten/yay2.open.web3api.eth",
+    uri: `ens/${networkName}/yay2.open.web3api.eth`,
     query: `mutation {
     registerDomain(
       domain: $domain
@@ -48,8 +49,7 @@ export const useRegisterEns = () => {
   });
 
   const { execute: setResolver } = useWeb3ApiQuery({
-    //@ts-ignore
-    uri: "ens/ropsten/yay2.open.web3api.eth",
+    uri: `ens/${networkName}/yay2.open.web3api.eth`,
     query: `mutation {
       setResolver(
         domain: $domain
@@ -63,8 +63,7 @@ export const useRegisterEns = () => {
   });
 
   const { execute: setContentHash } = useWeb3ApiQuery({
-    //@ts-ignore
-    uri: "ens/ropsten/yay2.open.web3api.eth",
+    uri: `ens/${networkName}/yay2.open.web3api.eth`,
     query: `mutation {
       setContentHash(
         domain: $domain
@@ -106,7 +105,6 @@ export const useRegisterEns = () => {
     }
     setState((state) => ({ ...state, loading: true }));
 
-    //@Cesar
     const signerAddress = await dapp.web3.getSigner().getAddress();
     const domain = publish.subdomain;
     const registryAddress = ENS_REGISTRY;
@@ -114,7 +112,8 @@ export const useRegisterEns = () => {
     const resolverAddress = await dapp.web3
       .getSigner()
       .resolveName("resolver.eth");
-    const network = "ropsten";
+
+    const network = networkName;
 
     const executeRegisterDomain: QueryApi = registerDomain.bind(null, {
       domain,
@@ -164,6 +163,7 @@ export const useRegisterEns = () => {
         });
       } catch (e) {
         console.log("error", e);
+        dispatch({ type: "setsubdomainError", payload: e });
         setState((state) => ({ ...state, errors: [e], loading: false }));
       }
     };

@@ -1,30 +1,33 @@
-import { networkID } from "../constants";
+import { networkID as defaultNetworkID } from "../constants";
 
 import Onboard from "bnc-onboard";
 import { API, Subscriptions } from "bnc-onboard/dist/src/interfaces";
-import { networks, SupportedNetworks } from "./networks";
+import { networks } from "./networks";
 
 let onboard: API | undefined;
 
-const getNetworkId = () => {
+const getNetworkId = async () => {
   if (window) {
-    const networkId =
-      Object.keys(networks).find(
-        //@ts-ignore
-        (key) => key == window?.ethereum?.networkVersion
-      ) || networkID;
-    return Number(networkId);
+    //@ts-ignore
+    if (window.ethereum) {
+      //@ts-ignore
+      const version = await window.ethereum.request({ method: "net_version" });
+      const supportedNetwork = Object.keys(networks).find(
+        (key) => key == version
+      );
+      const networkId = supportedNetwork || defaultNetworkID;
+      return Number(networkId);
+    }
   }
-  return networkID;
+  return defaultNetworkID;
 };
-const getOnboard = (subscriptions: Subscriptions): API => {
+const getOnboard = async (subscriptions: Subscriptions): Promise<API> => {
   if (!onboard) {
     onboard = Onboard({
       dappId: "834729ff-3ae1-42ec-b770-95de5ff553a0",
       subscriptions,
       hideBranding: true,
-      //@ts-ignore
-      networkId: getNetworkId(),
+      networkId: await getNetworkId(),
       walletSelect: {
         wallets: [
           { walletName: "metamask", preferred: true },

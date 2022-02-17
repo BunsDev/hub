@@ -2,7 +2,7 @@ import { APIData } from "hooks/ens/useGetAPIfromENS";
 import { API_URI_TYPE_ID, ipfsGateway } from "src/constants";
 
 export const resolveApiLocation = (api: APIData) => {
-  return api.apiUris.length
+  return api && api.apiUris.length
     ? "ens/" + api.apiUris[0].uri
     : "ipfs/" + api?.locationUri;
 

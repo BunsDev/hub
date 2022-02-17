@@ -9,7 +9,47 @@ import {
 } from "typeorm";
 
 declare var require: any; // eslint-disable-line
-const context = require.context("../../../api/entities", true, /\.ts$/);
+
+if (typeof require.context === "undefined") {
+  const fs = require("fs");
+  const path = require("path");
+
+  require.context = (
+    base = ".",
+    scanSubDirectories = false,
+    regularExpression = /\.js$/
+  ) => {
+    const files = {} as any;
+
+    function readDirectory(directory: any) {
+      fs.readdirSync(directory).forEach((file: any) => {
+        const fullPath = path.resolve(directory, file);
+
+        if (fs.statSync(fullPath).isDirectory()) {
+          if (scanSubDirectories) readDirectory(fullPath);
+
+          return;
+        }
+
+        if (!regularExpression.test(fullPath)) return;
+
+        files[fullPath] = true;
+      });
+    }
+
+    readDirectory(path.resolve(__dirname, base));
+
+    function Module(file: any) {
+      return require(file);
+    }
+
+    Module.keys = () => Object.keys(files);
+
+    return Module;
+  };
+}
+
+const context = require?.context("../../../api/entities", true, /\.ts$/);
 const entityFileNames = context.keys();
 
 const original = (Connection.prototype as any).findMetadata;

@@ -14,7 +14,14 @@ function useLocalStorage<T>(
 
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      if (item) {
+        try {
+          return JSON.parse(item);
+        } catch (e) {
+          return item;
+        }
+      }
+      return initialValue;
     } catch (error) {
       console.warn(`Error reading localStorage key “${key}”:`, error);
       return initialValue;

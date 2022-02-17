@@ -3,7 +3,7 @@ import { networks } from "utils/networks";
 
 export const cloudFlareGateway = "https://cloudflare-ipfs.com/ipfs/";
 export const ipfsGateway = process.env.NEXT_PUBLIC_IPFS_GATEWAY || cloudFlareGateway;
-export const networkID = 1 || Number(process.env.NEXT_PUBLIC_NETWORK_ID);
+export const networkID = Number(process.env.NEXT_PUBLIC_NETWORK_ID);
 export const networkName = networks[networkID].name;
 export const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 export const MAIN_DOMAIN = "open.web3api.eth";

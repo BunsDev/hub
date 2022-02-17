@@ -59,11 +59,11 @@ function MyApp({ Component, pageProps }: Props<any>) {
   // eslint-disable-line
   return (
     <StateProvider>
-      <ThemeProvider theme={theme}>
-        <ModalProvider>
-          <StatefulApp pageProps={pageProps} Component={Component} />
-        </ModalProvider>
-      </ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <ModalProvider>
+            <StatefulApp pageProps={pageProps} Component={Component} />
+          </ModalProvider>
+        </ThemeProvider>
     </StateProvider>
   );
 }

@@ -5,8 +5,8 @@ import { StateAction } from "../state/action";
 import { Dispatch } from "react";
 import { API } from "bnc-onboard/dist/src/interfaces";
 
-const onboardInit = (dispatch: Dispatch<StateAction>): API => {
-  return getOnboard({
+const onboardInit = async (dispatch: Dispatch<StateAction>): Promise<API> => {
+  return await getOnboard({
     address: async (address) => {
       dispatch({
         type: "SET_ADDRESS",
@@ -14,9 +14,13 @@ const onboardInit = (dispatch: Dispatch<StateAction>): API => {
       });
     },
     network: (network) => {
+      //console.log("Onboard network", network); //onNetworkChanged
       dispatch({
         type: "SET_NETWORK",
         payload: network,
+      });
+      dispatch({
+        type: "recreateplugins",
       });
     },
     balance: (balance) => {
@@ -27,7 +31,7 @@ const onboardInit = (dispatch: Dispatch<StateAction>): API => {
     },
     wallet: async (wallet) => {
       const web3 = wallet.provider && createEthereumProvider(wallet.provider);
-      localStorage.setItem("selectedWallet", wallet.name);
+      wallet.name ? localStorage.setItem("selectedWallet", wallet.name) : localStorage.removeItem("selectedWallet")
 
       dispatch({
         type: "SET_WALLET",

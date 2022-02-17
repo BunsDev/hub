@@ -2,6 +2,7 @@ import Apis from "./apis";
 import UriTypes from "./uriTypes";
 
 import {
+  BaseEntity,
   Column,
   Entity,
   Index,
@@ -12,7 +13,7 @@ import {
 
 @Index("api_uris_pkey", ["id"], { unique: true })
 @Entity("api_uris", { schema: "public" })
-export default class ApiUris {
+export default class ApiUris extends BaseEntity {
   @PrimaryGeneratedColumn({ type: "bigint", name: "id" })
   public id: string;
 
