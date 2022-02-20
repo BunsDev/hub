@@ -11,6 +11,7 @@ const styles: Styles = {
     boxShadow: "none !important",
     p: "3px 16px !important",
     ".react-dropdown-select-input": {
+      display:"none",
       fontFamily: "Nunito Sans",
       fontSize: "16px",
       lineHeight: "150%",
@@ -56,6 +57,12 @@ const styles: Styles = {
           },
           "&.selected": {
             bg: "rgba(255, 255, 255, 0.1)",
+          },
+          "&.empty": {
+            cursor: "default",
+            "&:hover": {
+              bg: "inherit",
+            },
           },
         },
       },

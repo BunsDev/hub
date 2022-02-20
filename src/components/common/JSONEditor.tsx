@@ -8,7 +8,7 @@ import Editor, { Monaco, OnChange } from "@monaco-editor/react";
 
 type GQLCodeBlockProps = {
   height?: string;
-  value: Record<string, unknown>;
+  value: string;
   onClick?: MouseEventHandler<HTMLDivElement>;
   handleEditorChange?: OnChange;
 };
@@ -31,7 +31,7 @@ const JSONEditor = ({
         beforeMount={handleEditorWillMount}
         onChange={handleEditorChange}
         defaultLanguage="json"
-        value={JSON.stringify(value, null, 2)}
+        value={value}
         options={{
           minimap: {
             enabled: false,

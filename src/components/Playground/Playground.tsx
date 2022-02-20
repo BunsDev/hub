@@ -32,7 +32,7 @@ const Playground = () => {
     { execute, loading: queryLoading, errors, method, setMethod },
   ] = usePlayground(api);
 
-  const [formVarsToSubmit, setformVarsToSubmit] = useState({});
+  const [formVars, setFormVars] = useState({ value: "{\n}", error: null });
 
   const [schemaVisible, setSchemaVisible] = useState(false);
 
@@ -60,11 +60,7 @@ const Playground = () => {
   };
 
   const handleVariableChanges = (e: string) => {
-    try {
-      setformVarsToSubmit(JSON.parse(e));
-    } catch (error) {
-      // do nothing ?
-    }
+    setFormVars({ value: e, error: null });
   };
 
   const handleClearBtnClick = () => {
@@ -77,16 +73,11 @@ const Playground = () => {
     }
   };
 
-  const exec = async () => {
-    const response = await execute(formVarsToSubmit);
-    setclientresponed(response);
-  };
-
   useEffect(() => {
     const queryInfo = queries.find((q) => q.id === method.id);
 
     const newVars = queryInfo && queryInfo.recipe ? queryInfo.recipe : {};
-    setformVarsToSubmit(newVars);
+    setFormVars({ value: JSON.stringify(newVars, null, 2), error: null });
   }, [method]);
 
   useEffect(() => {
@@ -105,6 +96,18 @@ const Playground = () => {
   }, [dapp.apis]);
 
   const controlBtns = useMemo(() => {
+    const exec = async () => {
+      let parsed;
+      try {
+        parsed = JSON.parse(formVars.value);
+      } catch (parseError) {
+        setFormVars({ ...formVars, error: parseError });
+        return;
+      }
+      const response = await execute(parsed);
+      setclientresponed(response);
+    };
+
     return (
       <>
         {queries &&
@@ -134,7 +137,7 @@ const Playground = () => {
           ))}
       </>
     );
-  }, [queries, method, dapp?.address]);
+  }, [queries, method, dapp?.address, formVars]);
 
   return (
     <div className="playground" sx={styles.playground}>
@@ -191,7 +194,11 @@ const Playground = () => {
               )} */}
             </Flex>
           </Flex>
-          <a href={router.asPath.replace("query", "info")}>Open Wrapper Page</a>
+          {!customUri && (
+            <a href={router.asPath.replace("query", "info")}>
+              Open Wrapper Page
+            </a>
+          )}
         </Flex>
       )}
       <Flex className={`grid ${schemaVisible ? "withSchema" : ""}`}>
@@ -224,7 +231,7 @@ const Playground = () => {
           <section className="vars">
             <div className="subtitle-1">Vars</div>
             <JSONEditor
-              value={formVarsToSubmit}
+              value={formVars.value}
               handleEditorChange={handleVariableChanges}
             />
           </section>
@@ -260,6 +267,7 @@ const Playground = () => {
                       {clientresponded !== undefined &&
                         clientresponded.errors !== undefined &&
                         clientresponded.errors.toString()}
+                      {formVars?.error && formVars.error.toString()}
                     </React.Fragment>
                   )}
                 </Themed.pre>

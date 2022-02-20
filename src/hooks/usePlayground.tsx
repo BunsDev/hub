@@ -80,6 +80,7 @@ const usePlayground = (
     } catch (e) {
       setApiState((prev) => ({
         ...prev,
+        loading: false,
         error: e,
       }));
     }

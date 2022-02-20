@@ -97,6 +97,9 @@ const SearchBox = ({
               </li>
             );
           })}
+          {!props.options.length && (
+            <li className={`dropdown-item empty`}>No results</li>
+          )}
         </ul>
       </div>
     );
