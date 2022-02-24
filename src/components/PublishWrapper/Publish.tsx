@@ -14,6 +14,11 @@ import { domain, ipfsGateway } from "../../constants";
 
 import styles from "./styles";
 import useModal from "hooks/useModal";
+import {
+  constructPublishBodyFromMeta,
+  publishFromMeta,
+  publishWrapper,
+} from "utils/publishFromMeta";
 
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
@@ -31,29 +36,18 @@ const PublishAPI = () => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+
     if (publish.apiData) {
-      const body = {
-        name: String(publish.apiData.name),
-        description: publish.apiData.description,
-        subtext: publish.apiData.subtext,
-        icon: publish.apiData.icon,
-        locationUri: publish.ipfs,
-        did: dapp?.did,
-        apiUris: [] as string[],
-      };
-      if (publish.subdomain) {
-        body.apiUris = [publish?.subdomain];
-      }
+      const body = constructPublishBodyFromMeta(publish.apiData);
+
+      if (dapp?.did) body.did = dapp.did;
+      if (publish.ipfs) body.locationUri = publish?.ipfs;
+      if (publish.subdomain) body.apiUris = [publish?.subdomain];
 
       try {
         setPublishLoading(true);
-        const response = await fetch(domain + "/api/apis/publish", {
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await publishWrapper(body);
+
         if (response.ok) {
           const redirect = `/info?uri=${
             publish?.subdomain

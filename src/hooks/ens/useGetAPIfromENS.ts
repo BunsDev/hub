@@ -7,6 +7,8 @@ import axios from "axios";
 import { useWeb3ApiClient } from "@web3api/react";
 import { useStateValue } from "hooks";
 import { networks } from "utils/networks";
+import { MetaManifest } from "@web3api/core-js";
+import { publishFromMeta } from "utils/publishFromMeta";
 
 export interface APIDataFromManifest {
   name: string;
@@ -81,6 +83,9 @@ export const useGetAPIfromParamInURL = () => {
           type: "meta",
         });
         const { name, description, icon } = meta;
+
+        publishFromMeta(meta, { location, uri, did: dapp?.did });
+
         const obj: APIDataFromManifest = {
           description,
           icon,
