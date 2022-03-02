@@ -4,6 +4,7 @@ import {
   MouseEventHandler,
   useCallback,
   useEffect,
+  useState,
 } from "react";
 import { Button, Image, Flex } from "@theme-ui/components";
 import { useStateValue } from "hooks";
@@ -13,11 +14,18 @@ import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
 import styles from "../styles";
 import { useWeb3ApiClient } from "@web3api/react";
 import getMetaDataFromPackageHash from "services/ipfs/getMetaDataFromPackageHash";
-
+import { networks } from "utils/networks";
+import Select from "react-dropdown-select";
 
 export const EnsAddress = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
   const client = useWeb3ApiClient();
+
+  const [ensNetwork, setEnsNetwork] = useState(
+    dapp.network
+      ? [{ network: networks[dapp.network].name }]
+      : [{ network: "mainnet" }]
+  );
 
   const handleSubdomainChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     dispatch({ type: "setsubdomain", payload: e.target.value });
@@ -31,12 +39,14 @@ export const EnsAddress = () => {
     try {
       dispatch({ type: "setsubdomainLoading", payload: true });
 
-      const resolved = await client.resolveUri("ens/" + publish.subdomain);
+      const resolved = await client.resolveUri(
+        "ens/" + `${ensNetwork[0].network}/${publish.subdomain}`
+      );
       if (!resolved.api) {
         dispatch({ type: "setsubdomainLoading", payload: false });
         dispatch({
           type: "setsubdomainError",
-          payload: 'No Api found at provided ENS address',
+          payload: "No Api found at provided ENS address",
         });
       }
       if (resolved?.uri?.path) {
@@ -111,11 +121,57 @@ export const EnsAddress = () => {
           <Input
             type="text"
             name="ens"
-            placeholder="ksc787wkbnlscv7sdclsvl;s;..."
+            placeholder="example.eth"
+            style={{ paddingLeft: "0" }}
             required
             value={publish.subdomain}
             onChange={handleSubdomainChange}
             suffix={inputSuffix[subdomainStatus]}
+            prefix={
+              <Select
+                style={{
+                  border: "none",
+                  paddingRight: "0",
+                  boxShadow: "none",
+                }}
+                sx={{
+                  border: "none",
+                  ".react-dropdown-select-content": {
+                    width: "70px",
+                    ".react-dropdown-select-input": {
+                      display: "none",
+                    },
+                    "&:before": {
+                      display: "block",
+                      content: '"/"',
+                    },
+                  },
+                  ".react-dropdown-select-dropdown": {
+                    bg: "polyGrey3",
+                    borderRadius: "8px",
+                    border: "none",
+                    marginTop: "8px",
+                    ".react-dropdown-select-item": {
+                      textAlign: "left",
+                      border: "none",
+                    },
+                    ".react-dropdown-select-item-selected": {
+                      bg: "polyGrey2",
+                    },
+                  },
+                }}
+                labelField="network"
+                valueField="network"
+                values={ensNetwork}
+                dropdownGap={0}
+                direction="rtl"
+                options={Object.keys(networks).map((key) => ({
+                  network: networks[key].name,
+                }))}
+                onChange={setEnsNetwork}
+                searchable={false}
+              />
+            }
           />
         </div>
         {publish.subdomainError && (
