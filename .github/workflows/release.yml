@@ -6,15 +6,31 @@ on:
 
 jobs:
   build:
-    name: Run docker build
+    name: Production deployment
     runs-on: ubuntu-latest
+    environment: Production
     steps:
       - uses: actions/checkout@v2
       - name: Get the version
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_REF#refs/tags/})
       - name: Build the Docker image
-        run: docker build -t prod-hub:${{steps.vars.outputs.tag}} .
+        run: |
+          docker build -t prod-hub:${{steps.vars.outputs.tag}} \
+            --build-arg TYPEORM_HOST=${{ secrets.TYPEORM_HOST }} \
+            --build-arg TYPEORM_DATABASE=${{ secrets.TYPEORM_DATABASE }} \
+            --build-arg TYPEORM_USERNAME=${{ secrets.TYPEORM_USERNAME }} \
+            --build-arg TYPEORM_PASSWORD=${{ secrets.TYPEORM_PASSWORD }} \
+            --build-arg TYPEORM_CONNECTION=${{ secrets.TYPEORM_CONNECTION }} \
+            --build-arg TYPEORM_PORT=${{ secrets.TYPEORM_PORT }} \
+            --build-arg TYPEORM_ENTITIES=${{ secrets.TYPEORM_ENTITIES }} \
+            --build-arg TYPEORM_MIGRATIONS=${{ secrets.TYPEORM_MIGRATIONS }} \
+            --build-arg NEXT_PUBLIC_IPFS_GATEWAY=${{ secrets.NEXT_PUBLIC_IPFS_GATEWAY }} \
+            --build-arg NEXT_PUBLIC_IPFS_API_KEY=${{ secrets.NEXT_PUBLIC_IPFS_API_KEY }} \
+            --build-arg NEXT_PUBLIC_IPFS_SECRET_API_KEY=${{ secrets.NEXT_PUBLIC_IPFS_SECRET_API_KEY }} \
+            --build-arg NEXT_PUBLIC_IPFS_UPLOAD_ENDPOINT=${{ secrets.NEXT_PUBLIC_IPFS_UPLOAD_ENDPOINT }} \
+            --build-arg NEXT_PUBLIC_NETWORK_ID=${{ secrets.NEXT_PUBLIC_NETWORK_ID }} \
+            .
       - name: Push to ECR
         id: ecr
         uses: jwalton/gh-ecr-push@v1
@@ -23,4 +39,3 @@ jobs:
           secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           region: us-east-1
           image: prod-hub:${{steps.vars.outputs.tag}}
-  
