@@ -3,6 +3,7 @@ import UriCacheRepository from "../../../api/repositories/uriCacheRepository";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getCustomRepository } from "typeorm";
+import logger from "services/logger/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "POST") {
@@ -39,6 +40,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         status: 200,
       });
     } catch (error) {
+      logger.error(error.message);
       return response.json({
         status: 500,
         error: error.message,

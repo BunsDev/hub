@@ -1,5 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
+import logger from "services/logger/logger";
 import ApiUrisRepository from "src/api/repositories/apiUrisRepository";
 import { API_URI_TYPE_ID } from "src/constants";
 import { getConnection } from "typeorm";
@@ -38,6 +39,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         } as unknown as APIData),
       });
     } catch (error) {
+      logger.error(error.message);
       return response.json({
         status: 500,
         error: error.message,

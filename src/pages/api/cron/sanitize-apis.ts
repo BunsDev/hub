@@ -5,6 +5,7 @@ import { checkContentIsValid } from "../../../api/services/ens";
 
 import { VercelRequest } from "@vercel/node";
 import { getCustomRepository } from "typeorm";
+import logger from "services/logger/logger";
 
 export default async (request: VercelRequest) => {
   if (request.method === "POST") {
@@ -24,8 +25,9 @@ export default async (request: VercelRequest) => {
           await apiRepository.deactivate(api.id);
         }
       }); */
-    } catch (e) {
-      console.log("Error when checking and updating apis -> ", e.message);
+    } catch (error) {
+      logger.error(error.message);
+      console.log("Error when checking and updating apis -> ", error.message);
     }
   }
 };

@@ -3,6 +3,7 @@ import ApiRepository from "../../../api/repositories/api";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getCustomRepository } from "typeorm";
+import logger from "services/logger/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "GET") {
@@ -17,6 +18,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         apis,
       });
     } catch (error) {
+      logger.error(error.message);
       return response.json({ status: 500, error: error.message });
     }
   }

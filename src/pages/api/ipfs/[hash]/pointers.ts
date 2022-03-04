@@ -6,6 +6,7 @@ import ApiUrisRepository from "../../../../api/repositories/apiUrisRepository";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getCustomRepository } from "typeorm";
 import { Web3ApiClient } from "@web3api/client-js";
+import logger from "services/logger/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "GET") {
@@ -59,6 +60,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         pointers: uriCaches.map((uriCache) => uriCache.uri),
       });
     } catch (error) {
+      logger.error(error.message);
       return response.json({
         status: 500,
         error: error.message,

@@ -3,6 +3,7 @@ import { getConnection } from "typeorm";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import ApiRepository from "src/api/repositories/api";
 import Database from "../../db";
+import logger from "services/logger/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "GET") {
@@ -32,6 +33,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         count,
       });
     } catch (error) {
+      logger.error(error.message);
       return response.json({ status: 500, error: error.message });
     }
   }

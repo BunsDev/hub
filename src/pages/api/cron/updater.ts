@@ -8,6 +8,7 @@ import path from "path";
 import ApiUris from "src/api/entities/apiUris";
 import cron from "node-cron";
 import { API_URI_TYPE_ID } from "src/constants";
+import logger from "services/logger/logger";
 
 try {
   dotenv.config({ path: path.resolve(__dirname) + "/../../../../.env" });
@@ -58,8 +59,8 @@ async function updateWrapperMeta(
       ...apiUri.api,
       ...newApiData,
     });
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    logger.error(error.message);
   }
 }
 

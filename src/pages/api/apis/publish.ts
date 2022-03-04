@@ -7,6 +7,7 @@ import ApiUrisRepository from "../../../api/repositories/apiUrisRepository";
 import { getCustomRepository } from "typeorm";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { API_URI_TYPE_ID } from "src/constants";
+import logger from "services/logger/logger";
 
 const md5 = require("md5"); // eslint-disable-line
 
@@ -75,7 +76,7 @@ export default withValidatePublishBody(
           error: message,
         }); */
       } catch (error) {
-        console.log(error);
+        logger.error(error.message);
         response.json({ status: 500, error: error.message });
       }
     }

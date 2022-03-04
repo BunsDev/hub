@@ -4,13 +4,16 @@ import ApiRepository from "../../../api/repositories/api";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getCustomRepository } from "typeorm";
+import logger from "services/logger/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "GET") {
     try {
       const limit = request.query.limit ? Number(request.query.limit) : 10;
       const page = request.query.page ? Number(request.query.page) : 1;
-      const searchValue = request.query.value ? String(request.query.value) : null;
+      const searchValue = request.query.value
+        ? String(request.query.value)
+        : null;
 
       const database = new Database();
       await database.connect();
@@ -35,6 +38,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         meta,
       });
     } catch (error) {
+      logger.error(error.message);
       return response.json({ status: 500, error: error.message });
     }
   }

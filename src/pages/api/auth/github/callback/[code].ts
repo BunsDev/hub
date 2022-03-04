@@ -2,6 +2,7 @@ import { ghCallback } from "../../../../../api/services/github/strategy";
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import axios from "axios";
+import logger from "services/logger/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "GET") {
@@ -25,6 +26,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     );
 
     if ("error" in codeRequest.data) {
+      logger.error(codeRequest.data.error);
       return response.json({
         status: 503,
         message: codeRequest.data.error,
@@ -38,10 +40,11 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         ...codeRequest.data,
         ...ghCredentials,
       });
-    } catch (e) {
+    } catch (error) {
+      logger.error(error.message);
       return response.json({
         status: 503,
-        error: e.message,
+        error: error.message,
       });
     }
   }
