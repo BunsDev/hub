@@ -5,13 +5,17 @@ import { keyframes } from "@emotion/react";
 import { Flex, Button } from "theme-ui";
 import { useLocalStorage, useStateValue } from "hooks";
 import useModal from "hooks/useModal";
+import { useMemo } from "react";
+import { useStorage } from "hooks/useLocalStorage";
 
 type SignInAreaProps = {
   onDark?: boolean;
 };
 
 const SignInArea = ({ onDark }: SignInAreaProps) => {
-  const [{ dapp }, dispatch] = useStateValue();
+  const [{ dapp }] = useStateValue();
+
+  const { getItem } = useStorage();
 
   const { openModal } = useModal(dapp.address ? "disconnect" : "connect");
 
@@ -22,7 +26,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
     openModal();
   };
 
-  const [isLoggedIn] = useLocalStorage("selectedWallet", "");
+  const isLoggedIn = getItem("selectedWallet");
 
   return (
     <Flex

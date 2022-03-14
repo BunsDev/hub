@@ -33,7 +33,7 @@ export function attachLocationUri(api: APIData): APIData {
   );
   return {
     ...api,
-    locationUri: locationUri.uri,
+    locationUri: locationUri?.uri,
     apiUris: api.apiUris.filter((uri) => uri.uriTypeId === API_URI_TYPE_ID.ens),
   };
 }
