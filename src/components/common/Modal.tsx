@@ -6,7 +6,7 @@ import { useStateValue, useRouter } from "hooks";
 import Close from "../../../public/images/close.svg";
 import { useModalContext } from "hooks/useModal";
 import styles from "./styles";
-import Auth from "services/ceramic/auth";
+import { useCeramic } from "hooks/useCeramic";
 
 export type ModalProps = {
   screen: string;
@@ -17,6 +17,7 @@ const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
   const [{ dapp }] = useStateValue();
   const { setVisible } = useModalContext();
 
+  const { idx } = useCeramic();
   const router = useRouter();
 
   const handleConnect = async () => {
@@ -80,7 +81,7 @@ const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
         )}
       </React.Fragment>
     ),
-    []
+    [idx]
   );
 
   const modalContent = (screen: string) => {
@@ -104,7 +105,7 @@ const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
             >
               {dapp.address}
             </span>
-            {Auth.ceramic?.did.authenticated && (
+            {idx && (
               <>
                 <span className="body-1" sx={{ color: "#0F0F0F50" }}>
                   DID
@@ -119,7 +120,7 @@ const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
                     textAlign: "center",
                   }}
                 >
-                  {Auth.ceramic?.did.id}
+                  {idx.ceramic.did.id}
                 </span>
               </>
             )}
@@ -148,7 +149,8 @@ const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
         return generateModalContent(
           "Network change required",
           "This network isn't supported by Polywrap, please switch to supported network or relogin",
-          { title: "Disconnect", onClick: handleDisconnect }, true
+          { title: "Disconnect", onClick: handleDisconnect },
+          true
         );
     }
   };

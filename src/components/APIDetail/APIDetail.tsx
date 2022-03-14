@@ -1,16 +1,16 @@
 /** @jsxImportSource theme-ui **/
-import { ipfsGateway, domain, API_URI_TYPE_ID } from "../../constants";
+import { ipfsGateway, API_URI_TYPE_ID } from "../../constants";
 import styles from "./styles";
-
 import { useCallback, useEffect, useMemo } from "react";
 import { Flex, Themed, Button, Grid } from "theme-ui";
 import { useStateValue, useRouter } from "hooks";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
-import { toggleFavorite } from "services/ceramic/handlers";
 import { getApiImgLocation } from "utils/pathResolvers";
 import Favorite from "../../../public/images/favorite.svg";
 import Auth from "services/ceramic/auth";
 import useModal from "hooks/useModal";
+import { useCeramic } from "hooks/useCeramic";
+import { useFavorites } from "hooks/useFavorites";
 
 type APIDetailProps = {
   api?: APIData;
@@ -19,7 +19,10 @@ type APIDetailProps = {
 
 const APIDetail = ({ api, update }: APIDetailProps) => {
   const router = useRouter();
-  const [{ dapp }, dispatch] = useStateValue();
+  const [{ dapp }] = useStateValue();
+
+  const { idx } = useCeramic();
+  const { toggleFavorite } = useFavorites();
 
   const isFavorite = useMemo(
     () => dapp.favoritesList[api.locationUri],
@@ -28,7 +31,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
 
   const handleFavorite = useCallback(async () => {
     if (dapp.address && Auth.ceramic.did?.authenticated) {
-      toggleFavorite(api, dapp.favorites, dispatch);
+      toggleFavorite(api);
     } else if (dapp.address && !Auth.ceramic?.did?.authenticated) {
       return;
     } else {
@@ -63,7 +66,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
               <Favorite
                 onClick={handleFavorite}
                 className={`favorite${isFavorite ? " active" : ""}${
-                  !Auth.ceramic.did?.authenticated || !dapp.address ? " pending" : ""
+                  !idx.authenticated || !dapp.address ? " pending" : ""
                 }`}
               />
             }

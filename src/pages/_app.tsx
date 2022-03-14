@@ -11,8 +11,8 @@ import { useAuth } from "hooks";
 import { ResponsiveProvider } from "hooks/useResponsive";
 import useOnboarding from "hooks/useOnboarding";
 import { useEffect } from "react";
-import useFavorites from "hooks/useFavorites";
 import { ModalProvider } from "hooks/useModal";
+import { CeramicProvider } from "hooks/useCeramic";
 
 const swrOptions = {
   // refreshInterval: 10000,
@@ -29,7 +29,6 @@ function StatefulApp({ pageProps, Component }: Props<any>) {
   const [{ dapp }] = useStateValue();
   useOnboarding();
   const { authenticate } = useAuth(dapp);
-  useFavorites();
 
   useEffect(() => {
     if (dapp.web3 && dapp.address) {
@@ -47,9 +46,11 @@ function StatefulApp({ pageProps, Component }: Props<any>) {
         ></link>
       </Head>
       <SWRConfig value={swrOptions}>
-        <ResponsiveProvider>
-          <Component {...pageProps} />
-        </ResponsiveProvider>
+        <CeramicProvider>
+          <ResponsiveProvider>
+            <Component {...pageProps} />
+          </ResponsiveProvider>
+        </CeramicProvider>
       </SWRConfig>
     </>
   );
@@ -59,11 +60,11 @@ function MyApp({ Component, pageProps }: Props<any>) {
   // eslint-disable-line
   return (
     <StateProvider>
-        <ThemeProvider theme={theme}>
-          <ModalProvider>
-            <StatefulApp pageProps={pageProps} Component={Component} />
-          </ModalProvider>
-        </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <ModalProvider>
+          <StatefulApp pageProps={pageProps} Component={Component} />
+        </ModalProvider>
+      </ThemeProvider>
     </StateProvider>
   );
 }

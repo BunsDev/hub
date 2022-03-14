@@ -1,58 +1,56 @@
-import { useLocalStorage, useStateValue } from "hooks";
-import { useEffect, useState } from "react";
-import Auth from "services/ceramic/auth";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { IDX } from "@ceramicstudio/idx";
+import { useStateValue } from "src/state/state";
 import { Favorites } from "services/ceramic/handlers";
-import { API_URI_TYPE_ID } from "src/constants";
 import { APIData } from "./ens/useGetAPIfromENS";
+import { API_URI_TYPE_ID } from "src/constants";
 
-export default function useFavorites() {
+type FavoritesContext = {
+  getSuccess: boolean;
+  toggleFavorite: (api: APIData) => void;
+};
+export const FavoritesContext = createContext<FavoritesContext>({
+  getSuccess: false,
+  toggleFavorite: () => null,
+});
+
+export const FavortitesProvider = ({
+  idx,
+  children,
+}: {
+  idx: IDX;
+  children: React.ReactNode;
+}) => {
   const [{ dapp }, dispatch] = useStateValue();
-  const [fetchSuccess, setFetchSuccess] = useState(false);
-  const [cachedFavorites, setCachedFavorites] = useLocalStorage("favorites", {
-    [dapp?.did]: {
-      ens: [],
-      ipfs: [],
-    },
-  });
+
+  const [getSuccess, setGetSuccess] = useState(false);
 
   useEffect(() => {
     const getFavorites = async () => {
-      const favorites = (await Auth.get("favorites")) as Favorites;
+      const favorites = (await idx.get("favorites")) as Favorites;
       if (favorites) {
-        setCachedFavorites({...cachedFavorites, [dapp?.did]: favorites });
         dispatch({
           type: "SET_FAVORITE_APIS",
           payload: favorites,
         });
       }
-      setFetchSuccess(true);
+      setGetSuccess(true);
     };
-    if (dapp.web3 && Auth.ceramic.did?.authenticated) {
+    if (idx) {
       getFavorites();
     }
-  }, [dapp.web3, Auth.ceramic.did?.authenticated]);
+  }, [idx]);
 
   useEffect(() => {
     if (!dapp.address) {
       dispatch({ type: "SET_FAVORITE_APIS", payload: { ens: [], ipfs: [] } });
     }
   }, [dapp?.address]);
-  useEffect(() => {
-    const setFavorites = async () => {
-      await Auth.set("favorites", dapp.favorites);
-      console.log('favorites set')
-    };
-    if (
-      fetchSuccess &&
-      JSON.stringify(dapp.favorites) !==
-        JSON.stringify(cachedFavorites[dapp?.did])
-    ) {
-      setCachedFavorites({...cachedFavorites, [dapp?.did]: dapp.favorites });
-      if (dapp.web3 && Auth.ceramic.did?.authenticated) {
-        setFavorites();
-      }
-    }
-  }, [dapp.favorites]);
+
+  const setFavorites = async (favorites: Favorites) => {
+    await idx.set("favorites", favorites);
+    console.log("favorites set");
+  };
 
   const toggleFavorite = (api: APIData) => {
     const currentFavorites = [...dapp.favorites.ens, ...dapp.favorites.ipfs];
@@ -62,7 +60,11 @@ export default function useFavorites() {
     };
 
     const favUriDict: [string, string][] = [];
-    const alreadyFavorite = api.apiUris
+    const apiUris = [
+      ...api.apiUris,
+      { uri: api.locationUri, uriTypeId: API_URI_TYPE_ID.ipfs },
+    ];
+    const alreadyFavorite = apiUris
       .map((apiUri) => {
         const boolArr = currentFavorites.filter((favUri) => {
           if (favUri === apiUri.uri) {
@@ -85,13 +87,22 @@ export default function useFavorites() {
         }
       });
     } else {
-      for (const uri of api.apiUris) {
+      for (const uri of apiUris) {
         const type = API_URI_TYPE_ID[uri.uriTypeId];
         newFavorites[type].push(uri.uri);
       }
     }
     dispatch({ type: "SET_FAVORITE_APIS", payload: newFavorites });
+    setFavorites(newFavorites);
   };
 
-  return { toggleFavorite };
-}
+  return idx ? (
+    <FavoritesContext.Provider value={{ getSuccess, toggleFavorite }}>
+      {children}
+    </FavoritesContext.Provider>
+  ) : (
+    <>{children}</>
+  );
+};
+
+export const useFavorites = () => useContext(FavoritesContext);

@@ -8,32 +8,35 @@ import Favorite from "../../../../public/images/favorite.svg";
 
 import styles from "./styles";
 import { useCallback, useMemo } from "react";
-import { toggleFavorite } from "services/ceramic/handlers";
 import { useStateValue } from "hooks";
 import { getApiImgLocation, resolveApiLocation } from "utils/pathResolvers";
-import Auth from "services/ceramic/auth";
 import useModal from "hooks/useModal";
+import { useCeramic } from "hooks/useCeramic";
+import { useFavorites } from "hooks/useFavorites";
 
 type CardProps = {
   api?: APIData;
 };
 
 const Card = ({ api }: CardProps) => {
-  const [{ dapp }, dispatch] = useStateValue();
+  const [{ dapp }] = useStateValue();
+
+  const { idx } = useCeramic();
+  const { getSuccess, toggleFavorite } = useFavorites();
 
   const ens = useMemo(() => {
     return api.apiUris.find((uri) => uri.uriTypeId === "1");
   }, [api]);
 
   const handleFavorite = useCallback(async () => {
-    if (dapp.address && Auth.ceramic.did?.authenticated) {
-      toggleFavorite(api, dapp.favorites, dispatch);
-    } else if (dapp.address && !Auth.ceramic?.did?.authenticated) {
+    if (dapp.address && idx) {
+      toggleFavorite(api);
+    } else if (dapp.address && !idx) {
       return;
     } else {
       openModal();
     }
-  }, [dapp.favorites, dapp.address]);
+  }, [dapp.favorites, dapp.address, idx]);
 
   const { openModal } = useModal("connect", { onClose: handleFavorite });
 
@@ -70,7 +73,9 @@ const Card = ({ api }: CardProps) => {
                   <Favorite
                     onClick={handleFavorite}
                     className={`favorite${isFavorite ? " active" : ""}${
-                      !Auth.ceramic.did?.authenticated || !dapp.address ? " pending" : ""
+                      !idx?.authenticated || !dapp.address || !getSuccess
+                        ? " pending"
+                        : ""
                     }`}
                   />
                 }
