@@ -30,9 +30,9 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
   );
 
   const handleFavorite = useCallback(async () => {
-    if (dapp.address && Auth.ceramic.did?.authenticated) {
+    if (dapp.address && idx?.authenticated) {
       toggleFavorite(api);
-    } else if (dapp.address && !Auth.ceramic?.did?.authenticated) {
+    } else if (dapp.address && !idx?.authenticated) {
       return;
     } else {
       openModal();
@@ -66,7 +66,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
               <Favorite
                 onClick={handleFavorite}
                 className={`favorite${isFavorite ? " active" : ""}${
-                  !idx.authenticated || !dapp.address ? " pending" : ""
+                  !idx?.authenticated || !dapp.address ? " pending" : ""
                 }`}
               />
             }

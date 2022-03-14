@@ -30,8 +30,11 @@ const onboardInit = async (dispatch: Dispatch<StateAction>): Promise<API> => {
       });
     },
     wallet: async (wallet) => {
-      const web3 = wallet.provider && createEthereumProvider(wallet.provider);
-      wallet.name ? localStorage.setItem("selectedWallet", wallet.name) : localStorage.removeItem("selectedWallet")
+      console.log('wallet', wallet?.provider?.selectedAddress)
+      const web3 = wallet?.provider && createEthereumProvider(wallet.provider);
+      wallet.name && wallet?.provider?.selectedAddress
+        ? localStorage.setItem("selectedWallet", wallet.name)
+        : localStorage.removeItem("selectedWallet");
 
       dispatch({
         type: "SET_WALLET",
