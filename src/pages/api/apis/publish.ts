@@ -44,6 +44,11 @@ export default withValidatePublishBody(
 
         const apiRepository = await getCustomRepository(ApiRepository);
         const apiUrisRepository = await getCustomRepository(ApiUrisRepository);
+        const existingApi = apiUrisRepository.findByUri(locationUri);
+
+        if (existingApi) {
+          return response.json({ status: 409, existingApi });
+        }
         const api = await apiRepository.add(
           apiInfo.name,
           apiInfo.subtext,

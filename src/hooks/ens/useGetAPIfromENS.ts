@@ -84,7 +84,9 @@ export const useGetAPIfromParamInURL = () => {
         });
         const { name, description, icon } = meta;
 
-        publishFromMeta(meta, { location, uri, did: dapp?.did });
+        if (router.query.customUri) {
+          publishFromMeta(meta, { location, uri, did: dapp?.did });
+        }
 
         const obj: APIDataFromManifest = {
           description,
