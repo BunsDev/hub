@@ -17,6 +17,7 @@ import { useGetAPIfromParamInURL } from "hooks/ens/useGetAPIfromENS";
 import { resolveApiLocation } from "utils/pathResolvers";
 import useModal from "hooks/useModal";
 import styles from "./styles";
+import { QueryAttributes } from "hooks/usePlayground";
 
 const Playground = () => {
   const [{ dapp }] = useStateValue();
@@ -45,7 +46,7 @@ const Playground = () => {
   const [clientresponded, setclientresponed] =
     useState<QueryApiResult<Record<string, unknown>>>();
 
-  const handleQueryValuesChange = (method: { value: string; id: string }[]) => {
+  const handleQueryValuesChange = (method: QueryAttributes[]) => {
     setMethod(method[0]);
   };
 
@@ -94,6 +95,12 @@ const Playground = () => {
       }
     }
   }, [dapp.apis]);
+
+  useEffect(()=>{
+    if(queries.length){
+      handleQueryValuesChange(queries)
+    }
+  },[queries])
 
   const controlBtns = useMemo(() => {
     const exec = async () => {
@@ -215,6 +222,7 @@ const Playground = () => {
                   valueField="id"
                   placeholder={"Select Query"}
                   options={queries}
+                  values={[queries[0]]}
                   onChange={handleQueryValuesChange}
                 />
               )
