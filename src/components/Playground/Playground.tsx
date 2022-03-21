@@ -84,7 +84,7 @@ const Playground = () => {
   useEffect(() => {
     if (router.query.uri !== undefined) {
       //TODO fix uri resolving, including all other places
-      const apiInQuery = dapp.apis?.find(
+      const apiInQuery = dapp.apis?.items?.find(
         (dapi) =>
           dapi.apiUris.some((api) =>
             api.uri.includes(router?.query?.uri.toString().split("/")[1])
@@ -158,7 +158,7 @@ const Playground = () => {
             placeholder={"Search API’s"}
             labelField="name"
             valueField="name"
-            options={dapp.apis}
+            options={dapp.apis.items}
             values={searchboxvalues}
             onChange={(values) => {
               setSchemaVisible(false);
