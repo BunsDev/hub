@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui **/
 import { ipfsGateway, API_URI_TYPE_ID } from "../../constants";
 import styles from "./styles";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Flex, Themed, Button, Grid } from "theme-ui";
 import { useStateValue, useRouter } from "hooks";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
@@ -11,6 +11,7 @@ import Auth from "services/ceramic/auth";
 import useModal from "hooks/useModal";
 import { useCeramic } from "hooks/useCeramic";
 import { useFavorites } from "hooks/useFavorites";
+import { useWeb3ApiClient } from "@web3api/react";
 
 type APIDetailProps = {
   api?: APIData;
@@ -23,7 +24,15 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
 
   const { idx } = useCeramic();
   const { toggleFavorite } = useFavorites();
-
+  const [example, setExample] = useState({
+    loading: true,
+    error: "",
+    data: {
+      query: "",
+      vars: "",
+    },
+  });
+  const client = useWeb3ApiClient();
   const isFavorite = useMemo(
     () => dapp.favoritesList[api.locationUri],
     [dapp.favoritesList]
@@ -40,12 +49,56 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
   }, [dapp.favorites]);
 
   const { openModal } = useModal("connect", { onClose: handleFavorite });
-
+  /* 
   useEffect(() => {
     if (dapp.did) {
       void update();
     }
-  }, [dapp.did]);
+  }, [dapp.did]); */
+
+  const apiLocation = useMemo(() => {
+    return api.apiUris.length
+      ? "ens/" + api.apiUris[0]?.uri
+      : "ipfs/" + api?.locationUri;
+  }, [api]);
+
+  useEffect(() => {
+    const getManifest = async () => {
+      try {
+        const metadata = await client.getManifest(apiLocation, {
+          type: "meta",
+        });
+
+        const { queries } = metadata;
+
+        const queryPath = queries[0].query.split("./")[1];
+        const varsPath = queries[0].vars.split("./")[1];
+        const queryFile = await client.getFile(apiLocation, {
+          path: queryPath,
+        });
+        const varsFile = await client.getFile(apiLocation, {
+          path: varsPath,
+        });
+        setExample((example) => ({
+          ...example,
+          loading: false,
+          data: {
+            query: queryFile.toString(),
+            vars: varsFile.toString(),
+          },
+        }));
+      } catch (e) {
+        setExample((example) => ({
+          ...example,
+          loading: false,
+          error: e.message,
+        }));
+      }
+    };
+    if (api) {
+      getManifest();
+    }
+  }, []);
 
   const apiIcon = useMemo(() => {
     if (api && api.icon) {
@@ -78,10 +131,12 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
         </Grid>
         <Flex className="body">
           <div>
-            <Themed.h3>Get Started</Themed.h3>
+            <Themed.h2>Get Started</Themed.h2>
+            <Themed.h3>Install</Themed.h3>
             <Themed.code>
               <Themed.pre>{`yarn install @web3api/client`}</Themed.pre>
             </Themed.code>
+            <Themed.h3>Initialize</Themed.h3>
             <Themed.code>
               <Themed.pre>
                 {`import {
@@ -91,8 +146,8 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
   Subgraph
 } from "@web3api/client-js";
 
-const api = new Web3API({
-  uri: "simplestorage.eth",
+const api = new Web3APIClient({
+  uri: "${apiLocation}",
   portals: {
     ethereum: new Ethereum({ provider: (window as any).ethereum }),
     ipfs: new IPFS({ provider: "http://localhost:5001" }),
@@ -101,6 +156,29 @@ const api = new Web3API({
 })`}
               </Themed.pre>
             </Themed.code>
+            <Themed.h3>Query</Themed.h3>
+            {example.loading ? (
+              <h3>Loading...</h3>
+            ) : example.error ? (
+              <Themed.code>
+                <Themed.pre>Error: {example.error}</Themed.pre>
+              </Themed.code>
+            ) : (
+              <>
+                <Themed.code>
+                  <Themed.pre>
+                    {`
+const variables = ${example.data.vars};
+
+const result = await api.query({
+  query: \`${example.data.query}\`,
+  variables: variables
+})
+`}
+                  </Themed.pre>
+                </Themed.code>
+              </>
+            )}
           </div>
         </Flex>
       </Flex>
