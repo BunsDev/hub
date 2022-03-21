@@ -13,7 +13,7 @@ export default function cleanSchema(suppliedSchema: string): StructuredSchema {
     removeWb3Header.split("\n\n### Imported Queries END ###")[0] ||
     removeWb3Header;
   const localandimported =
-    removeObjects.split("\n### Imported Queries START ###\n\n")[0] ||
+    removeObjects.split("\n### Imported Queries START ###\n\n") ||
     removeObjects;
 
   const local = localandimported[0].split("\n\n");
