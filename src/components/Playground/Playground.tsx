@@ -17,6 +17,7 @@ import { useGetAPIfromParamInURL } from "hooks/ens/useGetAPIfromENS";
 import { resolveApiLocation } from "utils/pathResolvers";
 import useModal from "hooks/useModal";
 import styles from "./styles";
+import { QueryAttributes } from "hooks/usePlayground";
 
 const Playground = () => {
   const [{ dapp }] = useStateValue();
@@ -45,7 +46,7 @@ const Playground = () => {
   const [clientresponded, setclientresponed] =
     useState<QueryApiResult<Record<string, unknown>>>();
 
-  const handleQueryValuesChange = (method: { value: string; id: string }[]) => {
+  const handleQueryValuesChange = (method: QueryAttributes[]) => {
     setMethod(method[0]);
   };
 
@@ -83,7 +84,7 @@ const Playground = () => {
   useEffect(() => {
     if (router.query.uri !== undefined) {
       //TODO fix uri resolving, including all other places
-      const apiInQuery = dapp.apis?.find(
+      const apiInQuery = dapp.apis?.items?.find(
         (dapi) =>
           dapi.apiUris.some((api) =>
             api.uri.includes(router?.query?.uri.toString().split("/")[1])
@@ -94,6 +95,12 @@ const Playground = () => {
       }
     }
   }, [dapp.apis]);
+
+  useEffect(()=>{
+    if(queries.length){
+      handleQueryValuesChange(queries)
+    }
+  },[queries])
 
   const controlBtns = useMemo(() => {
     const exec = async () => {
@@ -151,7 +158,7 @@ const Playground = () => {
             placeholder={"Search API’s"}
             labelField="name"
             valueField="name"
-            options={dapp.apis}
+            options={dapp.apis.items}
             values={searchboxvalues}
             onChange={(values) => {
               setSchemaVisible(false);
@@ -215,6 +222,7 @@ const Playground = () => {
                   valueField="id"
                   placeholder={"Select Query"}
                   options={queries}
+                  values={[queries[0]]}
                   onChange={handleQueryValuesChange}
                 />
               )

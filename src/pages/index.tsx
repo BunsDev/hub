@@ -5,13 +5,11 @@ import SortNav from "../components/Home/SortNav/SortNav";
 import ApiGrid from "../components/Home/ApiGrid/ApiGrid";
 
 const Home = () => {
-  const [{ dapp }] = useStateValue();
-
   return (
     <Layout>
       <section className="content">
         <SortNav />
-        <ApiGrid apis={dapp?.apis} />
+        <ApiGrid />
       </section>
     </Layout>
   );

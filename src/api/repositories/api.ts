@@ -79,19 +79,21 @@ export default class ApiRepository extends Repository<Apis> {
     );
   }
 
-  public async search(
-    limit = 10,
-    page = 1,
-    search?: string
-  ): Promise<APIData[]> {
+  public async getActive(
+    search = "",
+    page: number | string = 1,
+    limit: number | string = 12,
+    preload?: boolean
+  ): Promise<{ apis: APIData[]; totalCount: number }> {
     const query = this.createQueryBuilder("apis")
       .where("visible = true")
       .leftJoinAndSelect("apis.apiUris", "apiUris")
       .loadRelationCountAndMap("apis.favorites", "apis.starredApis")
-      .take(limit)
-      .skip((page - 1) * limit)
+      .take(preload ? Number(page) * Number(limit) : Number(limit))
+      .skip(preload ? 0 : (Number(page) - 1) * Number(limit))
       .orderBy("apis.id", "DESC");
 
+    //@ts-ignore
     if (search && search.length > 2) {
       query.where(
         "(apis.name ILIKE :search or apis.description ILIKE :search or apis.subtext ILIKE :search or apiUris.uri ILIKE :search)",
@@ -99,9 +101,12 @@ export default class ApiRepository extends Repository<Apis> {
       );
     }
 
-    return ((await query.getMany()) as unknown as APIData[]).map(
+    const [apis, total] = await query.getManyAndCount();
+    const apisWithLocationUri = (apis as unknown as APIData[])?.map(
       attachLocationUri
     );
+
+    return { apis: apisWithLocationUri, totalCount: total };
   }
 
   public async deactivate(id: number) {

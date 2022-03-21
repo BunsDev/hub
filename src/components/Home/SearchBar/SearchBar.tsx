@@ -19,6 +19,14 @@ const SearchBar = () => {
       }}
       wrapperSx={styles.wrapper}
       sx={styles.input}
+      onSubmit={() => {
+        console.log("submit");
+      }}
+      onKeyDown={(e) => {
+        if (e.code === "Enter") {
+          e.preventDefault();
+        }
+      }}
       prefix={
         <SearchIcon alt="searchIcon" draggable={false} sx={styles.searchIcon} />
       }
