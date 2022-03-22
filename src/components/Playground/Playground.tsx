@@ -77,7 +77,7 @@ const Playground = () => {
   useEffect(() => {
     const queryInfo = queries.find((q) => q.id === method.id);
 
-    const newVars = queryInfo && queryInfo.recipe ? queryInfo.recipe : {};
+    const newVars = queryInfo && queryInfo.vars ? JSON.parse(queryInfo.vars) : {};
     setFormVars({ value: JSON.stringify(newVars, null, 2), error: null });
   }, [method]);
 
@@ -96,11 +96,11 @@ const Playground = () => {
     }
   }, [dapp.apis]);
 
-  useEffect(()=>{
-    if(queries.length){
-      handleQueryValuesChange(queries)
+  useEffect(() => {
+    if (queries.length) {
+      handleQueryValuesChange(queries);
     }
-  },[queries])
+  }, [queries]);
 
   const controlBtns = useMemo(() => {
     const exec = async () => {

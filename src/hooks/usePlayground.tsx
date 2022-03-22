@@ -10,7 +10,7 @@ import { APIData, APIDataFromManifest } from "./ens/useGetAPIfromENS";
 export interface QueryAttributes {
   id: string;
   value: string;
-  recipe?: string;
+  vars?: string;
 }
 
 interface APIContents {
