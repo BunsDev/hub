@@ -229,6 +229,7 @@ const Playground = () => {
             )}
             {method.value && (
               <GQLCodeBlock
+                classNames="scrollable"
                 key={method.value}
                 value={method.value}
                 height={"300px"}
