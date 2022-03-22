@@ -61,9 +61,8 @@ const PublishAPI = () => {
         } else {
           throw Error(response.statusText);
         }
+        setPublishLoading(false);
       } catch (e) {
-        console.log(e);
-      } finally {
         setPublishLoading(false);
       }
     }

@@ -36,7 +36,7 @@ export const useRegisterEns = () => {
 
   const networkName = networks[dapp.network].name;
   const { execute: registerDomain } = useWeb3ApiQuery({
-    uri: `ens/${networkName}/yay2.open.web3api.eth`,
+    uri: `ipfs/QmTPSFGfzX5YpNBHkvzLRXqQxurLoZXZCymUX56n4q9dwK`,
     query: `mutation {
     registerDomain(
       domain: $domain
@@ -49,7 +49,7 @@ export const useRegisterEns = () => {
   });
 
   const { execute: setResolver } = useWeb3ApiQuery({
-    uri: `ens/${networkName}/yay2.open.web3api.eth`,
+    uri: `ipfs/QmTPSFGfzX5YpNBHkvzLRXqQxurLoZXZCymUX56n4q9dwK`,
     query: `mutation {
       setResolver(
         domain: $domain
@@ -63,7 +63,7 @@ export const useRegisterEns = () => {
   });
 
   const { execute: setContentHash } = useWeb3ApiQuery({
-    uri: `ens/${networkName}/yay2.open.web3api.eth`,
+    uri: `ipfs/QmTPSFGfzX5YpNBHkvzLRXqQxurLoZXZCymUX56n4q9dwK`,
     query: `mutation {
       setContentHash(
         domain: $domain
