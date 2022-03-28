@@ -26,6 +26,7 @@ const useFindApis = (
   );
   const [preload, setPreload] = useState(true);
   const router = useRouter();
+  const searchParams = useRef<string>();
 
   const currSearchVal = useRef<string>();
 
@@ -89,11 +90,14 @@ const useFindApis = (
       ? debouncedSearchValue !== currSearchVal.current
       : false;
 
-    const replaceWithNewApis = preload || newSearchVal;
+    const sameParams = JSON.stringify(params) === searchParams?.current;
+
+    const replaceWithNewApis = preload || newSearchVal || sameParams;
 
     const items = replaceWithNewApis ? apis : [...dapp.apis.items, ...apis];
 
     currSearchVal.current = debouncedSearchValue;
+    searchParams.current = JSON.stringify(params);
 
     dispatch({
       type: "SET_AVAILABLE_APIS",
