@@ -6,7 +6,7 @@ import styles from "./styles";
 import useFindApis from "hooks/useFindApis";
 
 const SearchBar = () => {
-  const [searchValue, setSearchValue] = useFindApis("");
+  const [searchValue, setSearchValue] = useFindApis();
 
   return (
     <Input
