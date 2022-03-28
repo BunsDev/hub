@@ -46,7 +46,7 @@ const SearchBox = ({
     setTimeout(() => forceUpdate(), 100);
   }, []);
 
-  const [searchValue, setSearchValue] = useFindApis("");
+  const [searchValue, setSearchValue] = useFindApis();
 
   const bgs: Record<string, unknown> = {};
   options.map((opt, idx) => {
