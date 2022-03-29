@@ -19,9 +19,7 @@ const onboardInit = async (dispatch: Dispatch<StateAction>): Promise<API> => {
         type: "SET_NETWORK",
         payload: network,
       });
-      dispatch({
-        type: "recreateplugins",
-      });
+      //dispatch({ type: "recreateplugins" });
     },
     balance: (balance) => {
       dispatch({
@@ -30,7 +28,6 @@ const onboardInit = async (dispatch: Dispatch<StateAction>): Promise<API> => {
       });
     },
     wallet: async (wallet) => {
-      console.log('wallet', wallet?.provider?.selectedAddress)
       const web3 = wallet?.provider && createEthereumProvider(wallet.provider);
       wallet.name && wallet?.provider?.selectedAddress
         ? localStorage.setItem("selectedWallet", wallet.name)
@@ -44,9 +41,7 @@ const onboardInit = async (dispatch: Dispatch<StateAction>): Promise<API> => {
         type: "SET_WEB3",
         payload: web3,
       });
-      dispatch({
-        type: "recreateplugins",
-      });
+      //dispatch({ type: "recreateplugins" });
     },
   });
 };

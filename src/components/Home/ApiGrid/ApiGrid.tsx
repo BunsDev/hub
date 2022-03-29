@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui **/
 import { useRouter } from "next/router";
 import { Grid, Button } from "theme-ui";
-import { Card } from "components";
+import { Card, Spinner } from "components";
 import { useStateValue } from "hooks";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -52,12 +52,16 @@ const ApiGrid = () => {
           )
         }
       >
-        {dapp?.apis?.items && (
-          <Grid className="grid-main" gap="1rem">
-            {dapp?.apis?.items?.map((api, idx) => (
-              <Card api={api} key={idx + "-api"} />
-            ))}
-          </Grid>
+        {dapp.apisLoading ? (
+          <Spinner size={215} />
+        ) : (
+          dapp?.apis?.items && (
+            <Grid className="grid-main" gap="1rem">
+              {dapp?.apis?.items?.map((api, idx) => (
+                <Card api={api} key={idx + "-api"} />
+              ))}
+            </Grid>
+          )
         )}
         {dapp.apis.total <= 0 && (
           <div className="endOfList">

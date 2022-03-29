@@ -46,11 +46,9 @@ function StatefulApp({ pageProps, Component }: Props<any>) {
         ></link>
       </Head>
       <SWRConfig value={swrOptions}>
-        <CeramicProvider>
-          <ResponsiveProvider>
-            <Component {...pageProps} />
-          </ResponsiveProvider>
-        </CeramicProvider>
+        <ResponsiveProvider>
+          <Component {...pageProps} />
+        </ResponsiveProvider>
       </SWRConfig>
     </>
   );
@@ -61,9 +59,11 @@ function MyApp({ Component, pageProps }: Props<any>) {
   return (
     <StateProvider>
       <ThemeProvider theme={theme}>
-        <ModalProvider>
-          <StatefulApp pageProps={pageProps} Component={Component} />
-        </ModalProvider>
+        <CeramicProvider>
+          <ModalProvider>
+            <StatefulApp pageProps={pageProps} Component={Component} />
+          </ModalProvider>
+        </CeramicProvider>
       </ThemeProvider>
     </StateProvider>
   );

@@ -7,7 +7,6 @@ import { useStateValue, useRouter } from "hooks";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
 import { getApiImgLocation } from "utils/pathResolvers";
 import Favorite from "../../../public/images/favorite.svg";
-import Auth from "services/ceramic/auth";
 import useModal from "hooks/useModal";
 import { useCeramic } from "hooks/useCeramic";
 import { useFavorites } from "hooks/useFavorites";
@@ -56,11 +55,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
     }
   }, [dapp.did]); */
 
-  const apiLocation = useMemo(() => {
-    return api.apiUris.length
-      ? "ens/" + api.apiUris[0]?.uri
-      : "ipfs/" + api?.locationUri;
-  }, [api]);
+  const apiLocation = useMemo(() => "ipfs/" + api?.locationUri, [api]);
 
   useEffect(() => {
     const getManifest = async () => {

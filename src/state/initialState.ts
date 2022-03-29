@@ -15,6 +15,19 @@ export interface State {
   publish: PublishType;
   search: SearchType;
 }
+export const defaultPlugins = [
+  {
+    uri: "ens/ethereum.web3api.eth",
+    plugin: ethereumPlugin({
+      networks: {
+        mainnet: {
+          provider:
+            "https://mainnet.infura.io/v3/b00b2c2cc09c487685e9fb061256d6a6",
+        },
+      },
+    }),
+  },
+];
 
 export const initialState: State = {
   dapp: {
@@ -27,25 +40,14 @@ export const initialState: State = {
     web3: undefined,
     onboard: undefined,
     apis: { items: [], total: null },
+    apisLoading: false,
     github: "",
     did: undefined,
     favorites: { ens: [], ipfs: [] },
     favoritesList: {},
   },
   web3api: {
-    plugins: [
-      {
-        uri: "ens/ethereum.web3api.eth",
-        plugin: ethereumPlugin({
-          networks: {
-            mainnet: {
-              provider:
-                "https://mainnet.infura.io/v3/b00b2c2cc09c487685e9fb061256d6a6",
-            },
-          },
-        }),
-      },
-    ],
+    plugins: [...defaultPlugins],
   },
   publish: {
     subdomain: "",
@@ -76,6 +78,7 @@ type DappType = {
   web3?: ethers.providers.JsonRpcProvider;
   onboard?: API;
   apis: { items: APIData[]; total: number };
+  apisLoading: boolean;
   github?: string;
   did?: string;
   favorites?: Favorites;

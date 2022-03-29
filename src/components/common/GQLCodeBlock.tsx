@@ -16,6 +16,7 @@ type GQLCodeBlockProps = {
   onClick?: MouseEventHandler<HTMLDivElement>;
   handleEditorChange?: OnChange;
   sx?: ThemeUIStyleObject;
+  classNames?: string;
 };
 
 const GQLCodeBlock = ({
@@ -26,6 +27,7 @@ const GQLCodeBlock = ({
   handleEditorChange,
   onClick,
   sx,
+  classNames,
 }: GQLCodeBlockProps) => {
   const handleEditorWillMount = (monaco: Monaco) => {
     monaco.editor.defineTheme("solarizedDark", solarizedDark);
@@ -33,7 +35,7 @@ const GQLCodeBlock = ({
   };
   return (
     <div
-      className="GQLCodeBlock-wrap"
+      className={`GQLCodeBlock-wrap ${classNames}`}
       onClick={onClick}
       sx={{ ...styles.gqlcodeblock, ...sx }}
     >

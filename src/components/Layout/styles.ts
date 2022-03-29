@@ -8,6 +8,11 @@ const styles: Styles = {
     },
     minHeight: "100vh",
     background: "#1E1D22",
+    ">main": {
+      ">section.content": {
+        width: "100%",
+      },
+    },
   },
   header: {
     display: "flex",

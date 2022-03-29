@@ -30,22 +30,34 @@ export function web3apiReducer(
         const currentNetwork = networks[networkId];
 
         const networksConfig: Record<string, ConnectionConfig> = {
-          [currentNetwork.name]: {
+          mainnet: {
             provider: state.dapp.web3,
-            signer: state.dapp.web3.getSigner(),
+            signer: state.dapp.web3.getSigner(state.dapp.address),
+          },
+          ropsten: {
+            provider: state.dapp.web3,
+            signer: state.dapp.web3.getSigner(state.dapp.address),
+          },
+          rinkeby: {
+            provider: state.dapp.web3,
+            signer: state.dapp.web3.getSigner(state.dapp.address),
           },
         };
 
-        const plugins: PluginRegistration[] = [
-          {
-            uri: "ens/ethereum.web3api.eth",
-            plugin: ethereumPlugin({
-              networks: networksConfig,
-              defaultNetwork: currentNetwork.name,
-            }),
-          },
-        ];
-
+        console.log("networksConfig", networksConfig);
+        const plugins: PluginRegistration[] = [...state.web3api.plugins].map(
+          (plugin) =>
+            plugin.uri === "ens/ethereum.web3api.eth"
+              ? {
+                  ...plugin,
+                  plugin: ethereumPlugin({
+                    networks: networksConfig,
+                    defaultNetwork: currentNetwork.name,
+                  }),
+                }
+              : plugin
+        );
+        console.log("plugins", plugins);
         return {
           ...state.web3api,
           plugins,
@@ -143,6 +155,9 @@ export function dappReducer(state: State, action: DAppAction): State["dapp"] {
       return newStateObj;
     case "SET_AVAILABLE_APIS":
       newStateObj.apis = action.payload;
+      return newStateObj;
+    case "SET_APIS_LOADING":
+      newStateObj.apisLoading = action.payload;
       return newStateObj;
     case "SET_GITHUB_USER":
       newStateObj.github = action.payload;
