@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useDebounce, useStateValue } from "hooks";
 import { domain } from "src/constants";
 import useRouter from "./useRouter";
@@ -66,6 +60,7 @@ const useFindApis = (
   }, [router.query, routerReady]);
 
   const getApis = async () => {
+    dispatch({ type: "SET_APIS_LOADING", payload: true });
     const params: any = {};
     if (router.query?.search) {
       params.search = router.query.search;
@@ -99,6 +94,7 @@ const useFindApis = (
     currSearchVal.current = debouncedSearchValue;
     searchParams.current = JSON.stringify(params);
 
+    dispatch({ type: "SET_APIS_LOADING", payload: false });
     dispatch({
       type: "SET_AVAILABLE_APIS",
       payload: {

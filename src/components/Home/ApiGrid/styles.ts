@@ -17,6 +17,7 @@ const styles: Styles = {
       mx: "auto",
       mb: 3,
     },
+    ".spinner": { display: "block", margin: "0 auto", marginBottom: "15px" },
     ".endOfList": {
       display: "flex",
       flexDirection: "column",
