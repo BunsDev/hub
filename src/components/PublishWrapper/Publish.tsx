@@ -28,7 +28,7 @@ const PublishAPI = () => {
     onClose: () => toggleEnsInput(true),
   });
 
-  const [executeRegisterENS, { loading: ensRegLoading }] =
+  const [executeRegisterENS, { loading: ensRegLoading, errors: ensRegErrors }] =
     useRegisterEns();
 
   const { authenticate } = useAuth(dapp);
@@ -99,7 +99,7 @@ const PublishAPI = () => {
     e
   ) => {
     e.preventDefault();
-    publish.subdomain && await executeRegisterENS();
+    publish.subdomain && (await executeRegisterENS());
   };
 
   useEffect(() => {
@@ -183,6 +183,12 @@ const PublishAPI = () => {
                     onChange={handleEnsInputChange}
                     suffix={ensRegInputSuffix[ensRegStatus]}
                   />
+                  {!!ensRegErrors.length &&
+                    ensRegErrors.map((er) => (
+                      <span sx={{ color: "red", maxWidth: "100%" }}>
+                        {er.message}
+                      </span>
+                    ))}
                 </>
               ) : (
                 <Button
