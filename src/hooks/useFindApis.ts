@@ -63,7 +63,7 @@ const useFindApis = (
         setPreload(false);
       }
     }
-  }, [router.query]);
+  }, [router.query, routerReady]);
 
   const getApis = async () => {
     const params: any = {};
