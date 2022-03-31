@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function useDebounce(value: string, delay: number) {
+export default function useDebounce(
+  value: string,
+  delay: number,
+  defaultValue?: string
+) {
   // eslint-disable-line
-  const [debouncedValue, setDebouncedValue] = useState(value);
+  const [debouncedValue, setDebouncedValue] = useState(defaultValue || value);
   const prevValue = useRef<string>();
 
   useEffect(() => {

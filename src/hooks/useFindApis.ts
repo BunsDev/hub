@@ -1,61 +1,57 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useDebounce, useStateValue } from "hooks";
 import { domain } from "src/constants";
-import useRouter from "./useRouter";
+import { useRouter } from "next/router";
 import axios from "axios";
 
 const useFindApis = (
   delay = 500
 ): [string, Dispatch<SetStateAction<string>>] => {
-  const [searchValue, setSearchValue] = useState("");
-  const [routerReady, setRouterReady] = useState(false);
-  const [{ dapp }, dispatch] = useStateValue();
-  const [debouncedSearchValue] = useDebounce(searchValue, delay);
-  const [preload, setPreload] = useState(true);
   const router = useRouter();
+  const [searchValue, setSearchValue] = useState(
+    router.query?.search?.toString()
+  );
+  const [{ dapp }, dispatch] = useStateValue();
+  const [debouncedSearchValue] = useDebounce(
+    searchValue,
+    delay,
+    router.query?.search?.toString()
+  );
+  const [preload, setPreload] = useState(true);
   const searchParams = useRef<string>();
 
   const currSearchVal = useRef<string>();
 
   useEffect(() => {
-    if (router.isReady) {
-      setRouterReady(true);
-      if (router?.query?.search) {
-        setSearchValue(String(router?.query?.search));
-      }
-    }
-  }, [router.isReady]);
-
-  useEffect(() => {
-    if (routerReady) {
+    if (typeof debouncedSearchValue === "string") {
+      const params: { [key: string]: string } = {};
       if (debouncedSearchValue) {
-        void router.push(
-          {
-            pathname: router.pathname,
-            query: {
-              search: debouncedSearchValue,
-            },
-          },
-          undefined,
-          { shallow: true }
-        );
+        params.search = debouncedSearchValue;
       }
+      void router.push(
+        {
+          pathname: router.pathname,
+          query: params,
+        },
+        undefined,
+        { shallow: true }
+      );
     }
   }, [debouncedSearchValue]);
 
   useEffect(() => {
-    if (routerReady) {
-      if (!preload) {
-        void getApis();
-      } else {
-        void getApis();
-        setPreload(false);
-      }
+    if (!dapp.apisLoading) {
+      void getApis();
     }
-  }, [router.query, routerReady]);
+  }, [router.query]);
+
+  useEffect(() => {
+    void getApis();
+  }, []);
 
   const getApis = async () => {
     dispatch({ type: "SET_APIS_LOADING", payload: true });
+
     const params: { [key: string]: string | string[] | boolean } = {};
     if (router.query?.search) {
       params.search = router.query.search;
@@ -66,9 +62,8 @@ const useFindApis = (
     }
     if (preload) {
       params.preload = true;
+      setPreload(false);
     }
-
-    setPreload(false);
 
     const {
       data: { apis: searchResult },
