@@ -55,14 +55,10 @@ const PublishAPI = () => {
               ? `ens/${publish.subdomain}`
               : `ipfs/${publish.ipfs}`
           }`;
-          dispatch({ type: "setipfs", payload: "" });
-          dispatch({ type: "setsubdomain", payload: "" });
-          dispatch({ type: "setsubdomainRegisterSuccess", payload: false });
           router.push(redirect);
         } else {
           throw Error(response.statusText);
         }
-        setPublishLoading(false);
       } catch (e) {
         setPublishLoading(false);
       }
@@ -110,6 +106,14 @@ const PublishAPI = () => {
   useEffect(() => {
     !dapp.address && toggleEnsInput(false);
   }, [dapp.address]);
+
+  useEffect(() => {
+    return () => {
+      dispatch({ type: "setipfs", payload: "" });
+      dispatch({ type: "setsubdomain", payload: "" });
+      dispatch({ type: "setsubdomainRegisterSuccess", payload: false });
+    };
+  }, []);
 
   const ensRegStatus = ensRegLoading
     ? "loading"
