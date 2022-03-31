@@ -32,5 +32,5 @@ export const getIpfsLocation = (api: APIData) => {
 };
 
 export const getApiImgLocation = (api: APIData) => {
-  return `${ipfsGateway}${getIpfsLocation(api)}${api.icon.replace("./", "/")}`;
+  return api.icon && `${ipfsGateway}${getIpfsLocation(api)}${api.icon.replace("./", "/")}`;
 };
