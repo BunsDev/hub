@@ -7,7 +7,7 @@ import axios from "axios";
 import { useWeb3ApiClient } from "@web3api/react";
 import { useStateValue } from "hooks";
 import { networks } from "utils/networks";
-import { AnyMetaManifest, MetaManifest } from "@web3api/core-js";
+import { AnyMetaManifest } from "@web3api/core-js";
 import { publishFromMeta, PublishOptions } from "utils/publishFromMeta";
 
 export interface APIDataFromManifest {
@@ -72,7 +72,7 @@ export const useGetAPIfromParamInURL = () => {
     options: PublishOptions
   ) => {
     if (router.query.customUri) {
-      publishFromMeta(meta, options);
+      void publishFromMeta(meta, options);
     }
 
     setData(meta as APIDataFromManifest);

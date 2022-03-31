@@ -14,10 +14,9 @@ import { useWeb3ApiClient } from "@web3api/react";
 
 type APIDetailProps = {
   api?: APIData;
-  update: () => Promise<void>;
 };
 
-const APIDetail = ({ api, update }: APIDetailProps) => {
+const APIDetail = ({ api }: APIDetailProps) => {
   const router = useRouter();
   const [{ dapp }] = useStateValue();
 
@@ -48,12 +47,6 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
   }, [dapp.favorites]);
 
   const { openModal } = useModal("connect", { onClose: handleFavorite });
-  /* 
-  useEffect(() => {
-    if (dapp.did) {
-      void update();
-    }
-  }, [dapp.did]); */
 
   const apiLocation = useMemo(() => "ipfs/" + api?.locationUri, [api]);
 
@@ -91,7 +84,7 @@ const APIDetail = ({ api, update }: APIDetailProps) => {
       }
     };
     if (api) {
-      getManifest();
+      void getManifest();
     }
   }, []);
 

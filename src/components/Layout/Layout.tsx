@@ -7,7 +7,6 @@ import { RESPONSOVE_BREAKPOINTS } from "../../constants";
 
 import getGlobalStyles from "./styles-global";
 import styles from "./styles";
-import { useEffect } from "react";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -21,7 +20,9 @@ const Layout = ({ children }: LayoutProps) => {
       <Header />
       <main>{children}</main>
       <BGCircles />
-      {windowSize.lessOrEqualThan(RESPONSOVE_BREAKPOINTS.MEDIUM) && <MobileNav />}
+      {windowSize.lessOrEqualThan(RESPONSOVE_BREAKPOINTS.MEDIUM) && (
+        <MobileNav />
+      )}
       <Global styles={(theme) => getGlobalStyles(theme)} />
     </div>
   );

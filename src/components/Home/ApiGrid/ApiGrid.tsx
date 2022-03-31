@@ -15,7 +15,7 @@ const ApiGrid = () => {
   const getNext = () => {
     const page = (Number(router.query?.page || 1) + 1).toString();
 
-    router.push(
+    void router.push(
       {
         pathname: router.pathname,
         query: {

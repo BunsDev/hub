@@ -1,5 +1,4 @@
 import Auth from "../services/ceramic/auth";
-import { Favorites, githubHandler } from "../services/ceramic/handlers";
 import { State } from "../state/initialState";
 import { useStateValue } from "../state/state";
 import { domain } from "../constants";
@@ -10,7 +9,7 @@ import { useCallback, useEffect } from "react";
 
 const useAuth = (dapp: State["dapp"]) => {
   const [_, dispatch] = useStateValue();
-  const { github: cachedToken, did } = dapp;
+  const { did } = dapp;
   const [cachedDid, setCachedDid] = useLocalStorage("did", did);
 
   const isAuthenticated = Auth.ceramic.did?.authenticated;

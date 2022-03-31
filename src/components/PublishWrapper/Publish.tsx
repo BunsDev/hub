@@ -10,13 +10,12 @@ import { Flex, Button, Themed, Image } from "theme-ui";
 import { useRouter, useAuth, useStateValue, useRegisterEns } from "hooks";
 import { Wrapper } from "components/PublishWrapper";
 import { Input, Spinner } from "components";
-import { domain, ipfsGateway } from "../../constants";
+import { ipfsGateway } from "../../constants";
 
 import styles from "./styles";
 import useModal from "hooks/useModal";
 import {
   constructPublishBodyFromMeta,
-  publishFromMeta,
   publishWrapper,
 } from "utils/publishFromMeta";
 
@@ -55,7 +54,7 @@ const PublishAPI = () => {
               ? `ens/${publish.subdomain}`
               : `ipfs/${publish.ipfs}`
           }`;
-          router.push(redirect);
+          void router.push(redirect);
         } else {
           throw Error(response.statusText);
         }
@@ -194,7 +193,10 @@ const PublishAPI = () => {
                   />
                   {!!ensRegErrors.length &&
                     ensRegErrors.map((er) => (
-                      <span sx={{ color: "red", maxWidth: "100%" }}>
+                      <span
+                        key={er?.message}
+                        sx={{ color: "red", maxWidth: "100%" }}
+                      >
                         {er.message}
                       </span>
                     ))}

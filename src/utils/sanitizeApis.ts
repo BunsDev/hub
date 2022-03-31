@@ -2,8 +2,8 @@ import { APIData } from "hooks/ens/useGetAPIfromENS";
 import { ApiData } from "src/api/models/types";
 import { API_URI_TYPE_ID } from "../constants";
 
+// eslint-disable-line
 export default function sanitizeApis(acc: ApiData[], api: any): ApiData[] {
-  // eslint-disable-line
   const { authority, type, uri, name, ...metadata } = api; // eslint-disable-line
 
   const apiIndex = acc.findIndex(({ name }) => name === api.name);

@@ -2,7 +2,6 @@
 import { Web3ApiProvider } from "@web3api/react";
 import { Layout, APIDetail } from "components";
 import { useGetAPIfromENSParamInURL, useStateValue } from "hooks";
-import { APIData } from "hooks/ens/useGetAPIfromENS";
 
 const ApiView = () => {
   const { data, fetchApiDetails } = useGetAPIfromENSParamInURL();
@@ -11,7 +10,7 @@ const ApiView = () => {
     <Layout>
       {web3api.plugins && (
         <Web3ApiProvider plugins={web3api.plugins}>
-          {!!data && <APIDetail api={data} update={fetchApiDetails} />}
+          {!!data && <APIDetail api={data} />}
         </Web3ApiProvider>
       )}
     </Layout>

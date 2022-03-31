@@ -1,11 +1,5 @@
 /** @jsxImportSource theme-ui **/
-import {
-  ChangeEventHandler,
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEventHandler, MouseEventHandler, useState } from "react";
 import { Button, Image, Flex } from "@theme-ui/components";
 import { useStateValue } from "hooks";
 import { Spinner, Input } from "components";
@@ -53,10 +47,9 @@ export const EnsAddress = () => {
         dispatch({ type: "setipfs", payload: resolved.uri.path });
         console.log("resolved", resolved);
 
-        const metaData = await getMetaDataFromPackageHash(publish.ipfs);
-        console.log("metaData", metaData);
+        const metaData = await getMetaDataFromPackageHash(client, publish.ipfs);
 
-        if (metaData === undefined || metaData === "NO METADATA FOUND") {
+        if (!metaData) {
           dispatch({ type: "setsubdomainLoading", payload: false });
           dispatch({ type: "setApiData", payload: null });
           dispatch({

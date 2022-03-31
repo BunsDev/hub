@@ -57,11 +57,7 @@ export default withValidatePublishBody(
           apiInfo?.ownerId
         );
 
-        const uri = await apiUrisRepository.add(
-          locationUri,
-          api.id,
-          API_URI_TYPE_ID.ipfs
-        );
+        await apiUrisRepository.add(locationUri, api.id, API_URI_TYPE_ID.ipfs);
 
         if (apiInfo.apiUris?.length) {
           for (const uri of apiInfo.apiUris) {

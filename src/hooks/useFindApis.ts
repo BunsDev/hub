@@ -10,17 +10,12 @@ const useFindApis = (
   const [searchValue, setSearchValue] = useState("");
   const [routerReady, setRouterReady] = useState(false);
   const [{ dapp }, dispatch] = useStateValue();
-  const [debouncedSearchValue, prevSearchValue] = useDebounce(
-    searchValue,
-    delay
-  );
+  const [debouncedSearchValue] = useDebounce(searchValue, delay);
   const [preload, setPreload] = useState(true);
   const router = useRouter();
   const searchParams = useRef<string>();
 
   const currSearchVal = useRef<string>();
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     if (router.isReady) {
@@ -34,7 +29,7 @@ const useFindApis = (
   useEffect(() => {
     if (routerReady) {
       if (debouncedSearchValue) {
-        router.push(
+        void router.push(
           {
             pathname: router.pathname,
             query: {
@@ -51,9 +46,9 @@ const useFindApis = (
   useEffect(() => {
     if (routerReady) {
       if (!preload) {
-        getApis();
+        void getApis();
       } else {
-        getApis();
+        void getApis();
         setPreload(false);
       }
     }
@@ -61,7 +56,7 @@ const useFindApis = (
 
   const getApis = async () => {
     dispatch({ type: "SET_APIS_LOADING", payload: true });
-    const params: any = {};
+    const params: { [key: string]: string | string[] | boolean } = {};
     if (router.query?.search) {
       params.search = router.query.search;
     }

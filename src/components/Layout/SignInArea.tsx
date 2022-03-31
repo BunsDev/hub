@@ -3,9 +3,8 @@ import User from "../../../public/images/user.svg";
 import styles from "./styles";
 import { keyframes } from "@emotion/react";
 import { Flex, Button } from "theme-ui";
-import { useLocalStorage, useStateValue } from "hooks";
+import { useStateValue } from "hooks";
 import useModal from "hooks/useModal";
-import { useMemo } from "react";
 import { useStorage } from "hooks/useLocalStorage";
 
 type SignInAreaProps = {
@@ -50,7 +49,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
       }}
     >
       <ul sx={{ display: "flex", alignItems: "center" }}>
-        {!!isLoggedIn ? (
+        {isLoggedIn ? (
           dapp.address ? (
             <li
               onClick={handleDisconnect}

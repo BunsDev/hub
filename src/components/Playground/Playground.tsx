@@ -18,7 +18,6 @@ import { parseApiUri, resolveApiLocation } from "utils/pathResolvers";
 import useModal from "hooks/useModal";
 import styles from "./styles";
 import { QueryAttributes } from "hooks/usePlayground";
-import { networks } from "utils/networks";
 
 const Playground = () => {
   const [{ dapp }] = useStateValue();
@@ -31,7 +30,7 @@ const Playground = () => {
       apiContents: { queries, schema, schemaStructured },
       loading: apiLoading,
     },
-    { execute, loading: queryLoading, errors, method, setMethod },
+    { execute, loading: queryLoading, method, setMethod },
   ] = usePlayground(api);
 
   const [formVars, setFormVars] = useState({ value: "{\n}", error: null });
@@ -76,7 +75,6 @@ const Playground = () => {
       let apiUri = "";
       switch (type) {
         case "ens": {
-          const currentNetwork = networks[dapp.network].name;
           // TODO case when no api on current network
           apiUri = `ens/${parsedUri}`;
           break;
@@ -86,7 +84,7 @@ const Playground = () => {
           break;
         }
       }
-      router.push(router.pathname + `?customUri=${apiUri}`);
+      void router.push(router.pathname + `?customUri=${apiUri}`);
     }
   };
 
@@ -121,15 +119,13 @@ const Playground = () => {
 
   const controlBtns = useMemo(() => {
     const exec = async () => {
-      let parsed;
       try {
-        parsed = JSON.parse(formVars.value);
+        const parsed = JSON.parse(formVars.value);
+        const response = await execute(parsed);
+        setclientresponed(response);
       } catch (parseError) {
         setFormVars({ ...formVars, error: parseError });
-        return;
       }
-      const response = await execute(parsed);
-      setclientresponed(response);
     };
 
     return (

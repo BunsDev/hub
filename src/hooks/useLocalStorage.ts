@@ -85,7 +85,7 @@ function useLocalStorage<T>(
 
 export default useLocalStorage;
 
-type StorageType = 'session' | 'local';
+type StorageType = "session" | "local";
 type UseStorageReturnValue = {
   getItem: (key: string, type?: StorageType) => string;
   setItem: (key: string, value: string, type?: StorageType) => boolean;
@@ -93,12 +93,13 @@ type UseStorageReturnValue = {
 };
 
 export const useStorage = (): UseStorageReturnValue => {
-  const storageType = (type?: StorageType): 'localStorage' | 'sessionStorage' => `${type ?? 'local'}Storage`;
+  const storageType = (type?: StorageType): "localStorage" | "sessionStorage" =>
+    `${type ?? "local"}Storage`;
 
-  const isBrowser: boolean = ((): boolean => typeof window !== 'undefined')();
+  const isBrowser: boolean = ((): boolean => typeof window !== "undefined")();
 
   const getItem = (key: string, type?: StorageType): string => {
-    return isBrowser ? window[storageType(type)][key] : '';
+    return isBrowser ? window[storageType(type)][key] : "";
   };
 
   const setItem = (key: string, value: string, type?: StorageType): boolean => {

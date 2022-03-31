@@ -2,7 +2,6 @@ import { VercelRequest, VercelResponse } from "@vercel/node";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
 import logger from "services/logger/logger";
 import ApiUrisRepository from "src/api/repositories/apiUrisRepository";
-import { API_URI_TYPE_ID } from "src/constants";
 import { getConnection } from "typeorm";
 import { attachLocationUri } from "utils/sanitizeApis";
 import Database from "../../db";
@@ -10,7 +9,7 @@ import Database from "../../db";
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === "GET") {
     try {
-      const { location, name } = request.query;
+      const { name } = request.query;
 
       const database = new Database();
       await database.connect();

@@ -1,4 +1,4 @@
-import {  APIDataFromManifest } from "hooks/ens/useGetAPIfromENS";
+import { APIDataFromManifest } from "hooks/ens/useGetAPIfromENS";
 import { ApiData } from "src/api/models/types";
 import { domain } from "src/constants";
 
@@ -21,7 +21,7 @@ export const publishFromMeta = async (
   if (options.did) body.did = options.did;
 
   if (location === "ens") body.apiUris = [uri];
-  publishWrapper(body);
+  void publishWrapper(body);
 };
 export const constructPublishBodyFromMeta = (
   meta: APIDataFromManifest

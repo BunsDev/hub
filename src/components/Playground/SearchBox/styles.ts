@@ -11,7 +11,7 @@ const styles: Styles = {
     boxShadow: "none !important",
     p: "3px 16px !important",
     ".react-dropdown-select-input": {
-      display:"none",
+      display: "none",
       fontFamily: "Nunito Sans",
       fontSize: "16px",
       lineHeight: "150%",

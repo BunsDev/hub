@@ -3,7 +3,6 @@ import styles from "./styles";
 
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import yaml from "js-yaml";
 import { Flex } from "@theme-ui/components";
 import { Wrapper, NavButtons } from "components/PublishWrapper";
 import { Spinner } from "components";
@@ -13,7 +12,6 @@ import {
   uploadToIPFS,
   validateUploadedWrapper,
 } from "utils/createWrapper";
-import { APIData } from "hooks/ens/useGetAPIfromENS";
 import getMetaDataFromPackageHash from "services/ipfs/getMetaDataFromPackageHash";
 import { useWeb3ApiClient } from "@web3api/react";
 
@@ -42,8 +40,7 @@ export const DirectUpload = () => {
   const onDrop = async (acceptedFiles: File[]) => {
     setUploadState((state) => ({ ...state, loading: true }));
 
-    const [filesValidated, requiredFiles, files] =
-      validateUploadedWrapper(acceptedFiles);
+    const [filesValidated, _, files] = validateUploadedWrapper(acceptedFiles);
 
     if (!filesValidated) {
       console.error("Wrapper files validation failure");

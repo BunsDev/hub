@@ -1,15 +1,9 @@
 /** @jsxImportSource theme-ui **/
-import {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-} from "react";
+import { MouseEventHandler, useCallback, useEffect, useMemo } from "react";
 import { Button, Flex } from "@theme-ui/components";
 import { Themed } from "@theme-ui/mdx";
 
 import { NavItem } from "components/Layout/Navigation";
-import { Modal } from "components";
 import { navItems, conditionalNavItems } from "./navItemsData";
 import addrShortener from "utils/addrShortener";
 import { useRouter, useStateValue, useResponsive } from "hooks";

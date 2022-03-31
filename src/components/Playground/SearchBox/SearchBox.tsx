@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from "react";
 import { ThemeUIStyleObject } from "theme-ui";
 import RDS, { SelectRenderer } from "react-dropdown-select";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
-import stripIPFSPrefix from "utils/stripIPFSPrefix";
 import { ipfsGateway } from "../../../constants";
 
 import styles from "./styles";
@@ -105,14 +104,15 @@ const SearchBox = ({
     );
   };
   const handleSearch = useCallback(
-    ({ state, methods, props }: SelectRenderer<APIData>) => {
+    ({ state, props }: SelectRenderer<APIData>) => {
       if (searchValue !== state.search) {
         setSearchValue(state.search);
         return;
       }
       const regexp = new RegExp(state.search, "i");
 
-      return options.filter((item: any) =>
+      return options.filter((item: APIData) =>
+        //@ts-ignore
         regexp.test(item[props.searchBy] || item.label)
       );
     },

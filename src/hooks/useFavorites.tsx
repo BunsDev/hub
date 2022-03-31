@@ -11,7 +11,7 @@ type FavoritesContext = {
 };
 export const FavoritesContext = createContext<FavoritesContext>({
   getSuccess: false,
-  toggleFavorite: () => null,
+  toggleFavorite: () => {},
 });
 
 export const FavortitesProvider = ({
@@ -37,7 +37,7 @@ export const FavortitesProvider = ({
       setGetSuccess(true);
     };
     if (idx) {
-      getFavorites();
+      void getFavorites();
     }
   }, [idx]);
 
@@ -93,7 +93,7 @@ export const FavortitesProvider = ({
       }
     }
     dispatch({ type: "SET_FAVORITE_APIS", payload: newFavorites });
-    setFavorites(newFavorites);
+    void setFavorites(newFavorites);
   };
 
   return idx ? (
