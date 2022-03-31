@@ -19,16 +19,18 @@ const constructApiDataFromWeb3Api = async (web3api: AnyWeb3ApiManifest) => {
   return { name };
 };
 
-export default async function getMetaDataFromPackageHash(
+export default async function getMetaDataFromPackageUri(
   client: Web3ApiClient,
-  ipfsInput: string
+  uriInput: string
 ): Promise<APIDataFromManifest> {
   try {
-    const metadata = await client.getManifest(ipfsInput, { type: "meta" });
+    const metadata = await client.getManifest(uriInput, { type: "meta" });
+    console.log('metadata', metadata)
     return constructApiDataFromMeta(metadata);
   } catch (e) {
     try {
-      const web3api = await client.getManifest(ipfsInput, { type: "web3api" });
+      const web3api = await client.getManifest(uriInput, { type: "web3api" });
+      console.log('web3api', web3api)
       return constructApiDataFromWeb3Api(web3api);
     } catch (e) {
       return undefined;

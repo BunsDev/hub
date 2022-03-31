@@ -12,7 +12,7 @@ import {
   uploadToIPFS,
   validateUploadedWrapper,
 } from "utils/createWrapper";
-import getMetaDataFromPackageHash from "services/ipfs/getMetaDataFromPackageHash";
+import getMetaDataFromPackageUri from "services/ipfs/getMetaDataPackageUri";
 import { useWeb3ApiClient } from "@web3api/react";
 
 const directoryProps = {
@@ -51,7 +51,7 @@ export const DirectUpload = () => {
         if (hash) {
           dispatch({ type: "setipfs", payload: hash });
           //Using client so it can polyfill mising properties
-          const metadata = await getMetaDataFromPackageHash(
+          const metadata = await getMetaDataFromPackageUri(
             client,
             "ipfs/" + publish.ipfs
           );
