@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui **/
 import { Global } from "@emotion/react";
-import { useWindowSize } from "hooks";
+import { useRouter, useWindowSize } from "hooks";
 import { Header, BGCircles } from "components";
 import { MobileNav } from "components/Layout/Navigation";
 import { RESPONSOVE_BREAKPOINTS } from "../../constants";
-
+import { useLoading } from "hooks/useLoading";
 import getGlobalStyles from "./styles-global";
 import styles from "./styles";
 
@@ -14,17 +14,24 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const windowSize = useWindowSize();
+  const router = useRouter();
+  const withLoading = useLoading(!router.isReady);
 
   return (
     <div className="layout" sx={styles.layout}>
-      <Header />
-      <main>{children}</main>
-      <BGCircles />
-      {windowSize.lessOrEqualThan(RESPONSOVE_BREAKPOINTS.MEDIUM) && (
-        <MobileNav />
+      {withLoading(
+        <>
+          <Header />
+          <main>{children}</main>
+          {windowSize.lessOrEqualThan(RESPONSOVE_BREAKPOINTS.MEDIUM) && (
+            <MobileNav />
+          )}
+        </>
       )}
+      <BGCircles />
       <Global styles={(theme) => getGlobalStyles(theme)} />
     </div>
   );
 };
+
 export default Layout;
