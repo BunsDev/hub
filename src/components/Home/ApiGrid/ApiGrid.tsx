@@ -54,27 +54,26 @@ const ApiGrid = () => {
       >
         {dapp.apisLoading ? (
           <Spinner size={215} />
+        ) : dapp?.apis?.items.length ? (
+          <Grid className="grid-main" gap="1rem">
+            {dapp?.apis?.items?.map((api, idx) => (
+              <Card api={api} key={idx + "-api"} />
+            ))}
+          </Grid>
         ) : (
-          dapp?.apis?.items && (
-            <Grid className="grid-main" gap="1rem">
-              {dapp?.apis?.items?.map((api, idx) => (
-                <Card api={api} key={idx + "-api"} />
-              ))}
-            </Grid>
+          dapp.apis.total <= 0 && (
+            <div className="endOfList">
+              <b>No api was found.</b>
+              <Button
+                variant="primaryMedium"
+                onClick={() => {
+                  void router.push("/apis/create?activeTab=start");
+                }}
+              >
+                <span>Create New API</span>
+              </Button>
+            </div>
           )
-        )}
-        {dapp.apis.total <= 0 && (
-          <div className="endOfList">
-            <b>No api was found.</b>
-            <Button
-              variant="primaryMedium"
-              onClick={() => {
-                void router.push("/apis/create?activeTab=start");
-              }}
-            >
-              <span>Create New API</span>
-            </Button>
-          </div>
         )}
       </InfiniteScroll>
     </div>

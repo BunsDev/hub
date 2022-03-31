@@ -40,7 +40,7 @@ export const initialState: State = {
     web3: undefined,
     onboard: undefined,
     apis: { items: [], total: null },
-    apisLoading: false,
+    apisLoading: true,
     github: "",
     did: undefined,
     favorites: { ens: [], ipfs: [] },
