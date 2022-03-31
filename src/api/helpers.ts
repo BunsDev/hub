@@ -32,12 +32,12 @@ export const withValidatePublishBody = (
 ) => {
   return (request: VercelRequest, response: VercelResponse) => {
     const schema = Joi.object({
-      description: Joi.string().required(),
-      subtext: Joi.string().required(),
       name: Joi.string().required(),
-      icon: Joi.string().required(),
       locationUri: Joi.string().required(),
-      apiUris: Joi.array().items(Joi.string()),
+      description: Joi.string().optional(),
+      subtext: Joi.string().optional(),
+      icon: Joi.string().optional(),
+      apiUris: Joi.array().items(Joi.string()).optional(),
       did: Joi.string().optional(),
     });
 

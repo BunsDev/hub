@@ -8,9 +8,9 @@ import { APIData } from "hooks/ens/useGetAPIfromENS";
 export default class ApiRepository extends Repository<Apis> {
   public add(
     name: string,
-    subtext: string,
-    description: string,
-    icon: string,
+    subtext = "",
+    description = "",
+    icon = "",
     ownerId?: string
   ): Promise<Apis | undefined> {
     return this.save({
