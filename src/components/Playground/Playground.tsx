@@ -14,10 +14,11 @@ import {
   LoadingSpinner,
 } from "components";
 import { useGetAPIfromParamInURL } from "hooks/ens/useGetAPIfromENS";
-import { resolveApiLocation } from "utils/pathResolvers";
+import { parseApiUri, resolveApiLocation } from "utils/pathResolvers";
 import useModal from "hooks/useModal";
 import styles from "./styles";
 import { QueryAttributes } from "hooks/usePlayground";
+import { networks } from "utils/networks";
 
 const Playground = () => {
   const [{ dapp }] = useStateValue();
@@ -67,10 +68,25 @@ const Playground = () => {
   const handleClearBtnClick = () => {
     setclientresponed(undefined);
   };
+
   const handleCustomUriApply: MouseEventHandler = (e) => {
     e.preventDefault();
     if (customUri) {
-      router.push(router.pathname + `?customUri=${customUri}`);
+      const [parsedUri, type] = parseApiUri(customUri);
+      let apiUri = "";
+      switch (type) {
+        case "ens": {
+          const currentNetwork = networks[dapp.network].name;
+          // TODO case when no api on current network
+          apiUri = `ens/${parsedUri}`;
+          break;
+        }
+        case "ipfs": {
+          apiUri = `ipfs/${parsedUri}`;
+          break;
+        }
+      }
+      router.push(router.pathname + `?customUri=${apiUri}`);
     }
   };
 
