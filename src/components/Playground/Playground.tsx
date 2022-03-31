@@ -77,7 +77,8 @@ const Playground = () => {
   useEffect(() => {
     const queryInfo = queries.find((q) => q.id === method.id);
 
-    const newVars = queryInfo && queryInfo.vars ? JSON.parse(queryInfo.vars) : {};
+    const newVars =
+      queryInfo && queryInfo.vars ? JSON.parse(queryInfo.vars) : {};
     setFormVars({ value: JSON.stringify(newVars, null, 2), error: null });
   }, [method]);
 
@@ -229,10 +230,9 @@ const Playground = () => {
             )}
             {method.value && (
               <GQLCodeBlock
-                classNames="scrollable"
                 key={method.value}
                 value={method.value}
-                height={"300px"}
+                height={"200px"}
                 sx={{ ml: "-16px" }}
               />
             )}
