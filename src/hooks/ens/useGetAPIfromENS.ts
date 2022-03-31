@@ -30,33 +30,31 @@ export interface APIData {
 
 export const useGetAPIfromENSParamInURL = () => {
   const router = useRouter();
-  const [error, setError] = useState<any>(); // eslint-disable-line
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<APIData>();
+  const [state, setState] = useState({
+    data: undefined,
+    loading: false,
+    error: undefined,
+  });
 
   const fetchApiDetails = useCallback(async () => {
-    setIsLoading(true);
+    setState((state) => ({ ...state, loading: true }));
     try {
       if (router.query.uri) {
         const { data: apiData } = await axios.get<{ api: APIData }>(
           domain + `/api/apis/${router.asPath.split("uri=")[1]}`
         );
-
-        setData(apiData.api);
+        setState((state) => ({ ...state, data: apiData, loading: false }));
       }
     } catch (e) {
-      setError(e);
-    } finally {
-      setIsLoading(false);
+      setState((state) => ({ ...state, error: e?.message, loading: false }));
     }
   }, [router.query.uri, router.query.customUri]);
 
   useEffect(() => {
-    if (router.isReady) {
-      void fetchApiDetails();
-    }
-  }, [router.isReady, router.query.uri, router.query.customUri]);
-  return { error, isLoading, data, fetchApiDetails };
+    void fetchApiDetails();
+  }, [router.query.uri, router.query.customUri]);
+
+  return { ...state, fetchApiDetails };
 };
 
 export const useGetAPIfromParamInURL = () => {
