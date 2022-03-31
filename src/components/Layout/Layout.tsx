@@ -19,6 +19,8 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className="layout" sx={styles.layout}>
+      <BGCircles />
+      <Global styles={(theme) => getGlobalStyles(theme)} />
       {withLoading(
         <>
           <Header />
@@ -28,8 +30,6 @@ const Layout = ({ children }: LayoutProps) => {
           )}
         </>
       )}
-      <BGCircles />
-      <Global styles={(theme) => getGlobalStyles(theme)} />
     </div>
   );
 };
