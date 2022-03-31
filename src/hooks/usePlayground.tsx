@@ -67,7 +67,7 @@ const usePlayground = (
         ? `${location}/${uri}`
         : `${location}/${networks[dapp?.network]?.name || "mainnet"}/${uri}`;
 
-    try {
+    try { 
       const schema = await client.getSchema(apiLocation);
       const queries = await getPackageQueriesFromUri(client, apiLocation);
 

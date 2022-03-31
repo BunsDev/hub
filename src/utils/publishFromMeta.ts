@@ -1,9 +1,9 @@
-import { MetaManifest } from "@web3api/core-js";
+import { AnyMetaManifest } from "@web3api/core-js";
 import { APIData, APIDataFromManifest } from "hooks/ens/useGetAPIfromENS";
 import { ApiData } from "src/api/models/types";
 import { domain } from "src/constants";
 
-interface PublishOptions {
+export interface PublishOptions {
   location: "ipfs" | "ens" | string;
   uri: string;
   did?: string;
@@ -12,7 +12,7 @@ interface PublishOptions {
 type PublishBody = Omit<ApiData, "id" | "ownerId"> & { did?: string };
 
 export const publishFromMeta = async (
-  meta: MetaManifest,
+  meta: APIDataFromManifest,
   options: PublishOptions
 ) => {
   const { location, uri } = options;
@@ -25,9 +25,10 @@ export const publishFromMeta = async (
   publishWrapper(body);
 };
 export const constructPublishBodyFromMeta = (
-  meta: MetaManifest | Partial<APIData>
+  meta: APIDataFromManifest
 ): Partial<PublishBody> => {
-  const { name, description, icon, subtext } = meta;
+  const { description, icon, subtext, name } = meta;
+
   return {
     name,
     description,
