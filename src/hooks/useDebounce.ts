@@ -19,5 +19,5 @@ export default function useDebounce(
     };
   }, [value]);
 
-  return [debouncedValue, prevValue.current];
+  return [debouncedValue];
 }

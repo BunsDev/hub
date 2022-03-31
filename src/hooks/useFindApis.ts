@@ -43,6 +43,11 @@ const useFindApis = (
     if (!dapp.apisLoading) {
       void getApis();
     }
+
+    if (!router.query.search) {
+      console.log("here");
+      setSearchValue("");
+    }
   }, [router.query]);
 
   useEffect(() => {
@@ -76,8 +81,10 @@ const useFindApis = (
       : false;
 
     const sameParams = JSON.stringify(params) === searchParams?.current;
+    const noParams = Object.keys(params).length === 0;
 
-    const replaceWithNewApis = preload || newSearchVal || sameParams;
+    const replaceWithNewApis =
+      preload || newSearchVal || !sameParams || noParams;
 
     const items = replaceWithNewApis ? apis : [...dapp.apis.items, ...apis];
 
