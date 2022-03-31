@@ -42,7 +42,8 @@ const PublishAPI = () => {
 
       if (dapp?.did) body.did = dapp.did;
       if (publish.ipfs) body.locationUri = publish?.ipfs;
-      if (publish.subdomain) body.apiUris = [publish?.subdomain];
+      if (publish.subdomainRegisterSuccess && publish.subdomain)
+        body.apiUris = [publish?.subdomain];
 
       try {
         setPublishLoading(true);
@@ -147,8 +148,12 @@ const PublishAPI = () => {
 
   const iconSrc =
     //@ts-ignore
-    publish?.apiData?.iconSrc ||
-    `${ipfsGateway}${publish.ipfs}${publish.apiData.icon.replace("./", "/")}`;
+    publish?.apiData?.iconSrc || publish.apiData.icon
+      ? `${ipfsGateway}${publish.ipfs}${publish.apiData.icon.replace(
+          "./",
+          "/"
+        )}`
+      : "";
 
   return (
     <Wrapper>

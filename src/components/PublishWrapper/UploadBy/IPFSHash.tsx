@@ -7,9 +7,11 @@ import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
 import { Spinner, Input } from "components";
 
 import styles from "../styles";
+import { useWeb3ApiClient } from "@web3api/react";
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();
+  const client = useWeb3ApiClient();
 
   const handleIPFSHashInput: ChangeEventHandler<HTMLInputElement> = async (
     e
@@ -22,15 +24,18 @@ export const IPFSHash = () => {
     e.preventDefault();
     dispatch({ type: "setipfsLoading", payload: true });
     if (publish.ipfs !== "") {
-      const metaData = await getMetaDataFromPackageHash(publish.ipfs);
-      if (metaData === undefined || metaData === "NO METADATA FOUND") {
+      const metadata = await getMetaDataFromPackageHash(client, publish.ipfs);
+
+      if (!metadata) {
         dispatch({ type: "setipfsLoading", payload: false });
         dispatch({ type: "setApiData", payload: null });
         dispatch({ type: "setipfsError", payload: "No Package available" });
       } else {
+        const { uri } = await client.resolveUri(publish.ipfs);
         dispatch({ type: "setipfsLoading", payload: false });
+        dispatch({ type: "setipfs", payload: uri.path });
         dispatch({ type: "setipfsSuccess", payload: true });
-        dispatch({ type: "setApiData", payload: metaData });
+        dispatch({ type: "setApiData", payload: metadata });
       }
     } else {
       dispatch({ type: "setipfsLoading", payload: false });

@@ -1,5 +1,4 @@
-import { AnyMetaManifest } from "@web3api/core-js";
-import { APIData, APIDataFromManifest } from "hooks/ens/useGetAPIfromENS";
+import {  APIDataFromManifest } from "hooks/ens/useGetAPIfromENS";
 import { ApiData } from "src/api/models/types";
 import { domain } from "src/constants";
 

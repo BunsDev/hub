@@ -1,5 +1,5 @@
 import { networkID } from "../constants";
-import { APIData } from "../hooks/ens/useGetAPIfromENS";
+import { APIData, APIDataFromManifest } from "../hooks/ens/useGetAPIfromENS";
 
 import ethers from "ethers";
 import { PluginRegistration, UriRedirect } from "@web3api/client-js";
@@ -102,7 +102,7 @@ type PublishType = {
   showConnectModal: boolean;
   showSignInModal: boolean;
   showSuccessModal: boolean;
-  apiData: APIData | undefined;
+  apiData: APIDataFromManifest;
   registrationStatus: number;
 };
 

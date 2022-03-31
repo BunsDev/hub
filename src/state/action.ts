@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { APIData } from "../hooks/ens/useGetAPIfromENS";
+import { APIData, APIDataFromManifest } from "../hooks/ens/useGetAPIfromENS";
 
 import { JsonRpcProvider } from "@web3api/client-js/build/pluginConfigs/Ethereum";
 import { Favorites } from "services/ceramic/handlers";
@@ -98,7 +98,7 @@ type SET_SHOW_SUCCESS_MODAL = {
 
 type SET_API_DATA = {
   type: "setApiData";
-  payload: APIData;
+  payload: APIDataFromManifest;
 };
 
 type SET_REGISTRATION_STATUS = {

@@ -1,42 +1,37 @@
-import { ipfsGateway } from "../../constants";
+import { AnyMetaManifest, AnyWeb3ApiManifest } from "@web3api/core-js";
+import { Web3ApiClient } from "@web3api/client-js";
+import { APIDataFromManifest } from "hooks/ens/useGetAPIfromENS";
 
-import axios from "axios";
+const constructApiDataFromMeta = async (metadata: AnyMetaManifest) => {
+  const { description, icon, subtext } = metadata;
+  const name =
+    "displayName" in metadata
+      ? metadata.displayName
+      : "name" in metadata
+      ? metadata.name
+      : "";
+  return { name, description, subtext, icon };
+};
 
-const yaml = require("js-yaml"); // eslint-disable-line
+const constructApiDataFromWeb3Api = async (web3api: AnyWeb3ApiManifest) => {
+  const name = "name" in web3api ? web3api.name : "";
+
+  return { name };
+};
 
 export default async function getMetaDataFromPackageHash(
-  hash: string,
-  metaPath?: string
-) {
-  let ipfsDataFromJSON = null;
-  let ipfsDataFromYAML = null;
-  let ipfsData = null;
-
+  client: Web3ApiClient,
+  ipfsInput: string
+): Promise<APIDataFromManifest> {
   try {
-    ipfsDataFromJSON = await axios.get(
-      ipfsGateway + hash + (metaPath || "/web3api.meta.json")
-    );
-    ipfsData = ipfsDataFromJSON.data;
-  } catch (error) {
-    console.log(error);
-  }
-  try {
-    ipfsDataFromYAML = await axios.get(
-      ipfsGateway + hash + (metaPath || "/web3api.meta.yaml")
-    );
-    ipfsData = ipfsDataFromYAML.data;
-  } catch (error) {
-    console.log(error);
-  }
-
-  if (ipfsDataFromJSON === null && ipfsDataFromYAML === null) {
-    return "NO METADATA FOUND";
-  }
-
-  try {
-    const doc = yaml.load(ipfsData);
-    return doc;
-  } catch (error) {
-    console.log(error);
+    const metadata = await client.getManifest(ipfsInput, { type: "meta" });
+    return constructApiDataFromMeta(metadata);
+  } catch (e) {
+    try {
+      const web3api = await client.getManifest(ipfsInput, { type: "web3api" });
+      return constructApiDataFromWeb3Api(web3api);
+    } catch (e) {
+      return undefined;
+    }
   }
 }
