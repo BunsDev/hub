@@ -14,58 +14,63 @@ import {
   validateUploadedWrapper,
 } from "utils/createWrapper";
 import { APIData } from "hooks/ens/useGetAPIfromENS";
+import getMetaDataFromPackageHash from "services/ipfs/getMetaDataFromPackageHash";
+import { useWeb3ApiClient } from "@web3api/react";
 
 const directoryProps = {
   directory: "",
   webkitdirectory: "",
   mozdirectory: "",
 };
+interface UploadState {
+  loading: boolean;
+  error?: string;
+}
+
 export const DirectUpload = () => {
-  const [_, dispatch] = useStateValue();
+  const [{ publish }, dispatch] = useStateValue();
   const {
     mobile: { isMobile },
   } = useResponsive();
-  const [loading, setLoading] = useState(false);
+  const [uploadState, setUploadState] = useState<UploadState>({
+    loading: false,
+    error: null,
+  });
   const router = useRouter();
+  const client = useWeb3ApiClient();
 
   const onDrop = async (acceptedFiles: File[]) => {
-    setLoading(true);
+    setUploadState((state) => ({ ...state, loading: true }));
 
     const [filesValidated, requiredFiles, files] =
       validateUploadedWrapper(acceptedFiles);
 
-    if (filesValidated) {
-      let uploadSuccess: boolean;
-
+    if (!filesValidated) {
+      console.error("Wrapper files validation failure");
+    } else {
       try {
         const hash = await uploadToIPFS(files);
+        console.log("hash", hash);
         if (hash) {
           dispatch({ type: "setipfs", payload: hash });
-          uploadSuccess = true; // eslint-disable-line
-        }
-      } catch (error) {
-        console.log("Error uploading files: ", error);
-      }
-      if (uploadSuccess) {
-        try {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const metaData = yaml.load(String(reader.result)) as APIData;
-            dispatch({ type: "setApiData", payload: metaData });
-            setLoading(false);
+          //Using client so it can polyfill mising properties
+          const metadata = await getMetaDataFromPackageHash(
+            client,
+            "ipfs/" + publish.ipfs
+          );
+
+          if (metadata) {
+            dispatch({ type: "setApiData", payload: metadata });
             void router.push(
               router.pathname + `?activeTab=${createApiSteps[2]}`
             );
-          };
-          reader.readAsText(requiredFiles?.meta as any); // eslint-disable-line
-        } catch (error) {
-          console.error("Error reading metadata: ", error);
+          }
         }
+      } catch (error) {
+        console.log("Error uploading files: ", error);
+        setUploadState({ error: error.message, loading: false });
       }
-    } else {
-      console.error("Wrapper files validation failure");
     }
-    setLoading(false);
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
@@ -81,30 +86,35 @@ export const DirectUpload = () => {
           />
         </Flex>
       ) : (
-        <Flex {...getRootProps()} sx={styles.dropzoneWrap}>
-          {loading ? (
-            <>
-              <Spinner size={128} />
-              <p>Uploading...</p>
-            </>
-          ) : (
-            <>
-              <input {...getInputProps()} {...directoryProps} />
-              <img src="/images/dragndrop.svg" alt="drag here" />
+        <>
+          <Flex {...getRootProps()} sx={styles.dropzoneWrap}>
+            {uploadState.loading ? (
               <>
-                <p
-                  sx={{
-                    color: "rgba(255, 255, 255, 0.5)",
-                    textAlign: "center",
-                  }}
-                >
-                  Drag and Drop To Upload
-                </p>
-                <p sx={{ cursor: "pointer" }}>Or Browse</p>
+                <Spinner size={128} />
+                <p>Uploading...</p>
               </>
-            </>
+            ) : (
+              <>
+                <input {...getInputProps()} {...directoryProps} />
+                <img src="/images/dragndrop.svg" alt="drag here" />
+                <>
+                  <p
+                    sx={{
+                      color: "rgba(255, 255, 255, 0.5)",
+                      textAlign: "center",
+                    }}
+                  >
+                    Drag and Drop To Upload
+                  </p>
+                  <p sx={{ cursor: "pointer" }}>Or Browse</p>
+                </>
+              </>
+            )}
+          </Flex>
+          {uploadState.error && (
+            <span sx={{ color: "red" }}>{uploadState.error}</span>
           )}
-        </Flex>
+        </>
       )}
 
       <NavButtons nextBtn={{ label: "Browse Files", onClick: () => {} }} />
