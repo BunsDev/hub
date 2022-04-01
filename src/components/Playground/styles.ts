@@ -108,12 +108,12 @@ const styles: Styles = {
           },
         },
         "section.templates": {
+          overflow: "hidden",
           ">div:first-of-type": {
             p: "20px",
           },
           ".GQLCodeBlock-wrap": {
-            maxHeight: "60%",
-            overflow: "auto",
+            overflow: "hidden",
           },
         },
         "section.vars": {

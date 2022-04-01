@@ -22,6 +22,8 @@ module.exports = {
   ],
   rules: {
     "prettier/prettier": ["error"],
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/naming-convention": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off", // TODO: set error
     "@typescript-eslint/member-ordering": "error",

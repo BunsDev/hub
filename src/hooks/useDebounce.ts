@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function useDebounce(value: any, delay: number) {
+export default function useDebounce(
+  value: string,
+  delay: number,
+  defaultValue?: string
+) {
   // eslint-disable-line
-  const [debouncedValue, setDebouncedValue] = useState(value);
-  const prevValue = useRef();
+  const [debouncedValue, setDebouncedValue] = useState(defaultValue || value);
+  const prevValue = useRef<string>();
 
   useEffect(() => {
     prevValue.current = debouncedValue;
@@ -15,5 +19,5 @@ export default function useDebounce(value: any, delay: number) {
     };
   }, [value]);
 
-  return [debouncedValue, prevValue.current];
+  return [debouncedValue];
 }

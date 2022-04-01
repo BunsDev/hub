@@ -45,7 +45,10 @@ const Card = ({ api }: CardProps) => {
     [dapp.favoritesList]
   );
 
-  const redirectUrl = useMemo(() => `/info?uri=${resolveApiLocation(api)}`, [api]);
+  const redirectUrl = useMemo(
+    () => `/info?uri=${resolveApiLocation(api)}`,
+    [api]
+  );
 
   return (
     <div className="Card" sx={styles.card}>

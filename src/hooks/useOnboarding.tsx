@@ -22,7 +22,7 @@ const useOnboarding = () => {
       });
     };
 
-    init();
+    void init();
   }, []);
 
   useEffect(() => {

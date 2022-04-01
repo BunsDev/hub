@@ -34,7 +34,7 @@ export const useCreateSubdomain = () => {
         const publicResolverAddress = await web3
           .getSigner()
           .resolveName("resolver.eth");
-          
+
         setStatus(0);
 
         //@Cesar

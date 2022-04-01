@@ -10,13 +10,12 @@ import { Flex, Button, Themed, Image } from "theme-ui";
 import { useRouter, useAuth, useStateValue, useRegisterEns } from "hooks";
 import { Wrapper } from "components/PublishWrapper";
 import { Input, Spinner } from "components";
-import { domain, ipfsGateway } from "../../constants";
+import { ipfsGateway } from "../../constants";
 
 import styles from "./styles";
 import useModal from "hooks/useModal";
 import {
   constructPublishBodyFromMeta,
-  publishFromMeta,
   publishWrapper,
 } from "utils/publishFromMeta";
 
@@ -42,7 +41,8 @@ const PublishAPI = () => {
 
       if (dapp?.did) body.did = dapp.did;
       if (publish.ipfs) body.locationUri = publish?.ipfs;
-      if (publish.subdomain) body.apiUris = [publish?.subdomain];
+      if (publish.subdomainRegisterSuccess && publish.subdomain)
+        body.apiUris = [publish?.subdomain];
 
       try {
         setPublishLoading(true);
@@ -54,14 +54,10 @@ const PublishAPI = () => {
               ? `ens/${publish.subdomain}`
               : `ipfs/${publish.ipfs}`
           }`;
-          dispatch({ type: "setipfs", payload: "" });
-          dispatch({ type: "setsubdomain", payload: "" });
-          dispatch({ type: "setsubdomainRegisterSuccess", payload: false });
-          router.push(redirect);
+          void router.push(redirect);
         } else {
           throw Error(response.statusText);
         }
-        setPublishLoading(false);
       } catch (e) {
         setPublishLoading(false);
       }
@@ -110,6 +106,14 @@ const PublishAPI = () => {
     !dapp.address && toggleEnsInput(false);
   }, [dapp.address]);
 
+  useEffect(() => {
+    return () => {
+      dispatch({ type: "setipfs", payload: "" });
+      dispatch({ type: "setsubdomain", payload: "" });
+      dispatch({ type: "setsubdomainRegisterSuccess", payload: false });
+    };
+  }, []);
+
   const ensRegStatus = ensRegLoading
     ? "loading"
     : publish.subdomainError
@@ -147,8 +151,12 @@ const PublishAPI = () => {
 
   const iconSrc =
     //@ts-ignore
-    publish?.apiData?.iconSrc ||
-    `${ipfsGateway}${publish.ipfs}${publish.apiData.icon.replace("./", "/")}`;
+    publish?.apiData?.iconSrc || publish.apiData.icon
+      ? `${ipfsGateway}${publish.ipfs}${publish.apiData.icon.replace(
+          "./",
+          "/"
+        )}`
+      : "";
 
   return (
     <Wrapper>
@@ -185,7 +193,10 @@ const PublishAPI = () => {
                   />
                   {!!ensRegErrors.length &&
                     ensRegErrors.map((er) => (
-                      <span sx={{ color: "red", maxWidth: "100%" }}>
+                      <span
+                        key={er?.message}
+                        sx={{ color: "red", maxWidth: "100%" }}
+                      >
                         {er.message}
                       </span>
                     ))}

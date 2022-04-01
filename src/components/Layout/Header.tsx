@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui **/
 import { Flex, Button } from "theme-ui";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Navbar } from "components/Layout/Navigation";
 import SignInArea from "./SignInArea";

@@ -10,7 +10,7 @@ import { fetcherREST } from "../utils/fetcher";
 import { useAuth } from "hooks";
 import { ResponsiveProvider } from "hooks/useResponsive";
 import useOnboarding from "hooks/useOnboarding";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { ModalProvider } from "hooks/useModal";
 import { CeramicProvider } from "hooks/useCeramic";
 
@@ -24,15 +24,14 @@ interface Props<T> {
   Component: React.FC<T>; // eslint-disable-line
 }
 
-function StatefulApp({ pageProps, Component }: Props<any>) {
-  // eslint-disable-line
+function StatefulApp({ pageProps, Component }: Props<React.ReactNode>) {
   const [{ dapp }] = useStateValue();
   useOnboarding();
   const { authenticate } = useAuth(dapp);
 
   useEffect(() => {
     if (dapp.web3 && dapp.address) {
-      authenticate();
+      void authenticate();
     }
   }, [dapp.web3, dapp.address]);
 
@@ -54,8 +53,7 @@ function StatefulApp({ pageProps, Component }: Props<any>) {
   );
 }
 
-function MyApp({ Component, pageProps }: Props<any>) {
-  // eslint-disable-line
+function MyApp({ Component, pageProps }: Props<React.ReactNode>) {
   return (
     <StateProvider>
       <ThemeProvider theme={theme}>

@@ -20,7 +20,7 @@ console.log("updater started");
 
 cron.schedule("0 0 */12 * * *", () => {
   console.log("cronJob started");
-  updater();
+  void updater();
 });
 
 export async function updater() {
@@ -52,9 +52,9 @@ async function updateWrapperMeta(
 ) {
   try {
     const metadata = await client.getManifest(path, { type: "meta" });
-    const { name, subtext, description, icon } = metadata;
+    const { subtext, description, icon } = metadata;
+    const name = metadata?.displayName;
     const newApiData = { name, subtext, description, icon };
-
     return await apiRepository.update(apiUri.api.id, {
       ...apiUri.api,
       ...newApiData,
@@ -74,7 +74,7 @@ async function updateWrapperIpfsUri(
     const resolved = await client.resolveUri(path);
 
     if (resolved?.uri?.path) {
-      let uriIpfs = await apiUrisRepository.findOne({
+      const uriIpfs = await apiUrisRepository.findOne({
         where: { apiId: apiUri.apiId, uriTypeId: API_URI_TYPE_ID.ipfs },
       });
       await apiUrisRepository.save({ ...uriIpfs, uri: resolved.uri.path });
@@ -93,4 +93,3 @@ async function getApis() {
     .limit(2)
     .getMany();
 }
-

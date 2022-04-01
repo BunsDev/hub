@@ -37,14 +37,14 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         if (existsUri) {
           await apiRepository.updateById(
             existsUri.id,
-            manifest.name,
+            manifest.displayName,
             manifest.subtext,
             manifest.description,
             manifest.icon
           );
         } else {
           const newApi = await apiRepository.add(
-            manifest.name,
+            manifest.displayName,
             manifest.subtext,
             manifest.description,
             manifest.icon,

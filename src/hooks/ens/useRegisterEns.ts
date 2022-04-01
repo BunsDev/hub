@@ -138,7 +138,7 @@ export const useRegisterEns = () => {
           result_registerDomain,
           "registerDomain",
           ({ hash: hash_registerDomain }) => {
-            let receip_registerDomain: TransactionReceipt = null;
+            const receip_registerDomain: TransactionReceipt = null;
             loopfn(receip_registerDomain, hash_registerDomain, async () => {
               const result_setResolver = await client.query<ApiQuery>(
                 setResolverOptions
@@ -148,7 +148,7 @@ export const useRegisterEns = () => {
                 result_setResolver,
                 "setResolver",
                 ({ hash: hash_setResolver }) => {
-                  let receip_setResolver: TransactionReceipt = null;
+                  const receip_setResolver: TransactionReceipt = null;
                   loopfn(receip_setResolver, hash_setResolver, async () => {
                     const result_setContentHash = await client.query<ApiQuery>(
                       setContentHashOptions
@@ -158,7 +158,7 @@ export const useRegisterEns = () => {
                       result_setContentHash,
                       "setContentHash",
                       ({ hash: hash_setContentHash }) => {
-                        let receip_setContentHash: TransactionReceipt = null;
+                        const receip_setContentHash: TransactionReceipt = null;
                         loopfn(
                           receip_setContentHash,
                           hash_setContentHash,
@@ -188,7 +188,7 @@ export const useRegisterEns = () => {
         }));
       }
     };
-    executeRegisterChain();
+    void executeRegisterChain();
   }, [dapp.web3, publish.subdomain]);
 
   return [execute, state] as const;

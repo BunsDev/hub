@@ -8,9 +8,9 @@ import { APIData } from "hooks/ens/useGetAPIfromENS";
 export default class ApiRepository extends Repository<Apis> {
   public add(
     name: string,
-    subtext: string,
-    description: string,
-    icon: string,
+    subtext = "",
+    description = "",
+    icon = "",
     ownerId?: string
   ): Promise<Apis | undefined> {
     return this.save({
@@ -93,7 +93,6 @@ export default class ApiRepository extends Repository<Apis> {
       .skip(preload ? 0 : (Number(page) - 1) * Number(limit))
       .orderBy("apis.id", "DESC");
 
-    //@ts-ignore
     if (search && search.length > 2) {
       query.where(
         "(apis.name ILIKE :search or apis.description ILIKE :search or apis.subtext ILIKE :search or apiUris.uri ILIKE :search)",

@@ -7,7 +7,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 import styles from "components/common/styles";
@@ -26,9 +25,15 @@ export const ModalContext = createContext<ModalContextValue>(
   {} as ModalContextValue
 );
 
-type ModalScreen = "connect" | "disconnect" | "signin" | "success" | "switch" | "changeNetwork";
+type ModalScreen =
+  | "connect"
+  | "disconnect"
+  | "signin"
+  | "success"
+  | "switch"
+  | "changeNetwork";
 
-export const ModalProvider = ({ children }: ModalProvider) => {
+const ModalProvider = ({ children }: ModalProvider) => {
   const [visible, setVisible] = useState(false);
   const [modal, setModal] = useState(null);
 
@@ -67,7 +72,7 @@ const useModal = (screen: ModalScreen, props?: Partial<ModalProps>) => {
   const { visible, setVisible, _initModal } = modalContext;
 
   const openModal = useCallback(
-    (visible: boolean = true) => {
+    (visible = true) => {
       _initModal(screen, props);
       setVisible(visible);
     },
@@ -77,6 +82,6 @@ const useModal = (screen: ModalScreen, props?: Partial<ModalProps>) => {
   return { openModal, visible };
 };
 
-export const useModalContext = () => useContext(ModalContext);
-
+const useModalContext = () => useContext(ModalContext);
+export { ModalProvider, useModalContext };
 export default useModal;

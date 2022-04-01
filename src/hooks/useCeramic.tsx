@@ -84,7 +84,7 @@ export const CeramicProvider = ({
   useEffect(() => {
     if (dapp.web3 && dapp.address) {
       //@ts-ignore
-      connect(dapp.web3);
+      void connect(dapp.web3);
     }
   }, [dapp.web3, dapp.address]);
 

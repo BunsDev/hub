@@ -14,7 +14,7 @@ import {
   LoadingSpinner,
 } from "components";
 import { useGetAPIfromParamInURL } from "hooks/ens/useGetAPIfromENS";
-import { resolveApiLocation } from "utils/pathResolvers";
+import { parseApiUri, resolveApiLocation } from "utils/pathResolvers";
 import useModal from "hooks/useModal";
 import styles from "./styles";
 import { QueryAttributes } from "hooks/usePlayground";
@@ -30,7 +30,7 @@ const Playground = () => {
       apiContents: { queries, schema, schemaStructured },
       loading: apiLoading,
     },
-    { execute, loading: queryLoading, errors, method, setMethod },
+    { execute, loading: queryLoading, method, setMethod },
   ] = usePlayground(api);
 
   const [formVars, setFormVars] = useState({ value: "{\n}", error: null });
@@ -67,17 +67,32 @@ const Playground = () => {
   const handleClearBtnClick = () => {
     setclientresponed(undefined);
   };
+
   const handleCustomUriApply: MouseEventHandler = (e) => {
     e.preventDefault();
     if (customUri) {
-      router.push(router.pathname + `?customUri=${customUri}`);
+      const [parsedUri, type] = parseApiUri(customUri);
+      let apiUri = "";
+      switch (type) {
+        case "ens": {
+          // TODO case when no api on current network
+          apiUri = `ens/${parsedUri}`;
+          break;
+        }
+        case "ipfs": {
+          apiUri = `ipfs/${parsedUri}`;
+          break;
+        }
+      }
+      void router.push(router.pathname + `?customUri=${apiUri}`);
     }
   };
 
   useEffect(() => {
     const queryInfo = queries.find((q) => q.id === method.id);
 
-    const newVars = queryInfo && queryInfo.vars ? JSON.parse(queryInfo.vars) : {};
+    const newVars =
+      queryInfo && queryInfo.vars ? JSON.parse(queryInfo.vars) : {};
     setFormVars({ value: JSON.stringify(newVars, null, 2), error: null });
   }, [method]);
 
@@ -104,15 +119,13 @@ const Playground = () => {
 
   const controlBtns = useMemo(() => {
     const exec = async () => {
-      let parsed;
       try {
-        parsed = JSON.parse(formVars.value);
+        const parsed = JSON.parse(formVars.value);
+        const response = await execute(parsed);
+        setclientresponed(response);
       } catch (parseError) {
         setFormVars({ ...formVars, error: parseError });
-        return;
       }
-      const response = await execute(parsed);
-      setclientresponed(response);
     };
 
     return (
@@ -229,10 +242,9 @@ const Playground = () => {
             )}
             {method.value && (
               <GQLCodeBlock
-                classNames="scrollable"
                 key={method.value}
                 value={method.value}
-                height={"300px"}
+                height={"200px"}
                 sx={{ ml: "-16px" }}
               />
             )}

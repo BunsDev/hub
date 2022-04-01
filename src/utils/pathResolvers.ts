@@ -1,25 +1,29 @@
 import { APIData } from "hooks/ens/useGetAPIfromENS";
 import { API_URI_TYPE_ID, ipfsGateway } from "src/constants";
 
+const parseEns = (uri: string) => uri.split("/").find((s) => s.includes("."));
+
+const parseIpfs = (uri: string) => {
+  //TODO better way to validate ipfs
+  return uri
+    .split("/")
+    .reduce(
+      (prev, current) => (current.length > prev.length ? current : prev),
+      ""
+    );
+};
+
+export const parseApiUri = (uri: string) => {
+  //1.Check if ipfs or ens
+  const ens = uri.includes(".");
+  if (ens) return [parseEns(uri), "ens"];
+  return [parseIpfs(uri), "ipfs"];
+};
+
 export const resolveApiLocation = (api: APIData) => {
   return api && api.apiUris.length
     ? "ens/" + api.apiUris[0].uri
     : "ipfs/" + api?.locationUri;
-
-  if (typeof api.apiUris[0] === "string") {
-    //@ts-ignore TODO backand location uri removement
-    return api?.locationUri
-      ? //@ts-ignore
-        `ipfs/${api.locationUri}`
-      : `ens/${api.apiUris[0]}`;
-  }
-  if (typeof api.apiUris[0] === "object") {
-    const ensLocation = api.apiUris.find(
-      (uri) => uri.uriTypeId === API_URI_TYPE_ID.ens
-    );
-    if (ensLocation) return `ens/${ensLocation.uri}`;
-    return `ipfs/${api.apiUris[0].uri}`;
-  }
 };
 
 export const getIpfsLocation = (api: APIData) => {
@@ -32,5 +36,8 @@ export const getIpfsLocation = (api: APIData) => {
 };
 
 export const getApiImgLocation = (api: APIData) => {
-  return `${ipfsGateway}${getIpfsLocation(api)}${api.icon.replace("./", "/")}`;
+  return (
+    api.icon &&
+    `${ipfsGateway}${getIpfsLocation(api)}${api.icon.replace("./", "/")}`
+  );
 };

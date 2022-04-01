@@ -127,7 +127,9 @@ const CreateApi = () => {
               {activeStep === createApiSteps[0] && <Start />}
               {activeStep === createApiSteps[1] &&
                 uploadComponents[uploadMethod]}
-              {activeStep === createApiSteps[2] && publish.apiData && <Publish />}
+              {activeStep === createApiSteps[2] && publish.apiData && (
+                <Publish />
+              )}
             </Box>
           </Web3ApiProvider>
         </Flex>

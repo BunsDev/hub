@@ -1,11 +1,5 @@
 /** @jsxImportSource theme-ui **/
-import {
-  ChangeEventHandler,
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEventHandler, MouseEventHandler, useState } from "react";
 import { Button, Image, Flex } from "@theme-ui/components";
 import { useStateValue } from "hooks";
 import { Spinner, Input } from "components";
@@ -13,9 +7,9 @@ import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
 
 import styles from "../styles";
 import { useWeb3ApiClient } from "@web3api/react";
-import getMetaDataFromPackageHash from "services/ipfs/getMetaDataFromPackageHash";
 import { networks } from "utils/networks";
 import Select from "react-dropdown-select";
+import getMetaDataFromPackageUri from "services/ipfs/getMetaDataPackageUri";
 
 export const EnsAddress = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
@@ -39,9 +33,8 @@ export const EnsAddress = () => {
     try {
       dispatch({ type: "setsubdomainLoading", payload: true });
 
-      const resolved = await client.resolveUri(
-        "ens/" + `${ensNetwork[0].network}/${publish.subdomain}`
-      );
+      const path = `ens/${ensNetwork[0].network}/${publish.subdomain}`;
+      const resolved = await client.resolveUri(path);
       if (!resolved.api) {
         dispatch({ type: "setsubdomainLoading", payload: false });
         dispatch({
@@ -53,10 +46,9 @@ export const EnsAddress = () => {
         dispatch({ type: "setipfs", payload: resolved.uri.path });
         console.log("resolved", resolved);
 
-        const metaData = await getMetaDataFromPackageHash(publish.ipfs);
-        console.log("metaData", metaData);
+        const metaData = await getMetaDataFromPackageUri(client, path);
 
-        if (metaData === undefined || metaData === "NO METADATA FOUND") {
+        if (!metaData) {
           dispatch({ type: "setsubdomainLoading", payload: false });
           dispatch({ type: "setApiData", payload: null });
           dispatch({

@@ -34,6 +34,7 @@ const styles: Styles = {
           width: "6.25rem",
           height: "6.25rem",
           borderRadius: "20px",
+          background: "white",
         },
         "h2.title": {
           gridArea: "title",

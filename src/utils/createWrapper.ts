@@ -32,7 +32,7 @@ interface WrapperReqFiles {
   [key: string]: File;
   api: File;
   build: File;
-  meta: File;
+  //meta: File;
   //mutation: File;
   //query: File;
   //schema: File;
@@ -45,7 +45,7 @@ export const validateUploadedWrapper = (
   const requiredFiles: WrapperReqFiles = {
     api: files?.find((file) => file.name === "web3api.yaml"),
     build: files?.find((file) => file.name === "web3api.build.yaml"),
-    meta: files?.find((file) => file.name === "web3api.meta.yaml"),
+    //meta: files?.find((file) => file.name === "web3api.meta.yaml"),
     //mutation: files?.find((file) => file.name === "mutation.wasm"),
     //query: files?.find((file) => file.name === "query.wasm"),
     //schema: files?.find((file) => file.name === "schema.graphql"),
