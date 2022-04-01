@@ -3,6 +3,7 @@ export interface NavItem {
   imgSrc?: string;
   color?: string;
   bg?: string;
+  blank?: boolean;
   href?: string;
   authRequired?: boolean;
   children?: NavItem[];
@@ -29,12 +30,12 @@ export const navItems: NavItem[] = [
     imgSrc: "/images/dots-horizontal.svg",
     bg: "#4B401B",
     children: [
-      { title: "Favorites", authRequired: true },
-      { title: "About" },
-      { title: "Docs" },
-      { title: "Code" },
-      { title: "Discord" },
-      { title: "Analytics" },
+      //{ title: "Favorites", authRequired: true },
+      { title: "About", href: "https://polywrap.io/", blank: true },
+      { title: "Docs", href: "https://docs.polywrap.io/", blank: true },
+      { title: "Code", href: "https://github.com/polywrap", blank: true },
+      { title: "Discord", href: "https://discord.gg/bGsqQrNhqd", blank: true },
+      //{ title: "Analytics",href:"" },
     ],
   },
 ];

@@ -54,7 +54,7 @@ const Card = ({ api }: CardProps) => {
   return (
     <div className="Card" sx={styles.card}>
       {api && (
-        <Link href={redirectUrl || "/"}>
+        <Link href={redirectUrl || "/"} shallow>
           <a
             onClick={(e) => {
               //@ts-ignore

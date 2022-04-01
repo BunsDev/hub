@@ -210,7 +210,9 @@ const result = await api.query({
         <Button
           variant="secondaryMedium"
           onClick={() => {
-            void router.push(`/query?uri=${router.query?.uri}`);
+            void router.push(`/query?uri=${router.query?.uri}`, undefined, {
+              shallow: true,
+            });
           }}
         >
           Open Playground
