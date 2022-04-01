@@ -67,7 +67,9 @@ const ApiGrid = () => {
               <Button
                 variant="primaryMedium"
                 onClick={() => {
-                  void router.push("/apis/create?activeTab=start");
+                  void router.push("/apis/create?activeTab=start", undefined, {
+                    shallow: true,
+                  });
                 }}
               >
                 <span>Create New Wrapper</span>
