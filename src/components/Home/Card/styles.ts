@@ -19,11 +19,17 @@ const styles: Styles = {
         ".head": {
           display: "flex",
           gap: "1.5rem",
-          ">img.api-logo": {
+          ".logo-wrap": {
+            display:"flex",
             background: "white",
             width: "4.25rem",
             height: "4.25rem",
             borderRadius: "20px",
+            overflow: "hidden",
+            ">img.api-logo": {
+              width: "100%",
+              height: "auto",
+            },
           },
           ".labels": { display: "flex", flexDirection: "column", gap: "14px" },
           ".favorite": {

@@ -29,12 +29,18 @@ const styles: Styles = {
         gap: ["40px", ".75rem"],
         rowGap: "0",
         mb: ["32px", "40px"],
-        "img.api-logo": {
+        ".logo-wrap": {
+          display:"flex",
           gridArea: `logo`,
           width: "6.25rem",
           height: "6.25rem",
           borderRadius: "20px",
+          overflow: "hidden",
           background: "white",
+          "img.api-logo": {
+            width: "100%",
+            height: "auto",
+          },
         },
         "h2.title": {
           gridArea: "title",
