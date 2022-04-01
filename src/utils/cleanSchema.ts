@@ -7,8 +7,9 @@ export interface StructuredSchema {
 }
 
 export default function cleanSchema(suppliedSchema: string): StructuredSchema {
+  const schemaSplit = suppliedSchema.split("### Web3API Header END ###\n\n");
   const removeWb3Header =
-    suppliedSchema.split("### Web3API Header END ###\n\n")[1] || suppliedSchema;
+    schemaSplit.length > 1 ? schemaSplit[1] : suppliedSchema;
   const removeObjects =
     removeWb3Header.split("\n\n### Imported Queries END ###")[0] ||
     removeWb3Header;
@@ -17,7 +18,8 @@ export default function cleanSchema(suppliedSchema: string): StructuredSchema {
     removeObjects;
 
   const local = localandimported[0].split("\n\n");
-  const imported = localandimported[1].split("\n\n");
+  const imported =
+    localandimported.length > 1 ? localandimported[1].split("\n\n") : [];
 
   const localqueries: string[] = [];
   const localmutations: string[] = [];
