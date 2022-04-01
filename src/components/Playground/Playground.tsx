@@ -252,6 +252,7 @@ const Playground = () => {
           <section className="vars">
             <div className="subtitle-1">Vars</div>
             <JSONEditor
+              height="240px"
               value={formVars.value}
               handleEditorChange={handleVariableChanges}
             />
