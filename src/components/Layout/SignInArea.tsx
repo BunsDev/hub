@@ -16,7 +16,8 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
 
   const { getItem } = useStorage();
 
-  const { openModal } = useModal(dapp.address ? "disconnect" : "connect");
+  const isLoggedIn = getItem("selectedWallet");
+  const { openModal } = useModal(!!isLoggedIn && dapp.address ? "disconnect" : "connect");
 
   const handleDisconnect = () => {
     openModal();
@@ -25,7 +26,6 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
     openModal();
   };
 
-  const isLoggedIn = getItem("selectedWallet");
 
   return (
     <Flex
