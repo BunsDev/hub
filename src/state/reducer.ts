@@ -19,6 +19,7 @@ export function web3apiReducer(
   switch (action.type) {
     case "recreateplugins":
       if (state.dapp.web3) {
+        const web3 = state.dapp.web3;
         const boardedNetwork = state?.dapp?.onboard?.getState()?.network;
         const isNetworkSupported = Object.keys(networks).some(
           (k) => Number(k) === boardedNetwork
@@ -28,19 +29,18 @@ export function web3apiReducer(
           : defaultNetworkId;
 
         const currentNetwork = networks[networkId];
-
         const networksConfig: Record<string, ConnectionConfig> = {
           mainnet: {
-            provider: state.dapp.web3,
-            signer: state.dapp.web3.getSigner(state.dapp.address),
+            //@ts-ignore
+            provider: web3.provider,
           },
           ropsten: {
-            provider: state.dapp.web3,
-            signer: state.dapp.web3.getSigner(state.dapp.address),
+            //@ts-ignore
+            provider: web3.provider,
           },
           rinkeby: {
-            provider: state.dapp.web3,
-            signer: state.dapp.web3.getSigner(state.dapp.address),
+            //@ts-ignore
+            provider: web3.provider,
           },
         };
 
