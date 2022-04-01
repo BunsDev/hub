@@ -30,7 +30,11 @@ export interface APIData {
 
 export const useGetAPIfromENSParamInURL = () => {
   const router = useRouter();
-  const [state, setState] = useState({
+  const [state, setState] = useState<{
+    data: APIData;
+    loading: boolean;
+    error: string;
+  }>({
     data: undefined,
     loading: false,
     error: undefined,
@@ -43,7 +47,7 @@ export const useGetAPIfromENSParamInURL = () => {
         const { data: apiData } = await axios.get<{ api: APIData }>(
           domain + `/api/apis/${router.asPath.split("uri=")[1]}`
         );
-        setState((state) => ({ ...state, data: apiData, loading: false }));
+        setState((state) => ({ ...state, data: apiData?.api, loading: false }));
       }
     } catch (e) {
       setState((state) => ({ ...state, error: e?.message, loading: false }));
