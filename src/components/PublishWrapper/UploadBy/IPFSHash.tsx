@@ -22,8 +22,8 @@ export const IPFSHash = () => {
 
   const handleApplyButton: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
-    dispatch({ type: "setipfsLoading", payload: true });
     if (publish.ipfs !== "") {
+      dispatch({ type: "setipfsLoading", payload: true });
       const metadata = await getMetaDataFromPackageUri(client, publish.ipfs);
 
       if (!metadata) {
