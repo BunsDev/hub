@@ -45,7 +45,6 @@ const useFindApis = (
     }
 
     if (!router.query.search) {
-      console.log("here");
       setSearchValue("");
     }
   }, [router.query]);
