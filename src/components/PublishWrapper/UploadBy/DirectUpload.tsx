@@ -4,7 +4,7 @@ import styles from "./styles";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Flex } from "@theme-ui/components";
-import { Wrapper, NavButtons } from "components/PublishWrapper";
+import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
 import { Spinner } from "components";
 import { useStateValue, useRouter, useResponsive } from "hooks";
 import {
@@ -15,8 +15,7 @@ import {
 import getMetaDataFromPackageUri from "services/ipfs/getMetaDataPackageUri";
 import { useWeb3ApiClient } from "@web3api/react";
 import findPublishedApi from "utils/api/findPublishedApi";
-import Link from "next/link";
-import { domain } from "src/constants";
+import { ErrorDuplicateApi } from "./shared";
 
 const directoryProps = {
   directory: "",
@@ -56,14 +55,7 @@ export const DirectUpload = () => {
           setUploadState((state) => ({
             ...state,
             loading: false,
-            error: (
-              <>
-                Package already published. Please visit{" "}
-                <Link href={`${domain}/info?uri=${publishedApiUri}`}>
-                  <a>package details page</a>
-                </Link>
-              </>
-            ),
+            error: <ErrorDuplicateApi uri={publishedApiUri} />,
           }));
           return;
         }
@@ -127,12 +119,7 @@ export const DirectUpload = () => {
               </>
             )}
           </Flex>
-
-          <span
-            sx={{ color: "red", marginX: "auto", mt: "10px", height: "28px" }}
-          >
-            {uploadState.error}
-          </span>
+          <ErrorMsg center>{uploadState.error}</ErrorMsg>
         </>
       )}
 

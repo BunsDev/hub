@@ -8,10 +8,9 @@ import { Spinner, Input } from "components";
 
 import styles from "../styles";
 import { useWeb3ApiClient } from "@web3api/react";
-import { domain } from "src/constants";
-import Link from "next/link";
 import { parseApiUri } from "utils/pathResolvers";
 import findPublishedApi from "utils/api/findPublishedApi";
+import { ErrorDuplicateApi, getInputSuffix } from "./shared";
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();
@@ -37,14 +36,7 @@ export const IPFSHash = () => {
         dispatch({
           type: "setipfsError",
           //@ts-ignore
-          payload: (
-            <>
-              Package already published. Please visit{" "}
-              <Link href={`${domain}/info?uri=${publishedApiUri}`}>
-                <a>package details page</a>
-              </Link>
-            </>
-          ),
+          payload: <ErrorDuplicateApi uri={publishedApiUri} />,
         });
         return;
       }
@@ -76,32 +68,8 @@ export const IPFSHash = () => {
     ? "error"
     : "none";
 
-  const inputSuffix = {
-    none: (
-      <Button
-        variant="suffixSmall"
-        sx={styles.suffixButton}
-        onClick={handleApplyButton}
-      >
-        Apply
-      </Button>
-    ),
-    success: (
-      <Flex sx={styles.successIcon}>
-        <Image src="/images/success.svg" alt="success" />
-      </Flex>
-    ),
-    loading: (
-      <Flex sx={styles.loadingIcon}>
-        <Spinner />
-      </Flex>
-    ),
-    error: (
-      <Flex sx={styles.successIcon}>
-        <Image src="/images/fail.svg" alt="error" />
-      </Flex>
-    ),
-  };
+  const inputSuffix = getInputSuffix({ applyButtonHandler: handleApplyButton });
+
   return (
     <Wrapper>
       <div className="fieldset">
@@ -119,7 +87,7 @@ export const IPFSHash = () => {
             suffix={inputSuffix[ipfsStatus]}
           />
         </div>
-        {publish.ipfsError && <ErrorMsg>{publish.ipfsError}</ErrorMsg>}
+        <ErrorMsg>{publish.ipfsError}</ErrorMsg>
       </div>
       <NavButtons continueEnabled={publish.ipfsSuccess} />
     </Wrapper>

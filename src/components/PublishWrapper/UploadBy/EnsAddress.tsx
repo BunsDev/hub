@@ -11,8 +11,7 @@ import { networks } from "utils/networks";
 import Select from "react-dropdown-select";
 import getMetaDataFromPackageUri from "services/ipfs/getMetaDataPackageUri";
 import findPublishedApi from "utils/api/findPublishedApi";
-import Link from "next/link";
-import { domain } from "src/constants";
+import { ErrorDuplicateApi, getInputSuffix } from "./shared";
 
 export const EnsAddress = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
@@ -44,14 +43,7 @@ export const EnsAddress = () => {
         dispatch({
           type: "setsubdomainError",
           //@ts-ignore
-          payload: (
-            <>
-              Package already published. Please visit{" "}
-              <Link href={`${domain}/info?uri=${publishedApiUri}`}>
-                <a>package details page</a>
-              </Link>
-            </>
-          ),
+          payload: <ErrorDuplicateApi uri={publishedApiUri} />,
         });
         return;
       }
@@ -93,43 +85,14 @@ export const EnsAddress = () => {
   };
 
   const subdomainStatus = publish.subdomainLookupSuccess
-    ? "available"
-    : publish.subdomainRegisterSuccess
-    ? "registered"
+    ? "success"
     : publish.subdomainLoading
     ? "loading"
     : publish.subdomainError
     ? "error"
     : "none";
 
-  //subdomainRegisterSuccess
-
-  const inputSuffix: { [key: string]: JSX.Element } = {
-    none: (
-      <Button
-        variant="suffixSmall"
-        sx={styles.suffixButton}
-        onClick={handleApplyButton}
-      >
-        Apply
-      </Button>
-    ),
-    available: (
-      <Flex sx={{ width: "65px", justifyContent: "center" }}>
-        <Image src="/images/success.svg" alt="success" sx={{}} />
-      </Flex>
-    ),
-    loading: (
-      <Flex sx={{ width: "65px", height: "100%", justifyContent: "center" }}>
-        <Spinner />
-      </Flex>
-    ),
-    error: (
-      <Flex sx={styles.successIcon}>
-        <Image src="/images/fail.svg" alt="error" />
-      </Flex>
-    ),
-  };
+  const inputSuffix = getInputSuffix({ applyButtonHandler: handleApplyButton });
 
   return (
     <Wrapper>
@@ -152,32 +115,7 @@ export const EnsAddress = () => {
                   paddingRight: "0",
                   boxShadow: "none",
                 }}
-                sx={{
-                  border: "none",
-                  ".react-dropdown-select-content": {
-                    width: "70px",
-                    ".react-dropdown-select-input": {
-                      display: "none",
-                    },
-                    "&:before": {
-                      display: "block",
-                      content: '"/"',
-                    },
-                  },
-                  ".react-dropdown-select-dropdown": {
-                    bg: "polyGrey3",
-                    borderRadius: "8px",
-                    border: "none",
-                    marginTop: "8px",
-                    ".react-dropdown-select-item": {
-                      textAlign: "left",
-                      border: "none",
-                    },
-                    ".react-dropdown-select-item-selected": {
-                      bg: "polyGrey2",
-                    },
-                  },
-                }}
+                sx={styles.networkSelect}
                 labelField="network"
                 valueField="network"
                 values={ensNetwork}
@@ -192,9 +130,7 @@ export const EnsAddress = () => {
             }
           />
         </div>
-        {publish.subdomainError && (
-          <ErrorMsg bottomshift>{publish.subdomainError}</ErrorMsg>
-        )}
+        <ErrorMsg>{publish.subdomainError}</ErrorMsg>
       </div>
       <NavButtons continueEnabled={publish.subdomainLookupSuccess} />
     </Wrapper>

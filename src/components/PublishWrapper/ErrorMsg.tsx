@@ -4,15 +4,16 @@ import styles from "./styles";
 
 type ErrorMsg = {
   children: React.ReactNode;
-  bottomshift?: boolean;
+  center?: boolean;
 };
 
 // error component
-const ErrorMsg = ({ children, bottomshift }: ErrorMsg) => (
+const ErrorMsg = ({ children, center }: ErrorMsg) => (
   <span
     sx={{
       ...styles.errorMsg,
-      position: bottomshift ? "relative" : "absolute",
+      margin: center ? "0 auto" : "auto",
+      marginTop: "10px",
     }}
   >
     {children}
