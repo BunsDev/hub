@@ -1,3 +1,4 @@
+import { networkID as defaultNetworkID } from "../constants";
 interface Network {
   name: keyof typeof SupportedNetworks;
   node: string;
@@ -30,4 +31,11 @@ export const networks: Record<string, Network> = {
     node: "https://rinkeby.infura.io/v3/" + INFURA_KEY,
     explorer: "https://rinkeby.etherscan.io",
   },
+};
+
+export const getCurrentNetworkId = () => {
+  if (typeof window !== "undefined") {
+    //@ts-ignore
+    return typeof window.ethereum !== "undefined" ? window.ethereum.networkVersion : defaultNetworkID
+  }
 };

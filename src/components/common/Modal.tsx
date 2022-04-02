@@ -7,6 +7,7 @@ import Close from "../../../public/images/close.svg";
 import { useModalContext } from "hooks/useModal";
 import styles from "./styles";
 import { useCeramic } from "hooks/useCeramic";
+import { getCurrentNetworkId, networks } from "utils/networks";
 
 export type ModalProps = {
   screen: string;
@@ -35,58 +36,65 @@ const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
     onClose();
   };
 
-  const generateModalContent = useCallback(
-    (
-      title: string,
-      description: string | JSX.Element,
-      button: { title: string; onClick: () => any } | JSX.Element, // eslint-disable-line
-      noClose = false
-    ) => (
-      <React.Fragment>
-        {!noClose && (
-          <Close
-            className="modal-close-btn"
-            onClick={() => {
-              onClose();
-              setVisible(false);
-            }}
-          />
-        )}
-        <Themed.h2 className="title">{title}</Themed.h2>
-        {typeof description === "string" ? (
-          <h4
-            className="body-1"
-            sx={{
-              color: "polyGrey3",
-              textAlign: "center",
-            }}
-          >
-            {description}
-          </h4>
-        ) : (
-          description
-        )}
-        {typeof button === "object" ? (
-          <Button
-            variant="primaryMedium"
-            /* @ts-ignore- */
-            onClick={button.onClick}
-            sx={{ mt: "2.5rem" }}
-          >
-            {/* @ts-ignore- */}
-            {button.title}
-          </Button>
-        ) : (
-          button
-        )}
-      </React.Fragment>
-    ),
-    [idx]
+  const generateModalContent = (
+    title: string,
+    description: string | JSX.Element,
+    button?: { title: string; onClick: () => any } | JSX.Element, // eslint-disable-line
+    noClose = false
+  ) => (
+    <React.Fragment>
+      {!noClose && (
+        <Close
+          className="modal-close-btn"
+          onClick={() => {
+            onClose();
+            setVisible(false);
+          }}
+        />
+      )}
+      <Themed.h2 className="title">{title}</Themed.h2>
+      {typeof description === "string" ? (
+        <h4
+          className="body-1"
+          sx={{
+            color: "polyGrey3",
+            textAlign: "center",
+          }}
+        >
+          {description}
+        </h4>
+      ) : (
+        description
+      )}
+      {typeof button === "object" ? (
+        <Button
+          variant="primaryMedium"
+          /* @ts-ignore- */
+          onClick={button.onClick}
+          sx={{ mt: "2.5rem" }}
+        >
+          {/* @ts-ignore- */}
+          {button.title}
+        </Button>
+      ) : (
+        button
+      )}
+    </React.Fragment>
   );
 
   const modalContent = (screen: string) => {
     switch (screen) {
       case "connect":
+        const currentNetwrodId = getCurrentNetworkId();
+        const currentNetworkSupported = Boolean(
+          Object.keys(networks).includes(String(currentNetwrodId))
+        );
+        if (!currentNetworkSupported) {
+          return generateModalContent(
+            "Network change required",
+            "This network isn't supported by Polywrap, please switch to supported network and try again."
+          );
+        }
         return generateModalContent(
           "Connect Wallet",
           "Please connect an ethereum wallet to continue.",
