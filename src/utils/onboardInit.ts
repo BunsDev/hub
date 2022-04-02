@@ -14,7 +14,6 @@ const onboardInit = async (dispatch: Dispatch<StateAction>): Promise<API> => {
       });
     },
     network: (network) => {
-      //console.log("Onboard network", network); //onNetworkChanged
       dispatch({
         type: "SET_NETWORK",
         payload: network,

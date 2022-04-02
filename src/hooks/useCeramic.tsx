@@ -39,40 +39,30 @@ export const CeramicProvider = ({
   const connect = useCallback(
     async ({ provider }: { provider: JsonRpcProvider }) => {
       try {
-        console.log("provider", provider.selectedAddress);
-
         const ceramic = new Ceramic(CERAMIC_NODE);
-        console.log("ceramic created");
+
         const resolver = {
           ...KeyDidResolver.getResolver(),
           ...ThreeIdResolver.getResolver(ceramic),
         };
 
         const did = new DID({ resolver });
-
-        console.log("Did created");
-
         await ceramic.setDID(did);
-        console.log("Did set to ceramic");
 
         const authProvider = new EthereumAuthProvider(
           provider,
           provider.selectedAddress
         );
-        console.log("Auth provider created");
 
         const threeIdConnect = new ThreeIdConnect();
-        console.log("threeId connected");
+
         await threeIdConnect.connect(authProvider);
-        console.log("Auth connected to threeId");
+
         const didProvider = threeIdConnect.getDidProvider();
         ceramic.did.setProvider(didProvider);
         await ceramic.did.authenticate();
 
-        console.log("Did authenticated");
-
         const idx = new IDX({ ceramic: ceramic, aliases });
-        console.log("Idx created ");
         setState({ idx });
       } catch (e) {
         console.log("Error doing the connection of ceramic ", e);

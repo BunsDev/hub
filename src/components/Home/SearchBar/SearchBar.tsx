@@ -19,9 +19,6 @@ const SearchBar = () => {
       }}
       wrapperSx={styles.wrapper}
       sx={styles.input}
-      onSubmit={() => {
-        console.log("submit");
-      }}
       onKeyDown={(e) => {
         if (e.code === "Enter") {
           e.preventDefault();

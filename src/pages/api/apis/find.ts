@@ -17,7 +17,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       const apiUri = await getCustomRepository(ApiUrisRepository).findOne({
         where: { uri: input },
       });
-      console.log("apiUri", apiUri);
+
       if (!apiUri) {
         return response.json({ status: 404 });
       }

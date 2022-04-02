@@ -44,7 +44,6 @@ export function web3apiReducer(
           },
         };
 
-        console.log("networksConfig", networksConfig);
         const plugins: PluginRegistration[] = [...state.web3api.plugins].map(
           (plugin) =>
             plugin.uri === "ens/ethereum.web3api.eth"
@@ -57,7 +56,7 @@ export function web3apiReducer(
                 }
               : plugin
         );
-        console.log("plugins", plugins);
+
         return {
           ...state.web3api,
           plugins,

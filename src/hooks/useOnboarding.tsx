@@ -26,7 +26,6 @@ const useOnboarding = () => {
   }, []);
 
   useEffect(() => {
-    //console.log('network changed:', network)
     if (network) {
       if (!Object.keys(networks).includes(String(network))) {
         openModal();
