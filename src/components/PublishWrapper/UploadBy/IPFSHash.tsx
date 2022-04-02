@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui **/
-import React, { ChangeEventHandler, MouseEventHandler, useState } from "react";
+import { ChangeEventHandler, MouseEventHandler } from "react";
 import { Flex, Image, Button } from "theme-ui";
 import getMetaDataFromPackageUri from "services/ipfs/getMetaDataPackageUri";
 import { useStateValue } from "hooks";
@@ -8,10 +8,10 @@ import { Spinner, Input } from "components";
 
 import styles from "../styles";
 import { useWeb3ApiClient } from "@web3api/react";
-import axios from "axios";
 import { domain } from "src/constants";
 import Link from "next/link";
 import { parseApiUri } from "utils/pathResolvers";
+import findPublishedApi from "utils/api/findPublishedApi";
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();
@@ -29,13 +29,9 @@ export const IPFSHash = () => {
     if (publish.ipfs !== "") {
       dispatch({ type: "setipfsLoading", payload: true });
 
-      const {
-        data: { published: publishedApiUri },
-      } = await axios.get<{ published: string }>(domain + "/api/apis/find", {
-        params: { uri: publish.ipfs },
-      });
+      const publishedApiUri = await findPublishedApi(publish.ipfs);
 
-      if (!!publishedApiUri) {
+      if (Boolean(publishedApiUri)) {
         dispatch({ type: "setipfsLoading", payload: false });
         dispatch({ type: "setApiData", payload: null });
         dispatch({
