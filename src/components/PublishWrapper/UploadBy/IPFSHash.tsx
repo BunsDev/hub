@@ -11,6 +11,7 @@ import { useWeb3ApiClient } from "@web3api/react";
 import axios from "axios";
 import { domain } from "src/constants";
 import Link from "next/link";
+import { parseApiUri } from "utils/pathResolvers";
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();
@@ -51,14 +52,16 @@ export const IPFSHash = () => {
         });
         return;
       }
-      const metadata = await getMetaDataFromPackageUri(client, publish.ipfs);
+      const parsedHash = parseApiUri(publish.ipfs).reverse().join("/");
+
+      const metadata = await getMetaDataFromPackageUri(client, parsedHash);
 
       if (!metadata) {
         dispatch({ type: "setipfsLoading", payload: false });
         dispatch({ type: "setApiData", payload: null });
         dispatch({ type: "setipfsError", payload: "No Package available" });
       } else {
-        const { uri } = await client.resolveUri(publish.ipfs);
+        const { uri } = await client.resolveUri(parsedHash);
         dispatch({ type: "setipfsLoading", payload: false });
         dispatch({ type: "setipfs", payload: uri.path });
         dispatch({ type: "setipfsSuccess", payload: true });
