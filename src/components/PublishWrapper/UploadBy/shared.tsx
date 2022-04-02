@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from "react";
-import { Link } from "theme-ui";
+import Link from "next/link";
 import { Button, Image, Flex } from "@theme-ui/components";
 import { Spinner } from "components";
 import { domain } from "src/constants";
