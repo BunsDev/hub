@@ -10,6 +10,9 @@ import { useWeb3ApiClient } from "@web3api/react";
 import { networks } from "utils/networks";
 import Select from "react-dropdown-select";
 import getMetaDataFromPackageUri from "services/ipfs/getMetaDataPackageUri";
+import findPublishedApi from "utils/api/findPublishedApi";
+import Link from "next/link";
+import { domain } from "src/constants";
 
 export const EnsAddress = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
@@ -33,6 +36,27 @@ export const EnsAddress = () => {
     try {
       dispatch({ type: "setsubdomainLoading", payload: true });
 
+      console.log("sbd", publish.subdomain);
+      const publishedApiUri = await findPublishedApi(publish.subdomain);
+
+      if (Boolean(publishedApiUri)) {
+        dispatch({ type: "setsubdomainLoading", payload: false });
+        dispatch({ type: "setApiData", payload: null });
+        dispatch({
+          type: "setsubdomainError",
+          //@ts-ignore
+          payload: (
+            <>
+              Package already published. Please visit{" "}
+              <Link href={`${domain}/info?uri=${publishedApiUri}`}>
+                <a>package details page</a>
+              </Link>
+            </>
+          ),
+        });
+        return;
+      }
+
       const path = `ens/${ensNetwork[0].network}/${publish.subdomain}`;
       const resolved = await client.resolveUri(path);
       if (!resolved.api) {
@@ -44,7 +68,6 @@ export const EnsAddress = () => {
       }
       if (resolved?.uri?.path) {
         dispatch({ type: "setipfs", payload: resolved.uri.path });
-        console.log("resolved", resolved);
 
         const metaData = await getMetaDataFromPackageUri(client, path);
 
@@ -102,7 +125,11 @@ export const EnsAddress = () => {
         <Spinner />
       </Flex>
     ),
-    error: <div style={{ width: "65px" }} />,
+    error: (
+      <Flex sx={styles.successIcon}>
+        <Image src="/images/fail.svg" alt="error" />
+      </Flex>
+    ),
   };
 
   return (
