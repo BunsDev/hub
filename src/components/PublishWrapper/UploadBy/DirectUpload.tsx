@@ -14,6 +14,9 @@ import {
 } from "utils/createWrapper";
 import getMetaDataFromPackageUri from "services/ipfs/getMetaDataPackageUri";
 import { useWeb3ApiClient } from "@web3api/react";
+import findPublishedApi from "utils/api/findPublishedApi";
+import Link from "next/link";
+import { domain } from "src/constants";
 
 const directoryProps = {
   directory: "",
@@ -22,7 +25,7 @@ const directoryProps = {
 };
 interface UploadState {
   loading: boolean;
-  error?: string;
+  error?: string | React.ReactNode;
 }
 
 export const DirectUpload = () => {
@@ -47,7 +50,23 @@ export const DirectUpload = () => {
     } else {
       try {
         const hash = await uploadToIPFS(files);
-        console.log("hash", hash);
+
+        const publishedApiUri = await findPublishedApi(hash);
+        if (Boolean(publish)) {
+          setUploadState((state) => ({
+            ...state,
+            loading: false,
+            error: (
+              <>
+                Package already published. Please visit{" "}
+                <Link href={`${domain}/info?uri=${publishedApiUri}`}>
+                  <a>package details page</a>
+                </Link>
+              </>
+            ),
+          }));
+          return;
+        }
         if (hash) {
           dispatch({ type: "setipfs", payload: hash });
           //Using client so it can polyfill mising properties
@@ -108,9 +127,12 @@ export const DirectUpload = () => {
               </>
             )}
           </Flex>
-          {uploadState.error && (
-            <span sx={{ color: "red" }}>{uploadState.error}</span>
-          )}
+
+          <span
+            sx={{ color: "red", marginX: "auto", mt: "10px", height: "28px" }}
+          >
+            {uploadState.error}
+          </span>
         </>
       )}
 
