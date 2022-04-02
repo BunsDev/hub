@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui **/
-import React, { ChangeEventHandler, MouseEventHandler } from "react";
+import React, { ChangeEventHandler, MouseEventHandler, useState } from "react";
 import { Flex, Image, Button } from "theme-ui";
 import getMetaDataFromPackageUri from "services/ipfs/getMetaDataPackageUri";
 import { useStateValue } from "hooks";
@@ -8,6 +8,9 @@ import { Spinner, Input } from "components";
 
 import styles from "../styles";
 import { useWeb3ApiClient } from "@web3api/react";
+import axios from "axios";
+import { domain } from "src/constants";
+import Link from "next/link";
 
 export const IPFSHash = () => {
   const [{ publish }, dispatch] = useStateValue();
@@ -24,6 +27,30 @@ export const IPFSHash = () => {
     e.preventDefault();
     if (publish.ipfs !== "") {
       dispatch({ type: "setipfsLoading", payload: true });
+
+      const {
+        data: { published: publishedApiUri },
+      } = await axios.get<{ published: string }>(domain + "/api/apis/find", {
+        params: { uri: publish.ipfs },
+      });
+
+      if (!!publishedApiUri) {
+        dispatch({ type: "setipfsLoading", payload: false });
+        dispatch({ type: "setApiData", payload: null });
+        dispatch({
+          type: "setipfsError",
+          //@ts-ignore
+          payload: (
+            <>
+              Package already published. Please visit{" "}
+              <Link href={`${domain}/info?uri=${publishedApiUri}`}>
+                <a>package details page</a>
+              </Link>
+            </>
+          ),
+        });
+        return;
+      }
       const metadata = await getMetaDataFromPackageUri(client, publish.ipfs);
 
       if (!metadata) {
@@ -70,7 +97,11 @@ export const IPFSHash = () => {
         <Spinner />
       </Flex>
     ),
-    error: <div style={{ width: "65px" }} />,
+    error: (
+      <Flex sx={styles.successIcon}>
+        <Image src="/images/fail.svg" alt="error" />
+      </Flex>
+    ),
   };
   return (
     <Wrapper>
