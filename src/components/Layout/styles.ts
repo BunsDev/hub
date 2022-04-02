@@ -55,19 +55,19 @@ const styles: Styles = {
       display: "flex",
       gap: "1.5rem",
     },
-  },
-  ".skeleton": {
-    width: "38px",
-    height: "38px",
-    borderRadius: "50%",
-    background:
-      "linear-gradient(198deg, rgba(224,224,224,1) 27%, rgba(144,144,144,1) 63%)",
-    backgroundSize: "200% 200%",
-    animation: `${keyframes({
-      from: { backgroundPosition: "0% 50%" },
-      "50%": { backgroundPosition: "100% 50%" },
-      to: { backgroundPosition: "0% 50%" },
-    })} 3s ease infinite`,
+    ".skeleton": {
+      width: "38px",
+      height: "38px",
+      borderRadius: "50%",
+      background:
+        "linear-gradient(198deg, rgba(224,224,224,1) 27%, rgba(144,144,144,1) 63%)",
+      backgroundSize: "200% 200%",
+      animation: `${keyframes({
+        from: { backgroundPosition: "0% 50%" },
+        "50%": { backgroundPosition: "100% 50%" },
+        to: { backgroundPosition: "0% 50%" },
+      })} 3s ease infinite`,
+    },
   },
 };
 

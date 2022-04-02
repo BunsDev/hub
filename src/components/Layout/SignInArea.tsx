@@ -5,6 +5,7 @@ import { Flex, Button } from "theme-ui";
 import { useStateValue } from "hooks";
 import useModal from "hooks/useModal";
 import { useStorage } from "hooks/useLocalStorage";
+import { useEffect, useState } from "react";
 
 type SignInAreaProps = {
   onDark?: boolean;
@@ -14,9 +15,25 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
   const [{ dapp }] = useStateValue();
 
   const { getItem } = useStorage();
+  const [loading, setLoading] = useState(!!getItem("selectedWallet"));
 
-  const isLoggedIn = getItem("selectedWallet");
-  const { openModal } = useModal(!!isLoggedIn && dapp.address ? "disconnect" : "connect");
+  const { openModal } = useModal(
+    !loading && dapp.address ? "disconnect" : "connect"
+  );
+
+  useEffect(() => {
+    // Timeout to make sure loading state will end
+    const loadingTimeout = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => clearTimeout(loadingTimeout);
+  }, []);
+
+  useEffect(() => {
+    if (dapp.address) {
+      setLoading(false);
+    }
+  }, [dapp.address]);
 
   const handleDisconnect = () => {
     openModal();
@@ -24,7 +41,6 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
   const handleSignIn = () => {
     openModal();
   };
-
 
   return (
     <Flex
@@ -35,21 +51,19 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
       }}
     >
       <ul sx={{ display: "flex", alignItems: "center" }}>
-        {isLoggedIn ? (
-          dapp.address ? (
-            <li
-              onClick={handleDisconnect}
-              className="wallet-addr"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <User sx={{ cursor: "pointer" }} />
-            </li>
-          ) : (
-            <div className="skeleton" />
-          )
+        {loading ? (
+          <div className="skeleton" />
+        ) : dapp.address ? (
+          <li
+            onClick={handleDisconnect}
+            className="wallet-addr"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <User sx={{ cursor: "pointer" }} />
+          </li>
         ) : (
           <li
             onClick={handleSignIn}
