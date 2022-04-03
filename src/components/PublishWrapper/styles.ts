@@ -26,6 +26,7 @@ const styles: Styles = {
     fontSize: "14px",
     lineHeight: "22px",
     letterSpacing: "-0.4000000059604645px",
+    minHeight: "22px",
     textAlign: "left",
     color: "rgba(255, 0, 0, 0.5)",
     mt: 2,
@@ -123,5 +124,31 @@ const styles: Styles = {
   },
   successIcon: { width: "65px", justifyContent: "center" },
   loadingIcon: { width: "65px", height: "100%", justifyContent: "center" },
+  networkSelect: {
+    border: "none",
+    ".react-dropdown-select-content": {
+      width: "70px",
+      ".react-dropdown-select-input": {
+        display: "none",
+      },
+      "&:before": {
+        display: "block",
+        content: '"/"',
+      },
+    },
+    ".react-dropdown-select-dropdown": {
+      bg: "polyGrey3",
+      borderRadius: "8px",
+      border: "none",
+      marginTop: "8px",
+      ".react-dropdown-select-item": {
+        textAlign: "left",
+        border: "none",
+      },
+      ".react-dropdown-select-item-selected": {
+        bg: "polyGrey2",
+      },
+    },
+  },
 };
 export default styles;

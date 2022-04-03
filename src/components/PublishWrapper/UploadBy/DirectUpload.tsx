@@ -4,7 +4,7 @@ import styles from "./styles";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Flex } from "@theme-ui/components";
-import { Wrapper, NavButtons } from "components/PublishWrapper";
+import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
 import { Spinner } from "components";
 import { useStateValue, useRouter, useResponsive } from "hooks";
 import {
@@ -14,6 +14,8 @@ import {
 } from "utils/createWrapper";
 import getMetaDataFromPackageUri from "services/ipfs/getMetaDataPackageUri";
 import { useWeb3ApiClient } from "@web3api/react";
+import findPublishedApi from "utils/api/findPublishedApi";
+import { ErrorDuplicateApi } from "./shared";
 
 const directoryProps = {
   directory: "",
@@ -22,7 +24,7 @@ const directoryProps = {
 };
 interface UploadState {
   loading: boolean;
-  error?: string;
+  error?: string | React.ReactNode;
 }
 
 export const DirectUpload = () => {
@@ -47,7 +49,16 @@ export const DirectUpload = () => {
     } else {
       try {
         const hash = await uploadToIPFS(files);
-        console.log("hash", hash);
+
+        const publishedApiUri = await findPublishedApi(hash);
+        if (Boolean(publish)) {
+          setUploadState((state) => ({
+            ...state,
+            loading: false,
+            error: <ErrorDuplicateApi uri={publishedApiUri} />,
+          }));
+          return;
+        }
         if (hash) {
           dispatch({ type: "setipfs", payload: hash });
           //Using client so it can polyfill mising properties
@@ -108,9 +119,7 @@ export const DirectUpload = () => {
               </>
             )}
           </Flex>
-          {uploadState.error && (
-            <span sx={{ color: "red" }}>{uploadState.error}</span>
-          )}
+          <ErrorMsg center>{uploadState.error}</ErrorMsg>
         </>
       )}
 

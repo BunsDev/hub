@@ -49,11 +49,12 @@ const Card = ({ api }: CardProps) => {
     () => `/info?uri=${resolveApiLocation(api)}`,
     [api]
   );
+  const imgLocation = getApiImgLocation(api)
 
   return (
     <div className="Card" sx={styles.card}>
       {api && (
-        <Link href={redirectUrl || "/"}>
+        <Link href={redirectUrl || "/"} shallow>
           <a
             onClick={(e) => {
               //@ts-ignore
@@ -67,7 +68,9 @@ const Card = ({ api }: CardProps) => {
           >
             <div className="wrap-contents">
               <div className="head">
-                <img className="api-logo" src={getApiImgLocation(api)} />
+                <div className="logo-wrap">
+                  {imgLocation && <img className="api-logo" src={imgLocation} />}
+                </div>
                 <Flex className="labels">
                   <Badge label={ens ? "ens" : "ipfs"} />
                   <Stars count={api.favorites} onDark large />

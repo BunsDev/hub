@@ -61,7 +61,6 @@ export default withValidatePublishBody(
 
         if (apiInfo.apiUris?.length) {
           for (const uri of apiInfo.apiUris) {
-            console.log("for", uri);
             // @TODO: Authority #2 is IPFS - Change uri id type check logic
             //const uriTypeId = uri.includes(".") ? 1 : 2;
             await apiUrisRepository.add(uri, api.id, API_URI_TYPE_ID.ens);

@@ -18,6 +18,7 @@ import { parseApiUri, resolveApiLocation } from "utils/pathResolvers";
 import useModal from "hooks/useModal";
 import styles from "./styles";
 import { QueryAttributes } from "hooks/usePlayground";
+import Link from "next/link";
 
 const Playground = () => {
   const [{ dapp }] = useStateValue();
@@ -215,9 +216,9 @@ const Playground = () => {
             </Flex>
           </Flex>
           {!customUri && (
-            <a href={router.asPath.replace("query", "info")}>
-              Open Wrapper Page
-            </a>
+            <Link href={router.asPath.replace("query", "info")} shallow>
+              <a>Open Wrapper Page</a>
+            </Link>
           )}
         </Flex>
       )}
@@ -252,6 +253,7 @@ const Playground = () => {
           <section className="vars">
             <div className="subtitle-1">Vars</div>
             <JSONEditor
+              height="240px"
               value={formVars.value}
               handleEditorChange={handleVariableChanges}
             />

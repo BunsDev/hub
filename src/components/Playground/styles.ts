@@ -122,11 +122,6 @@ const styles: Styles = {
             p: "12px 16px",
             borderBottom: "1px solid rgba(255, 255, 255, .2)",
           },
-          ".GQLCodeBlock-wrap": {
-            section: {
-              minHeight: "280px",
-            },
-          },
         },
       },
       ".dynamic": {

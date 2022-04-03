@@ -11,8 +11,8 @@ import {
 type ThemeUiInputPropsOmmited = Omit<ThemeUiInputProps, "prefix">;
 
 interface InputProps extends ThemeUiInputPropsOmmited {
-  prefix?: JSX.Element;
-  suffix?: JSX.Element;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
   wrapperSx?: ThemeUIStyleObject;
 }
 

@@ -54,7 +54,6 @@ export const validateUploadedWrapper = (
 
   for (const key in requiredFiles) {
     if (!requiredFiles[key]) {
-      console.log("Missing", key, "file");
       return [false, null, null];
     }
   }

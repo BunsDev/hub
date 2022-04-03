@@ -84,7 +84,7 @@ const Start = () => {
           className="btn-cancel"
           onClick={(e) => {
             e.preventDefault();
-            void router.push("/");
+            void router.push("/", undefined, { shallow: true });
           }}
         >
           Cancel

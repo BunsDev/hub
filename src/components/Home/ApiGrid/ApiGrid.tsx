@@ -63,14 +63,16 @@ const ApiGrid = () => {
         ) : (
           dapp.apis.total <= 0 && (
             <div className="endOfList">
-              <b>No api was found.</b>
+              <b>No Wrappers were found.</b>
               <Button
                 variant="primaryMedium"
                 onClick={() => {
-                  void router.push("/apis/create?activeTab=start");
+                  void router.push("/apis/create?activeTab=start", undefined, {
+                    shallow: true,
+                  });
                 }}
               >
-                <span>Create New API</span>
+                <span>Create New Wrapper</span>
               </Button>
             </div>
           )

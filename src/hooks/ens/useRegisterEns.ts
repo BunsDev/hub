@@ -26,7 +26,7 @@ type ApiQueryResult = { hash: string };
 type ApiQuery = Record<string, ApiQueryResult>;
 
 export const useRegisterEns = () => {
-  const [{ dapp, publish }, dispatch] = useStateValue();
+  const [{ dapp, web3api, publish }, dispatch] = useStateValue();
   const [state, setState] = useState<useRegisterEnsState>({
     data: {},
     errors: [],
@@ -65,13 +65,13 @@ export const useRegisterEns = () => {
     }
     setState((state) => ({ ...state, loading: true }));
 
-    const signerAddress = await dapp.web3.getSigner(dapp.address).getAddress();
+    const signerAddress = await dapp.web3.getSigner().getAddress();
 
     const domain = publish.subdomain;
     const registryAddress = ENS_REGISTRY;
     const registrarAddress = FIFS_REGISTRAR;
     const resolverAddress = await dapp.web3
-      .getSigner(dapp.address)
+      .getSigner()
       .resolveName("resolver.eth");
 
     const network = networkName;
@@ -196,12 +196,3 @@ export const useRegisterEns = () => {
 
 export default useRegisterEns;
 
-/* 
-{
-  "domain": "test.yoyo.eth",
-  "registrarAddress": "0x99BeF0ec344a354303Bc5F3BB2E7e0a104B1E9f2",
-  "registryAddress": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
-  "owner": "0x456Bc5c730e4AB1C39BF1e8D1832636ff581a2c7",
-  "network": "ropsten"
-}
- */

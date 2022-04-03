@@ -100,7 +100,9 @@ const APIDetail = ({ api }: APIDetailProps) => {
     <div className="wrap" sx={styles.wrap}>
       <Flex className="left">
         <Grid className="head">
-          <img className="api-logo" src={apiIcon} />
+          <div className="logo-wrap">
+            <img className="api-logo" src={apiIcon} />
+          </div>
           <Themed.h2 className="title">
             {api?.name}{" "}
             {
@@ -208,7 +210,9 @@ const result = await api.query({
         <Button
           variant="secondaryMedium"
           onClick={() => {
-            void router.push(`/query?uri=${router.query?.uri}`);
+            void router.push(`/query?uri=${router.query?.uri}`, undefined, {
+              shallow: true,
+            });
           }}
         >
           Open Playground

@@ -14,12 +14,10 @@ const onboardInit = async (dispatch: Dispatch<StateAction>): Promise<API> => {
       });
     },
     network: (network) => {
-      //console.log("Onboard network", network); //onNetworkChanged
       dispatch({
         type: "SET_NETWORK",
         payload: network,
       });
-      //dispatch({ type: "recreateplugins" });
     },
     balance: (balance) => {
       dispatch({
@@ -41,7 +39,7 @@ const onboardInit = async (dispatch: Dispatch<StateAction>): Promise<API> => {
         type: "SET_WEB3",
         payload: web3,
       });
-      //dispatch({ type: "recreateplugins" });
+      dispatch({ type: "recreateplugins" });
     },
   });
 };
