@@ -4,7 +4,9 @@ export const registerDomainQuery = `mutation {
     owner: $owner
     registrarAddress: $registrarAddress
     registryAddress: $registryAddress
-    network: $network
+    connection: {
+      networkNameOrChainId: $network
+    }
   )
 }`;
 

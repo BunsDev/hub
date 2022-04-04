@@ -195,4 +195,3 @@ export const useRegisterEns = () => {
 };
 
 export default useRegisterEns;
-

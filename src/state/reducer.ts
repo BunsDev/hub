@@ -38,6 +38,10 @@ export function web3apiReducer(
             //@ts-ignore
             provider: web3.provider,
           },
+          3: {
+            //@ts-ignore
+            provider: web3.provider,
+          },
           rinkeby: {
             //@ts-ignore
             provider: web3.provider,

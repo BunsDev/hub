@@ -27,6 +27,7 @@ export const IPFSHash = () => {
     e.preventDefault();
     if (publish.ipfs !== "") {
       dispatch({ type: "setipfsLoading", payload: true });
+      dispatch({ type: "setipfsError", payload: "" });
 
       const publishedApiUri = await findPublishedApi(publish.ipfs);
 

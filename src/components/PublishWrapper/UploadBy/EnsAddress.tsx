@@ -34,6 +34,7 @@ export const EnsAddress = () => {
 
     try {
       dispatch({ type: "setsubdomainLoading", payload: true });
+      dispatch({ type: "setsubdomainError", payload: "" });
 
       const publishedApiUri = await findPublishedApi(publish.subdomain);
 

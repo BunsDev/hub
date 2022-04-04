@@ -40,7 +40,7 @@ export const DirectUpload = () => {
   const client = useWeb3ApiClient();
 
   const onDrop = async (acceptedFiles: File[]) => {
-    setUploadState((state) => ({ ...state, loading: true }));
+    setUploadState((state) => ({ ...state, error: null, loading: true }));
 
     const [filesValidated, _, files] = validateUploadedWrapper(acceptedFiles);
 
@@ -51,7 +51,7 @@ export const DirectUpload = () => {
         const hash = await uploadToIPFS(files);
 
         const publishedApiUri = await findPublishedApi(hash);
-        if (Boolean(publish)) {
+        if (Boolean(publishedApiUri)) {
           setUploadState((state) => ({
             ...state,
             loading: false,
