@@ -31,7 +31,7 @@ export const apiDataInState = (
 interface WrapperReqFiles {
   [key: string]: File;
   api: File;
-  build: File;
+  //build: File;
   //meta: File;
   //mutation: File;
   //query: File;
@@ -43,8 +43,8 @@ export const validateUploadedWrapper = (
   files: File[]
 ): [boolean, WrapperReqFiles, File[]] => {
   const requiredFiles: WrapperReqFiles = {
-    api: files?.find((file) => file.name === "web3api.yaml"),
-    build: files?.find((file) => file.name === "web3api.build.yaml"),
+    api: files?.find((file) => file.name === "web3api.yaml") || files?.find((file) => file.name === "web3api.yml"),
+    //build: files?.find((file) => file.name === "web3api.build.yaml"),
     //meta: files?.find((file) => file.name === "web3api.meta.yaml"),
     //mutation: files?.find((file) => file.name === "mutation.wasm"),
     //query: files?.find((file) => file.name === "query.wasm"),

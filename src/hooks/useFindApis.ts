@@ -8,19 +8,22 @@ const useFindApis = (
   delay = 500
 ): [string, Dispatch<SetStateAction<string>>] => {
   const router = useRouter();
+
   const [searchValue, setSearchValue] = useState(
-    router.query?.search?.toString()
+    router.query?.search ? router.query?.search?.toString() : ""
   );
   const [{ dapp }, dispatch] = useStateValue();
   const [debouncedSearchValue] = useDebounce(
     searchValue,
     delay,
-    router.query?.search?.toString()
+    router.query?.search ? router.query?.search?.toString() : ""
   );
   const [preload, setPreload] = useState(true);
   const searchParams = useRef<string>();
 
-  const currSearchVal = useRef<string>();
+  const currSearchVal = useRef<string>(
+    router.query?.search ? router.query?.search?.toString() : ""
+  );
 
   useEffect(() => {
     if (typeof debouncedSearchValue === "string") {
@@ -40,7 +43,7 @@ const useFindApis = (
   }, [debouncedSearchValue]);
 
   useEffect(() => {
-    if (!dapp.apisLoading) {
+    if (!dapp.initialApisLoading) {
       void getApis();
     }
 
@@ -67,32 +70,33 @@ const useFindApis = (
       setPreload(false);
     }
 
+    const newSearchVal =
+      String(debouncedSearchValue) !== String(currSearchVal.current);
+
+    const noParams = Object.keys(params).length === 0;
+
+    if (newSearchVal || noParams) {
+      dispatch({ type: "SET_INITIAL_APIS_LOADING", payload: true });
+    }
+
     const sameParams = JSON.stringify(params) === searchParams?.current;
 
     if (!sameParams) {
-      dispatch({ type: "SET_APIS_LOADING", payload: true });
-
       const {
         data: { apis: searchResult },
       } = await axios.get(domain + `/api/apis/active`, { params });
 
       const apis = searchResult?.apis || [];
 
-      const newSearchVal = debouncedSearchValue
-        ? debouncedSearchValue !== currSearchVal.current
-        : false;
-
-      const noParams = Object.keys(params).length === 0;
 
       const replaceWithNewApis =
-        preload || newSearchVal || !sameParams || noParams;
+        dapp.initialApisLoading || preload || newSearchVal || noParams;
 
       const items = replaceWithNewApis ? apis : [...dapp.apis.items, ...apis];
 
       currSearchVal.current = debouncedSearchValue;
       searchParams.current = JSON.stringify(params);
 
-      dispatch({ type: "SET_APIS_LOADING", payload: false });
       dispatch({
         type: "SET_AVAILABLE_APIS",
         payload: {
@@ -102,6 +106,8 @@ const useFindApis = (
         },
       });
     }
+
+    dispatch({ type: "SET_INITIAL_APIS_LOADING", payload: false });
   };
 
   return [searchValue, setSearchValue];

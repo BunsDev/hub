@@ -100,6 +100,12 @@ const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
           "Please connect an ethereum wallet to continue.",
           { title: "Connect", onClick: handleConnect }
         );
+      case "useFeature":
+        return generateModalContent(
+          "Connect Wallet",
+          "To use this feature please connect an ethereum wallet and try again.",
+          { title: "Connect", onClick: handleConnect }
+        );
       case "disconnect":
         return generateModalContent(
           "Wallet Connected",

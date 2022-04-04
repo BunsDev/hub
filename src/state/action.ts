@@ -114,7 +114,7 @@ export type DAppAction =
   | SET_WEB3_ACTION
   | SET_ONBOARDING_ACTION
   | SET_AVAILABLE_APIS_ACTION
-  | SET_APIS_LOADING
+  | SET_INITIAL_APIS_LOADING
   | SET_GITHUB_USER_ACTION
   | SET_DID
   | SET_FAVORITE_APIS_ACTION;
@@ -156,8 +156,8 @@ type SET_AVAILABLE_APIS_ACTION = {
   payload: { items: APIData[]; total: number };
 };
 
-type SET_APIS_LOADING = {
-  type: "SET_APIS_LOADING";
+type SET_INITIAL_APIS_LOADING = {
+  type: "SET_INITIAL_APIS_LOADING";
   payload: boolean;
 };
 

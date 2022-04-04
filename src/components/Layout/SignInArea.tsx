@@ -17,8 +17,10 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
   const { getItem } = useStorage();
   const [loading, setLoading] = useState(!!getItem("selectedWallet"));
 
+  const isLoggedIn = Boolean(getItem("selectedWallet")) && dapp.address;
+
   const { openModal } = useModal(
-    !loading && dapp.address ? "disconnect" : "connect"
+    !loading && isLoggedIn ? "disconnect" : "connect"
   );
 
   useEffect(() => {
@@ -53,7 +55,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
       <ul sx={{ display: "flex", alignItems: "center" }}>
         {loading ? (
           <div className="skeleton" />
-        ) : dapp.address ? (
+        ) : isLoggedIn ? (
           <li
             onClick={handleDisconnect}
             className="wallet-addr"

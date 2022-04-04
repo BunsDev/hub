@@ -38,7 +38,7 @@ const Card = ({ api }: CardProps) => {
     }
   }, [dapp.favorites, dapp.address, idx]);
 
-  const { openModal } = useModal("connect", { onClose: handleFavorite });
+  const { openModal } = useModal("useFeature", { onClose: handleFavorite });
 
   const isFavorite = useMemo(
     () => dapp.favoritesList[api.locationUri],

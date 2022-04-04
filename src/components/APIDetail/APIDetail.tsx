@@ -46,7 +46,7 @@ const APIDetail = ({ api }: APIDetailProps) => {
     }
   }, [dapp.favorites]);
 
-  const { openModal } = useModal("connect", { onClose: handleFavorite });
+  const { openModal } = useModal("useFeature", { onClose: handleFavorite });
 
   const apiLocation = useMemo(() => "ipfs/" + api?.locationUri, [api]);
 

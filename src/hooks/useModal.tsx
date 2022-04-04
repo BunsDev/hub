@@ -27,6 +27,7 @@ export const ModalContext = createContext<ModalContextValue>(
 
 type ModalScreen =
   | "connect"
+  | "useFeature"
   | "disconnect"
   | "signin"
   | "success"

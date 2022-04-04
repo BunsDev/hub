@@ -159,8 +159,8 @@ export function dappReducer(state: State, action: DAppAction): State["dapp"] {
     case "SET_AVAILABLE_APIS":
       newStateObj.apis = action.payload;
       return newStateObj;
-    case "SET_APIS_LOADING":
-      newStateObj.apisLoading = action.payload;
+    case "SET_INITIAL_APIS_LOADING":
+      newStateObj.initialApisLoading = action.payload;
       return newStateObj;
     case "SET_GITHUB_USER":
       newStateObj.github = action.payload;

@@ -10,13 +10,15 @@ export default function useDebounce(
   const prevValue = useRef<string>();
 
   useEffect(() => {
-    prevValue.current = debouncedValue;
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-    return () => {
-      clearTimeout(handler);
-    };
+    if (typeof value !== "undefined") {
+      prevValue.current = debouncedValue;
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+      return () => {
+        clearTimeout(handler);
+      };
+    }
   }, [value]);
 
   return [debouncedValue];

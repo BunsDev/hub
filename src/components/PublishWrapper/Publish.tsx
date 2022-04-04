@@ -56,7 +56,8 @@ const PublishAPI = () => {
           }`;
           void router.push(redirect);
         } else {
-          throw Error(response.statusText);
+          setPublishLoading(false);
+          console.log(response.statusText);
         }
       } catch (e) {
         setPublishLoading(false);
@@ -109,8 +110,12 @@ const PublishAPI = () => {
   useEffect(() => {
     return () => {
       dispatch({ type: "setipfs", payload: "" });
+      dispatch({ type: "setipfsSuccess", payload: false });
+      dispatch({ type: "setipfsError", payload: null });
       dispatch({ type: "setsubdomain", payload: "" });
+      dispatch({ type: "setsubdomainLookupSuccess", payload: false });
       dispatch({ type: "setsubdomainRegisterSuccess", payload: false });
+      dispatch({ type: "setsubdomainError", payload: null });
     };
   }, []);
 

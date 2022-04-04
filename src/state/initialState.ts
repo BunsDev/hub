@@ -40,7 +40,7 @@ export const initialState: State = {
     web3: undefined,
     onboard: undefined,
     apis: { items: [], total: null },
-    apisLoading: true,
+    initialApisLoading: true,
     github: "",
     did: undefined,
     favorites: { ens: [], ipfs: [] },
@@ -78,7 +78,7 @@ type DappType = {
   web3?: ethers.providers.JsonRpcProvider;
   onboard?: API;
   apis: { items: APIData[]; total: number };
-  apisLoading: boolean;
+  initialApisLoading: boolean;
   github?: string;
   did?: string;
   favorites?: Favorites;
