@@ -81,8 +81,8 @@ export const useGetAPIfromParamInURL = () => {
   };
 
   const fetchApiDetails = useCallback(async () => {
-    setIsLoading(true);
     if (router.query.uri || router.query.customUri) {
+      setIsLoading(true);
       const [location, uri] = String(
         router.query.uri || router.query.customUri
       ).split("/");
@@ -140,10 +140,8 @@ export const useGetAPIfromParamInURL = () => {
   }, [router.query.uri, router.query.customUri, dapp?.network]);
 
   useEffect(() => {
-    if (router.isReady) {
-      void fetchApiDetails();
-    }
-  }, [router.isReady, router.query.uri, router.query.customUri]);
+    void fetchApiDetails();
+  }, [router.query.uri, router.query.customUri]);
   return { error, isLoading, data, fetchApiDetails };
 };
 

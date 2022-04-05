@@ -59,7 +59,12 @@ const usePlayground = (
   });
 
   const loadApiContent = useCallback(async () => {
-    setApiState((prev) => ({ ...prev, loading: true }));
+    setApiState((prev) => ({
+      ...prev,
+      apiContents: { queries: [], schema: "" },
+      loading: true,
+    }));
+    setQueryMethod({ id: "", value: "" });
 
     const [location, uri] = (api.apiUris[0] as string)?.split("/");
     const apiLocation =

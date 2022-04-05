@@ -42,6 +42,7 @@ const styles: Styles = {
       justifyContent: "space-between",
       flexWrap: "wrap",
       mb: "1.25rem",
+      minHeight: "25px",
       ">div": {
         alignItems: "center",
         flexWrap: "wrap",

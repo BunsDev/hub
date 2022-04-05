@@ -25,20 +25,21 @@ const Playground = () => {
   const router = useRouter();
   const { openModal } = useModal("connect");
 
-  const { data: api } = useGetAPIfromParamInURL();
+  const { data: api, isLoading: apiDataLoading } = useGetAPIfromParamInURL();
+
   const [
     {
       apiContents: { queries, schema, schemaStructured },
-      loading: apiLoading,
+      loading: apiContentLoading,
     },
     { execute, loading: queryLoading, method, setMethod },
   ] = usePlayground(api);
 
+  const apiLoading = apiDataLoading || apiContentLoading;
+
   const [formVars, setFormVars] = useState({ value: "{\n}", error: null });
 
   const [schemaVisible, setSchemaVisible] = useState(false);
-
-  const [searchboxvalues, setsearchboxvalues] = useState([]);
 
   const [customUri, setCustomUri] = useState(
     (router?.query?.customUri && router?.query?.customUri.toString()) || ""
@@ -90,27 +91,14 @@ const Playground = () => {
   };
 
   useEffect(() => {
-    const queryInfo = queries.find((q) => q.id === method.id);
+    if (method) {
+      const queryInfo = queries.find((q) => q.id === method.id);
 
-    const newVars =
-      queryInfo && queryInfo.vars ? JSON.parse(queryInfo.vars) : {};
-    setFormVars({ value: JSON.stringify(newVars, null, 2), error: null });
-  }, [method]);
-
-  useEffect(() => {
-    if (router.query.uri !== undefined) {
-      //TODO fix uri resolving, including all other places
-      const apiInQuery = dapp.apis?.items?.find(
-        (dapi) =>
-          dapi.apiUris.some((api) =>
-            api.uri.includes(router?.query?.uri.toString().split("/")[1])
-          ) || dapi.locationUri === router?.query?.uri.toString().split("/")[1]
-      );
-      if (apiInQuery) {
-        setsearchboxvalues([apiInQuery]);
-      }
+      const newVars =
+        queryInfo && queryInfo.vars ? JSON.parse(queryInfo.vars) : {};
+      setFormVars({ value: JSON.stringify(newVars, null, 2), error: null });
     }
-  }, [dapp.apis]);
+  }, [method]);
 
   useEffect(() => {
     if (queries.length) {
@@ -132,7 +120,7 @@ const Playground = () => {
     return (
       <>
         {queries &&
-          (dapp?.address || !method.value.startsWith("mutation") ? (
+          (dapp?.address || !method?.value.startsWith("mutation") ? (
             <>
               <Button variant="primaryMedium" onClick={exec}>
                 Run
@@ -172,13 +160,8 @@ const Playground = () => {
             placeholder={"Search API’s"}
             labelField="name"
             valueField="name"
-            options={dapp.apis.items}
-            values={searchboxvalues}
-            onChange={(values) => {
+            onChange={() => {
               setSchemaVisible(false);
-              setsearchboxvalues(values);
-              values[0] &&
-                void router.push(`/query?uri=${resolveApiLocation(values[0])}`);
             }}
           />
           <Input
@@ -200,63 +183,69 @@ const Playground = () => {
           />
         </Flex>
       </Flex>
-      {api && (
-        <Flex className="subheader">
-          <Flex>
-            <Themed.h3>{api?.name || "Placeholder"}</Themed.h3>
-            <Flex className="labels">
-              {"favorites" in api && (
-                <Stars count={api?.favorites || 0} onDark large />
-              )}
-              {/*               {"locationUri" in api && (
+      <Flex className="subheader">
+        {!apiDataLoading && api && (
+          <>
+            <Flex>
+              <Themed.h3>{api?.name || "Placeholder"}</Themed.h3>
+              <Flex className="labels">
+                {"favorites" in api && (
+                  <Stars count={api?.favorites || 0} onDark large />
+                )}
+                {/*               {"locationUri" in api && (
                 <div className="category-Badges">
-                  <Badge label="IPFS" onDark ipfsHash={api?.apiUris[0].uri} />
+                <Badge label="IPFS" onDark ipfsHash={api?.apiUris[0].uri} />
                 </div>
               )} */}
+              </Flex>
             </Flex>
-          </Flex>
-          {!customUri && (
-            <Link href={router.asPath.replace("query", "info")} shallow>
-              <a>Open Wrapper Page</a>
-            </Link>
-          )}
-        </Flex>
-      )}
+            {!router.query.customUri && api && (
+              <Link href={router.asPath.replace("query", "info")} shallow>
+                <a>Open Wrapper Page</a>
+              </Link>
+            )}
+          </>
+        )}
+      </Flex>
       <Flex className={`grid ${schemaVisible ? "withSchema" : ""}`}>
         <Flex className="query">
           <section className="templates">
             {apiLoading ? (
               <span className="loading_span">Loading Queries...</span>
             ) : (
-              queries.length > 0 && (
-                <SelectBox
-                  key={"queries-box"}
-                  skinny
-                  labelField="id"
-                  valueField="id"
-                  placeholder={"Select Query"}
-                  options={queries}
-                  values={[queries[0]]}
-                  onChange={handleQueryValuesChange}
-                />
-              )
-            )}
-            {method.value && (
-              <GQLCodeBlock
-                key={method.value}
-                value={method.value}
-                height={"200px"}
-                sx={{ ml: "-16px" }}
-              />
+              <>
+                {queries.length > 0 && (
+                  <SelectBox
+                    key={"queries-box"}
+                    skinny
+                    labelField="id"
+                    valueField="id"
+                    placeholder={"Select Query"}
+                    options={queries}
+                    values={[queries[0]]}
+                    onChange={handleQueryValuesChange}
+                  />
+                )}
+                {method?.value && (
+                  <GQLCodeBlock
+                    key={method.value}
+                    value={method.value}
+                    height={"200px"}
+                    sx={{ ml: "-16px" }}
+                  />
+                )}
+              </>
             )}
           </section>
           <section className="vars">
             <div className="subtitle-1">Vars</div>
-            <JSONEditor
-              height="240px"
-              value={formVars.value}
-              handleEditorChange={handleVariableChanges}
-            />
+            {!apiLoading && (
+              <JSONEditor
+                height="240px"
+                value={formVars.value}
+                handleEditorChange={handleVariableChanges}
+              />
+            )}
           </section>
         </Flex>
         <Flex className="dynamic">

@@ -107,18 +107,6 @@ const PublishAPI = () => {
     !dapp.address && toggleEnsInput(false);
   }, [dapp.address]);
 
-  useEffect(() => {
-    return () => {
-      dispatch({ type: "setipfs", payload: "" });
-      dispatch({ type: "setipfsSuccess", payload: false });
-      dispatch({ type: "setipfsError", payload: null });
-      dispatch({ type: "setsubdomain", payload: "" });
-      dispatch({ type: "setsubdomainLookupSuccess", payload: false });
-      dispatch({ type: "setsubdomainRegisterSuccess", payload: false });
-      dispatch({ type: "setsubdomainError", payload: null });
-    };
-  }, []);
-
   const ensRegStatus = ensRegLoading
     ? "loading"
     : publish.subdomainError

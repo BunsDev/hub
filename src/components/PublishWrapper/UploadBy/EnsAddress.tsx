@@ -131,7 +131,7 @@ export const EnsAddress = () => {
             }
           />
         </div>
-        <ErrorMsg>{publish.subdomainError}</ErrorMsg>
+        <ErrorMsg>{publish?.subdomainError}</ErrorMsg>
       </div>
       <NavButtons continueEnabled={publish.subdomainLookupSuccess} />
     </Wrapper>
