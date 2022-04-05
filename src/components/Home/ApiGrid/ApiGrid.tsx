@@ -48,7 +48,7 @@ const ApiGrid = () => {
                     void router.push("/apis/create?activeTab=start");
                   }}
                 >
-                  <span>Create New API</span>
+                  <span>Create New Wrapper</span>
                 </Button>
               </div>
             )

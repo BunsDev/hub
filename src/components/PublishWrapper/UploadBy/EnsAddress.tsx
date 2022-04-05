@@ -55,7 +55,7 @@ export const EnsAddress = () => {
         dispatch({ type: "setsubdomainLoading", payload: false });
         dispatch({
           type: "setsubdomainError",
-          payload: "No Api found at provided ENS address",
+          payload: "No Wrapper found at provided ENS address",
         });
       }
       if (resolved?.uri?.path) {
