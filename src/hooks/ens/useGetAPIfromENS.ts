@@ -115,6 +115,7 @@ export const useGetAPIfromParamInURL = () => {
           );
         })
         .catch((errorMeta) => {
+          console.log("Error receiving metadata", errorMeta.message);
           client
             .getManifest(apiLocation, {
               type: "web3api",
@@ -130,7 +131,8 @@ export const useGetAPIfromParamInURL = () => {
               handleApiData(meta, { location, uri, did: dapp?.did });
             })
             .catch((errorWeb3Api) => {
-              setError([errorMeta.message, errorWeb3Api.message]);
+              console.log("Error receiving web3api", errorWeb3Api.message);
+              setError([errorWeb3Api.message]);
             });
         })
         .finally(() => {

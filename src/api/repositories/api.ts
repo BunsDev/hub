@@ -94,7 +94,7 @@ export default class ApiRepository extends Repository<Apis> {
       .orderBy("apis.id", "DESC");
 
     if (search && search.length > 2) {
-      query.where(
+      query.andWhere(
         "(apis.name ILIKE :search or apis.description ILIKE :search or apis.subtext ILIKE :search or apiUris.uri ILIKE :search)",
         { search: `%${search}%` }
       );

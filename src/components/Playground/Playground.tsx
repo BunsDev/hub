@@ -25,7 +25,7 @@ const Playground = () => {
   const router = useRouter();
   const { openModal } = useModal("connect");
 
-  const { data: api, isLoading: apiDataLoading } = useGetAPIfromParamInURL();
+  const { data: api, isLoading: apiDataLoading, error } = useGetAPIfromParamInURL();
 
   const [
     {
