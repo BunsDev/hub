@@ -23,6 +23,21 @@
 > - [Publish wrappers](https://hub.polywrap.io/apis/create?activeTab=start)
 > - [Try wrappers on the playground](https://hub.polywrap.io/query)
 
+## Links
+
+### [Production](https://hub.polywrap.io)
+### [Development Version](https://web3hub.vercel.app)
+
+## Diagrams
+
+### AWS Network Diagram
+
+![Hub AWS Kubernetes](https://user-images.githubusercontent.com/1008882/161544640-6a7f535d-69a8-4512-b7dd-9dd0258f7b45.png)
+
+### Application Diagram
+
+![Hub Application Diagram](https://user-images.githubusercontent.com/1008882/161968662-04b5cc8a-f94c-4786-85ab-6a2546987b7e.png)
+
 ## Running a local copy / dev mode
 > 1) Prepare `.env` based on `.env.example`
 > 2) Install `yarn`
