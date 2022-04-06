@@ -20,7 +20,7 @@
 
 # What can you do in the hub?
 > - [Browse wrappers](https://hub.polywrap.io/) that have been published.
-> - [Publish your own wrappers](https://hub.polywrap.io/apis/create?activeTab=start)
+> - [Publish your own wrappers](https://hub.polywrap.io/apis/create?activeTab=start) through a simple and guided GUI. 
 > - [Try wrappers on the playground](https://hub.polywrap.io/query), a tool that allows developers to preview and examine different attributes of the Wrapper, including methods, variables, and schema. You can also execute the Wrapper and preview results.
 
 ## Links
