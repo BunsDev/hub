@@ -25,12 +25,17 @@ const Playground = () => {
   const router = useRouter();
   const { openModal } = useModal("connect");
 
-  const { data: api, isLoading: apiDataLoading, error } = useGetAPIfromParamInURL();
+  const {
+    data: api,
+    isLoading: apiDataLoading,
+    error:apiDataError,
+  } = useGetAPIfromParamInURL();
 
   const [
     {
       apiContents: { queries, schema, schemaStructured },
       loading: apiContentLoading,
+      error: apiContentError,
     },
     { execute, loading: queryLoading, method, setMethod },
   ] = usePlayground(api);
@@ -279,6 +284,8 @@ const Playground = () => {
                       {clientresponded !== undefined &&
                         clientresponded.errors !== undefined &&
                         clientresponded.errors.toString()}
+                      {apiDataError && apiDataError.toString()}
+                      {apiContentError && apiContentError.toString()}
                       {formVars?.error && formVars.error.toString()}
                     </React.Fragment>
                   )}
