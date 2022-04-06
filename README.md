@@ -18,10 +18,10 @@
   <img src="https://user-images.githubusercontent.com/12145726/159582802-bf00205b-588e-4b5b-bae5-be8ab1bec815.png"  width="300">
 </p>
 
-## What can you do in the hub?
-> - [Browse wrappers](https://hub.polywrap.io/)
-> - [Publish wrappers](https://hub.polywrap.io/apis/create?activeTab=start)
-> - [Try wrappers on the playground](https://hub.polywrap.io/query)
+# What can you do in the hub?
+> - [Browse wrappers](https://hub.polywrap.io/) that have been published.
+> - [Publish your own wrappers](https://hub.polywrap.io/apis/create?activeTab=start)
+> - [Try wrappers on the playground](https://hub.polywrap.io/query), a tool that allows developers to preview and examine different attributes of the Wrapper, including methods, variables, and schema. You can also execute the Wrapper and preview results.
 
 ## Links
 
