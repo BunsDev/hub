@@ -21,7 +21,7 @@ import {
 
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue();
-  const [ensInputVisible, toggleEnsInput] = useState(false);
+  const [ensInputVisible, toggleEnsInput] = useState(!!publish.subdomain);
   const [publishLoading, setPublishLoading] = useState(false);
   const { openModal: openAuthModal } = useModal("connect", {
     onClose: () => toggleEnsInput(true),
@@ -41,13 +41,15 @@ const PublishAPI = () => {
 
       if (dapp?.did) body.did = dapp.did;
       if (publish.ipfs) body.locationUri = publish?.ipfs;
-      if (publish.subdomainRegisterSuccess && publish.subdomain)
+      if (
+        (publish.subdomainRegisterSuccess || publish.subdomainLookupSuccess) &&
+        publish.subdomain
+      )
         body.apiUris = [publish?.subdomain];
 
       try {
         setPublishLoading(true);
         const response = await publishWrapper(body);
-
         if (response.ok) {
           const redirect = `/info?uri=${
             publish?.subdomain
@@ -96,6 +98,7 @@ const PublishAPI = () => {
     e
   ) => {
     e.preventDefault();
+    dispatch({ type: "setsubdomainError", payload: null });
     publish.subdomain && (await executeRegisterENS());
   };
 
@@ -111,7 +114,7 @@ const PublishAPI = () => {
     ? "loading"
     : publish.subdomainError
     ? "error"
-    : publish.subdomainRegisterSuccess
+    : publish.subdomainRegisterSuccess || publish.subdomainLookupSuccess
     ? "success"
     : "none";
 
@@ -183,6 +186,7 @@ const PublishAPI = () => {
                     value={publish?.subdomain}
                     onChange={handleEnsInputChange}
                     suffix={ensRegInputSuffix[ensRegStatus]}
+                    disabled={ensRegStatus === "success"}
                   />
                   {!!ensRegErrors.length &&
                     ensRegErrors.map((er) => (
@@ -228,7 +232,7 @@ const PublishAPI = () => {
           <Button
             variant="primaryMedium"
             type="submit"
-            disabled={publish.ipfs.length === 0 || publishLoading}
+            disabled={publish.ipfs.length === 0 || publishLoading || ensRegLoading}
             sx={{ maxHeight: "36px", width: "92px", img: { height: "200%" } }}
           >
             {publishLoading ? <Spinner /> : "Publish"}

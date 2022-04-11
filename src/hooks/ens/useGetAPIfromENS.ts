@@ -47,9 +47,11 @@ export const useGetAPIfromENSParamInURL = () => {
         const { data: apiData } = await axios.get<{ api: APIData }>(
           domain + `/api/apis/${router.asPath.split("uri=")[1]}`
         );
+
         setState((state) => ({ ...state, data: apiData?.api, loading: false }));
       }
     } catch (e) {
+      console.log("Error fetching wrapper details", e?.message);
       setState((state) => ({ ...state, error: e?.message, loading: false }));
     }
   }, [router.query.uri, router.query.customUri]);
@@ -143,7 +145,7 @@ export const useGetAPIfromParamInURL = () => {
 
   useEffect(() => {
     void fetchApiDetails();
-  }, [router.query.uri, router.query.customUri]);
+  }, [router.query.uri, router.query.customUri, dapp?.network]);
   return { error, isLoading, data, fetchApiDetails };
 };
 

@@ -75,7 +75,7 @@ export const useRegisterEns = () => {
       .resolveName("resolver.eth");
 
     const network = networkName;
-    const apiUri = `ens/${networkName}/yay2.open.web3api.eth`;
+    const apiUri = `ens/${networkName}/ens.web3api.eth`;
 
     const registerDomainOptions: QueryApiOptions = {
       uri: apiUri,
@@ -118,8 +118,7 @@ export const useRegisterEns = () => {
       if (data[key]) {
         callback(data[key]);
       }
-      if (errors.length) {
-        console.log(errors);
+      if (errors && errors?.length) {
         setState((state) => ({
           ...state,
           errors: [...errors],

@@ -5,7 +5,7 @@ import { useGetAPIfromENSParamInURL, useStateValue } from "hooks";
 import { useLoading } from "hooks/useLoading";
 
 const ApiView = () => {
-  const { data, loading } = useGetAPIfromENSParamInURL();
+  const { data, loading, error } = useGetAPIfromENSParamInURL();
   const [{ web3api }] = useStateValue();
   const withLoading = useLoading(loading);
 
@@ -13,7 +13,7 @@ const ApiView = () => {
     <Layout>
       {web3api.plugins && (
         <Web3ApiProvider plugins={web3api.plugins}>
-          {withLoading(<APIDetail api={data} />)}
+          {withLoading(data && <APIDetail api={data} />)}
         </Web3ApiProvider>
       )}
     </Layout>

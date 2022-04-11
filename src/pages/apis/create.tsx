@@ -19,6 +19,7 @@ import { useResponsive, useRouter, useStateValue } from "hooks";
 import { CreateApiProvider } from "hooks/useCreateApi";
 import { Web3ApiProvider } from "@web3api/react";
 import useModal from "hooks/useModal";
+import { clearPublishState } from "utils/storeReset";
 
 const styles: ThemeUIStyleObject = {
   flexDirection: "column",
@@ -39,7 +40,7 @@ export const uploadComponents = {
 
 const CreateApi = () => {
   const router = useRouter();
-  const [{ publish, web3api }] = useStateValue();
+  const [{ publish, web3api }, dispatch] = useStateValue();
   const [activeStep, setActiveStep] = useState<string>();
   const [uploadMethod, setUploadMethod] = useState<string>("");
   const {
@@ -80,6 +81,12 @@ const CreateApi = () => {
     router.query?.method,
     router.pathname,
   ]);
+
+  useEffect(() => {
+    return () => {
+      clearPublishState(dispatch);
+    };
+  }, []);
 
   return (
     <Layout>

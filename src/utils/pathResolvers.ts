@@ -1,6 +1,10 @@
 import { APIData } from "hooks/ens/useGetAPIfromENS";
 import { API_URI_TYPE_ID, ipfsGateway } from "src/constants";
 
+export const isEns = (uri: string) => {
+  return uri.includes(".");
+};
+
 const parseEns = (uri: string) => uri.split("/").find((s) => s.includes("."));
 
 const parseIpfs = (uri: string) => {
@@ -15,7 +19,7 @@ const parseIpfs = (uri: string) => {
 
 export const parseApiUri = (uri: string) => {
   //1.Check if ipfs or ens
-  const ens = uri.includes(".");
+  const ens = isEns(uri);
   if (ens) return [parseEns(uri), "ens"];
   return [parseIpfs(uri), "ipfs"];
 };

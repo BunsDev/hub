@@ -119,6 +119,15 @@ const Modal = ({ screen = "connect", onClose = () => {} }: ModalProps) => {
             >
               {dapp.address}
             </span>
+            <span className="body-1" sx={{ color: "#0F0F0F50" }}>
+              Network
+            </span>
+            <span
+              className="body-1"
+              sx={{ display: "block", color: "polyGrey3" }}
+            >
+              {networks[dapp?.network].name}
+            </span>
             {idx && (
               <>
                 <span className="body-1" sx={{ color: "#0F0F0F50" }}>
