@@ -12,12 +12,22 @@ const onboardInit = async (dispatch: Dispatch<StateAction>): Promise<API> => {
         type: "SET_ADDRESS",
         payload: address,
       });
+      const currentAddress = localStorage.getItem("selectedAddress");
+      if (currentAddress && currentAddress !== address) {
+        location.reload();
+      }
+      localStorage.setItem("selectedAddress", address);
     },
     network: (network) => {
       dispatch({
         type: "SET_NETWORK",
         payload: network,
       });
+      const currentNetwork = localStorage.getItem("selectedNetwork");
+      if (currentNetwork && Number(currentNetwork) !== network) {
+        location.reload();
+      }
+      localStorage.setItem("selectedNetwork", network.toString());
     },
     balance: (balance) => {
       dispatch({
