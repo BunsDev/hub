@@ -63,7 +63,7 @@ export default withValidatePublishBody(
 
         const existingApiIpfs = await apiUrisRepository.findByUri(locationUri);
         const existingApi = await apiRepository.findOne({
-          where: { id: existingApiIpfs.apiId },
+          where: { id: existingApiIpfs?.apiId },
         });
 
         if (existingApi) {
