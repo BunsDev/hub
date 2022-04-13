@@ -17,7 +17,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
   const { getItem } = useStorage();
   const [loading, setLoading] = useState(!!getItem("selectedWallet"));
 
-  const isLoggedIn = Boolean(getItem("selectedWallet")) && dapp.address;
+  const isLoggedIn = Boolean(getItem("selectedWallet")) || dapp.address;
 
   const { openModal } = useModal(
     !loading && isLoggedIn ? "disconnect" : "connect"

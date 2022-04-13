@@ -27,10 +27,12 @@ export default async function getMetaDataFromPackageUri(
     const metadata = await client.getManifest(uriInput, { type: "meta" });
     return constructApiDataFromMeta(metadata);
   } catch (e) {
+    console.log('Error receiving metaManifest', e)
     try {
       const web3api = await client.getManifest(uriInput, { type: "web3api" });
       return constructApiDataFromWeb3Api(web3api);
     } catch (e) {
+      console.log('Error receiving web3api', e)
       return undefined;
     }
   }

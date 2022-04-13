@@ -182,9 +182,9 @@ const result = await api.query({
                 return (
                   <li key={idx + "pointerURI"}>
                     <img src="/images/link.svg" alt="icon" />
-                    <a href={pointer.uri} target="_BLANK" rel="noreferrer">
+                    <span>
                       {API_URI_TYPE_ID[pointer.uriTypeId]}/{pointer.uri}
-                    </a>
+                    </span>
                   </li>
                 );
               })}
