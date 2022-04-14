@@ -3,6 +3,7 @@ import { Styles } from "../../utils/stylesInterface";
 const styles: Styles = {
   wrap: {
     display: "flex",
+    minHeight: "600px",
     justifyContent: "space-between",
     flexDirection: ["column-reverse", "column-reverse", "row"],
     gap: "2rem",
@@ -30,7 +31,7 @@ const styles: Styles = {
         rowGap: "0",
         mb: ["32px", "40px"],
         ".logo-wrap": {
-          display:"flex",
+          display: "flex",
           gridArea: `logo`,
           width: "6.25rem",
           height: "6.25rem",
@@ -63,11 +64,15 @@ const styles: Styles = {
         },
       },
       ".body": {
+        height: "100%",
         ">div": {
           width: "100%",
           maxWidth: "50rem",
           h3: { textAlign: "left" },
           pre: { mb: [null, "0"] },
+        },
+        ".spinner_wrap": {
+          height: "100%",
         },
       },
     },

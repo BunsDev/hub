@@ -11,6 +11,13 @@ import useModal from "hooks/useModal";
 import { useCeramic } from "hooks/useCeramic";
 import { useFavorites } from "hooks/useFavorites";
 import { useWeb3ApiClient } from "@web3api/react";
+import dynamic from "next/dynamic";
+import Spinner from "components/common/Spinner";
+import { getDefaultDocsNode, getExampleQueryNode } from "./docNodes";
+import { useLoading } from "hooks/useLoading";
+import { getExampleQuery, getReadme } from "utils/getFile";
+
+const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 
 type APIDetailProps = {
   api?: APIData;
@@ -22,15 +29,15 @@ const APIDetail = ({ api }: APIDetailProps) => {
 
   const { idx } = useCeramic();
   const { toggleFavorite } = useFavorites();
-  const [example, setExample] = useState({
+
+  const [docs, setDocs] = useState({
     loading: true,
+    content: undefined,
     error: "",
-    data: {
-      query: "",
-      vars: "",
-    },
   });
+  const withLoading = useLoading(docs.loading);
   const client = useWeb3ApiClient();
+
   const isFavorite = useMemo(
     () => dapp.favoritesList[api.locationUri],
     [dapp.favoritesList]
@@ -51,40 +58,42 @@ const APIDetail = ({ api }: APIDetailProps) => {
   const apiLocation = useMemo(() => "ipfs/" + api?.locationUri, [api]);
 
   useEffect(() => {
-    const getManifest = async () => {
-      try {
-        const metadata = await client.getManifest(apiLocation, {
-          type: "meta",
-        });
-
-        const { queries } = metadata;
-
-        const queryPath = queries[0].query.split("./")[1];
-        const varsPath = queries[0].vars.split("./")[1];
-        const queryFile = await client.getFile(apiLocation, {
-          path: queryPath,
-        });
-        const varsFile = await client.getFile(apiLocation, {
-          path: varsPath,
-        });
-        setExample((example) => ({
-          ...example,
+    const loadDocs = async () => {
+      const readmeBuffer = await getReadme(client, apiLocation);
+      if (readmeBuffer) {
+        setDocs((docs) => ({
+          ...docs,
           loading: false,
-          data: {
-            query: queryFile.toString(),
-            vars: varsFile.toString(),
-          },
+          content: (
+            <ReactMarkdown
+              children={readmeBuffer.toString()}
+              className="markdown"
+            />
+          ),
         }));
-      } catch (e) {
-        setExample((example) => ({
-          ...example,
-          loading: false,
-          error: e.message,
-        }));
+      } else {
+        const exampleQuery = await getExampleQuery(client, apiLocation);
+        if (exampleQuery) {
+          const { query, vars } = exampleQuery;
+          setDocs((docs) => ({
+            ...docs,
+            loading: false,
+            content: getDefaultDocsNode(
+              apiLocation,
+              getExampleQueryNode(vars, query)
+            ),
+          }));
+        } else {
+          setDocs({
+            loading: false,
+            content: getDefaultDocsNode(apiLocation),
+            error: "",
+          });
+        }
       }
     };
     if (api) {
-      void getManifest();
+      loadDocs();
     }
   }, []);
 
@@ -119,58 +128,7 @@ const APIDetail = ({ api }: APIDetailProps) => {
             <p className="description">{api?.description}</p>
           </div>
         </Grid>
-        <Flex className="body">
-          <div>
-            <Themed.h2>Get Started</Themed.h2>
-            <Themed.h3>Install</Themed.h3>
-            <Themed.code>
-              <Themed.pre>{`yarn install @web3api/client`}</Themed.pre>
-            </Themed.code>
-            <Themed.h3>Initialize</Themed.h3>
-            <Themed.code>
-              <Themed.pre>
-                {`import {
-  Web3API,
-  Ethereum,
-  IPFS,
-  Subgraph
-} from "@web3api/client-js";
-
-const api = new Web3APIClient({
-  uri: "${apiLocation}",
-  portals: {
-    ethereum: new Ethereum({ provider: (window as any).ethereum }),
-    ipfs: new IPFS({ provider: "http://localhost:5001" }),
-    subgraph: new Subgraph({ provider: "http://localhost:8020" })
-  }
-})`}
-              </Themed.pre>
-            </Themed.code>
-            <Themed.h3>Query</Themed.h3>
-            {example.loading ? (
-              <h3>Loading...</h3>
-            ) : example.error ? (
-              <Themed.code>
-                <Themed.pre>Error: {example.error}</Themed.pre>
-              </Themed.code>
-            ) : (
-              <>
-                <Themed.code>
-                  <Themed.pre>
-                    {`
-const variables = ${example.data.vars};
-
-const result = await api.query({
-  query: \`${example.data.query}\`,
-  variables: variables
-})
-`}
-                  </Themed.pre>
-                </Themed.code>
-              </>
-            )}
-          </div>
-        </Flex>
+        <Flex className="body">{withLoading(docs.content)}</Flex>
       </Flex>
       <Flex className="right">
         <Flex className="info-card">
