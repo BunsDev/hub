@@ -88,7 +88,6 @@ const useFindApis = (
 
       const apis = searchResult?.apis || [];
 
-
       const replaceWithNewApis =
         dapp.initialApisLoading || preload || newSearchVal || noParams;
 

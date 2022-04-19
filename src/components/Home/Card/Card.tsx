@@ -49,7 +49,7 @@ const Card = ({ api }: CardProps) => {
     () => `/info?uri=${resolveApiLocation(api)}`,
     [api]
   );
-  const imgLocation = getApiImgLocation(api)
+  const imgLocation = getApiImgLocation(api);
 
   return (
     <div className="Card" sx={styles.card}>
@@ -69,7 +69,9 @@ const Card = ({ api }: CardProps) => {
             <div className="wrap-contents">
               <div className="head">
                 <div className="logo-wrap">
-                  {imgLocation && <img className="api-logo" src={imgLocation} />}
+                  {imgLocation && (
+                    <img className="api-logo" src={imgLocation} />
+                  )}
                 </div>
                 <Flex className="labels">
                   <Badge label={ens ? "ens" : "ipfs"} />

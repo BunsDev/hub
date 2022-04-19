@@ -20,7 +20,7 @@ const styles: Styles = {
           display: "flex",
           gap: "1.5rem",
           ".logo-wrap": {
-            display:"flex",
+            display: "flex",
             background: "white",
             width: "4.25rem",
             height: "4.25rem",

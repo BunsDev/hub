@@ -1,4 +1,4 @@
-import { ENS_REGISTRY, FIFS_REGISTRAR, MAIN_DOMAIN } from "../../constants";
+import { ENS_REGISTRY, FIFS_REGISTRARS, MAIN_DOMAIN } from "../../constants";
 import { useStateValue } from "../../state/state";
 import { utf8ToKeccak256 } from "../../utils/hash";
 import { sendTransaction } from "../../utils/ethereum";
@@ -37,9 +37,8 @@ export const useCreateSubdomain = () => {
 
         setStatus(0);
 
-        //@Cesar
         await sendTransaction(
-          FIFS_REGISTRAR,
+          FIFS_REGISTRARS[dapp.network],
           "function register(bytes32 label, address owner) external",
           [utf8ToKeccak256(subdomain), signerAddress],
           web3

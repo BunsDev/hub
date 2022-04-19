@@ -51,7 +51,7 @@ export const DirectUpload = () => {
         const hash = await uploadToIPFS(files);
 
         const publishedApiUri = await findPublishedApi(hash);
-        if (Boolean(publishedApiUri)) {
+        if (publishedApiUri) {
           setUploadState((state) => ({
             ...state,
             loading: false,

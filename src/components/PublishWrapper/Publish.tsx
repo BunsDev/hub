@@ -232,7 +232,9 @@ const PublishAPI = () => {
           <Button
             variant="primaryMedium"
             type="submit"
-            disabled={publish.ipfs.length === 0 || publishLoading || ensRegLoading}
+            disabled={
+              publish.ipfs.length === 0 || publishLoading || ensRegLoading
+            }
             sx={{ maxHeight: "36px", width: "92px", img: { height: "200%" } }}
           >
             {publishLoading ? <Spinner /> : "Publish"}

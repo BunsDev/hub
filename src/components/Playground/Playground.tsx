@@ -28,7 +28,7 @@ const Playground = () => {
   const {
     data: api,
     isLoading: apiDataLoading,
-    error:apiDataError,
+    error: apiDataError,
   } = useGetAPIfromParamInURL();
 
   const [

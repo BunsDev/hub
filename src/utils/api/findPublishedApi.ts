@@ -13,4 +13,4 @@ const findPublishedApi = async (inputUri: string) => {
   return data?.published;
 };
 
-export default findPublishedApi
+export default findPublishedApi;

@@ -6,7 +6,7 @@ import {
   Web3APIReducerAction,
 } from "./action";
 import { State, initialState } from "./initialState";
-import { networks } from "../utils/networks";
+import { networks, SupportedNetwork } from "../utils/networks";
 import { networkID as defaultNetworkId } from "../constants";
 import { PluginRegistration } from "@web3api/client-js";
 import { ConnectionConfig, ethereumPlugin } from "@web3api/ethereum-plugin-js";
@@ -24,7 +24,7 @@ export function web3apiReducer(
         const isNetworkSupported = Object.keys(networks).some(
           (k) => Number(k) === boardedNetwork
         );
-        const networkId = isNetworkSupported
+        const networkId: SupportedNetwork = isNetworkSupported
           ? boardedNetwork
           : defaultNetworkId;
 

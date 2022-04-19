@@ -68,7 +68,7 @@ export default withValidatePublishBody(
 
         if (existingApi) {
           if (apiInfo.apiUris?.length) {
-            let ensUris: ApiUris[] = [];
+            const ensUris: ApiUris[] = [];
             for await (const ens of apiInfo.apiUris) {
               const existingEns = await apiUrisRepository.findOne({
                 where: { uri: ens },

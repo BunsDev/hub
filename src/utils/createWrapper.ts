@@ -43,7 +43,9 @@ export const validateUploadedWrapper = (
   files: File[]
 ): [boolean, WrapperReqFiles, File[]] => {
   const requiredFiles: WrapperReqFiles = {
-    api: files?.find((file) => file.name === "web3api.yaml") || files?.find((file) => file.name === "web3api.yml"),
+    api:
+      files?.find((file) => file.name === "web3api.yaml") ||
+      files?.find((file) => file.name === "web3api.yml"),
     //build: files?.find((file) => file.name === "web3api.build.yaml"),
     //meta: files?.find((file) => file.name === "web3api.meta.yaml"),
     //mutation: files?.find((file) => file.name === "mutation.wasm"),

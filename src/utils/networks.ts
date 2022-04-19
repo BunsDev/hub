@@ -1,21 +1,21 @@
 import { networkID as defaultNetworkID } from "../constants";
 interface Network {
-  name: keyof typeof SupportedNetworks;
+  name: keyof typeof SupportedNetwork;
   node: string;
   explorer: string;
 }
 //export type SupportedNetworks = "mainnet" | "ropsten" | "rinkeby";
 
-export enum SupportedNetworks {
-  "mainnet",
-  "ropsten",
-  "rinkeby",
+export enum SupportedNetwork {
+  "mainnet" = 1,
+  "ropsten" = 3,
+  "rinkeby" = 4,
 }
 
 const INFURA_KEY =
   process.env.INFURA_API_KEY || "b76cba91dc954ceebff27244923224b1";
 
-export const networks: Record<string, Network> = {
+export const networks: Record<SupportedNetwork, Network> = {
   "1": {
     name: "mainnet",
     node: "https://mainnet.infura.io/v3/" + INFURA_KEY,
@@ -36,6 +36,9 @@ export const networks: Record<string, Network> = {
 export const getCurrentNetworkId = () => {
   if (typeof window !== "undefined") {
     //@ts-ignore
-    return typeof window.ethereum !== "undefined" ? window.ethereum.networkVersion : defaultNetworkID
+    return typeof window.ethereum !== "undefined"
+      ? //@ts-ignore
+        window.ethereum.networkVersion
+      : defaultNetworkID;
   }
 };

@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { ethers } from "ethers";
 import { useWeb3ApiClient } from "@web3api/react";
 
-import { ENS_REGISTRY, FIFS_REGISTRAR } from "../../constants";
+import { ENS_REGISTRY, FIFS_REGISTRARS } from "../../constants";
 import { useStateValue } from "../../state/state";
 
 import { QueryApiOptions, QueryApiResult } from "@web3api/core-js";
@@ -69,7 +69,7 @@ export const useRegisterEns = () => {
 
     const domain = publish.subdomain;
     const registryAddress = ENS_REGISTRY;
-    const registrarAddress = FIFS_REGISTRAR;
+    const registrarAddress = FIFS_REGISTRARS[dapp.network];
     const resolverAddress = await dapp.web3
       .getSigner()
       .resolveName("resolver.eth");
@@ -188,7 +188,7 @@ export const useRegisterEns = () => {
       }
     };
     void executeRegisterChain();
-  }, [dapp.web3, publish.subdomain]);
+  }, [dapp.web3, publish.subdomain, dapp.network]);
 
   return [execute, state] as const;
 };

@@ -6,6 +6,7 @@ import { PluginRegistration, UriRedirect } from "@web3api/client-js";
 import { ethereumPlugin } from "@web3api/ethereum-plugin-js";
 import { Favorites } from "services/ceramic/handlers";
 import { API } from "bnc-onboard/dist/src/interfaces";
+import { SupportedNetwork } from "utils/networks";
 
 export interface State {
   dapp: DappType;
@@ -74,7 +75,7 @@ type DappType = {
   balance: string;
   address: string;
   wallet: { name: string };
-  network: number;
+  network: SupportedNetwork;
   web3?: ethers.providers.JsonRpcProvider;
   onboard?: API;
   apis: { items: APIData[]; total: number };

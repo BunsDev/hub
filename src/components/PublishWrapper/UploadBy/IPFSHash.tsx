@@ -31,7 +31,7 @@ export const IPFSHash = () => {
 
       const publishedApiUri = await findPublishedApi(publish.ipfs);
 
-      if (Boolean(publishedApiUri)) {
+      if (publishedApiUri) {
         dispatch({ type: "setipfsLoading", payload: false });
         dispatch({ type: "setApiData", payload: null });
         dispatch({

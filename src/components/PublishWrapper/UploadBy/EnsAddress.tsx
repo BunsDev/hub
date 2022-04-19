@@ -7,7 +7,7 @@ import { Wrapper, NavButtons, ErrorMsg } from "components/PublishWrapper";
 
 import styles from "../styles";
 import { useWeb3ApiClient } from "@web3api/react";
-import { networks } from "utils/networks";
+import { networks, SupportedNetwork } from "utils/networks";
 import Select from "react-dropdown-select";
 import getMetaDataFromPackageUri from "services/ipfs/getMetaDataPackageUri";
 import findPublishedApi from "utils/api/findPublishedApi";
@@ -38,7 +38,7 @@ export const EnsAddress = () => {
 
       const publishedApiUri = await findPublishedApi(publish.subdomain);
 
-      if (Boolean(publishedApiUri)) {
+      if (publishedApiUri) {
         dispatch({ type: "setsubdomainLoading", payload: false });
         dispatch({ type: "setApiData", payload: null });
         dispatch({
@@ -123,6 +123,7 @@ export const EnsAddress = () => {
                 dropdownGap={0}
                 direction="rtl"
                 options={Object.keys(networks).map((key) => ({
+                  //@ts-ignore
                   network: networks[key].name,
                 }))}
                 onChange={setEnsNetwork}
