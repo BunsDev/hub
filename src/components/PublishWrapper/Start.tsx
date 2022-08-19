@@ -40,7 +40,7 @@ const Start = () => {
           <div className="bg">Two</div>
           <span className="subtitle-1">Creating a Wrapper</span>
           <a
-            href="https://docs.polywrap.io/guides/create-as-wrapper/project-setup/"
+            href="https://docs.polywrap.io/quick-start/create-wasm-wrappers/tutorial/project-setup/"
             target="_BLANK"
             rel="noreferrer"
           >
